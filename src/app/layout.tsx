@@ -35,9 +35,15 @@ export default function RootLayout({
   return (
     <html lang="cs">
       <body
-        className={`${figtree.variable} ${newsreader.variable} bg-[var(--bg-page)] text-[var(--text-main)] antialiased`}
+        className={`${figtree.variable} ${newsreader.variable} antialiased`}
+        style={{
+          margin: 0,
+          padding: 0,
+          background: 'var(--bg-base)',
+          color: 'var(--color-primary)',
+        }}
       >
-        <div className="flex min-h-screen flex-col bg-[var(--bg-page)]">
+        <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
