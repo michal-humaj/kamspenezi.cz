@@ -9,14 +9,15 @@
 }
 
 :root {
-  --bg-main: #FAF6F0;
-  --bg-alt: #F4EEE6;
-  --card-bg: #FFFCF8;
-  --text-primary: #1F130C;
-  --text-secondary: #5C5145;
-  --accent-own: #F3B980;
-  --accent-etf: #C7D1FF;
-  --accent-neutral-pill: #E6D9C7;
+  --bg-page: #FDFBF9;
+  --bg-section: #F5F5F8;
+  --bg-card: #FFFFFF;
+  --border-soft: #E4E0DA;
+  --text-main: #1F1F1F;
+  --text-muted: #5C5C60;
+  --accent-warm: #F4C8A3;
+  --accent-cool: #C5D7FF;
+  --cta-bg: #111111;
 }
 
 @layer base {
@@ -25,22 +26,22 @@
   }
 
   body {
-    @apply bg-[var(--bg-main)] text-[var(--text-primary)] font-uiSans antialiased;
+    @apply bg-[var(--bg-page)] text-[var(--text-main)] font-uiSans antialiased;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-displaySerif font-semibold text-[var(--text-primary)];
+    @apply font-displaySerif font-semibold text-[var(--text-main)];
   }
 
   h4,
   h5,
   h6 {
-    @apply font-semibold text-[var(--text-primary)];
+    @apply font-semibold text-[var(--text-main)];
   }
 
   p {
-    @apply text-[var(--text-secondary)] text-[16px] leading-[1.6];
+    @apply text-[var(--text-muted)] text-[16px] leading-[1.6];
   }
 }
