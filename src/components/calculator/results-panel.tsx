@@ -63,18 +63,8 @@ export function ResultsPanel({
   return (
     <div
       id="vysledek"
-      className="space-y-5 rounded-none border-none bg-transparent p-4 shadow-none md:space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
+      className="space-y-5 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-6 md:shadow-[var(--shadow-card)]"
     >
-      {/* Mobile: Edit settings button */}
-      <div className="mb-4 md:hidden">
-        <button
-          onClick={onEditSettings}
-          className="calc-secondary-button"
-        >
-          Upravit vstupy
-        </button>
-      </div>
-
       {/* Heading and Mode tabs */}
       <div className="space-y-3 md:space-y-4">
         <h2 className="calc-section-title text-xl md:text-2xl">
@@ -83,7 +73,7 @@ export function ResultsPanel({
         
         {/* Segmented control */}
         <div
-          className="grid grid-cols-2 gap-1 rounded-[var(--radius-pill)] border p-[2px]"
+          className="grid grid-cols-2 gap-0 rounded-[var(--radius-pill)] border p-[2px]"
           style={{ 
             background: "var(--toggle-bg-inactive)",
             borderColor: "var(--color-border)"
@@ -122,7 +112,19 @@ export function ResultsPanel({
       <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
         {resultsMode === "realistic"
           ? "Ukazujeme, jak se výsledek může lišit podle tržních podmínek"
-          : "Můžeš ověřit vzorce v našem Google Sheetu"}
+          : (
+            <>
+              Můžeš ověřit vzorce v našem{" "}
+              <a
+                href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?gid=1260855363#gid=1260855363"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-[var(--color-primary)] underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--color-primary-hover)]"
+              >
+                Google Sheetu
+              </a>
+            </>
+          )}
       </p>
 
       {canViewResults ? (

@@ -215,7 +215,7 @@ export default function BydleniKalkulackaPage() {
           <div id="nastaveni" className="space-y-6">
             {/* Basic Inputs */}
             <section
-              className="space-y-5 rounded-none border-none bg-transparent p-4 shadow-none md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
+              className="space-y-5 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-6 md:shadow-[var(--shadow-card)]"
             >
               <h2 className="calc-section-title">
                 Základní nastavení

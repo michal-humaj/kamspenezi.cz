@@ -49,7 +49,7 @@ export function InputWithUnit({
           max={max}
           className={`
             calc-input pr-16 text-right tabular-nums
-            ${isAnimating ? 'bg-[var(--bg-lilac-highlight)]' : ''}
+            ${isAnimating ? 'bg-[var(--bg-highlight)]' : ''}
           `}
         />
         <span className="calc-input-unit">

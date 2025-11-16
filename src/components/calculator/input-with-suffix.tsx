@@ -70,7 +70,7 @@ export function InputWithSuffix({
           pattern={pattern}
           className={`
             calc-input pr-16 text-right tabular-nums
-            ${isAnimating ? 'bg-[var(--bg-lilac-highlight)]' : ''}
+            ${isAnimating ? 'bg-[var(--bg-highlight)]' : ''}
             ${className}
           `}
         />

@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ChevronDown } from "lucide-react";
 import { InputWithSuffix } from "./input-with-suffix";
 import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
 
@@ -54,7 +55,6 @@ function sanitizeDecimalInput(value: string): string {
 }
 
 export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
-  const [isExpanded, setIsExpanded] = React.useState(false);
   const [localValues, setLocalValues] = React.useState<Record<string, string>>({});
   const debounceTimers = React.useRef<Record<string, NodeJS.Timeout>>({});
   
@@ -104,29 +104,20 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
   }, []);
 
   return (
-    <Accordion type="single" collapsible onValueChange={(value) => setIsExpanded(value === "advanced")}>
+    <Accordion type="single" collapsible>
       <AccordionItem
         value="advanced"
-        className="rounded-none border-none bg-transparent p-0 shadow-none transition-all md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)]"
-        onMouseEnter={(e) => {
-          if (window.innerWidth >= 768 && !isExpanded) {
-            e.currentTarget.style.background = "var(--bg-hover)";
-            e.currentTarget.style.borderColor = "var(--color-border-hover)";
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (window.innerWidth >= 768 && !isExpanded) {
-            e.currentTarget.style.background = "var(--bg-card)";
-            e.currentTarget.style.borderColor = "var(--color-border)";
-          }
-        }}
+        className="-mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-6 shadow-none transition-all md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-4 md:py-4 md:shadow-[var(--shadow-card)]"
       >
         <AccordionTrigger 
-          className="calc-section-title w-full cursor-pointer px-4 py-4 hover:no-underline md:px-6"
+          className="!p-0 hover:no-underline [&[data-state=open]_.chevron]:rotate-180 [&>svg]:hidden"
         >
-          <span>Rozšířené předpoklady</span>
+          <div className="calc-collapse-header w-full">
+            <span className="calc-collapse-header-title">Rozšířené předpoklady</span>
+            <ChevronDown className="chevron h-5 w-5 shrink-0 transition-transform duration-200" />
+          </div>
         </AccordionTrigger>
-        <AccordionContent className="space-y-5 px-4 pb-5 pt-2 md:px-6 md:pb-6">
+        <AccordionContent className="space-y-5 px-4 pb-5 pt-4 md:px-0 md:pb-0 md:pt-4">
           <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
             Vše je předvyplněné realistickými hodnotami, měnit je nemusíš.
           </p>

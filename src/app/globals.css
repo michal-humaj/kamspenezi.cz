@@ -15,7 +15,7 @@
   --bg-card: #FFFFFF;           /* Pure white for all cards */
   --bg-hover: rgba(15, 23, 42, 0.02); /* Subtle hover background */
   --bg-hover-strong: rgba(15, 23, 42, 0.04); /* Stronger hover background */
-  --bg-lilac-highlight: rgba(125, 90, 226, 0.06); /* Lilac highlight for animations */
+  --bg-highlight: rgba(15, 23, 42, 0.03); /* Subtle highlight for animations */
 
   /* Text Colors */
   --color-primary: #0F172A;     /* Main navy/ink */
@@ -32,12 +32,12 @@
   --scenario-b-bg: #EAE7FF;     /* Soft lilac background */
   --scenario-b-dot: #7D5AE2;    /* Purple dot */
 
-  /* Selection/Active States (Lilac) */
-  --selection-border: rgba(125, 90, 226, 0.7); /* Lilac border for selected items */
-  --selection-bg: rgba(125, 90, 226, 0.02);    /* Lilac background for selected items */
-  --selection-shadow: 0 4px 16px rgba(125, 90, 226, 0.12); /* Lilac outer shadow */
-  --selection-shadow-inner: inset 0 1px 4px rgba(125, 90, 226, 0.08); /* Lilac inner glow */
-  --toggle-bg-inactive: rgba(244, 245, 251, 0.5); /* Very light lilac for toggle background */
+  /* Selection/Active States (Navy/Primary) */
+  --selection-border: var(--color-primary); /* Navy border for selected items */
+  --selection-bg: rgba(15, 23, 42, 0.02);    /* Navy background for selected items */
+  --selection-shadow: 0 4px 16px rgba(15, 23, 42, 0.08); /* Navy outer shadow */
+  --selection-shadow-inner: inset 0 1px 4px rgba(15, 23, 42, 0.04); /* Navy inner glow */
+  --toggle-bg-inactive: rgba(244, 245, 251, 0.5); /* Very light neutral for toggle background */
 
   /* Button System */
   --btn-primary-bg: #0F172A;
@@ -144,7 +144,7 @@
     @apply w-full rounded-full bg-white text-[var(--color-primary)] font-uiSans;
     border: 1px solid var(--color-border);
     padding: 10px 14px;
-    font-size: 0.95rem;
+    font-size: 16px;  /* Must be 16px minimum to prevent iOS auto-zoom */
     line-height: 1.4;
     outline: none;
     transition: border-color var(--transition-duration) var(--transition-easing),
