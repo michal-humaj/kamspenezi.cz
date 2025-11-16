@@ -638,8 +638,8 @@ export default function HomePage() {
 
               <a
                 href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                 style={{
                   borderColor: 'var(--btn-secondary-border)',
@@ -658,7 +658,7 @@ export default function HomePage() {
               
               <div className="mt-6 flex items-start gap-4">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full">
-                  <Image
+            <Image
                     src="/michal.jpeg"
                     alt="Michal Humaj"
                     width={64}
