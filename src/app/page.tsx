@@ -128,7 +128,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
+      <section className="bg-[var(--bg-base)] pt-6 pb-16 md:pt-10 md:pb-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
