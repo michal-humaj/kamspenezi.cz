@@ -48,7 +48,7 @@ export function SiteHeader() {
         background: 'var(--bg-base)'
       }}
     >
-      <div className="container flex h-16 items-center justify-between md:h-20">
+      <div className="container flex h-14 items-center justify-between md:h-16">
         <Logo />
 
         <nav className="hidden items-center gap-8 text-body font-medium md:flex">

@@ -83,46 +83,32 @@
     @apply font-uiSans text-[var(--color-secondary)] text-base leading-relaxed;
   }
 
-  /* Logo wordmark - Wealthsimple style, sans serif */
+  /* Logo Wordmark - Premium Wealthsimple-style */
   .nav-logo {
     margin-right: auto !important;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 2px;
   }
 
-  .nav-logo-main,
-  .nav-logo-suffix {
+  .nav-logo-text {
     font-family: var(--font-ui-sans);
     font-weight: 600;
-    letter-spacing: 0.18px;
+    letter-spacing: 0.2px;
     color: var(--color-primary);
+    font-size: 20px;          /* mobile size */
+    padding-top: 12px;        /* reduce wasted vertical space */
+    padding-bottom: 12px;
   }
 
-  /* Mobile logo sizing */
-  .nav-logo-main {
-    font-size: 19px;
-    padding-top: 14px;
-    padding-bottom: 14px;
-  }
-
-  .nav-logo-suffix {
-    font-size: 18px; /* 1px smaller for .cz */
-    padding-top: 14px;
-    padding-bottom: 14px;
+  .nav-logo-tld {
+    color: var(--color-secondary); /* subtle grey .cz */
   }
 
   @media (min-width: 768px) {
-    .nav-logo-main {
-      font-size: 21px;
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-
-    .nav-logo-suffix {
-      font-size: 20px; /* 1px smaller for .cz */
-      padding-top: 16px;
-      padding-bottom: 16px;
+    .nav-logo-text {
+      font-size: 22px;        /* desktop size */
+      padding-top: 14px;
+      padding-bottom: 14px;
     }
 
     .nav-logo {
