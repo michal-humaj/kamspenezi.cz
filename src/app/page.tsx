@@ -129,7 +129,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-20 lg:py-24">
+      <section className="bg-[var(--bg-page)] py-10 md:py-18">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -256,7 +256,7 @@ export default function HomePage() {
                 style={{
                   background: 'var(--bg-card)',
                   borderColor: 'var(--border-subtle)',
-                  borderRadius: 'var(--radius-card-mobile)',
+                  borderRadius: 'var(--radius-card)',
                   boxShadow: 'var(--shadow-card)',
                   padding: '28px 24px'
                 }}
@@ -313,9 +313,9 @@ export default function HomePage() {
                 style={{
                   background: 'var(--bg-card)',
                   borderColor: 'var(--border-subtle)',
-                  borderRadius: 'var(--radius-card-mobile)',
+                  borderRadius: 'var(--radius-card)',
                   boxShadow: 'var(--shadow-card)',
-                  padding: '24px 20px',
+                  padding: 'var(--card-padding)',
                   transition: `transform var(--transition-duration) var(--transition-easing)`
                 }}
               >
@@ -390,9 +390,9 @@ export default function HomePage() {
             style={{
               background: 'var(--bg-card)',
               borderColor: 'var(--border-subtle)',
-              borderRadius: 'var(--radius-card-mobile)',
+              borderRadius: 'var(--radius-card)',
               boxShadow: 'var(--shadow-card)',
-              padding: '24px 20px',
+              padding: 'var(--card-padding)',
               transition: `transform var(--transition-duration) var(--transition-easing)`
             }}
           >
@@ -557,9 +557,9 @@ export default function HomePage() {
                 style={{
                   background: 'var(--bg-card)',
                   borderColor: 'var(--border-subtle)',
-                  borderRadius: 'var(--radius-card-mobile)',
+                  borderRadius: 'var(--radius-card)',
                   boxShadow: 'var(--shadow-card)',
-                  padding: '24px 20px',
+                  padding: 'var(--card-padding)',
                   transition: `transform var(--transition-duration) var(--transition-easing)`
                 }}
               >
@@ -671,9 +671,9 @@ export default function HomePage() {
               style={{
                 background: 'var(--bg-card)',
                 borderColor: 'var(--border-subtle)',
-                borderRadius: 'var(--radius-card-mobile)',
+                borderRadius: 'var(--radius-card)',
                 boxShadow: 'var(--shadow-card)',
-                padding: '24px 20px'
+                padding: 'var(--card-padding)'
               }}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
