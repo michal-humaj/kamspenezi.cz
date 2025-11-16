@@ -9,25 +9,44 @@
 }
 
 :root {
-  --bg-body: #F7F8FC;
-  --bg-section-soft: #F3F5FE;
-  --bg-card: #FFFFFF;
-  --border-subtle: #E2E5F2;
-  --text-main: #111827;
-  --text-muted: #6B7280;
-  --text-subtle: #9CA3AF;
-  --accent-primary: #020617;
-  --accent-primary-soft: #0F172A;
-  --accent-link: #111827;
-  --accent-link-hover: #020617;
-  --scenario-a: #F4C9A6;
-  --scenario-b: #C9C5FF;
-  --scenario-a-dot: #F2A65A;
-  --scenario-b-dot: #9F8CFF;
-  --shadow-card: 0 18px 45px rgba(15, 23, 42, 0.08);
+  /* Surface */
+  --bg-page: #f8fafc;
+  --bg-section-alt: #f2f4ff;
+  --bg-card: #ffffff;
+
+  /* Text */
+  --text-primary: #0b1120;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+
+  /* Borders and dividers */
+  --border-subtle: #e2e8f0;
+  --border-soft: #e5e7eb;
+
+  /* Scenario colors */
+  --scenario-a-bg: #fde7ce;
+  --scenario-a-text: #92400e;
+  --scenario-b-bg: #e5e4ff;
+  --scenario-b-text: #4338ca;
+
+  /* Accent bullets and icons */
+  --accent-bullet: #f97316;
+  --accent-neutral: #9ca3af;
+
+  /* CTA */
+  --cta-primary-bg: #0b1120;
+  --cta-primary-text: #ffffff;
+
+  /* Unified card system */
+  --shadow-card: 0 18px 40px rgba(15, 23, 42, 0.08);
   --radius-card: 24px;
+  --radius-card-mobile: 20px;
+  --radius-faq: 16px;
   --radius-pill: 999px;
-  --transition-fast: 180ms cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Motion */
+  --transition-duration: 200ms;
+  --transition-easing: cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 @layer base {
@@ -36,22 +55,22 @@
   }
 
   body {
-    @apply bg-kp-bg-page text-kp-text-main font-uiSans antialiased;
+    @apply bg-[var(--bg-page)] text-[var(--text-primary)] font-uiSans antialiased;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-displaySerif font-semibold text-kp-text-main;
+    @apply font-displaySerif font-semibold text-[var(--text-primary)];
   }
 
   h4,
   h5,
   h6 {
-    @apply font-semibold text-kp-text-main;
+    @apply font-uiSans font-semibold text-[var(--text-primary)];
   }
 
   p {
-    @apply text-kp-text-main text-[16px] leading-[1.6];
+    @apply font-uiSans text-[var(--text-secondary)] text-[16px] leading-[1.6];
   }
 }

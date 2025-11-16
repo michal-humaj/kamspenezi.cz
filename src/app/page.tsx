@@ -130,7 +130,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-kp-bg-hero py-16 md:py-24 lg:py-32">
+      <section className="bg-[var(--bg-page)] py-10 md:py-20 lg:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -139,7 +139,13 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <span className="inline-flex items-center rounded-full bg-kp-bg-band px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-kp-text-muted">
+              <span 
+                className="inline-flex items-center px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans"
+                style={{ 
+                  background: 'var(--bg-section-alt)', 
+                  borderRadius: 'var(--radius-pill)' 
+                }}
+              >
                 Online kalkulačka bydlení
               </span>
               
@@ -147,29 +153,39 @@ export default function HomePage() {
                 Bydlet ve vlastním, nebo v nájmu
               </h1>
 
-              <p className="mt-4 max-w-xl text-lg text-kp-text-main md:text-xl">
+              <p className="mt-4 max-w-xl text-lg text-[var(--text-secondary)] md:text-xl font-uiSans">
                 Kalkulačka porovná dvě cesty: koupit byt na hypotéku, nebo bydlet v nájmu a rozdíl v platbách investovat do ETF. Uvidíš, jaký majetek ti vyjde po třiceti letech.
               </p>
 
-              <p className="mt-3 max-w-xl text-base italic text-kp-text-muted md:text-lg">
+              <p className="mt-3 max-w-xl text-base italic text-[var(--text-muted)] md:text-lg font-uiSans">
                 Rozhodnutí o bydlení ti ovlivní celý život. Udělej ho na datech, ne na pocitu.
               </p>
 
               {/* CTAs */}
-              <div className="mt-7 mb-6">
+              <div className="mt-7">
                 {/* Desktop: side by side */}
                 <div className="hidden sm:flex items-center gap-4">
                   <Button 
                     size="lg" 
                     asChild 
-                    className="bg-kp-primary text-white hover:bg-kp-primary-hover hover:-translate-y-px transition-all duration-180 ease-premium rounded-pill px-7"
+                    className="font-uiSans transition-all"
+                    style={{ 
+                      background: 'var(--cta-primary-bg)',
+                      color: 'var(--cta-primary-text)',
+                      borderRadius: 'var(--radius-pill)',
+                      transitionDuration: 'var(--transition-duration)',
+                      transitionTimingFunction: 'var(--transition-easing)'
+                    }}
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                   </Button>
                   
                   <button
                     onClick={() => scrollToSection("transparentnost")}
-                    className="text-base font-medium text-kp-text-main hover:text-kp-primary hover:underline transition-colors duration-180 ease-premium"
+                    className="text-base font-medium text-[var(--text-primary)] hover:text-[var(--text-primary)] hover:underline font-uiSans"
+                    style={{
+                      transition: `color var(--transition-duration) var(--transition-easing)`
+                    }}
                   >
                     Zjistit, jak výpočet funguje
                   </button>
@@ -180,7 +196,12 @@ export default function HomePage() {
                   <Button 
                     size="lg" 
                     asChild 
-                    className="w-full h-14 bg-kp-primary text-white hover:bg-kp-primary-hover hover:-translate-y-px transition-all duration-180 ease-premium rounded-pill text-base"
+                    className="w-full h-14 font-uiSans text-base"
+                    style={{ 
+                      background: 'var(--cta-primary-bg)',
+                      color: 'var(--cta-primary-text)',
+                      borderRadius: 'var(--radius-pill)',
+                    }}
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                   </Button>
@@ -189,23 +210,31 @@ export default function HomePage() {
                     size="lg"
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="w-full h-14 bg-transparent border border-kp-border-subtle text-kp-text-main hover:bg-kp-surface hover:border-kp-text-main transition-all duration-180 ease-premium rounded-pill"
+                    className="w-full h-14 bg-[var(--bg-card)] text-[var(--text-primary)] font-uiSans"
+                    style={{ 
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: 'var(--radius-pill)',
+                    }}
                   >
                     Zjistit, jak výpočet funguje
                   </Button>
                 </div>
-
-                {/* Simple meta text */}
-                <p className="mt-2 text-xs text-kp-text-soft">
-                  Zdarma, bez registrace.
-                </p>
               </div>
 
-              {/* Hero bullets */}
-              <ul className="mt-6 space-y-2.5 text-sm text-kp-text-main md:text-base">
+              {/* Simple meta text - increased spacing */}
+              <p className="mt-2 text-[13px] text-[var(--text-muted)] font-uiSans">
+                Zdarma, bez registrace.
+              </p>
+
+              {/* Hero bullets - with clear separation */}
+              <ul className="mt-5 space-y-2.5 text-sm md:text-[15px] text-[var(--text-secondary)] font-uiSans">
                 {HERO_BULLETS.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" aria-hidden />
+                    <span 
+                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                      style={{ background: 'var(--accent-bullet)' }}
+                      aria-hidden 
+                    />
                     <span>{bullet}</span>
                   </li>
                 ))}
@@ -217,22 +246,43 @@ export default function HomePage() {
               initial={{ opacity: 0, x: 20, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+              whileHover={{ scale: 1.01 }}
               className="mt-10 lg:mt-0 lg:w-[380px] xl:w-[420px] lg:ml-auto"
+              style={{
+                transition: `transform var(--transition-duration) var(--transition-easing)`
+              }}
             >
               <div 
-                className="flex flex-col items-center border border-kp-border-subtle bg-kp-surface p-8 text-center rounded-card-mobile md:rounded-card shadow-card" 
+                className="flex flex-col items-center border text-center" 
+                style={{
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--border-subtle)',
+                  borderRadius: 'var(--radius-card-mobile)',
+                  boxShadow: 'var(--shadow-card)',
+                  padding: '28px 24px'
+                }}
               >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-kp-bg-band">
-                  <svg className="h-10 w-10 text-kp-scenario-b" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <div 
+                  className="flex h-20 w-20 items-center justify-center rounded-full"
+                  style={{ background: 'var(--bg-section-alt)' }}
+                >
+                  <svg 
+                    className="h-10 w-10" 
+                    style={{ color: 'var(--scenario-b-text)' }}
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor" 
+                    strokeWidth={1.5}
+                  >
                     <rect x="3" y="13" width="4" height="8" rx="1" />
                     <rect x="10" y="9" width="4" height="12" rx="1" />
                     <rect x="17" y="5" width="4" height="16" rx="1" />
                   </svg>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-kp-text-main">
+                <h3 className="mt-6 text-xl font-semibold text-[var(--text-primary)] font-uiSans">
                   Vizualizace výsledků tvého bydlení
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-kp-text-muted">
+                <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
                   Později sem doplníme prémiovou ilustraci s výsledkem kalkulačky.
                 </p>
               </div>
@@ -241,13 +291,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* City Presets + Results - Combined Band Section */}
-      <section className="bg-kp-bg-band py-16 md:py-24">
+      {/* City Presets Section */}
+      <section className="bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Začni podle svého města a velikosti bytu
           </h2>
-          <p className="mt-2 max-w-3xl text-base text-kp-text-muted md:text-lg">
+          <p className="mt-2 max-w-3xl text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
             Vyber si výchozí scénář, který se ti nejvíc blíží. V kalkulačce ho pak můžeš doladit podle sebe.
           </p>
 
@@ -259,18 +309,29 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
-                whileHover={{ y: -1, boxShadow: "0 22px 55px rgba(15, 23, 42, 0.12)" }}
-                className="flex flex-col border border-kp-border-subtle bg-kp-surface p-6 rounded-card-mobile md:rounded-card shadow-card transition-all duration-220 ease-premium"
+                whileHover={{ scale: 1.01 }}
+                className="flex flex-col border"
+                style={{
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--border-subtle)',
+                  borderRadius: 'var(--radius-card-mobile)',
+                  boxShadow: 'var(--shadow-card)',
+                  padding: '24px 20px',
+                  transition: `transform var(--transition-duration) var(--transition-easing)`
+                }}
               >
-                <h3 className="text-lg font-semibold leading-tight text-kp-text-main">
+                <h4 className="text-lg font-semibold leading-tight text-[var(--text-primary)] font-uiSans">
                   {preset.title}
-                </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-kp-text-muted">
+                </h4>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
                   {preset.description}
                 </p>
                 <button
                   onClick={() => handlePresetSelect(preset.id)}
-                  className="mt-4 text-left text-sm font-medium text-kp-text-main hover:text-kp-primary hover:underline transition-colors duration-180 ease-premium"
+                  className="mt-4 text-left text-sm font-medium text-[var(--text-primary)] hover:text-[var(--text-primary)] hover:underline font-uiSans"
+                  style={{
+                    transition: `color var(--transition-duration) var(--transition-easing)`
+                  }}
                 >
                   Použít jako výchozí
                 </button>
