@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import {
   Sheet,
   SheetContent,
@@ -48,12 +49,7 @@ export function SiteHeader() {
       }}
     >
       <div className="container flex h-16 items-center justify-between md:h-20">
-        <Link
-          href="/"
-          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--color-primary)]"
-        >
-          kamspenezi.cz
-        </Link>
+        <Logo />
 
         <nav className="hidden items-center gap-8 text-body font-medium md:flex">
           {NAV_LINKS.map((item) => {
@@ -112,12 +108,7 @@ export function SiteHeader() {
               style={{ background: 'var(--bg-card)' }}
             >
               <nav className="flex flex-col gap-6 pt-16">
-                <Link
-                  href="/"
-                  className="font-displaySerif text-[1.4rem] font-semibold text-[var(--color-primary)]"
-                >
-                  kamspenezi.cz
-                </Link>
+                <Logo />
                 <div className="flex flex-col gap-5 text-[var(--color-primary)] font-uiSans">
                   <Link
                     href="/"
