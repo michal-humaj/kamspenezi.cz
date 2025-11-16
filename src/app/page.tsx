@@ -241,17 +241,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* City Presets Section */}
-      <section className="bg-[var(--bg-section-soft)] py-12 lg:py-20">
+      {/* City Presets + Results - Combined Band Section */}
+      <section className="bg-kp-bg-band py-16 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Začni podle svého města a velikosti bytu
           </h2>
-          <p className="mt-2 max-w-3xl text-base text-[var(--text-muted)] md:text-lg">
+          <p className="mt-2 max-w-3xl text-base text-kp-text-muted md:text-lg">
             Vyber si výchozí scénář, který se ti nejvíc blíží. V kalkulačce ho pak můžeš doladit podle sebe.
           </p>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {CITY_PRESETS.map((preset, index) => (
               <motion.div
                 key={preset.id}
@@ -259,24 +259,18 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
-                whileHover={{ y: -2, boxShadow: "0 22px 55px rgba(15, 23, 42, 0.10)" }}
-                className="flex flex-col border border-[var(--border-subtle)] bg-[var(--bg-card)] p-6"
-                style={{ 
-                  borderRadius: 'var(--radius-card)', 
-                  boxShadow: 'var(--shadow-card)',
-                  transition: 'var(--transition-fast)'
-                }}
+                whileHover={{ y: -1, boxShadow: "0 22px 55px rgba(15, 23, 42, 0.12)" }}
+                className="flex flex-col border border-kp-border-subtle bg-kp-surface p-6 rounded-card-mobile md:rounded-card shadow-card transition-all duration-220 ease-premium"
               >
-                <h3 className="text-lg font-semibold leading-tight text-[var(--text-main)]">
+                <h3 className="text-lg font-semibold leading-tight text-kp-text-main">
                   {preset.title}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-kp-text-muted">
                   {preset.description}
                 </p>
                 <button
                   onClick={() => handlePresetSelect(preset.id)}
-                  className="mt-4 text-left text-sm font-medium text-[var(--accent-link)] hover:underline"
-                  style={{ transition: 'var(--transition-fast)' }}
+                  className="mt-4 text-left text-sm font-medium text-kp-text-main hover:text-kp-primary hover:underline transition-colors duration-180 ease-premium"
                 >
                   Použít jako výchozí
                 </button>
@@ -284,12 +278,10 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Results section */}
-      <section className="bg-[var(--bg-section-soft)] py-12 lg:py-20">
-        <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+        {/* Results section - same band */}
+        <div className="mt-24 md:mt-32">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
             Výsledek
           </p>
           <h2 className="mt-2 text-2xl md:text-3xl">
@@ -297,20 +289,20 @@ export default function HomePage() {
           </h2>
           
           <div className="mt-6 max-w-3xl space-y-3">
-            <p className="text-base text-[var(--text-muted)] md:text-lg">
+            <p className="text-base text-kp-text-muted md:text-lg">
               Výsledek není jen jedno číslo. Uvidíš:
             </p>
-            <ul className="space-y-2.5 text-sm text-[var(--text-main)] md:text-base">
+            <ul className="space-y-2.5 text-sm text-kp-text-main md:text-base">
               <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--scenario-a-dot)]" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
                 <span>Dva sloupce nebo box ploty pro scénář vlastního bydlení a scénář nájem plus ETF</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--scenario-a-dot)]" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
                 <span>Střední odhad hodnoty majetku po třiceti letech</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--scenario-a-dot)]" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
                 <span>Pásmo, ve kterém se výsledky typicky pohybují, pokud se trh vyvíjí lépe nebo hůř</span>
               </li>
             </ul>
@@ -322,69 +314,63 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mx-auto mt-10 max-w-5xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-8"
-            style={{ 
-              borderRadius: 'var(--radius-card)', 
-              boxShadow: 'var(--shadow-card)' 
-            }}
+            className="mx-auto mt-8 md:mt-10 max-w-5xl border border-kp-border-subtle bg-kp-surface p-6 md:p-8 rounded-card-mobile md:rounded-card shadow-card"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
               Ukázkové srovnání
             </p>
             <h3 className="mt-2 font-displaySerif text-xl font-semibold md:text-2xl">
               30 let dopředu, dva scénáře
             </h3>
 
-            <div className="mt-6 grid gap-0 md:grid-cols-2 md:gap-0">
+            <div className="mt-5 md:mt-6 grid gap-0 md:grid-cols-2 md:gap-0">
               {/* Scenario A */}
-              <div className="flex h-full flex-col gap-3 p-6 md:border-r md:border-[var(--border-subtle)]">
+              <div className="flex h-full flex-col gap-3 p-4 md:p-6 md:border-r md:border-kp-border-subtle">
                 <span 
-                  className="inline-flex w-fit items-center gap-2 px-3 py-1 text-[13px] font-semibold text-[var(--accent-primary)] bg-[var(--scenario-a)]"
-                  style={{ borderRadius: 'var(--radius-pill)' }}
+                  className="inline-flex w-fit items-center gap-2 rounded-pill bg-kp-scenario-a-soft px-3 py-1 text-[13px] font-medium text-kp-text-main"
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-primary)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-kp-scenario-a" />
                   Byt na hypotéku
                 </span>
-                <div className="mt-2">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)]">
+                <div className="mt-1">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-kp-text-muted">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-[var(--text-main)] md:text-3xl">
+                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-kp-text-main md:text-3xl">
                     8,4 mil. Kč
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                  <p className="mt-3 text-sm leading-relaxed text-kp-text-muted">
                     Hodnota bytu po odečtení poplatků a zůstatku hypotéky.
                   </p>
                 </div>
               </div>
 
               {/* Scenario B */}
-              <div className="flex h-full flex-col gap-3 p-6 border-t md:border-t-0 border-[var(--border-subtle)] md:border-l-0">
+              <div className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 border-kp-border-subtle md:border-l-0">
                 <span 
-                  className="inline-flex w-fit items-center gap-2 px-3 py-1 text-[13px] font-semibold text-[var(--accent-primary)] bg-[var(--scenario-b)]"
-                  style={{ borderRadius: 'var(--radius-pill)' }}
+                  className="inline-flex w-fit items-center gap-2 rounded-pill bg-kp-scenario-b-soft px-3 py-1 text-[13px] font-medium text-kp-text-main"
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-primary)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-kp-scenario-b" />
                   Nájem + ETF
                 </span>
-                <div className="mt-2">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)]">
+                <div className="mt-1">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-kp-text-muted">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-[var(--text-main)] md:text-3xl">
+                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-kp-text-main md:text-3xl">
                     7,1 mil. Kč
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                  <p className="mt-3 text-sm leading-relaxed text-kp-text-muted">
                     Hodnota investičního portfolia z rozdílu mezi nájmem a hypotékou.
                   </p>
                 </div>
               </div>
             </div>
 
-            <p className="mt-6 px-6 text-sm leading-[1.6] text-[var(--text-muted)]">
+            <p className="mt-5 md:mt-6 px-4 md:px-6 text-sm leading-[1.6] text-kp-text-muted">
               Scénáře porovnávají stejné měsíční výdaje – rozdíl je jen v tom, kam peníze jdou.
             </p>
-            <p className="mt-2 text-xs text-[var(--text-muted)]">
+            <p className="mt-2 px-4 md:px-6 text-xs text-kp-text-muted">
               Čísla jsou ilustrativní. Přesný výsledek uvidíš po zadání svých parametrů.
             </p>
           </motion.div>
