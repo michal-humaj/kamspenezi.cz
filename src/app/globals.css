@@ -82,4 +82,29 @@
   p {
     @apply font-uiSans text-[var(--color-secondary)] text-base leading-relaxed;
   }
+
+  /* Logo Wordmark - Premium Wealthsimple-style */
+  .nav-logo span {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .nav-logo {
+    margin-right: auto !important;
+  }
+
+  @media (min-width: 768px) {
+    .nav-logo span {
+      font-size: 20px !important;
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+    }
+
+    .nav-logo {
+      margin-right: 48px !important;
+    }
+  }
 }

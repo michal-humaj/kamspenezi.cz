@@ -4,17 +4,19 @@ export function Logo() {
   return (
     <Link 
       href="/" 
-      className="inline-flex items-center hover:opacity-90 transition-opacity"
+      className="nav-logo flex items-center hover:opacity-90 transition-opacity"
+      style={{
+        height: '48px'
+      }}
     >
       <span 
-        className="font-uiSans text-slate-900 leading-none"
+        className="font-uiSans leading-none"
         style={{
-          fontSize: 'clamp(16px, 4vw, 19px)',
-          fontWeight: 600,
-          letterSpacing: '0.015em'
+          color: 'var(--color-primary)',
+          textRendering: 'optimizeLegibility'
         }}
       >
-        kamspenezi<span style={{ opacity: 0.75 }}>.cz</span>
+        kamspenezi.cz
       </span>
     </Link>
   );
