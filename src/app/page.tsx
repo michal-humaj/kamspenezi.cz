@@ -339,9 +339,11 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Results section - same band */}
-        <div className="mx-auto w-full max-w-6xl px-4 lg:px-8 mt-24 md:mt-32">
+      {/* Results Section */}
+      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
+        <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
             Výsledek
           </p>
