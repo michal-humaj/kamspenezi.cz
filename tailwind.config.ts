@@ -113,7 +113,6 @@ const config = {
             lineHeight: "1.4",
             fontWeight: "500",
             letterSpacing: "0.04em",
-            textTransform: "uppercase",
           },
         ],
       },
