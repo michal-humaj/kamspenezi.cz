@@ -165,7 +165,6 @@ export default function HomePage() {
                 {/* Desktop: side by side */}
                 <div className="hidden sm:flex items-center gap-4">
                   <Button 
-                    size="lg" 
                     asChild 
                     className="font-uiSans transition-all"
                     style={{ 
@@ -193,9 +192,8 @@ export default function HomePage() {
                 {/* Mobile: stacked with ghost secondary */}
                 <div className="flex sm:hidden flex-col gap-3">
                   <Button 
-                    size="lg" 
                     asChild 
-                    className="w-full h-14 font-uiSans text-base"
+                    className="w-full font-uiSans"
                     style={{ 
                       background: 'var(--cta-primary-bg)',
                       color: 'var(--cta-primary-text)',
@@ -206,10 +204,9 @@ export default function HomePage() {
                   </Button>
                   
                   <Button
-                    size="lg"
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="w-full h-14 bg-[var(--bg-card)] text-[var(--text-primary)] font-uiSans"
+                    className="w-full bg-[var(--bg-card)] text-[var(--text-primary)] font-uiSans"
                     style={{ 
                       border: '1px solid var(--border-subtle)',
                       borderRadius: 'var(--radius-pill)',
