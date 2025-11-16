@@ -364,18 +364,13 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            whileHover={{ scale: 1.01 }}
-            className="mx-auto mt-8 md:mt-10 max-w-5xl border"
-            style={{
-              background: 'var(--bg-card)',
-              borderColor: 'var(--border-subtle)',
-              borderRadius: 'var(--radius-card)',
-              boxShadow: 'var(--shadow-card)',
-              padding: 'var(--card-padding)',
-              transition: `transform var(--transition-duration) var(--transition-easing)`
+            whileHover={{ 
+              y: -2,
+              transition: { duration: 0.2, ease: "easeOut" }
             }}
+            className="mx-auto mt-8 md:mt-10 max-w-5xl rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
               Ukázkové srovnání
             </p>
             <h3 className="mt-2 text-xl font-semibold md:text-2xl font-uiSans">
@@ -386,17 +381,17 @@ export default function HomePage() {
               {/* Scenario A */}
               <div className="flex h-full flex-col gap-3 p-4 md:p-6">
                 <span 
-                  className="inline-flex w-fit items-center gap-2 font-medium text-[13px] md:text-[14px] font-uiSans"
+                  className="inline-flex w-fit items-center gap-1.5 font-medium text-xs font-uiSans"
                   style={{
                     background: 'var(--scenario-a-bg)',
-                    color: 'var(--scenario-a-text)',
+                    color: 'var(--scenario-a-dot)',
                     borderRadius: 'var(--radius-pill)',
-                    padding: '4px 10px'
+                    padding: '3px 8px'
                   }}
                 >
                   <span 
                     className="h-1.5 w-1.5 rounded-full" 
-                    style={{ background: 'var(--scenario-a-text)' }}
+                    style={{ background: 'var(--scenario-a-dot)' }}
                   />
                   Byt na hypotéku
                 </span>
@@ -415,24 +410,20 @@ export default function HomePage() {
 
               {/* Scenario B */}
               <div 
-                className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 md:border-l"
-                style={{ 
-                  borderTopColor: 'var(--border-soft)',
-                  borderLeftColor: 'var(--border-soft)'
-                }}
+                className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 md:border-l border-[#EDEEF3]"
               >
                 <span 
-                  className="inline-flex w-fit items-center gap-2 font-medium text-[13px] md:text-[14px] font-uiSans"
+                  className="inline-flex w-fit items-center gap-1.5 font-medium text-xs font-uiSans"
                   style={{
                     background: 'var(--scenario-b-bg)',
-                    color: 'var(--scenario-b-text)',
+                    color: 'var(--scenario-b-dot)',
                     borderRadius: 'var(--radius-pill)',
-                    padding: '4px 10px'
+                    padding: '3px 8px'
                   }}
                 >
                   <span 
                     className="h-1.5 w-1.5 rounded-full" 
-                    style={{ background: 'var(--scenario-b-text)' }}
+                    style={{ background: 'var(--scenario-b-dot)' }}
                   />
                   Nájem + ETF
                 </span>
@@ -481,8 +472,8 @@ export default function HomePage() {
               </h4>
               <ul className="mt-4 space-y-4">
                 {MYTH_LIST.map((myth) => (
-                  <li key={myth} className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base font-uiSans">
-                    <span className="shrink-0 mt-1 text-[var(--text-muted)] text-lg">×</span>
+                  <li key={myth} className="flex items-start gap-2.5 text-base leading-relaxed text-[#4B5563] font-uiSans">
+                    <span className="shrink-0 mt-1 text-[#6B7280] text-lg">×</span>
                     <span>{myth}</span>
                   </li>
                 ))}
@@ -491,15 +482,15 @@ export default function HomePage() {
 
             {/* Reality column */}
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-primary)] font-uiSans">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-[#0F172A] font-uiSans">
                 Realita
               </h4>
               <ul className="mt-4 space-y-4">
                 {REALITY_LIST.map((reality) => (
-                  <li key={reality} className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--text-primary)] md:text-base font-uiSans">
+                  <li key={reality} className="flex items-start gap-2.5 text-base leading-relaxed text-[#0F172A] font-uiSans">
                     <span 
                       className="shrink-0 mt-1.5 h-1.5 w-1.5 rounded-full" 
-                      style={{ background: 'var(--accent-bullet)' }}
+                      style={{ background: 'var(--color-bullet)' }}
                     />
                     <span>{reality}</span>
                   </li>
@@ -531,30 +522,25 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                whileHover={{ scale: 1.01 }}
-                className="border"
-                style={{
-                  background: 'var(--bg-card)',
-                  borderColor: 'var(--border-subtle)',
-                  borderRadius: 'var(--radius-card)',
-                  boxShadow: 'var(--shadow-card)',
-                  padding: 'var(--card-padding)',
-                  transition: `transform var(--transition-duration) var(--transition-easing)`
+                whileHover={{ 
+                  y: -2,
+                  transition: { duration: 0.2, ease: "easeOut" }
                 }}
+                className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
               >
                 <span 
-                  className="inline-flex items-center gap-2 font-medium text-[13px] md:text-[14px] font-uiSans"
+                  className="inline-flex items-center gap-1.5 font-medium text-xs font-uiSans"
                   style={{
                     background: scenario.id === "A" ? 'var(--scenario-a-bg)' : 'var(--scenario-b-bg)',
-                    color: scenario.id === "A" ? 'var(--scenario-a-text)' : 'var(--scenario-b-text)',
+                    color: scenario.id === "A" ? 'var(--scenario-a-dot)' : 'var(--scenario-b-dot)',
                     borderRadius: 'var(--radius-pill)',
-                    padding: '4px 10px'
+                    padding: '3px 8px'
                   }}
                 >
                   <span 
                     className="h-1.5 w-1.5 rounded-full"
                     style={{
-                      background: scenario.id === "A" ? 'var(--scenario-a-text)' : 'var(--scenario-b-text)'
+                      background: scenario.id === "A" ? 'var(--scenario-a-dot)' : 'var(--scenario-b-dot)'
                     }}
                   />
                   {scenario.badge}
@@ -564,10 +550,10 @@ export default function HomePage() {
                 </h3>
                 <ul className="mt-4 space-y-2.5">
                   {scenario.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                    <li key={bullet} className="flex items-start gap-2.5 text-base leading-relaxed text-[#4B5563] font-uiSans">
                       <span 
-                        className="mt-2 h-1 w-1 shrink-0 rounded-full" 
-                        style={{ background: 'var(--accent-neutral)' }}
+                        className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                        style={{ background: 'var(--color-bullet)' }}
                       />
                       <span>{bullet}</span>
                     </li>
@@ -594,10 +580,10 @@ export default function HomePage() {
               </p>
               
               <ul className="space-y-3">
-                <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                <li className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
                   <span 
                     className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
-                    style={{ background: 'var(--accent-bullet)' }}
+                    style={{ background: 'var(--color-bullet)' }}
                   />
                   <span>
                     <a
@@ -613,25 +599,25 @@ export default function HomePage() {
                     </a>
                   </span>
                 </li>
-                <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                <li className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
                   <span 
                     className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
-                    style={{ background: 'var(--accent-bullet)' }}
+                    style={{ background: 'var(--color-bullet)' }}
                   />
                   <span>Popis vstupních dat a zdrojů</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                <li className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
                   <span 
                     className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
-                    style={{ background: 'var(--accent-bullet)' }}
+                    style={{ background: 'var(--color-bullet)' }}
                   />
-                  <span>Možnost změnit parametry a spočítat si vlastní scénáře</span>
+                  <span>Možnost změnit parametry a spočítat si vlastní scénář</span>
                 </li>
               </ul>
 
               <Button 
                 asChild 
-                className="mt-6 rounded-full bg-white border border-[#E0E3EC] text-[var(--text-primary)] font-uiSans text-base font-medium px-6 py-3 transition-all duration-150 ease-out hover:bg-[#F4F5FB] hover:border-[#CBD0E5] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
+                className="mt-6 rounded-full border border-[#D1D5DB] bg-white text-[#0F172A] text-base font-medium px-8 py-4 transition-all duration-150 ease-out hover:border-[#B5BAC6] hover:bg-[#F8FAFC] hover:shadow-[0_2px_10px_rgba(15,23,42,0.10)] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
               >
                 <a
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
@@ -644,23 +630,14 @@ export default function HomePage() {
             </div>
 
             {/* Right: Author card */}
-            <div 
-              className="border"
-              style={{
-                background: 'var(--bg-card)',
-                borderColor: 'var(--border-subtle)',
-                borderRadius: 'var(--radius-card)',
-                boxShadow: 'var(--shadow-card)',
-                padding: 'var(--card-padding)'
-              }}
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
+            <div className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
                 Kdo za kalkulačkou stojí
               </p>
               
               <div className="mt-6 flex items-start gap-4">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full">
-            <Image
+                  <Image
                     src="/michal.jpeg"
                     alt="Michal Humaj"
                     width={64}
@@ -670,11 +647,11 @@ export default function HomePage() {
                 </div>
                 
                 <div>
-                  <p className="font-semibold text-[var(--text-primary)] font-uiSans">Michal Humaj</p>
-                  <p className="mt-1 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
+                  <p className="font-semibold text-[#0F172A] font-uiSans">Michal Humaj</p>
+                  <p className="mt-1 text-base leading-relaxed text-[#4B5563] font-uiSans">
                     Produktový manažer a investor, který řeší stejné otázky jako ty.
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
+                  <p className="mt-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
                     Kalkulačku jsem postavil hlavně pro sebe, abych porovnal vlastní bydlení s nájmem a investicemi. Neprodávám hypotéky ani investiční produkty.
                   </p>
                 </div>
