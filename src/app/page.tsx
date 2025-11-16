@@ -232,7 +232,7 @@ export default function HomePage() {
                 {HERO_BULLETS.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <span 
-                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                      className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                       style={{ background: 'var(--color-bullet)' }}
                       aria-hidden 
                     />
@@ -357,21 +357,21 @@ export default function HomePage() {
             <ul className="space-y-2.5 text-base text-[#4B5563] font-uiSans leading-relaxed">
               <li className="flex items-start gap-3">
                 <span 
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                  className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                   style={{ background: 'var(--color-bullet)' }}
                 />
                 <span>Dva sloupce nebo box ploty pro scénář vlastního bydlení a scénář nájem plus ETF</span>
               </li>
               <li className="flex items-start gap-3">
                 <span 
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                  className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                   style={{ background: 'var(--color-bullet)' }}
                 />
                 <span>Střední odhad hodnoty majetku po třiceti letech</span>
               </li>
               <li className="flex items-start gap-3">
                 <span 
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                  className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                   style={{ background: 'var(--accent-bullet)' }}
                 />
                 <span>Pásmo, ve kterém se výsledky typicky pohybují, pokud se trh vyvíjí lépe nebo hůř</span>
@@ -494,7 +494,7 @@ export default function HomePage() {
               <ul className="mt-4 space-y-4">
                 {MYTH_LIST.map((myth) => (
                   <li key={myth} className="flex items-start gap-2.5 text-base leading-relaxed text-[#4B5563] font-uiSans">
-                    <span className="shrink-0 mt-1.5 text-[#6B7280] text-base leading-none">×</span>
+                    <span className="shrink-0 mt-[0.5em] text-[#6B7280] text-base leading-none">×</span>
                     <span>{myth}</span>
                   </li>
                 ))}
@@ -510,7 +510,7 @@ export default function HomePage() {
                 {REALITY_LIST.map((reality) => (
                   <li key={reality} className="flex items-start gap-2.5 text-base leading-relaxed text-[#0F172A] font-uiSans">
                     <span 
-                      className="shrink-0 mt-1.5 h-1.5 w-1.5 rounded-full" 
+                      className="shrink-0 mt-[0.5em] h-1.5 w-1.5 rounded-full" 
                       style={{ background: 'var(--color-bullet)' }}
                     />
                     <span>{reality}</span>
@@ -573,7 +573,7 @@ export default function HomePage() {
                   {scenario.bullets.map((bullet) => (
                     <li key={bullet} className="flex items-start gap-2.5 text-base leading-relaxed text-[#4B5563] font-uiSans">
                       <span 
-                        className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                        className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                         style={{ background: 'var(--color-bullet)' }}
                       />
                       <span>{bullet}</span>
@@ -603,7 +603,7 @@ export default function HomePage() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
                   <span 
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                    className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                     style={{ background: 'var(--color-bullet)' }}
                   />
                   <span>
@@ -622,14 +622,14 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
                   <span 
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                    className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                     style={{ background: 'var(--color-bullet)' }}
                   />
                   <span>Popis vstupních dat a zdrojů</span>
                 </li>
                 <li className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
                   <span 
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                    className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
                     style={{ background: 'var(--color-bullet)' }}
                   />
                   <span>Možnost změnit parametry a spočítat si vlastní scénář</span>
