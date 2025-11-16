@@ -9,28 +9,49 @@
 }
 
 :root {
-  /* Section Backgrounds - Strict alternation */
-  --bg-base: #F9FAFB;          /* Almost white, slightly warm/neutral */
-  --bg-alt: #F4F5FB;           /* Soft analytic lilac */
-  --bg-card: #ffffff;          /* Pure white for all cards */
+  /* Section Backgrounds */
+  --bg-base: #F9FAFB;           /* Base light background */
+  --bg-lilac-section: #F4F5FB;  /* Soft analytic lilac sections */
+  --bg-card: #ffffff;           /* Pure white for all cards */
 
-  /* Color System - Locked tokens */
-  --color-primary: #0F172A;    /* Main navy/ink */
-  --color-secondary: #6B7280;  /* Secondary text */
-  --color-border: #EDEEF3;     /* Card borders */
-  --color-bullet: #9CA3AF;     /* Generic bullets */
+  /* Text Colors */
+  --color-primary: #0F172A;     /* Main navy/ink */
+  --color-primary-hover: #1A2433; /* Primary navy hover (8% lighter) */
+  --color-secondary: #6B7280;   /* Secondary text */
+  --color-border: #EDEEF3;      /* Card borders */
+  --color-border-hover: #D8DBE5; /* Border hover state */
+  --color-bullet: #9CA3AF;      /* Generic bullets */
 
   /* Scenario Colors */
-  --scenario-a-bg: #F7EAD9;    /* Soft terracotta background */
-  --scenario-a-dot: #C98D4E;   /* Terracotta dot */
-  --scenario-b-bg: #EAE7FF;    /* Soft lilac background */
-  --scenario-b-dot: #7D5AE2;   /* Purple dot */
+  --scenario-a-bg: #F7EAD9;     /* Soft terracotta background */
+  --scenario-a-dot: #C98D4E;    /* Terracotta dot */
+  --scenario-b-bg: #EAE7FF;     /* Soft lilac background */
+  --scenario-b-dot: #7D5AE2;    /* Purple dot */
+
+  /* Button System */
+  --btn-primary-bg: #0F172A;
+  --btn-primary-hover-bg: #1A2433;
+  --btn-primary-text: #ffffff;
+  --btn-primary-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+  --btn-primary-shadow-hover: 0 6px 20px rgba(15, 23, 42, 0.22);
+  
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-border: #EDEEF3;
+  --btn-secondary-border-hover: #CBD0E5;
+  --btn-secondary-hover-bg: rgba(15, 23, 42, 0.02);
+  --btn-secondary-text: #0F172A;
+  
+  --btn-focus-ring: #7D5AE2;    /* Lilac focus ring */
 
   /* Card System */
   --shadow-card: 0 8px 28px rgba(15, 23, 42, 0.06);
   --shadow-card-hover: 0 12px 32px rgba(15, 23, 42, 0.10);
-  --radius-card: 24px;         /* rounded-3xl */
-  --radius-pill: 999px;        /* rounded-full */
+  --radius-card: 24px;          /* All cards */
+  --radius-pill: 999px;         /* Buttons and pills */
+
+  /* Section Spacing */
+  --section-padding-y-desktop: 96px;
+  --section-padding-y-mobile: 64px;
 
   /* Motion */
   --transition-duration: 200ms;

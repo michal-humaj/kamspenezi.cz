@@ -129,7 +129,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--bg-base)] py-16 md:py-24">
+      <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -166,7 +166,19 @@ export default function HomePage() {
                 <div className="hidden sm:flex items-center gap-6">
                   <Button 
                     asChild 
-                    className="rounded-full bg-[#0F172A] text-white text-base md:text-lg font-semibold px-8 py-4 shadow-[0_4px_12px_rgba(15,23,42,0.18)] transition-all duration-150 ease-out hover:bg-[#1A2433] hover:shadow-[0_6px_18px_rgba(15,23,42,0.26)] hover:-translate-y-[1px] active:translate-y-0 active:shadow-[0_3px_8px_rgba(15,23,42,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
+                    className="h-[52px] rounded-full text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={{
+                      background: 'var(--btn-primary-bg)',
+                      boxShadow: 'var(--btn-primary-shadow)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--btn-primary-hover-bg)';
+                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'var(--btn-primary-bg)';
+                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
+                    }}
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                   </Button>
@@ -174,9 +186,25 @@ export default function HomePage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="rounded-full border border-[#D1D5DB] bg-white text-[#0F172A] text-base md:text-lg font-medium px-8 py-4 transition-all duration-150 ease-out hover:border-[#B5BAC6] hover:bg-[#F8FAFC] hover:shadow-[0_2px_10px_rgba(15,23,42,0.10)] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
+                    className="h-[48px] rounded-full text-[15px] font-medium px-5 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={{
+                      background: 'var(--btn-secondary-bg)',
+                      border: '1px solid var(--btn-secondary-border)',
+                      color: 'var(--btn-secondary-text)',
+                      boxShadow: 'var(--shadow-card)'
+                    }}
                   >
-                    <button onClick={() => scrollToSection("transparentnost")}>
+                    <button 
+                      onClick={() => scrollToSection("transparentnost")}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-hover-bg)';
+                        e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border-hover)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-bg)';
+                        e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border)';
+                      }}
+                    >
                       Zjistit, jak výpočet funguje
                     </button>
                   </Button>
@@ -186,7 +214,11 @@ export default function HomePage() {
                 <div className="flex sm:hidden flex-col">
                   <Button 
                     asChild 
-                    className="w-full rounded-full bg-[#0F172A] text-white text-base font-semibold px-8 py-4 shadow-[0_4px_12px_rgba(15,23,42,0.18)] transition-all duration-150 ease-out active:bg-[#1A2433] active:shadow-[0_6px_18px_rgba(15,23,42,0.26)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
+                    className="w-full h-[52px] rounded-full text-white text-[15px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={{
+                      background: 'var(--btn-primary-bg)',
+                      boxShadow: 'var(--btn-primary-shadow)'
+                    }}
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                   </Button>
@@ -194,7 +226,13 @@ export default function HomePage() {
                   <Button
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="mt-4 w-full rounded-full border border-[#D1D5DB] bg-white text-[#0F172A] text-base font-medium px-8 py-4 transition-all duration-150 ease-out hover:border-[#B5BAC6] hover:bg-[#F8FAFC] hover:shadow-[0_2px_10px_rgba(15,23,42,0.10)] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
+                    className="mt-4 w-full h-[48px] rounded-full text-[14px] font-medium px-5 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={{
+                      background: 'var(--btn-secondary-bg)',
+                      border: '1px solid var(--btn-secondary-border)',
+                      color: 'var(--btn-secondary-text)',
+                      boxShadow: 'var(--shadow-card)'
+                    }}
                   >
                     Zjistit, jak výpočet funguje
                   </Button>
@@ -272,7 +310,7 @@ export default function HomePage() {
       </section>
 
       {/* City Presets Section */}
-      <section className="bg-[var(--bg-alt)] py-16 md:py-24">
+      <section className="bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
             Začni podle města
@@ -320,7 +358,7 @@ export default function HomePage() {
       </section>
 
       {/* Results Section */}
-      <section className="bg-[var(--bg-base)] py-16 md:py-24">
+      <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
             Výsledek
@@ -381,7 +419,7 @@ export default function HomePage() {
               {/* Scenario A */}
               <div className="flex h-full flex-col gap-3 p-4 md:p-6">
                 <span 
-                  className="inline-flex w-fit items-center gap-1.5 font-medium text-xs font-uiSans"
+                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[13px] font-uiSans"
                   style={{
                     background: 'var(--scenario-a-bg)',
                     color: 'var(--scenario-a-dot)',
@@ -413,7 +451,7 @@ export default function HomePage() {
                 className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 md:border-l border-[#EDEEF3]"
               >
                 <span 
-                  className="inline-flex w-fit items-center gap-1.5 font-medium text-xs font-uiSans"
+                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[13px] font-uiSans"
                   style={{
                     background: 'var(--scenario-b-bg)',
                     color: 'var(--scenario-b-dot)',
@@ -452,7 +490,7 @@ export default function HomePage() {
       </section>
 
       {/* Myth vs Reality */}
-      <section className="bg-[var(--bg-alt)] py-16 md:py-24">
+      <section className="bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
             Mýty o nájmu
@@ -502,7 +540,7 @@ export default function HomePage() {
       </section>
 
       {/* Scenarios section */}
-      <section className="bg-[var(--bg-base)] py-16 md:py-24">
+      <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
             Dvě cesty
@@ -529,7 +567,7 @@ export default function HomePage() {
                 className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
               >
                 <span 
-                  className="inline-flex items-center gap-1.5 font-medium text-xs font-uiSans"
+                  className="inline-flex items-center gap-1.5 font-medium text-[13px] font-uiSans"
                   style={{
                     background: scenario.id === "A" ? 'var(--scenario-a-bg)' : 'var(--scenario-b-bg)',
                     color: scenario.id === "A" ? 'var(--scenario-a-dot)' : 'var(--scenario-b-dot)',
@@ -566,7 +604,7 @@ export default function HomePage() {
       </section>
 
       {/* Transparency section */}
-      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-alt)] py-16 md:py-24">
+      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Transparentní výpočet, žádná tajemství
@@ -617,13 +655,27 @@ export default function HomePage() {
 
               <Button 
                 asChild 
-                className="mt-6 rounded-full border border-[#D1D5DB] bg-white text-[#0F172A] text-base font-medium px-8 py-4 transition-all duration-150 ease-out hover:border-[#B5BAC6] hover:bg-[#F8FAFC] hover:shadow-[0_2px_10px_rgba(15,23,42,0.10)] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
+                className="mt-6 h-[44px] rounded-full text-[14px] font-medium px-5 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                style={{
+                  background: 'var(--btn-secondary-bg)',
+                  border: '1px solid var(--btn-secondary-border)',
+                  color: 'var(--btn-secondary-text)',
+                  boxShadow: 'var(--shadow-card)'
+                }}
               >
                 <a
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-hover-bg)';
+                    e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border-hover)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-bg)';
+                    e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border)';
+                  }}
+                >
                   Otevřít metodiku v Google Sheets
                 </a>
               </Button>
@@ -662,7 +714,7 @@ export default function HomePage() {
       </section>
 
       {/* What calculator doesn't solve */}
-      <section className="bg-[var(--bg-base)] py-16 md:py-24">
+      <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <div className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-8 md:p-10">
             <h3 className="text-xl font-semibold md:text-2xl">
@@ -684,7 +736,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[var(--bg-alt)] py-16 md:py-24">
+      <section className="bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
@@ -698,14 +750,32 @@ export default function HomePage() {
               <AccordionItem
                 key={faq.question}
                 value={faq.question}
-                className="rounded-2xl bg-white border border-[#E4E7EF] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-5 md:p-6 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)] hover:border-[#D8DBE5] font-uiSans"
+                className="rounded-2xl p-5 md:p-6 transition-all duration-200 ease-out font-uiSans cursor-pointer"
+                style={{
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: 'var(--shadow-card)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--btn-secondary-hover-bg)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--bg-card)';
+                }}
               >
                 <AccordionTrigger 
-                  className="text-left text-base font-medium text-[#0F172A] hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-[#4A4FFF]"
+                  className="text-left text-base font-medium hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0"
+                  style={{
+                    color: 'var(--color-primary)',
+                    '--tw-ring-color': 'var(--btn-focus-ring)'
+                  } as React.CSSProperties}
                 >
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-base text-[#4B5563] leading-relaxed">
+                <AccordionContent 
+                  className="text-base leading-relaxed"
+                  style={{ color: 'var(--color-secondary)' }}
+                >
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
