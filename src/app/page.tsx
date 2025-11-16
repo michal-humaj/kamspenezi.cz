@@ -164,26 +164,26 @@ export default function HomePage() {
               <div className="mt-6">
                 {/* Desktop: side by side */}
                 <div className="hidden sm:flex items-center gap-6">
-                  <Button 
-                    asChild 
-                    className="h-[52px] rounded-full text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+                  <Link 
+                    href="/bydleni-kalkulacka"
+                    className="inline-flex items-center justify-center h-[52px] rounded-full bg-[var(--btn-primary-bg)] hover:bg-[var(--btn-primary-hover-bg)] text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
-                      background: 'var(--btn-primary-bg)',
                       boxShadow: 'var(--btn-primary-shadow)'
                     }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
+                    }}
                   >
-                    <Link 
-                      href="/bydleni-kalkulacka"
-                      className="flex items-center justify-center hover:bg-[var(--btn-primary-hover-bg)] hover:shadow-[var(--btn-primary-shadow-hover)]"
-                    >
-                      Spočítat moje bydlení
-                    </Link>
-                  </Button>
+                    Spočítat moje bydlení
+                  </Link>
                   
                   <Button
                     onClick={() => scrollToSection("transparentnost")}
                     variant="outline"
-                    className="h-[52px] rounded-full bg-white text-[15px] font-medium px-6 transition-all duration-200 ease-out border hover:bg-[rgba(15,23,42,0.02)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+                    className="h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[15px] font-medium px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
                       borderColor: 'var(--btn-secondary-border)',
                       color: 'var(--btn-secondary-text)',
@@ -196,21 +196,26 @@ export default function HomePage() {
 
                 {/* Mobile: stacked with ghost secondary */}
                 <div className="flex sm:hidden flex-col">
-                  <Button 
-                    asChild 
-                    className="w-full h-[52px] rounded-full text-white text-[15px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+                  <Link 
+                    href="/bydleni-kalkulacka"
+                    className="inline-flex items-center justify-center w-full h-[52px] rounded-full bg-[var(--btn-primary-bg)] hover:bg-[var(--btn-primary-hover-bg)] text-white text-[15px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
-                      background: 'var(--btn-primary-bg)',
                       boxShadow: 'var(--btn-primary-shadow)'
                     }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
+                    }}
                   >
-                    <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
-                  </Button>
+                    Spočítat moje bydlení
+                  </Link>
                   
                   <Button
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="mt-4 w-full h-[52px] rounded-full bg-white text-[14px] font-medium px-6 transition-all duration-200 ease-out border hover:bg-[rgba(15,23,42,0.02)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+                    className="mt-4 w-full h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[14px] font-medium px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
                       borderColor: 'var(--btn-secondary-border)',
                       color: 'var(--btn-secondary-text)',
