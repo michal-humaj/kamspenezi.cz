@@ -259,10 +259,10 @@ export default function HomePage() {
                     <rect x="17" y="5" width="4" height="16" rx="1" />
                   </svg>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-[var(--text-primary)] font-uiSans">
+                <h3 className="mt-6 text-xl font-semibold text-[var(--color-primary)] font-uiSans">
                   Vizualizace výsledků tvého bydlení
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
+                <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
                   Později sem doplníme prémiovou ilustraci s výsledkem kalkulačky.
                 </p>
               </div>
@@ -280,7 +280,7 @@ export default function HomePage() {
           <h2 className="mt-2 text-2xl md:text-3xl">
             Začni podle svého města a velikosti bytu
           </h2>
-          <p className="mt-2 max-w-3xl text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
+          <p className="mt-2 max-w-3xl text-base text-[var(--color-secondary)] md:text-lg font-uiSans">
             Vyber si výchozí scénář, který se ti nejvíc blíží. V kalkulačce ho pak můžeš doladit podle sebe.
           </p>
 
@@ -298,15 +298,15 @@ export default function HomePage() {
                 }}
                 className="flex flex-col rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
               >
-                <h4 className="text-lg font-semibold leading-tight text-[var(--text-primary)] font-uiSans">
+                <h4 className="text-lg font-semibold leading-tight text-[var(--color-primary)] font-uiSans">
                   {preset.title}
                 </h4>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
                   {preset.description}
                 </p>
                 <button
                   onClick={() => handlePresetSelect(preset.id)}
-                  className="mt-4 text-left text-sm font-medium text-[var(--text-primary)] hover:text-[var(--text-primary)] hover:underline font-uiSans"
+                  className="mt-4 text-left text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary)] hover:underline font-uiSans"
                   style={{
                     transition: `color var(--transition-duration) var(--transition-easing)`
                   }}
@@ -330,7 +330,7 @@ export default function HomePage() {
           </h2>
           
           <div className="mt-6 max-w-3xl space-y-3">
-            <p className="text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
+            <p className="text-base text-[var(--color-secondary)] md:text-lg font-uiSans">
               Výsledek není jen jedno číslo. Uvidíš:
             </p>
             <ul className="space-y-2.5 text-base text-[#4B5563] font-uiSans leading-relaxed">
@@ -396,13 +396,13 @@ export default function HomePage() {
                   Byt na hypotéku
                 </span>
                 <div className="mt-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)] font-uiSans">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-[#9CA3AF] font-uiSans">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--text-primary)] font-displaySerif">
+                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--color-primary)] font-displaySerif">
                     8,4 mil. Kč
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
                     Hodnota bytu po odečtení poplatků a zůstatku hypotéky.
                   </p>
                 </div>
@@ -428,23 +428,23 @@ export default function HomePage() {
                   Nájem + ETF
                 </span>
                 <div className="mt-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)] font-uiSans">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-[#9CA3AF] font-uiSans">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--text-primary)] font-displaySerif">
+                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--color-primary)] font-displaySerif">
                     7,1 mil. Kč
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
                     Hodnota investičního portfolia z rozdílu mezi nájmem a hypotékou.
                   </p>
                 </div>
               </div>
             </div>
 
-            <p className="mt-5 md:mt-6 px-4 md:px-6 text-sm leading-[1.6] text-[var(--text-secondary)] font-uiSans">
+            <p className="mt-5 md:mt-6 px-4 md:px-6 text-sm leading-[1.6] text-[var(--color-secondary)] font-uiSans">
               Scénáře porovnávají stejné měsíční výdaje – rozdíl je jen v tom, kam peníze jdou.
             </p>
-            <p className="mt-2 px-4 md:px-6 text-xs text-[var(--text-muted)] font-uiSans">
+            <p className="mt-2 px-4 md:px-6 text-xs text-[#9CA3AF] font-uiSans">
               Čísla jsou ilustrativní. Přesný výsledek uvidíš po zadání svých parametrů.
             </p>
           </motion.div>
@@ -460,14 +460,14 @@ export default function HomePage() {
           <h2 className="mt-2 text-2xl md:text-3xl">
             Nájem není vyhazování peněz z okna
           </h2>
-          <p className="mt-3 text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
+          <p className="mt-3 text-base text-[var(--color-secondary)] md:text-lg font-uiSans">
             Pokud peníze navíc pracují
           </p>
 
           <div className="mt-10 grid gap-10 md:grid-cols-2 md:items-start">
             {/* Myth column */}
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)] font-uiSans">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-[#9CA3AF] font-uiSans">
                 Mýtus
               </h4>
               <ul className="mt-4 space-y-4">
@@ -510,7 +510,7 @@ export default function HomePage() {
           <h2 className="mt-2 text-2xl md:text-3xl">
             Co přesně kalkulačka porovnává
           </h2>
-          <p className="mt-3 max-w-3xl text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
+          <p className="mt-3 max-w-3xl text-base text-[var(--color-secondary)] md:text-lg font-uiSans">
             Stejný měsíční rozpočet. Jiný výsledek po třiceti letech.
           </p>
 
@@ -575,7 +575,7 @@ export default function HomePage() {
           <div className="mt-10 grid gap-10 lg:grid-cols-2">
             {/* Left: Methodology */}
             <div className="space-y-6">
-              <p className="text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
+              <p className="text-base text-[var(--color-secondary)] md:text-lg font-uiSans">
                 Nejsme banka ani prodejce hypoték. Kalkulačku jsme postavili tak, aby si každý mohl výpočty zkontrolovat a upravit podle sebe.
               </p>
               
@@ -590,7 +590,7 @@ export default function HomePage() {
                       href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline underline-offset-2 text-[var(--text-primary)] hover:text-[var(--text-primary)] font-uiSans"
+                      className="underline underline-offset-2 text-[var(--color-primary)] hover:text-[var(--color-primary)] font-uiSans"
                       style={{
                         transition: `color var(--transition-duration) var(--transition-easing)`
                       }}
@@ -684,12 +684,12 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[var(--bg-base)] py-16 md:py-24">
+      <section className="bg-[var(--bg-alt)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
           </h2>
-          <p className="mt-3 text-sm text-[var(--text-secondary)] md:text-base font-uiSans">
+          <p className="mt-3 text-sm text-[var(--color-secondary)] md:text-base font-uiSans">
             Shrnujeme odpovědi na otázky, které slyšíme nejčastěji. Pokud hledáš detailnější metodiku, otevři veřejný Google Sheet.
           </p>
 
@@ -722,10 +722,10 @@ export default function HomePage() {
         }}
       >
         <div className="mx-auto w-full max-w-6xl px-4 text-center lg:px-8">
-          <p className="text-sm text-[var(--text-secondary)] font-uiSans">
+          <p className="text-sm text-[var(--color-secondary)] font-uiSans">
             © {new Date().getFullYear()} kamspenezi.cz
           </p>
-          <p className="mt-2 text-xs text-[var(--text-muted)] font-uiSans">
+          <p className="mt-2 text-xs text-[#9CA3AF] font-uiSans">
             Nejedná se o investiční ani hypoteční poradenství. Používej vlastní rozum a případně se poraď s odborníkem.
           </p>
           <p className="mt-4">
@@ -733,7 +733,7 @@ export default function HomePage() {
               href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
-              className="text-xs text-[var(--text-primary)] underline underline-offset-4 hover:text-[var(--text-primary)] font-uiSans"
+              className="text-xs text-[var(--color-primary)] underline underline-offset-4 hover:text-[var(--color-primary)] font-uiSans"
               style={{
                 transition: `color var(--transition-duration) var(--transition-easing)`
               }}

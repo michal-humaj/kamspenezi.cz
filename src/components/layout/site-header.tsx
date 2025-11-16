@@ -50,7 +50,7 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center justify-between md:h-20">
         <Link
           href="/"
-          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--text-primary)]"
+          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--color-primary)]"
         >
           kamspenezi.cz
         </Link>
@@ -65,8 +65,8 @@ export function SiteHeader() {
                 className={cn(
                   "relative pb-1 font-uiSans",
                   isActive 
-                    ? "text-[var(--text-primary)] font-semibold" 
-                    : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                    ? "text-[var(--color-primary)] font-semibold" 
+                    : "text-[var(--color-secondary)] hover:text-[var(--color-primary)]"
                 )}
                 style={{
                   transition: `color var(--transition-duration) var(--transition-easing)`
@@ -77,7 +77,7 @@ export function SiteHeader() {
                 {isActive && (
                   <span 
                     className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
-                    style={{ background: 'var(--text-primary)' }}
+                    style={{ background: 'var(--color-primary)' }}
                   />
                 )}
               </Link>
@@ -99,7 +99,7 @@ export function SiteHeader() {
                 style={{
                   borderRadius: 'var(--radius-pill)',
                   borderColor: 'var(--border-subtle)',
-                  color: 'var(--text-primary)'
+                  color: 'var(--color-primary)'
                 }}
                 aria-label="Otevřít navigaci"
               >
@@ -114,18 +114,18 @@ export function SiteHeader() {
               <nav className="flex flex-col gap-6 pt-16">
                 <Link
                   href="/"
-                  className="font-displaySerif text-[1.4rem] font-semibold text-[var(--text-primary)]"
+                  className="font-displaySerif text-[1.4rem] font-semibold text-[var(--color-primary)]"
                 >
                   kamspenezi.cz
                 </Link>
-                <div className="flex flex-col gap-5 text-[var(--text-primary)] font-uiSans">
+                <div className="flex flex-col gap-5 text-[var(--color-primary)] font-uiSans">
                   <Link
                     href="/"
                     className={cn(
                       "text-[1.3rem] font-semibold",
                       pathname === "/" && "border-l-[3px] pl-3"
                     )}
-                    style={pathname === "/" ? { borderLeftColor: 'var(--text-primary)' } : {}}
+                    style={pathname === "/" ? { borderLeftColor: 'var(--color-primary)' } : {}}
                     aria-current={pathname === "/" ? "page" : undefined}
                   >
                     Bydlení
@@ -137,7 +137,7 @@ export function SiteHeader() {
                         "text-[1.3rem] font-semibold",
                         pathname.startsWith("/investice") && "border-l-[3px] pl-3"
                       )}
-                      style={pathname.startsWith("/investice") ? { borderLeftColor: 'var(--text-primary)' } : {}}
+                      style={pathname.startsWith("/investice") ? { borderLeftColor: 'var(--color-primary)' } : {}}
                       aria-current={pathname.startsWith("/investice") ? "page" : undefined}
                     >
                       Investice
@@ -146,7 +146,7 @@ export function SiteHeader() {
                       className="px-3 py-1 text-xs font-medium"
                       style={{
                         background: 'var(--bg-section-alt)',
-                        color: 'var(--text-muted)',
+                        color: '#9CA3AF',
                         borderRadius: 'var(--radius-pill)'
                       }}
                     >
@@ -155,13 +155,13 @@ export function SiteHeader() {
                   </div>
                 </div>
                 <div className="h-px" style={{ background: 'var(--border-subtle)' }} />
-                <div className="flex flex-col gap-3 text-body font-medium text-[var(--text-primary)] font-uiSans">
+                <div className="flex flex-col gap-3 text-body font-medium text-[var(--color-primary)] font-uiSans">
                   <Link 
                     href="/o-projektu"
                     className={cn(
                       pathname === "/o-projektu" && "border-l-[3px] pl-3"
                     )}
-                    style={pathname === "/o-projektu" ? { borderLeftColor: 'var(--text-primary)' } : {}}
+                    style={pathname === "/o-projektu" ? { borderLeftColor: 'var(--color-primary)' } : {}}
                     aria-current={pathname === "/o-projektu" ? "page" : undefined}
                   >
                     O projektu
@@ -171,7 +171,7 @@ export function SiteHeader() {
                     className={cn(
                       pathname === "/kontakt" && "border-l-[3px] pl-3"
                     )}
-                    style={pathname === "/kontakt" ? { borderLeftColor: 'var(--text-primary)' } : {}}
+                    style={pathname === "/kontakt" ? { borderLeftColor: 'var(--color-primary)' } : {}}
                     aria-current={pathname === "/kontakt" ? "page" : undefined}
                   >
                     Kontakt
