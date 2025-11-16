@@ -396,7 +396,7 @@ export default function HomePage() {
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
               Ukázkové srovnání
             </p>
-            <h3 className="mt-2 text-xl font-semibold md:text-2xl">
+            <h3 className="mt-2 text-xl font-semibold md:text-2xl font-uiSans">
               30 let dopředu, dva scénáře
             </h3>
 
@@ -649,13 +649,18 @@ export default function HomePage() {
 
               <Button 
                 asChild 
-                variant="secondary"
-                className="mt-4 font-uiSans"
+                variant="outline"
+                className="mt-6 font-uiSans bg-[var(--bg-card)] hover:bg-[var(--bg-section-alt)] border-[var(--border-subtle)] transition-all"
+                style={{
+                  borderRadius: 'var(--radius-pill)',
+                  transition: `all var(--transition-duration) var(--transition-easing)`
+                }}
               >
-                <a 
+                <a
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-[var(--text-primary)]"
                 >
                   Otevřít metodiku v Google Sheets
                 </a>
@@ -738,10 +743,10 @@ export default function HomePage() {
               <AccordionItem
                 key={faq.question}
                 value={faq.question}
-                className="border font-uiSans"
+                className="border-0 font-uiSans"
                 style={{
                   background: 'var(--bg-card)',
-                  borderColor: 'var(--border-subtle)',
+                  border: '1px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-faq)',
                   padding: '16px 20px',
                   transition: `border-color var(--transition-duration) var(--transition-easing)`
