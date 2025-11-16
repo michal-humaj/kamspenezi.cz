@@ -129,7 +129,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--surface-tint-0)] py-10 md:py-18">
+      <section className="bg-[var(--bg-page)] py-10 md:py-18">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -141,7 +141,7 @@ export default function HomePage() {
               <span 
                 className="inline-flex items-center px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans"
                 style={{ 
-                  background: 'var(--bg-section-alt)', 
+                  background: 'var(--bg-section-soft)', 
                   borderRadius: 'var(--radius-pill)' 
                 }}
               >
@@ -163,10 +163,10 @@ export default function HomePage() {
               {/* CTAs */}
               <div className="mt-7">
                 {/* Desktop: side by side */}
-                <div className="hidden sm:flex items-center gap-4">
+                <div className="hidden sm:flex items-center gap-6">
                   <Button 
                     asChild 
-                    className="font-uiSans transition-all"
+                    className="font-uiSans text-base font-medium transition-all"
                     style={{ 
                       background: 'var(--cta-primary-bg)',
                       color: 'var(--cta-primary-text)',
@@ -190,10 +190,10 @@ export default function HomePage() {
                 </div>
 
                 {/* Mobile: stacked with ghost secondary */}
-                <div className="flex sm:hidden flex-col gap-3">
+                <div className="flex sm:hidden flex-col">
                   <Button 
                     asChild 
-                    className="w-full font-uiSans"
+                    className="w-full font-uiSans text-base font-medium"
                     style={{ 
                       background: 'var(--cta-primary-bg)',
                       color: 'var(--cta-primary-text)',
@@ -206,7 +206,7 @@ export default function HomePage() {
                   <Button
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="w-full bg-[var(--bg-card)] text-[var(--text-primary)] font-uiSans"
+                    className="mt-4 w-full bg-[var(--bg-card)] text-[var(--text-primary)] font-uiSans text-base font-medium"
                     style={{ 
                       border: '1px solid var(--border-subtle)',
                       borderRadius: 'var(--radius-pill)',
@@ -214,11 +214,16 @@ export default function HomePage() {
                   >
                     Zjistit, jak výpočet funguje
                   </Button>
+                  
+                  {/* Meta text on mobile - positioned under secondary CTA */}
+                  <p className="mt-2 text-xs text-[var(--text-muted)] font-uiSans">
+                    Zdarma, bez registrace.
+                  </p>
                 </div>
               </div>
 
-              {/* Simple meta text - increased spacing */}
-              <p className="mt-2 text-[13px] text-[var(--text-muted)] font-uiSans">
+              {/* Meta text on desktop - positioned under CTAs */}
+              <p className="mt-2 hidden sm:block text-xs text-[var(--text-muted)] font-uiSans">
                 Zdarma, bez registrace.
               </p>
 
@@ -260,7 +265,7 @@ export default function HomePage() {
               >
                 <div 
                   className="flex h-20 w-20 items-center justify-center rounded-full"
-                  style={{ background: 'var(--bg-section-alt)' }}
+                  style={{ background: 'var(--bg-section-soft)' }}
                 >
                   <svg 
                     className="h-10 w-10" 
@@ -288,7 +293,7 @@ export default function HomePage() {
       </section>
 
       {/* City Presets Section */}
-      <section className="bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Začni podle svého města a velikosti bytu
@@ -338,7 +343,7 @@ export default function HomePage() {
       </section>
 
       {/* Results Section */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
             Výsledek
@@ -400,7 +405,7 @@ export default function HomePage() {
               30 let dopředu, dva scénáře
             </h3>
 
-            <div className="mt-4 md:mt-5 grid gap-0 md:grid-cols-2 md:gap-0">
+            <div className="mt-3 md:mt-5 grid gap-0 md:grid-cols-2 md:gap-0">
               {/* Scenario A */}
               <div className="flex h-full flex-col gap-3 p-4 md:p-6">
                 <span 
@@ -479,7 +484,7 @@ export default function HomePage() {
       </section>
 
       {/* Myth vs Reality */}
-      <section className="bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
             Mýty o nájmu
@@ -529,7 +534,7 @@ export default function HomePage() {
       </section>
 
       {/* Scenarios section */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
             Dvě cesty
@@ -577,7 +582,7 @@ export default function HomePage() {
                   />
                   {scenario.badge}
                 </span>
-                <h3 className="mt-4 text-xl font-semibold leading-tight md:text-[22px]">
+                <h3 className="mt-4 text-xl font-semibold leading-tight md:text-[22px] font-uiSans">
                   {scenario.label}
                 </h3>
                 <ul className="mt-4 space-y-2.5">
@@ -598,7 +603,7 @@ export default function HomePage() {
       </section>
 
       {/* Transparency section */}
-      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
+      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Transparentní výpočet, žádná tajemství
@@ -651,7 +656,7 @@ export default function HomePage() {
                 asChild 
                 className="mt-6 font-uiSans"
                 style={{
-                  background: 'var(--surface-tint-2)',
+                  background: 'var(--bg-section-soft)',
                   color: 'var(--text-primary)',
                   border: '1px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-pill)',
@@ -663,7 +668,7 @@ export default function HomePage() {
                   e.currentTarget.style.borderColor = 'var(--text-primary)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'var(--surface-tint-2)';
+                  e.currentTarget.style.background = 'var(--bg-section-soft)';
                   e.currentTarget.style.color = 'var(--text-primary)';
                   e.currentTarget.style.borderColor = 'var(--border-subtle)';
                 }}
@@ -740,7 +745,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
