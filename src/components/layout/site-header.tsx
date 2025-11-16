@@ -41,16 +41,16 @@ export function SiteHeader() {
   const cta = CTA_CONFIG.find((config) => config.match(pathname))!;
 
   return (
-    <header className="border-b border-border-subtle bg-surface-default/95 backdrop-blur supports-[backdrop-filter]:bg-surface-default/80">
+    <header className="border-b border-[var(--border-subtle)] bg-[var(--bg-body)]">
       <div className="container flex h-16 items-center justify-between md:h-20">
         <Link
           href="/"
-          className="font-displaySerif text-[1.25rem] font-semibold text-text-main"
+          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--text-primary)]"
         >
           kamspenezi.cz
         </Link>
 
-        <nav className="hidden items-center gap-8 text-body font-medium text-text-muted md:flex">
+        <nav className="hidden items-center gap-8 text-body font-medium text-[var(--text-muted)] md:flex">
           {NAV_LINKS.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -58,8 +58,8 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "transition-colors hover:text-text-main",
-                  isActive && "text-text-main"
+                  "transition-colors hover:text-[var(--text-primary)]",
+                  isActive && "text-[var(--text-primary)]"
                 )}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -79,7 +79,7 @@ export function SiteHeader() {
           <Sheet>
             <SheetTrigger asChild>
               <button
-                className="inline-flex items-center justify-center rounded-pill border border-border-subtle p-2 text-text-main"
+                className="inline-flex items-center justify-center rounded-pill border border-[var(--border-subtle)] p-2 text-[var(--text-primary)]"
                 aria-label="Otevřít navigaci"
               >
                 <Menu className="size-5" />

@@ -9,15 +9,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const HERO_BULLETS = [
-  "Výsledek vidíš v korunách jako srovnání majetku po třiceti letech",
   "Počítáme s realistickými předpoklady výnosů globálních ETF",
+  "Pracujeme s daty pro Prahu, Brno, Ostravu, Plzeň a další města",
   <>
     Vzorce jsou transparentní a můžeš si je projít v{" "}
     <a
       href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
       target="_blank"
       rel="noopener noreferrer"
-      className="underline underline-offset-2 transition-colors hover:text-[var(--accent-cool)]"
+      className="underline underline-offset-2 transition-colors hover:text-[var(--rent-etf-accent)]"
     >
       Google Sheets krok za krokem
     </a>
@@ -72,14 +72,14 @@ const SCENARIO_LIST = [
 ];
 
 const MYTH_LIST = [
-  "Nájem znamená posílat každý měsíc peníze pryč a nic z nich nemít",
+  "Nájem se vždy nevyplatí, protože 'vyhazuješ peníze z okna'",
   "Hypotéka je vždy lepší, protože \"buduješ vlastní majetek\"",
-  "Když splácíš byt, na konci ti zůstane byt, u nájmu ne",
+  "Nájem znamená posílat každý měsíc peníze pryč a nic z nich nemít",
 ];
 
 const REALITY_LIST = [
+  "Vlastní byt má hodnotu, ale přináší i náklady. Důležité je, co se děje s rozdílem mezi nájmem a hypotékou",
   "Když rozdíl mezi nájmem a hypotékou investuješ, peníze pracují",
-  "Vlastnictví bytu má náklady, které nájem nemá (údržba, daně, pojištění)",
   "Po třiceti letech může mít investiční portfolio hodnotu srovnatelnou s bytem",
 ];
 
@@ -130,7 +130,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--bg-page)] pt-8 pb-16 lg:pt-16 lg:pb-24">
+      <section className="bg-[var(--bg-body)] pt-10 pb-16 lg:pt-16 lg:pb-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -139,7 +139,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <span className="inline-flex items-center rounded-full bg-[var(--bg-section)] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
+              <span className="inline-flex items-center rounded-full bg-[var(--bg-section-alt)] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
                 Online kalkulačka bydlení
               </span>
               
@@ -147,7 +147,7 @@ export default function HomePage() {
                 Bydlet ve vlastním, nebo v nájmu
               </h1>
 
-              <p className="mt-4 max-w-xl text-lg text-[var(--text-main)] md:text-xl">
+              <p className="mt-4 max-w-xl text-lg text-[var(--text-primary)] md:text-xl">
                 Kalkulačka porovná dvě cesty: koupit byt na hypotéku, nebo bydlet v nájmu a rozdíl v platbách investovat do ETF. Uvidíš, jaký majetek ti vyjde po třiceti letech.
               </p>
 
@@ -156,40 +156,33 @@ export default function HomePage() {
               </p>
 
               {/* CTAs */}
-              <div className="mt-7 flex flex-col items-start gap-3">
+              <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
                 <Button 
                   size="lg" 
                   asChild 
-                  className="bg-[var(--cta-bg)] text-white transition-all duration-200 hover:scale-[1.02] hover:bg-[#1a1a1a]"
+                  className="bg-[var(--cta-primary-bg)] text-[var(--cta-primary-text)] transition-all duration-200 hover:scale-[1.02] hover:opacity-90"
                 >
                   <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                 </Button>
                 
                 <button
                   onClick={() => scrollToSection("transparentnost")}
-                  className="inline-block text-sm font-medium text-[var(--text-main)] underline underline-offset-4 transition-colors hover:text-[var(--text-muted)] md:text-base"
+                  className="inline-block text-sm font-medium text-[var(--cta-secondary-text)] underline underline-offset-4 transition-colors hover:text-[var(--text-muted)] md:text-base"
                 >
                   Zjistit, jak výpočet funguje
                 </button>
               </div>
 
-              {/* Meta pills */}
-              <div className="mt-5 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-section)] px-4 py-1.5 text-sm text-[var(--text-muted)]">
-                  Zdarma, bez registrace
-                </span>
-                
-                <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border-soft)] bg-[var(--bg-section)] px-4 py-1.5 text-sm text-[var(--text-muted)]">
-                  <span>🇨🇿</span>
-                  <span>Pracujeme s daty pro Prahu, Brno, Ostravu, Plzeň a další města</span>
-                </span>
-              </div>
+              {/* Simple meta text */}
+              <p className="mt-5 text-sm text-[var(--text-soft)]">
+                Zdarma, bez registrace.
+              </p>
 
               {/* Hero bullets */}
               <ul className="mt-6 space-y-2 text-sm text-[var(--text-muted)] md:text-base">
                 {HERO_BULLETS.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-warm)]" aria-hidden />
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--mortgage-accent)]" aria-hidden />
                     <span>{bullet}</span>
                   </li>
                 ))}
@@ -203,19 +196,19 @@ export default function HomePage() {
               transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
               className="mt-10 lg:mt-0 lg:w-[380px] xl:w-[420px] lg:ml-auto"
             >
-              <div className="flex flex-col items-center rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-8 text-center shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--accent-cool)]/20">
-                  <svg className="h-10 w-10 text-[var(--accent-cool)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <div className="flex flex-col items-center rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-8 text-center" style={{ boxShadow: 'var(--shadow-soft)' }}>
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+                  <svg className="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <rect x="3" y="13" width="4" height="8" rx="1" />
                     <rect x="10" y="9" width="4" height="12" rx="1" />
                     <rect x="17" y="5" width="4" height="16" rx="1" />
                   </svg>
                 </div>
-                <h3 className="mt-6 font-displaySerif text-xl font-semibold text-[var(--text-main)]">
+                <h3 className="mt-6 font-displaySerif text-xl font-semibold text-[var(--text-primary)]">
                   Vizualizace výsledků tvého bydlení
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
-                  Později sem doplníme prémiovou ilustraci s grafem a výsledkem kalkulačky.
+                  Později sem doplníme prémiovou ilustraci s výsledkem kalkulačky.
                 </p>
               </div>
             </motion.div>
@@ -224,7 +217,7 @@ export default function HomePage() {
       </section>
 
       {/* City Presets Section */}
-      <section className="bg-[var(--bg-section)] py-12 lg:py-16">
+      <section className="bg-[var(--bg-section-alt)] py-12 lg:py-16">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Začni podle svého města a velikosti bytu
@@ -242,9 +235,10 @@ export default function HomePage() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
                 whileHover={{ y: -4, boxShadow: "0 24px 48px rgba(15,23,42,0.08)" }}
-                className="flex flex-col rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-6 shadow-[0_18px_40px_rgba(15,23,42,0.05)] transition-shadow"
+                className="flex flex-col rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-6 transition-shadow"
+                style={{ boxShadow: 'var(--shadow-soft)' }}
               >
-                <h3 className="font-displaySerif text-lg font-semibold leading-tight text-[var(--text-main)]">
+                <h3 className="text-lg font-semibold leading-tight text-[var(--text-primary)]">
                   {preset.title}
                 </h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--text-muted)]">
@@ -252,7 +246,7 @@ export default function HomePage() {
                 </p>
                 <button
                   onClick={() => handlePresetSelect(preset.id)}
-                  className="mt-4 text-sm font-medium text-[var(--text-main)] underline underline-offset-4 transition-colors hover:text-[var(--accent-cool)]"
+                  className="mt-4 text-left text-sm font-medium text-[var(--cta-secondary-text)] underline underline-offset-4 transition-colors hover:text-[var(--text-muted)]"
                 >
                   Použít jako výchozí
                 </button>
@@ -263,7 +257,7 @@ export default function HomePage() {
       </section>
 
       {/* Results section */}
-      <section className="bg-[var(--bg-page)] py-12 lg:py-20">
+      <section className="bg-[var(--bg-body)] py-12 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
             Výsledek
@@ -289,7 +283,8 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mx-auto mt-10 max-w-5xl rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-8 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"
+            className="mx-auto mt-10 max-w-5xl rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-8"
+            style={{ boxShadow: 'var(--shadow-soft)' }}
           >
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
               Ukázkové srovnání
@@ -298,53 +293,47 @@ export default function HomePage() {
               30 let dopředu, dva scénáře
             </h3>
 
-            <div className="mt-6 grid gap-6 md:grid-cols-2">
+            <div className="mt-6 grid gap-0 md:grid-cols-2 md:gap-0">
               {/* Scenario A */}
-              <motion.div
-                whileHover={{ y: -4 }}
-                className="flex h-full flex-col gap-3 rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-6 transition-transform"
-              >
-                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--accent-warm)]/80 px-3 py-1.5 text-xs font-medium text-[var(--text-main)]/90">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-main)]" />
+              <div className="flex h-full flex-col gap-3 p-6 md:border-r md:border-[var(--border-subtle)]">
+                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--mortgage-accent)] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-primary)]" />
                   Byt na hypotéku
                 </span>
                 <div className="mt-2">
                   <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)]">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-[var(--text-main)] md:text-3xl">
+                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-[var(--text-primary)] md:text-3xl">
                     8,4 mil. Kč
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
                     Hodnota bytu po odečtení poplatků a zůstatku hypotéky.
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Scenario B */}
-              <motion.div
-                whileHover={{ y: -4 }}
-                className="flex h-full flex-col gap-3 rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-6 transition-transform"
-              >
-                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--accent-cool)]/80 px-3 py-1.5 text-xs font-medium text-[var(--text-main)]/90">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-main)]" />
+              <div className="flex h-full flex-col gap-3 p-6 border-t md:border-t-0 border-[var(--border-subtle)] md:border-l-0">
+                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--rent-etf-accent)] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-primary)]" />
                   Nájem + ETF
                 </span>
                 <div className="mt-2">
                   <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)]">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-[var(--text-main)] md:text-3xl">
+                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-[var(--text-primary)] md:text-3xl">
                     7,1 mil. Kč
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
                     Hodnota investičního portfolia z rozdílu mezi nájmem a hypotékou.
                   </p>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
-            <p className="mt-6 text-sm leading-[1.6] text-[var(--text-muted)]">
+            <p className="mt-6 px-6 text-sm leading-[1.6] text-[var(--text-muted)]">
               Scénáře porovnávají stejné měsíční výdaje – rozdíl je jen v tom, kam peníze jdou.
             </p>
             <p className="mt-2 text-xs text-[var(--text-muted)]">
@@ -355,7 +344,7 @@ export default function HomePage() {
       </section>
 
       {/* Myth vs Reality */}
-      <section className="bg-[var(--bg-section)] py-12 lg:py-20">
+      <section className="bg-[var(--bg-section-alt)] py-12 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
             Mýty o nájmu
@@ -385,13 +374,13 @@ export default function HomePage() {
 
             {/* Reality column */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-main)]">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-primary)]">
                 Realita
               </h3>
               <ul className="mt-4 space-y-3">
                 {REALITY_LIST.map((reality) => (
-                  <li key={reality} className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-main)] md:text-base">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-cool)]" />
+                  <li key={reality} className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-primary)] md:text-base">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--text-primary)]" />
                     <span>{reality}</span>
                   </li>
                 ))}
@@ -402,7 +391,7 @@ export default function HomePage() {
       </section>
 
       {/* Scenarios section */}
-      <section className="bg-[var(--bg-page)] py-12 lg:py-20">
+      <section className="bg-[var(--bg-body)] py-12 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
             Dvě cesty
@@ -423,15 +412,16 @@ export default function HomePage() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 whileHover={{ y: -4, boxShadow: "0 24px 48px rgba(15,23,42,0.08)" }}
-                className="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-7 shadow-[0_18px_40px_rgba(15,23,42,0.05)] transition-shadow"
+                className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-7 transition-shadow"
+                style={{ boxShadow: 'var(--shadow-soft)' }}
               >
                 <span className={cn(
-                  "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium",
+                  "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]",
                   scenario.id === "A" 
-                    ? "bg-[var(--accent-warm)]/80 text-[var(--text-main)]/90" 
-                    : "bg-[var(--accent-cool)]/80 text-[var(--text-main)]/90"
+                    ? "bg-[var(--mortgage-accent)]" 
+                    : "bg-[var(--rent-etf-accent)]"
                 )}>
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-main)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-primary)]" />
                   {scenario.badge}
                 </span>
                 <h3 className="mt-4 font-displaySerif text-xl font-semibold leading-tight md:text-[22px]">
@@ -452,7 +442,7 @@ export default function HomePage() {
       </section>
 
       {/* Transparency section */}
-      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-section)] py-12 lg:py-20">
+      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-section-alt)] py-12 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Transparentní výpočet, žádná tajemství
@@ -467,24 +457,24 @@ export default function HomePage() {
               
               <ul className="space-y-3">
                 <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-muted)] md:text-[15px]">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-warm)]" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--mortgage-accent)]" />
                   <span>
                     <a
                       href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline underline-offset-2 transition-colors hover:text-[var(--accent-cool)]"
+                      className="underline underline-offset-2 transition-colors hover:text-[var(--rent-etf-accent)]"
                     >
                       Veřejný Google Sheet se všemi vzorci a předpoklady
                     </a>
                   </span>
                 </li>
                 <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-muted)] md:text-[15px]">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-warm)]" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--mortgage-accent)]" />
                   <span>Popis vstupních dat a zdrojů</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-muted)] md:text-[15px]">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-warm)]" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--mortgage-accent)]" />
                   <span>Možnost změnit parametry a spočítat si vlastní scénáře</span>
                 </li>
               </ul>
@@ -496,23 +486,23 @@ export default function HomePage() {
               >
                 <a 
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+            target="_blank"
+            rel="noopener noreferrer"
+          >
                   Otevřít metodiku v Google Sheets
                 </a>
               </Button>
             </div>
 
             {/* Right: Author card */}
-            <div className="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-6 shadow-[0_18px_40px_rgba(15,23,42,0.05)] md:p-8">
+            <div className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-6 md:p-8" style={{ boxShadow: 'var(--shadow-soft)' }}>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
                 Kdo za kalkulačkou stojí
               </p>
               
               <div className="mt-6 flex items-start gap-4">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full">
-                  <Image
+            <Image
                     src="/michal.jpeg"
                     alt="Michal Humaj"
                     width={64}
@@ -522,7 +512,7 @@ export default function HomePage() {
                 </div>
                 
                 <div>
-                  <p className="font-semibold text-[var(--text-main)]">Michal Humaj</p>
+                  <p className="font-semibold text-[var(--text-primary)]">Michal Humaj</p>
                   <p className="mt-1 text-sm leading-relaxed text-[var(--text-muted)]">
                     Produktový manažer a investor, který řeší stejné otázky jako ty.
                   </p>
@@ -537,7 +527,7 @@ export default function HomePage() {
       </section>
 
       {/* What calculator doesn't solve */}
-      <section className="bg-[var(--bg-page)] py-12 lg:py-16">
+      <section className="bg-[var(--bg-body)] py-12 lg:py-16">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h3 className="text-xl font-semibold md:text-2xl">
             Co kalkulačka neřeší
@@ -545,7 +535,7 @@ export default function HomePage() {
           <ul className="mt-6 space-y-3">
             {CALCULATOR_LIMITS.map((limit) => (
               <li key={limit} className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-warm)]" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--mortgage-accent)]" />
                 <span>{limit}</span>
               </li>
             ))}
@@ -554,7 +544,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[var(--bg-section)] py-12 lg:py-20">
+      <section className="bg-[var(--bg-section-alt)] py-12 lg:py-20">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
@@ -568,7 +558,7 @@ export default function HomePage() {
               <AccordionItem
                 key={faq.question}
                 value={faq.question}
-                className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-card)] px-6 py-2 shadow-sm"
+                className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-6 py-2 shadow-sm"
               >
                 <AccordionTrigger className="text-left text-base font-medium hover:no-underline">
                   {faq.question}
@@ -583,7 +573,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--border-soft)] bg-[var(--bg-page)] py-12">
+      <footer className="border-t border-[var(--border-subtle)] bg-[var(--bg-body)] py-12">
         <div className="mx-auto w-full max-w-6xl px-4 text-center lg:px-8">
           <p className="text-sm text-[var(--text-muted)]">
             © {new Date().getFullYear()} kamspenezi.cz
@@ -596,7 +586,7 @@ export default function HomePage() {
               href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-[var(--text-main)] underline underline-offset-4 transition-colors hover:text-[var(--text-muted)]"
+              className="text-xs text-[var(--text-primary)] underline underline-offset-4 transition-colors hover:text-[var(--text-muted)]"
             >
               Metodika v Google Sheets
             </a>

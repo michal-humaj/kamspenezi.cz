@@ -9,15 +9,19 @@
 }
 
 :root {
-  --bg-page: #FDFBF9;
-  --bg-section: #F5F5F8;
+  --bg-body: #F9FAFB;
+  --bg-section-alt: #F3F4F8;
   --bg-card: #FFFFFF;
-  --border-soft: #E4E0DA;
-  --text-main: #1F1F1F;
-  --text-muted: #5C5C60;
-  --accent-warm: #F4C8A3;
-  --accent-cool: #C5D7FF;
-  --cta-bg: #111111;
+  --border-subtle: #E2E4EA;
+  --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.06);
+  --text-primary: #18181B;
+  --text-muted: #6B7280;
+  --text-soft: #9CA3AF;
+  --cta-primary-bg: #111827;
+  --cta-primary-text: #FFFFFF;
+  --cta-secondary-text: #111827;
+  --mortgage-accent: #F6D6BF;
+  --rent-etf-accent: #D8D5FF;
 }
 
 @layer base {
@@ -26,19 +30,19 @@
   }
 
   body {
-    @apply bg-[var(--bg-page)] text-[var(--text-main)] font-uiSans antialiased;
+    @apply bg-[var(--bg-body)] text-[var(--text-primary)] font-uiSans antialiased;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-displaySerif font-semibold text-[var(--text-main)];
+    @apply font-displaySerif font-semibold text-[var(--text-primary)];
   }
 
   h4,
   h5,
   h6 {
-    @apply font-semibold text-[var(--text-main)];
+    @apply font-semibold text-[var(--text-primary)];
   }
 
   p {
