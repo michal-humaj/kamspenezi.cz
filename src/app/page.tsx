@@ -166,13 +166,10 @@ export default function HomePage() {
                 <div className="hidden sm:flex items-center gap-6">
                   <Button 
                     asChild 
-                    className="font-uiSans text-base font-medium transition-all"
+                    className="rounded-full font-uiSans text-base font-medium transition-all duration-150 ease-out hover:bg-[#060915] hover:shadow-[0_18px_45px_rgba(8,15,40,0.35)] hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
                     style={{ 
                       background: 'var(--cta-primary-bg)',
                       color: 'var(--cta-primary-text)',
-                      borderRadius: 'var(--radius-pill)',
-                      transitionDuration: 'var(--transition-duration)',
-                      transitionTimingFunction: 'var(--transition-easing)'
                     }}
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
@@ -193,11 +190,10 @@ export default function HomePage() {
                 <div className="flex sm:hidden flex-col">
                   <Button 
                     asChild 
-                    className="w-full font-uiSans text-base font-medium"
+                    className="w-full rounded-full font-uiSans text-base font-medium transition-all duration-150 ease-out active:bg-[#060915] active:shadow-[0_18px_45px_rgba(8,15,40,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
                     style={{ 
                       background: 'var(--cta-primary-bg)',
                       color: 'var(--cta-primary-text)',
-                      borderRadius: 'var(--radius-pill)',
                     }}
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
@@ -206,11 +202,7 @@ export default function HomePage() {
                   <Button
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="mt-4 w-full bg-[var(--bg-card)] text-[var(--text-primary)] font-uiSans text-base font-medium"
-                    style={{ 
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: 'var(--radius-pill)',
-                    }}
+                    className="mt-4 w-full rounded-full bg-white border border-[#E0E3EC] text-[var(--text-primary)] font-uiSans text-base font-medium transition-all duration-150 ease-out hover:bg-[#F4F5FB] hover:border-[#CBD0E5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
                   >
                     Zjistit, jak výpočet funguje
                   </Button>
@@ -654,30 +646,13 @@ export default function HomePage() {
 
               <Button 
                 asChild 
-                className="mt-6 font-uiSans"
-                style={{
-                  background: 'var(--bg-section-soft)',
-                  color: 'var(--text-primary)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-pill)',
-                  transition: `all var(--transition-duration) var(--transition-easing)`
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--text-primary)';
-                  e.currentTarget.style.color = '#ffffff';
-                  e.currentTarget.style.borderColor = 'var(--text-primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'var(--bg-section-soft)';
-                  e.currentTarget.style.color = 'var(--text-primary)';
-                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
-                }}
+                className="mt-6 rounded-full bg-white border border-[#E0E3EC] text-[var(--text-primary)] font-uiSans text-base font-medium px-6 py-3 transition-all duration-150 ease-out hover:bg-[#F4F5FB] hover:border-[#CBD0E5] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
               >
                 <a
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Otevřít metodiku v Google Sheets
                 </a>
               </Button>
