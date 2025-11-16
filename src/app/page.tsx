@@ -129,7 +129,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-18">
+      <section className="bg-[var(--bg-base)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -139,9 +139,9 @@ export default function HomePage() {
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
               <span 
-                className="inline-flex items-center px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans"
+                className="inline-flex items-center px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans"
                 style={{ 
-                  background: 'var(--bg-section-soft)', 
+                  background: 'var(--bg-alt)', 
                   borderRadius: 'var(--radius-pill)' 
                 }}
               >
@@ -152,49 +152,41 @@ export default function HomePage() {
                 Bydlet ve vlastním, nebo v nájmu
               </h1>
 
-              <p className="mt-4 max-w-xl text-lg text-[var(--text-secondary)] md:text-xl font-uiSans">
+              <p className="mt-4 max-w-xl text-lg text-[#4B5563] md:text-xl font-uiSans leading-relaxed">
                 Kalkulačka porovná dvě cesty: koupit byt na hypotéku, nebo bydlet v nájmu a rozdíl v platbách investovat do ETF. Uvidíš, jaký majetek ti vyjde po třiceti letech.
               </p>
 
-              <p className="mt-3 max-w-xl text-base italic text-[var(--text-muted)] md:text-lg font-uiSans">
+              <p className="mt-3 max-w-xl text-base italic text-[#6B7280] md:text-lg font-uiSans">
                 Rozhodnutí o bydlení ti ovlivní celý život. Udělej ho na datech, ne na pocitu.
               </p>
 
               {/* CTAs */}
-              <div className="mt-7">
+              <div className="mt-6">
                 {/* Desktop: side by side */}
                 <div className="hidden sm:flex items-center gap-6">
                   <Button 
                     asChild 
-                    className="rounded-full font-uiSans text-base font-medium transition-all duration-150 ease-out hover:bg-[#060915] hover:shadow-[0_18px_45px_rgba(8,15,40,0.35)] hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
-                    style={{ 
-                      background: 'var(--cta-primary-bg)',
-                      color: 'var(--cta-primary-text)',
-                    }}
+                    className="rounded-full bg-[#0F172A] text-white text-base md:text-lg font-semibold px-8 py-4 shadow-[0_4px_12px_rgba(15,23,42,0.18)] transition-all duration-150 ease-out hover:bg-[#1A2433] hover:shadow-[0_6px_18px_rgba(15,23,42,0.26)] hover:-translate-y-[1px] active:translate-y-0 active:shadow-[0_3px_8px_rgba(15,23,42,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                   </Button>
                   
-                  <button
-                    onClick={() => scrollToSection("transparentnost")}
-                    className="text-base font-medium text-[var(--text-primary)] hover:text-[var(--text-primary)] hover:underline font-uiSans"
-                    style={{
-                      transition: `color var(--transition-duration) var(--transition-easing)`
-                    }}
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="rounded-full border border-[#D1D5DB] bg-white text-[#0F172A] text-base md:text-lg font-medium px-8 py-4 transition-all duration-150 ease-out hover:border-[#B5BAC6] hover:bg-[#F8FAFC] hover:shadow-[0_2px_10px_rgba(15,23,42,0.10)] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
                   >
-                    Zjistit, jak výpočet funguje
-                  </button>
+                    <button onClick={() => scrollToSection("transparentnost")}>
+                      Zjistit, jak výpočet funguje
+                    </button>
+                  </Button>
                 </div>
 
                 {/* Mobile: stacked with ghost secondary */}
                 <div className="flex sm:hidden flex-col">
                   <Button 
                     asChild 
-                    className="w-full rounded-full font-uiSans text-base font-medium transition-all duration-150 ease-out active:bg-[#060915] active:shadow-[0_18px_45px_rgba(8,15,40,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
-                    style={{ 
-                      background: 'var(--cta-primary-bg)',
-                      color: 'var(--cta-primary-text)',
-                    }}
+                    className="w-full rounded-full bg-[#0F172A] text-white text-base font-semibold px-8 py-4 shadow-[0_4px_12px_rgba(15,23,42,0.18)] transition-all duration-150 ease-out active:bg-[#1A2433] active:shadow-[0_6px_18px_rgba(15,23,42,0.26)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                   </Button>
@@ -202,30 +194,25 @@ export default function HomePage() {
                   <Button
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="mt-4 w-full rounded-full bg-white border border-[#E0E3EC] text-[var(--text-primary)] font-uiSans text-base font-medium transition-all duration-150 ease-out hover:bg-[#F4F5FB] hover:border-[#CBD0E5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
+                    className="mt-4 w-full rounded-full border border-[#D1D5DB] bg-white text-[#0F172A] text-base font-medium px-8 py-4 transition-all duration-150 ease-out hover:border-[#B5BAC6] hover:bg-[#F8FAFC] hover:shadow-[0_2px_10px_rgba(15,23,42,0.10)] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#4A4FFF]"
                   >
                     Zjistit, jak výpočet funguje
                   </Button>
-                  
-                  {/* Meta text on mobile - positioned under secondary CTA */}
-                  <p className="mt-2 text-xs text-[var(--text-muted)] font-uiSans">
-                    Zdarma, bez registrace.
-                  </p>
                 </div>
               </div>
 
-              {/* Meta text on desktop - positioned under CTAs */}
-              <p className="mt-2 hidden sm:block text-xs text-[var(--text-muted)] font-uiSans">
+              {/* "Zdarma, bez registrace" - closer to CTAs */}
+              <p className="mt-2 text-sm text-[#6B7280] font-uiSans">
                 Zdarma, bez registrace.
               </p>
 
               {/* Hero bullets - with clear separation */}
-              <ul className="mt-5 space-y-2.5 text-sm md:text-[15px] text-[var(--text-secondary)] font-uiSans">
+              <ul className="mt-6 space-y-2.5 text-base text-[#4B5563] font-uiSans leading-relaxed">
                 {HERO_BULLETS.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <span 
                       className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
-                      style={{ background: 'var(--accent-bullet)' }}
+                      style={{ background: 'var(--color-bullet)' }}
                       aria-hidden 
                     />
                     <span>{bullet}</span>
@@ -650,9 +637,9 @@ export default function HomePage() {
               >
                 <a
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+            target="_blank"
+            rel="noopener noreferrer"
+          >
                   Otevřít metodiku v Google Sheets
                 </a>
               </Button>

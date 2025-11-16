@@ -9,49 +9,32 @@
 }
 
 :root {
-  /* Surface - Semantic naming for Wealthsimple-style backgrounds */
-  --bg-page: #F9FAFB;                /* Main page background - near white */
-  --bg-section-soft: #F6F7FB;        /* Soft lilac sections - ultra-subtle */
-  --bg-card: #ffffff;                /* Card surface - pure white */
+  /* Section Backgrounds - Strict alternation */
+  --bg-base: #F9FAFB;          /* Almost white, slightly warm/neutral */
+  --bg-alt: #F4F5FB;           /* Soft analytic lilac */
+  --bg-card: #ffffff;          /* Pure white for all cards */
 
-  /* Text */
-  --text-primary: #0b1120;
-  --text-secondary: #4b5563;
-  --text-muted: #9ca3af;
+  /* Color System - Locked tokens */
+  --color-primary: #0F172A;    /* Main navy/ink */
+  --color-secondary: #6B7280;  /* Secondary text */
+  --color-border: #EDEEF3;     /* Card borders */
+  --color-bullet: #9CA3AF;     /* Generic bullets */
 
-  /* Borders and dividers */
-  --border-subtle: #e2e8f0;
-  --border-soft: #e5e7eb;
+  /* Scenario Colors */
+  --scenario-a-bg: #F7EAD9;    /* Soft terracotta background */
+  --scenario-a-dot: #C98D4E;   /* Terracotta dot */
+  --scenario-b-bg: #EAE7FF;    /* Soft lilac background */
+  --scenario-b-dot: #7D5AE2;   /* Purple dot */
 
-  /* Scenario colors */
-  --scenario-a-bg: #fde7ce;
-  --scenario-a-text: #92400e;
-  --scenario-b-bg: #e5e4ff;
-  --scenario-b-text: #4338ca;
-
-  /* Accent bullets and icons */
-  --accent-bullet: #9ca3af;
-  --accent-neutral: #9ca3af;
-
-  /* CTA */
-  --cta-primary-bg: #0b1120;
-  --cta-primary-text: #ffffff;
-
-  /* Unified card system - Wealthsimple-level consistency */
-  --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.06);  /* Soft vertical shadow */
-  --radius-card: 24px;           /* Unified large radius for all cards */
-  --radius-pill: 999px;          /* Pill-shaped buttons */
-  --card-padding: 20px 20px;     /* Mobile first */
+  /* Card System */
+  --shadow-card: 0 8px 28px rgba(15, 23, 42, 0.06);
+  --shadow-card-hover: 0 12px 32px rgba(15, 23, 42, 0.10);
+  --radius-card: 24px;         /* rounded-3xl */
+  --radius-pill: 999px;        /* rounded-full */
 
   /* Motion */
   --transition-duration: 200ms;
-  --transition-easing: cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-@media (min-width: 768px) {
-  :root {
-    --card-padding: 24px 28px; /* Desktop: vertical 24px, horizontal 28px */
-  }
+  --transition-easing: ease-out;
 }
 
 @layer base {
@@ -60,22 +43,22 @@
   }
 
   body {
-    @apply bg-[var(--bg-page)] text-[var(--text-primary)] font-uiSans antialiased;
+    @apply bg-[var(--bg-base)] text-[var(--color-primary)] font-uiSans antialiased;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-displaySerif font-semibold text-[var(--text-primary)];
+    @apply font-displaySerif font-bold text-[var(--color-primary)] tracking-tight;
   }
 
   h4,
   h5,
   h6 {
-    @apply font-uiSans font-semibold text-[var(--text-primary)];
+    @apply font-uiSans font-semibold text-[var(--color-primary)];
   }
 
   p {
-    @apply font-uiSans text-[var(--text-secondary)] text-[16px] leading-[1.6];
+    @apply font-uiSans text-[var(--color-secondary)] text-base leading-relaxed;
   }
 }
