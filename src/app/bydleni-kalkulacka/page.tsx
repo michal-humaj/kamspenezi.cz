@@ -116,7 +116,8 @@ export default function BydleniKalkulackaPage() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl space-y-8 px-4 md:space-y-12 md:px-6" style={{ paddingTop: "var(--section-padding-y-mobile)", paddingBottom: "var(--section-padding-y-mobile)" }}>
+    <main className="bg-[var(--bg-base)]">
+      <div className="mx-auto max-w-6xl space-y-8 px-4 py-[var(--section-padding-y-mobile)] md:space-y-12 md:px-6 md:py-[var(--section-padding-y-desktop)]">
       {/* Hero Header */}
       <header className="space-y-3 text-center">
         <h1 className="font-displaySerif text-3xl font-bold text-[var(--color-primary)] md:text-4xl">
@@ -208,6 +209,7 @@ export default function BydleniKalkulackaPage() {
             onEditSettings={scrollToInputs}
           />
         </aside>
+      </div>
       </div>
     </main>
   );

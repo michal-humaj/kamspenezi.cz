@@ -72,17 +72,18 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="rounded-[var(--radius-card)] p-5 text-left transition-all"
+              className="rounded-[var(--radius-card)] p-5 text-left"
               style={{
                 border: isSelected
-                  ? "2px solid var(--scenario-b-dot)"
+                  ? "2px solid var(--color-primary)"
                   : "1px solid var(--color-border)",
-                background: isSelected ? "var(--scenario-b-bg)" : "var(--bg-card)",
+                background: isSelected ? "var(--bg-lilac-section)" : "var(--bg-card)",
                 boxShadow: isSelected ? "var(--shadow-card-hover)" : "var(--shadow-card)",
+                transition: "all var(--transition-duration) var(--transition-easing)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "var(--bg-lilac-section)";
+                  e.currentTarget.style.background = "var(--btn-secondary-hover-bg)";
                   e.currentTarget.style.borderColor = "var(--color-border-hover)";
                 }
               }}
@@ -113,10 +114,11 @@ export function ApartmentSizeCards({
 
       {/* Mobile: Horizontal scrollable with visible overflow hint */}
       <div 
-        className="flex gap-3 overflow-x-auto pb-2 md:hidden" 
+        className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:hidden" 
         style={{ 
           scrollSnapType: "x mandatory",
-          scrollPaddingRight: "16px" // Show hint of next card
+          scrollPaddingLeft: "16px",
+          scrollPaddingRight: "16px"
         }}
       >
         {SIZES.map((size) => {
@@ -126,14 +128,15 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="min-w-[240px] shrink-0 rounded-[18px] p-4 text-left transition-all"
+              className="min-w-[260px] shrink-0 rounded-[18px] p-4 text-left"
               style={{
                 border: isSelected
-                  ? "2px solid var(--scenario-b-dot)"
+                  ? "2px solid var(--color-primary)"
                   : "1px solid var(--color-border)",
-                background: isSelected ? "var(--scenario-b-bg)" : "var(--bg-card)",
+                background: isSelected ? "var(--bg-lilac-section)" : "var(--bg-card)",
                 boxShadow: isSelected ? "var(--shadow-card-hover)" : "var(--shadow-card)",
                 scrollSnapAlign: "start",
+                transition: "all var(--transition-duration) var(--transition-easing)",
               }}
             >
               <div className="space-y-3">

@@ -61,6 +61,8 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                 color: isSelected ? "var(--btn-primary-text)" : "var(--btn-secondary-text)",
                 border: `1px solid ${isSelected ? "var(--btn-primary-bg)" : "var(--btn-secondary-border)"}`,
                 boxShadow: isSelected ? "var(--btn-primary-shadow)" : "none",
+                transitionDuration: "var(--transition-duration)",
+                transitionTimingFunction: "var(--transition-easing)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
@@ -86,6 +88,8 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             background: "var(--btn-secondary-bg)",
             color: "var(--btn-secondary-text)",
             border: "1px solid var(--btn-secondary-border)",
+            transitionDuration: "var(--transition-duration)",
+            transitionTimingFunction: "var(--transition-easing)",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = "var(--btn-secondary-hover-bg)";
@@ -98,9 +102,10 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
         >
           <span>Více měst…</span>
           <ChevronDown
-            className="ml-1.5 inline-block h-4 w-4 transition-transform"
+            className="ml-1.5 inline-block h-4 w-4"
             style={{
               transform: showAllCities ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform var(--transition-duration) var(--transition-easing)",
             }}
           />
         </button>
