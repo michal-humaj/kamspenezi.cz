@@ -45,7 +45,7 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center justify-between md:h-20">
         <Link
           href="/"
-          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--text-primary)]"
+          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--text-main)]"
         >
           kamspenezi.cz
         </Link>
@@ -60,9 +60,10 @@ export function SiteHeader() {
                 className={cn(
                   "relative pb-1 transition-colors",
                   isActive 
-                    ? "text-[#111827] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-[#111827]" 
-                    : "text-[#4B5563] hover:text-[#111827]"
+                    ? "text-[var(--accent-primary)] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-[var(--accent-primary)]" 
+                    : "text-[var(--text-muted)] hover:text-[var(--accent-primary)]"
                 )}
+                style={{ transition: 'var(--transition-fast)' }}
                 aria-current={isActive ? "page" : undefined}
               >
                 {item.label}
@@ -81,26 +82,26 @@ export function SiteHeader() {
           <Sheet>
             <SheetTrigger asChild>
               <button
-                className="inline-flex items-center justify-center rounded-pill border border-[var(--border-subtle)] p-2 text-[var(--text-primary)]"
+                className="inline-flex items-center justify-center rounded-pill border border-[var(--border-subtle)] p-2 text-[var(--text-main)]"
                 aria-label="Otevřít navigaci"
               >
                 <Menu className="size-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-sm">
+            <SheetContent side="right" className="w-full max-w-sm bg-white">
               <nav className="flex flex-col gap-6 pt-16">
                 <Link
                   href="/"
-                  className="font-displaySerif text-[1.4rem] font-semibold text-slate-900"
+                  className="font-displaySerif text-[1.4rem] font-semibold text-[var(--text-main)]"
                 >
                   kamspenezi.cz
                 </Link>
-                <div className="flex flex-col gap-5 text-slate-900">
+                <div className="flex flex-col gap-5 text-[var(--text-main)]">
                   <Link
                     href="/"
                     className={cn(
                       "text-[1.3rem] font-semibold",
-                      pathname === "/" && "border-l-[3px] border-[#111827] pl-3"
+                      pathname === "/" && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
                     )}
                     aria-current={pathname === "/" ? "page" : undefined}
                   >
@@ -111,23 +112,23 @@ export function SiteHeader() {
                       href="/investice"
                       className={cn(
                         "text-[1.3rem] font-semibold",
-                        pathname.startsWith("/investice") && "border-l-[3px] border-[#111827] pl-3"
+                        pathname.startsWith("/investice") && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
                       )}
                       aria-current={pathname.startsWith("/investice") ? "page" : undefined}
                     >
                       Investice
                     </Link>
-                    <span className="rounded-pill bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                    <span className="rounded-pill bg-[var(--bg-section-soft)] px-3 py-1 text-xs font-medium text-[var(--text-muted)]">
                       Nové
                     </span>
                   </div>
                 </div>
-                <div className="h-px bg-slate-200" />
-                <div className="flex flex-col gap-3 text-body font-medium text-slate-900">
+                <div className="h-px bg-[var(--border-subtle)]" />
+                <div className="flex flex-col gap-3 text-body font-medium text-[var(--text-main)]">
                   <Link 
                     href="/o-projektu"
                     className={cn(
-                      pathname === "/o-projektu" && "border-l-[3px] border-[#111827] pl-3"
+                      pathname === "/o-projektu" && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
                     )}
                     aria-current={pathname === "/o-projektu" ? "page" : undefined}
                   >
@@ -136,7 +137,7 @@ export function SiteHeader() {
                   <Link 
                     href="/kontakt"
                     className={cn(
-                      pathname === "/kontakt" && "border-l-[3px] border-[#111827] pl-3"
+                      pathname === "/kontakt" && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
                     )}
                     aria-current={pathname === "/kontakt" ? "page" : undefined}
                   >
