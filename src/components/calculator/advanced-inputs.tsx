@@ -33,13 +33,14 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
         }}
       >
         <AccordionTrigger 
-          className="w-full cursor-pointer px-5 py-4 font-uiSans text-lg font-semibold text-[var(--color-primary)] hover:no-underline md:px-6"
+          className="w-full cursor-pointer px-5 py-4 font-uiSans text-[18px] font-semibold text-[var(--color-primary)] hover:no-underline md:px-6"
           style={{
             transitionDuration: "var(--transition-duration)",
             transitionTimingFunction: "var(--transition-easing)",
+            fontFamily: "var(--font-ui-sans)",
           }}
         >
-          Rozšířené předpoklady
+          <span className="font-uiSans">Rozšířené předpoklady</span>
         </AccordionTrigger>
         <AccordionContent className="space-y-5 px-5 pb-5 pt-2 md:px-6 md:pb-6">
           <p className="font-uiSans text-sm text-[var(--color-secondary)]">

@@ -53,7 +53,10 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-8 text-body font-medium md:flex">
           {NAV_LINKS.map((item) => {
-            const isActive = pathname === item.href;
+            // Bydlení is active on both "/" and "/bydleni-kalkulacka"
+            const isActive = item.href === "/" 
+              ? pathname === "/" || pathname === "/bydleni-kalkulacka"
+              : pathname === item.href;
             return (
               <Link
                 key={item.href}

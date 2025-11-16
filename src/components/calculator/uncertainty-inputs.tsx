@@ -33,14 +33,15 @@ export function UncertaintyInputs({ state, updateState }: UncertaintyInputsProps
         }}
       >
         <AccordionTrigger 
-          className="w-full cursor-pointer px-5 py-4 font-uiSans text-lg font-semibold text-[var(--color-primary)] hover:no-underline md:px-6"
+          className="w-full cursor-pointer px-5 py-4 font-uiSans text-[18px] font-semibold text-[var(--color-primary)] hover:no-underline md:px-6"
           style={{
             transitionDuration: "var(--transition-duration)",
             transitionTimingFunction: "var(--transition-easing)",
+            fontFamily: "var(--font-ui-sans)",
           }}
         >
           <div className="flex w-full items-center justify-between pr-2">
-            <span>Nejistota vývoje v čase</span>
+            <span className="font-uiSans">Nejistota vývoje v čase</span>
             <span 
               className="rounded-[var(--radius-pill)] px-3 py-1 font-uiSans text-xs font-medium"
               style={{
