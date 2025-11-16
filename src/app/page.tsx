@@ -280,7 +280,7 @@ export default function HomePage() {
         </div>
 
         {/* Results section - same band */}
-        <div className="mt-24 md:mt-32">
+        <div className="mx-auto w-full max-w-6xl px-4 lg:px-8 mt-24 md:mt-32">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
             Výsledek
           </p>
