@@ -494,7 +494,7 @@ export default function HomePage() {
               <ul className="mt-4 space-y-4">
                 {MYTH_LIST.map((myth) => (
                   <li key={myth} className="flex items-start gap-2.5 text-base leading-relaxed text-[#4B5563] font-uiSans">
-                    <span className="shrink-0 mt-[0.5em] text-[#6B7280] text-base leading-none">×</span>
+                    <span className="shrink-0 mt-[0.3em] text-[#6B7280] text-base leading-none">×</span>
                     <span>{myth}</span>
                   </li>
                 ))}
