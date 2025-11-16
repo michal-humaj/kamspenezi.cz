@@ -41,11 +41,11 @@ export function SiteHeader() {
   const cta = CTA_CONFIG.find((config) => config.match(pathname))!;
 
   return (
-    <header className="border-b border-[var(--border-subtle)] bg-[var(--bg-body)]">
+    <header className="border-b border-kp-border-subtle bg-kp-bg-hero">
       <div className="container flex h-16 items-center justify-between md:h-20">
         <Link
           href="/"
-          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--text-main)]"
+          className="font-displaySerif text-[1.25rem] font-semibold text-kp-text-main"
         >
           kamspenezi.cz
         </Link>
@@ -58,12 +58,11 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative pb-1 transition-colors",
+                  "relative pb-1 transition-colors duration-180 ease-premium",
                   isActive 
-                    ? "text-[var(--accent-primary)] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-[var(--accent-primary)]" 
-                    : "text-[var(--text-muted)] hover:text-[var(--accent-primary)]"
+                    ? "text-kp-text-main font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-kp-primary" 
+                    : "text-kp-text-muted hover:text-kp-text-main"
                 )}
-                style={{ transition: 'var(--transition-fast)' }}
                 aria-current={isActive ? "page" : undefined}
               >
                 {item.label}
@@ -82,26 +81,26 @@ export function SiteHeader() {
           <Sheet>
             <SheetTrigger asChild>
               <button
-                className="inline-flex items-center justify-center rounded-pill border border-[var(--border-subtle)] p-2 text-[var(--text-main)]"
+                className="inline-flex items-center justify-center rounded-pill border border-kp-border-subtle p-2 text-kp-text-main"
                 aria-label="Otevřít navigaci"
               >
                 <Menu className="size-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-sm bg-white">
+            <SheetContent side="right" className="w-full max-w-sm bg-kp-surface">
               <nav className="flex flex-col gap-6 pt-16">
                 <Link
                   href="/"
-                  className="font-displaySerif text-[1.4rem] font-semibold text-[var(--text-main)]"
+                  className="font-displaySerif text-[1.4rem] font-semibold text-kp-text-main"
                 >
                   kamspenezi.cz
                 </Link>
-                <div className="flex flex-col gap-5 text-[var(--text-main)]">
+                <div className="flex flex-col gap-5 text-kp-text-main">
                   <Link
                     href="/"
                     className={cn(
                       "text-[1.3rem] font-semibold",
-                      pathname === "/" && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
+                      pathname === "/" && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
                     )}
                     aria-current={pathname === "/" ? "page" : undefined}
                   >
@@ -112,23 +111,23 @@ export function SiteHeader() {
                       href="/investice"
                       className={cn(
                         "text-[1.3rem] font-semibold",
-                        pathname.startsWith("/investice") && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
+                        pathname.startsWith("/investice") && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
                       )}
                       aria-current={pathname.startsWith("/investice") ? "page" : undefined}
                     >
                       Investice
                     </Link>
-                    <span className="rounded-pill bg-[var(--bg-section-soft)] px-3 py-1 text-xs font-medium text-[var(--text-muted)]">
+                    <span className="rounded-pill bg-kp-bg-band px-3 py-1 text-xs font-medium text-kp-text-muted">
                       Nové
                     </span>
                   </div>
                 </div>
-                <div className="h-px bg-[var(--border-subtle)]" />
-                <div className="flex flex-col gap-3 text-body font-medium text-[var(--text-main)]">
+                <div className="h-px bg-kp-border-subtle" />
+                <div className="flex flex-col gap-3 text-body font-medium text-kp-text-main">
                   <Link 
                     href="/o-projektu"
                     className={cn(
-                      pathname === "/o-projektu" && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
+                      pathname === "/o-projektu" && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
                     )}
                     aria-current={pathname === "/o-projektu" ? "page" : undefined}
                   >
@@ -137,7 +136,7 @@ export function SiteHeader() {
                   <Link 
                     href="/kontakt"
                     className={cn(
-                      pathname === "/kontakt" && "border-l-[3px] border-[var(--accent-primary)] pl-3 text-[var(--accent-primary)]"
+                      pathname === "/kontakt" && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
                     )}
                     aria-current={pathname === "/kontakt" ? "page" : undefined}
                   >
