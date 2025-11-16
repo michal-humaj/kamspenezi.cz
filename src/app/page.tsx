@@ -166,47 +166,31 @@ export default function HomePage() {
                 <div className="hidden sm:flex items-center gap-6">
                   <Button 
                     asChild 
-                    className="h-[52px] rounded-full text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    className="h-[52px] rounded-full text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
                       background: 'var(--btn-primary-bg)',
                       boxShadow: 'var(--btn-primary-shadow)'
                     }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'var(--btn-primary-hover-bg)';
-                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'var(--btn-primary-bg)';
-                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
-                    }}
                   >
-                    <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
+                    <Link 
+                      href="/bydleni-kalkulacka"
+                      className="flex items-center justify-center hover:bg-[var(--btn-primary-hover-bg)] hover:shadow-[var(--btn-primary-shadow-hover)]"
+                    >
+                      Spočítat moje bydlení
+                    </Link>
                   </Button>
                   
                   <Button
-                    asChild
+                    onClick={() => scrollToSection("transparentnost")}
                     variant="outline"
-                    className="h-[48px] rounded-full text-[15px] font-medium px-5 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    className="h-[52px] rounded-full bg-white text-[15px] font-medium px-6 transition-all duration-200 ease-out border hover:bg-[rgba(15,23,42,0.02)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
-                      background: 'var(--btn-secondary-bg)',
-                      border: '1px solid var(--btn-secondary-border)',
+                      borderColor: 'var(--btn-secondary-border)',
                       color: 'var(--btn-secondary-text)',
                       boxShadow: 'var(--shadow-card)'
                     }}
                   >
-                    <button 
-                      onClick={() => scrollToSection("transparentnost")}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-hover-bg)';
-                        e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border-hover)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-bg)';
-                        e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border)';
-                      }}
-                    >
-                      Zjistit, jak výpočet funguje
-                    </button>
+                    Zjistit, jak výpočet funguje
                   </Button>
                 </div>
 
@@ -214,7 +198,7 @@ export default function HomePage() {
                 <div className="flex sm:hidden flex-col">
                   <Button 
                     asChild 
-                    className="w-full h-[52px] rounded-full text-white text-[15px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    className="w-full h-[52px] rounded-full text-white text-[15px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
                       background: 'var(--btn-primary-bg)',
                       boxShadow: 'var(--btn-primary-shadow)'
@@ -226,10 +210,9 @@ export default function HomePage() {
                   <Button
                     variant="outline"
                     onClick={() => scrollToSection("transparentnost")}
-                    className="mt-4 w-full h-[48px] rounded-full text-[14px] font-medium px-5 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    className="mt-4 w-full h-[52px] rounded-full bg-white text-[14px] font-medium px-6 transition-all duration-200 ease-out border hover:bg-[rgba(15,23,42,0.02)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
-                      background: 'var(--btn-secondary-bg)',
-                      border: '1px solid var(--btn-secondary-border)',
+                      borderColor: 'var(--btn-secondary-border)',
                       color: 'var(--btn-secondary-text)',
                       boxShadow: 'var(--shadow-card)'
                     }}
@@ -655,10 +638,10 @@ export default function HomePage() {
 
               <Button 
                 asChild 
-                className="mt-6 h-[44px] rounded-full text-[14px] font-medium px-5 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                variant="outline"
+                className="mt-6 h-[44px] rounded-full bg-white text-[14px] font-medium px-5 transition-all duration-200 ease-out border hover:bg-[rgba(15,23,42,0.02)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                 style={{
-                  background: 'var(--btn-secondary-bg)',
-                  border: '1px solid var(--btn-secondary-border)',
+                  borderColor: 'var(--btn-secondary-border)',
                   color: 'var(--btn-secondary-text)',
                   boxShadow: 'var(--shadow-card)'
                 }}
@@ -667,14 +650,7 @@ export default function HomePage() {
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-hover-bg)';
-                    e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border-hover)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.parentElement!.style.background = 'var(--btn-secondary-bg)';
-                    e.currentTarget.parentElement!.style.borderColor = 'var(--btn-secondary-border)';
-                  }}
+                  className="flex items-center justify-center"
                 >
                   Otevřít metodiku v Google Sheets
                 </a>
@@ -750,17 +726,9 @@ export default function HomePage() {
               <AccordionItem
                 key={faq.question}
                 value={faq.question}
-                className="rounded-2xl p-5 md:p-6 transition-all duration-200 ease-out font-uiSans cursor-pointer"
+                className="rounded-2xl bg-white border border-[var(--color-border)] p-5 md:p-6 transition-all duration-200 ease-out font-uiSans cursor-pointer hover:bg-[rgba(15,23,42,0.02)]"
                 style={{
-                  background: 'var(--bg-card)',
-                  border: '1px solid var(--color-border)',
                   boxShadow: 'var(--shadow-card)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--btn-secondary-hover-bg)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'var(--bg-card)';
                 }}
               >
                 <AccordionTrigger 
