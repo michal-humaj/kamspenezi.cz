@@ -9,20 +9,28 @@ interface BasicInputsProps {
   updateState: (updates: Partial<CalculatorState>) => void;
 }
 
-// Format number with spaces as thousand separators
 function formatNumber(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-// Parse formatted number back to plain number
-function parseFormattedNumber(value: string): number {
-  return Number(value.replace(/\s/g, ""));
-}
-
 export function BasicInputs({ state, updateState }: BasicInputsProps) {
+  const handleNumberInput = (
+    field: keyof CalculatorState,
+    value: string,
+    isBlur: boolean = false
+  ) => {
+    // Remove spaces for parsing
+    const cleanValue = value.replace(/\s/g, "");
+    const numValue = cleanValue === "" ? 0 : Number(cleanValue);
+    
+    if (!isNaN(numValue)) {
+      updateState({ [field]: numValue } as Partial<CalculatorState>);
+    }
+  };
+
   return (
     <div className="space-y-5">
-      {/* 1. Kupní cena nemovitosti - CRITICAL */}
+      {/* 1. Kupní cena nemovitosti */}
       <div className="space-y-2">
         <Label htmlFor="kupni-cena" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Kupní cena nemovitosti (Kč)
@@ -31,24 +39,22 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
           id="kupni-cena"
           type="text"
           value={formatNumber(state.kupniCena)}
-          onChange={(e) => {
-            const parsed = parseFormattedNumber(e.target.value);
-            if (!isNaN(parsed)) {
-              updateState({ kupniCena: parsed });
-            }
-          }}
+          onChange={(e) => handleNumberInput("kupniCena", e.target.value)}
           onBlur={(e) => {
-            // Re-format on blur
+            // Reformat on blur
             e.target.value = formatNumber(state.kupniCena);
           }}
-          className="font-uiSans text-base"
+          className="font-uiSans text-base transition-all"
+          style={{
+            animation: "fadeIn 0.3s ease-out",
+          }}
         />
         <p className="font-uiSans text-xs text-[var(--color-secondary)]">
           Celková cena bytu, který chceš koupit
         </p>
       </div>
 
-      {/* 2. Vlastní zdroje - CRITICAL */}
+      {/* 2. Vlastní zdroje */}
       <div className="space-y-2">
         <Label htmlFor="vlastni-zdroje" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Vlastní zdroje (%)
@@ -61,14 +67,13 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
           className="font-uiSans text-base"
           min={0}
           max={100}
-          step={1}
         />
         <p className="font-uiSans text-xs text-[var(--color-secondary)]">
           Kolik procent kupní ceny máš našetřeno
         </p>
       </div>
 
-      {/* 3. Úroková sazba hypotéky - CRITICAL */}
+      {/* 3. Úroková sazba hypotéky */}
       <div className="space-y-2">
         <Label htmlFor="urokova-sazba" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Úroková sazba hypotéky (% p.a.)
@@ -86,7 +91,7 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
         </p>
       </div>
 
-      {/* 4. Nájemné - CRITICAL */}
+      {/* 4. Nájemné */}
       <div className="space-y-2">
         <Label htmlFor="najemne" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Nájemné (Kč / měsíc)
@@ -95,17 +100,15 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
           id="najemne"
           type="text"
           value={formatNumber(state.najemne)}
-          onChange={(e) => {
-            const parsed = parseFormattedNumber(e.target.value);
-            if (!isNaN(parsed)) {
-              updateState({ najemne: parsed });
-            }
-          }}
+          onChange={(e) => handleNumberInput("najemne", e.target.value)}
           onBlur={(e) => {
-            // Re-format on blur
+            // Reformat on blur
             e.target.value = formatNumber(state.najemne);
           }}
-          className="font-uiSans text-base"
+          className="font-uiSans text-base transition-all"
+          style={{
+            animation: "fadeIn 0.3s ease-out",
+          }}
         />
         <p className="font-uiSans text-xs text-[var(--color-secondary)]">
           Měsíční nájem za podobný byt

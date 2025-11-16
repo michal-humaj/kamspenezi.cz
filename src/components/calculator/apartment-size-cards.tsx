@@ -7,6 +7,7 @@ interface ApartmentSizeCardsProps {
 }
 
 // Mock apartment data by city and size
+// Structure: city -> size -> { kupniCena, najemne }
 const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne: number }>> = {
   Praha: {
     "1+kk": { kupniCena: 5200000, najemne: 18000 },
@@ -44,11 +45,11 @@ const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne
 const SIZES = ["1+kk", "2+kk", "3+kk", "4+kk"];
 
 function formatPrice(price: number): string {
-  return (price / 1000000).toFixed(1) + " mil. Kč";
+  return `${(price / 1000000).toFixed(1)} mil. Kč`;
 }
 
 function formatRent(rent: number): string {
-  return rent.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " Kč / měsíc";
+  return `${(rent / 1000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Kč / měsíc`;
 }
 
 export function ApartmentSizeCards({
@@ -63,7 +64,7 @@ export function ApartmentSizeCards({
   return (
     <div>
       {/* Desktop: Grid layout */}
-      <div className="hidden gap-3 md:grid md:grid-cols-4">
+      <div className="hidden gap-4 md:grid md:grid-cols-4">
         {SIZES.map((size) => {
           const data = cityData[size];
           const isSelected = selectedSize === size;
@@ -71,16 +72,13 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="rounded-xl p-4 text-left transition-all"
+              className="rounded-[var(--radius-card)] p-5 text-left transition-all"
               style={{
                 border: isSelected
                   ? "2px solid var(--scenario-b-dot)"
                   : "1px solid var(--color-border)",
                 background: isSelected ? "var(--scenario-b-bg)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--shadow-card-hover)" : "none",
-                cursor: "pointer",
-                transitionDuration: "var(--transition-duration)",
-                transitionTimingFunction: "var(--transition-easing)",
+                boxShadow: isSelected ? "var(--shadow-card-hover)" : "var(--shadow-card)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
@@ -96,10 +94,10 @@ export function ApartmentSizeCards({
               }}
             >
               <div className="space-y-3">
-                <div className="font-uiSans text-2xl font-semibold text-[var(--color-primary)]">
+                <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
                     {formatPrice(data.kupniCena)}
                   </div>
@@ -113,12 +111,12 @@ export function ApartmentSizeCards({
         })}
       </div>
 
-      {/* Mobile: Horizontal scrollable */}
+      {/* Mobile: Horizontal scrollable with visible overflow hint */}
       <div 
         className="flex gap-3 overflow-x-auto pb-2 md:hidden" 
         style={{ 
           scrollSnapType: "x mandatory",
-          WebkitOverflowScrolling: "touch",
+          scrollPaddingRight: "16px" // Show hint of next card
         }}
       >
         {SIZES.map((size) => {
@@ -128,24 +126,21 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="min-w-[260px] shrink-0 rounded-xl p-4 text-left transition-all"
+              className="min-w-[240px] shrink-0 rounded-[18px] p-4 text-left transition-all"
               style={{
                 border: isSelected
                   ? "2px solid var(--scenario-b-dot)"
                   : "1px solid var(--color-border)",
                 background: isSelected ? "var(--scenario-b-bg)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--shadow-card-hover)" : "none",
+                boxShadow: isSelected ? "var(--shadow-card-hover)" : "var(--shadow-card)",
                 scrollSnapAlign: "start",
-                cursor: "pointer",
-                transitionDuration: "var(--transition-duration)",
-                transitionTimingFunction: "var(--transition-easing)",
               }}
             >
               <div className="space-y-3">
-                <div className="font-uiSans text-2xl font-semibold text-[var(--color-primary)]">
+                <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
                     {formatPrice(data.kupniCena)}
                   </div>

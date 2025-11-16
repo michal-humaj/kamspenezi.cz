@@ -130,9 +130,9 @@ export default function BydleniKalkulackaPage() {
 
       {/* City and Apartment Selection Section */}
       <section
-        className="space-y-6 rounded-[var(--radius-card)] bg-[var(--bg-card)] p-4 md:p-6"
+        className="space-y-6 rounded-[var(--radius-card)] bg-[var(--bg-card)] p-4 md:border md:p-6"
         style={{ 
-          border: "1px solid var(--color-border)",
+          borderColor: "var(--color-border)",
           boxShadow: "var(--shadow-card)"
         }}
       >

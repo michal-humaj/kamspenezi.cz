@@ -83,6 +83,15 @@
     @apply font-uiSans text-[var(--color-secondary)] text-base leading-relaxed;
   }
 
+  @keyframes fadeIn {
+    from {
+      opacity: 0.5;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   /* Logo Wordmark - Premium Wealthsimple-style */
   .nav-logo {
     margin-right: auto !important;
