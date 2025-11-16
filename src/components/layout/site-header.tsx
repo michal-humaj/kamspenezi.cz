@@ -89,11 +89,11 @@ export function SiteHeader() {
               <nav className="flex flex-col gap-6 pt-16">
                 <Link
                   href="/"
-                  className="font-displaySerif text-[1.4rem] font-semibold text-text-main"
+                  className="font-displaySerif text-[1.4rem] font-semibold text-slate-900"
                 >
                   kamspenezi.cz
                 </Link>
-                <div className="flex flex-col gap-5 text-text-main">
+                <div className="flex flex-col gap-5 text-slate-900">
                   <Link
                     href="/"
                     className="text-[1.3rem] font-semibold"
@@ -107,13 +107,13 @@ export function SiteHeader() {
                     >
                       Investice
                     </Link>
-                    <span className="rounded-pill bg-surface-soft px-3 py-1 text-xs font-medium text-text-muted">
+                    <span className="rounded-pill bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
                       Nové
                     </span>
                   </div>
                 </div>
-                <div className="h-px bg-border-subtle" />
-                <div className="flex flex-col gap-3 text-body font-medium text-text-main">
+                <div className="h-px bg-slate-200" />
+                <div className="flex flex-col gap-3 text-body font-medium text-slate-900">
                   <Link href="/o-projektu">O projektu</Link>
                   <Link href="/kontakt">Kontakt</Link>
                 </div>
