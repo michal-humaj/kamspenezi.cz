@@ -372,7 +372,7 @@ export default function HomePage() {
               <li className="flex items-start gap-3">
                 <span 
                   className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
-                  style={{ background: 'var(--accent-bullet)' }}
+                  style={{ background: 'var(--color-bullet)' }}
                 />
                 <span>Pásmo, ve kterém se výsledky typicky pohybují, pokud se trh vyvíjí lépe nebo hůř</span>
               </li>
