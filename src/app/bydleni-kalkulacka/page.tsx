@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { CitySelector } from "@/components/calculator/city-selector";
 import { ApartmentSizeCards } from "@/components/calculator/apartment-size-cards";
 import { BasicInputs } from "@/components/calculator/basic-inputs";
@@ -8,30 +8,30 @@ import { UncertaintyInputs } from "@/components/calculator/uncertainty-inputs";
 import { AdvancedInputs } from "@/components/calculator/advanced-inputs";
 import { ResultsPanel } from "@/components/calculator/results-panel";
 import { Button } from "@/components/ui/button";
+import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
 
 // Types for calculator state
 export interface CalculatorState {
-  // City and apartment
   selectedCity: string | null;
   selectedApartmentSize: string | null;
   
   // Basic inputs
   kupniCena: number;
-  vlastniZdroje: number; // percentage
-  urokovaSazba: number; // percentage p.a.
+  vlastniZdroje: number;
+  urokovaSazba: number;
   najemne: number;
-  etfVynos: number; // percentage p.a.
+  etfVynos: number;
   
   // Advanced inputs
   prispevekRodicu: number;
   zarizeniNemovitosti: number;
-  rustHodnotyNemovitosti: number; // percentage p.a.
+  rustHodnotyNemovitosti: number;
   fondOprav: number;
   pojisteniNemovitosti: number;
   danZNemovitosti: number;
-  nakladyUdrzba: number; // percentage
-  ocekavanaInflace: number; // percentage p.a.
-  rustNajemneho: number; // percentage p.a.
+  nakladyUdrzba: number;
+  ocekavanaInflace: number;
+  rustNajemneho: number;
   
   // Monte Carlo uncertainty parameters
   etfVynosMin: number;
@@ -52,44 +52,54 @@ export interface CalculatorState {
 const initialState: CalculatorState = {
   selectedCity: "Praha",
   selectedApartmentSize: "2+kk",
-  kupniCena: 7800000, // Praha 2+kk default
+  kupniCena: 10000000,
   vlastniZdroje: 20,
-  urokovaSazba: 5.5,
-  najemne: 24000, // Praha 2+kk default
-  etfVynos: 8.0,
-  prispevekRodicu: 0,
-  zarizeniNemovitosti: 150000,
-  rustHodnotyNemovitosti: 3.0,
-  fondOprav: 1500,
-  pojisteniNemovitosti: 3000,
+  urokovaSazba: 4.5,
+  najemne: 18000,
+  etfVynos: 9.0,
+  prispevekRodicu: 500000,
+  zarizeniNemovitosti: 250000,
+  rustHodnotyNemovitosti: 7.0,
+  fondOprav: 300,
+  pojisteniNemovitosti: 1900,
   danZNemovitosti: 2000,
-  nakladyUdrzba: 0.5,
-  ocekavanaInflace: 2.5,
-  rustNajemneho: 3.0,
+  nakladyUdrzba: 1.0,
+  ocekavanaInflace: 3.0,
+  rustNajemneho: 4.0,
   etfVynosMin: 4.0,
-  etfVynosExpected: 8.0,
+  etfVynosExpected: 9.0,
   etfVynosMax: 12.0,
   rustHodnotyMin: 1.0,
-  rustHodnotyExpected: 3.0,
-  rustHodnotyMax: 6.0,
+  rustHodnotyExpected: 7.0,
+  rustHodnotyMax: 10.0,
   rustNajemnehoMin: 1.5,
-  rustNajemnehoExpected: 3.0,
-  rustNajemnehoMax: 5.0,
-  urokovaSazbaMin: 4.0,
-  urokovaSazbaExpected: 5.5,
-  urokovaSazbaMax: 8.0,
+  rustNajemnehoExpected: 4.0,
+  rustNajemnehoMax: 6.0,
+  urokovaSazbaMin: 3.0,
+  urokovaSazbaExpected: 4.5,
+  urokovaSazbaMax: 7.0,
 };
 
 export default function BydleniKalkulackaPage() {
   const [state, setState] = useState<CalculatorState>(initialState);
   const [resultsMode, setResultsMode] = useState<"realistic" | "fixed">("realistic");
+  const [previousKupniCena, setPreviousKupniCena] = useState(state.kupniCena);
+  const [previousNajemne, setPreviousNajemne] = useState(state.najemne);
 
-  // Handler for city selection
+  // Track external changes to kupniCena and najemne (from city/apartment selection)
+  useEffect(() => {
+    if (state.kupniCena !== previousKupniCena) {
+      setPreviousKupniCena(state.kupniCena);
+    }
+    if (state.najemne !== previousNajemne) {
+      setPreviousNajemne(state.najemne);
+    }
+  }, [state.kupniCena, state.najemne, previousKupniCena, previousNajemne]);
+
   const handleCitySelect = (city: string) => {
     setState((prev) => ({ ...prev, selectedCity: city }));
   };
 
-  // Handler for apartment size selection
   const handleApartmentSelect = (size: string, kupniCena: number, najemne: number) => {
     setState((prev) => ({
       ...prev,
@@ -99,119 +109,142 @@ export default function BydleniKalkulackaPage() {
     }));
   };
 
-  // Handler for input updates
   const updateState = (updates: Partial<CalculatorState>) => {
     setState((prev) => ({ ...prev, ...updates }));
   };
 
-  // Check if user can view results (city and apartment selected)
+  // Calculate results - both modes use the same calculation
+  const calculationResults = useMemo(() => {
+    return calculateBydleniFixed({
+      purchasePrice: state.kupniCena,
+      parentsContribution: state.prispevekRodicu,
+      mortgageRateAnnual: state.urokovaSazba / 100, // Convert % to decimal
+      ownFundsRatio: state.vlastniZdroje / 100, // Convert % to decimal
+      furnishingOneOff: state.zarizeniNemovitosti,
+      // Use EXPECTED values from uncertainty section for time-based growth
+      propertyGrowthAnnual: state.rustHodnotyExpected / 100,
+      repairFundMonthly: state.fondOprav,
+      insuranceAnnual: state.pojisteniNemovitosti,
+      propertyTaxAnnual: state.danZNemovitosti,
+      maintenancePctAnnual: state.nakladyUdrzba / 100,
+      costInflationAnnual: state.ocekavanaInflace / 100,
+      rentGrowthAnnual: state.rustNajemnehoExpected / 100,
+      rentMonthly: state.najemne,
+      etfReturnAnnual: state.etfVynosExpected / 100,
+    });
+  }, [state]);
+
   const canViewResults = state.selectedCity && state.selectedApartmentSize;
 
   const scrollToResults = () => {
-    document.getElementById("vysledek")?.scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById("vysledek");
+    if (element) {
+      const yOffset = -80;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   const scrollToInputs = () => {
-    document.getElementById("nastaveni")?.scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById("nastaveni");
+    if (element) {
+      const yOffset = -80;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   return (
-    <main className="bg-[var(--bg-base)]">
+    <main className="bg-[var(--bg-base)] min-h-screen">
       <div className="mx-auto max-w-6xl space-y-8 px-4 py-[var(--section-padding-y-mobile)] md:space-y-12 md:px-6 md:py-[var(--section-padding-y-desktop)]">
-      {/* Hero Header */}
-      <header className="space-y-3 text-center">
-        <h1 className="font-displaySerif text-3xl font-bold text-[var(--color-primary)] md:text-4xl">
-          Bydlení kalkulačka
-        </h1>
-        <p className="mx-auto max-w-2xl font-uiSans text-base text-[var(--color-secondary)] md:text-lg">
-          Porovnej, jestli se ti víc vyplatí koupit byt na hypotéku, nebo pronajímat a investovat do ETF. 
-          Stačí vybrat město a velikost bytu.
-        </p>
-      </header>
-
-      {/* City and Apartment Selection Section */}
-      <section
-        className="space-y-6 rounded-[var(--radius-card)] bg-[var(--bg-card)] p-4 md:border md:p-6"
-        style={{ 
-          borderColor: "var(--color-border)",
-          boxShadow: "var(--shadow-card)"
-        }}
-      >
-        <div className="space-y-2">
-          <h2 className="font-uiSans text-xl font-semibold text-[var(--color-primary)] md:text-2xl">
-            Začni městem a velikostí bytu
-          </h2>
-          <p className="font-uiSans text-sm text-[var(--color-secondary)] md:text-base">
-            Stačí vybrat město a typ bytu. Ceny doplníme za tebe podle dat z českých měst.
+        {/* Hero Header */}
+        <header className="space-y-3 text-center">
+          <h1 className="font-displaySerif text-3xl font-bold text-[var(--color-primary)] md:text-4xl lg:text-5xl">
+            Bydlení kalkulačka
+          </h1>
+          <p className="mx-auto max-w-2xl font-uiSans text-base leading-relaxed text-[var(--color-secondary)] md:text-lg">
+            Porovnej, jestli se ti víc vyplatí koupit byt na hypotéku, nebo pronajímat a investovat do ETF. 
+            Stačí vybrat město a velikost bytu.
           </p>
-        </div>
+        </header>
 
-        <CitySelector
-          selectedCity={state.selectedCity}
-          onCitySelect={handleCitySelect}
-        />
-
-        <ApartmentSizeCards
-          selectedCity={state.selectedCity}
-          selectedSize={state.selectedApartmentSize}
-          onSizeSelect={handleApartmentSelect}
-        />
-
-        {/* Mobile: Show results button after selection */}
-        <div className="md:hidden">
-          {canViewResults && (
-            <Button
-              onClick={scrollToResults}
-              className="w-full"
-              style={{
-                background: "var(--btn-primary-bg)",
-                color: "var(--btn-primary-text)",
-              }}
-            >
-              Zobrazit výsledek
-            </Button>
-          )}
-        </div>
-      </section>
-
-      {/* Desktop: Two-column layout for Inputs + Results */}
-      {/* Mobile: Stacked layout */}
-      <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8">
-        {/* Left Column: Inputs */}
-        <div id="nastaveni" className="space-y-6">
-          {/* Basic Inputs */}
-          <section
-            className="space-y-4 rounded-[var(--radius-card)] bg-[var(--bg-card)] p-4 md:p-6"
-            style={{ 
-              border: "1px solid var(--color-border)",
-              boxShadow: "var(--shadow-card)"
-            }}
-          >
-            <h2 className="font-uiSans text-lg font-semibold text-[var(--color-primary)] md:text-xl">
-              Základní nastavení
+        {/* City and Apartment Selection Section */}
+        <section
+          className="space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
+        >
+          <div className="space-y-2 px-4 md:px-0">
+            <h2 className="font-uiSans text-xl font-semibold text-[var(--color-primary)] md:text-2xl">
+              Začni městem a velikostí bytu
             </h2>
-            <BasicInputs state={state} updateState={updateState} />
-          </section>
+            <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)] md:text-base">
+              Stačí vybrat město a typ bytu. Ceny doplníme za tebe podle dat z českých měst.
+            </p>
+          </div>
 
-          {/* Uncertainty Inputs (Advanced, Collapsed) */}
-          <UncertaintyInputs state={state} updateState={updateState} />
+          <div className="px-4 md:px-0">
+            <CitySelector
+              selectedCity={state.selectedCity}
+              onCitySelect={handleCitySelect}
+            />
+          </div>
 
-          {/* Advanced Inputs (Collapsed) */}
-          <AdvancedInputs state={state} updateState={updateState} />
-        </div>
-
-        {/* Right Column: Results (Sticky on Desktop) */}
-        <aside className="md:sticky md:top-24 md:self-start">
-          <ResultsPanel
-            state={state}
-            resultsMode={resultsMode}
-            setResultsMode={setResultsMode}
-            onEditSettings={scrollToInputs}
+          <ApartmentSizeCards
+            selectedCity={state.selectedCity}
+            selectedSize={state.selectedApartmentSize}
+            onSizeSelect={handleApartmentSelect}
           />
-        </aside>
-      </div>
+
+          {/* Mobile: Show results button after selection */}
+          <div className="px-4 md:hidden">
+            {canViewResults && (
+              <Button
+                onClick={scrollToResults}
+                className="w-full rounded-[var(--radius-pill)] px-6 py-3 font-uiSans text-base font-semibold focus:outline-none"
+                style={{
+                  background: "var(--color-primary)",
+                  color: "#FFFFFF",
+                  boxShadow: "var(--shadow-card)",
+                }}
+              >
+                Zobrazit výsledek
+              </Button>
+            )}
+          </div>
+        </section>
+
+        {/* Desktop: Two-column layout / Mobile: Stacked */}
+        <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
+          {/* Left Column: Inputs */}
+          <div id="nastaveni" className="space-y-6">
+            {/* Basic Inputs */}
+            <section
+              className="space-y-5 rounded-none border-none bg-transparent p-4 shadow-none md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
+            >
+              <h2 className="font-uiSans text-lg font-semibold text-[var(--color-primary)] md:text-xl">
+                Základní nastavení
+              </h2>
+              <BasicInputs state={state} updateState={updateState} />
+            </section>
+
+            {/* Uncertainty Inputs (Advanced, Collapsed) */}
+            <UncertaintyInputs state={state} updateState={updateState} resultsMode={resultsMode} />
+
+            {/* Advanced Inputs (Collapsed) */}
+            <AdvancedInputs state={state} updateState={updateState} />
+          </div>
+
+          {/* Right Column: Results (Sticky on Desktop, Below on Mobile) */}
+          <aside className="mt-12 md:mt-0 md:sticky md:top-24 md:self-start">
+            <ResultsPanel
+              state={state}
+              resultsMode={resultsMode}
+              setResultsMode={setResultsMode}
+              onEditSettings={scrollToInputs}
+              calculationResults={calculationResults}
+            />
+          </aside>
+        </div>
       </div>
     </main>
   );
 }
-

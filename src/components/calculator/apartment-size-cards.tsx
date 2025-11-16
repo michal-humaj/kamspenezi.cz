@@ -7,7 +7,6 @@ interface ApartmentSizeCardsProps {
 }
 
 // Mock apartment data by city and size
-// Structure: city -> size -> { kupniCena, najemne }
 const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne: number }>> = {
   Praha: {
     "1+kk": { kupniCena: 5200000, najemne: 18000 },
@@ -33,7 +32,6 @@ const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne
     "3+kk": { kupniCena: 5200000, najemne: 17000 },
     "4+kk": { kupniCena: 6500000, najemne: 22000 },
   },
-  // Default fallback for other cities
   Default: {
     "1+kk": { kupniCena: 2500000, najemne: 9000 },
     "2+kk": { kupniCena: 3800000, najemne: 12000 },
@@ -44,12 +42,11 @@ const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne
 
 const SIZES = ["1+kk", "2+kk", "3+kk", "4+kk"];
 
-function formatPrice(price: number): string {
-  return `${(price / 1000000).toFixed(1)} mil. Kč`;
-}
-
-function formatRent(rent: number): string {
-  return `${(rent / 1000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Kč / měsíc`;
+// Simplified formatting: "7,8 mil · 24 tis / měsíc"
+function formatCardText(price: number, rent: number): string {
+  const priceInMil = (price / 1000000).toFixed(1).replace(".", ",");
+  const rentInTis = Math.round(rent / 1000);
+  return `${priceInMil} mil · ${rentInTis} tis / měsíc`;
 }
 
 export function ApartmentSizeCards({
@@ -72,39 +69,53 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="rounded-[var(--radius-card)] p-5 text-left"
+              className="group rounded-[var(--radius-card)] p-5 text-left focus:outline-none"
               style={{
                 border: isSelected
-                  ? "2px solid var(--color-primary)"
-                  : "1px solid var(--color-border)",
-                background: isSelected ? "var(--bg-lilac-section)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--shadow-card-hover)" : "var(--shadow-card)",
-                transition: "all var(--transition-duration) var(--transition-easing)",
+                  ? "2px solid rgba(125,90,226,0.8)"
+                  : "2px solid var(--color-border)",
+                background: isSelected ? "rgba(125,90,226,0.03)" : "var(--bg-card)",
+                boxShadow: isSelected ? "0 4px 12px rgba(125,90,226,0.15)" : "var(--shadow-card)",
+                transform: "scale(1)",
+                transitionProperty: "transform, box-shadow, border-color, background-color",
+                transitionDuration: "var(--transition-duration)",
+                transitionTimingFunction: "var(--transition-easing)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "var(--btn-secondary-hover-bg)";
+                  e.currentTarget.style.background = "rgba(15,23,42,0.02)";
                   e.currentTarget.style.borderColor = "var(--color-border-hover)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-card-hover)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "var(--bg-card)";
                   e.currentTarget.style.borderColor = "var(--color-border)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-card)";
+                }
+              }}
+              onFocus={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = "#9F7AEA";
+                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(159, 122, 234, 0.1)";
+                }
+              }}
+              onBlur={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-card)";
                 }
               }}
             >
-              <div className="space-y-3">
+              <div className="space-y-2">
+                {/* Line 1: Apartment size */}
                 <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                <div className="space-y-1.5">
-                  <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
-                    {formatPrice(data.kupniCena)}
-                  </div>
-                  <div className="font-uiSans text-sm text-[var(--color-secondary)]">
-                    {formatRent(data.najemne)}
-                  </div>
+                {/* Line 2: Price and rent merged */}
+                <div className="font-uiSans text-sm text-[var(--color-secondary)]">
+                  {formatCardText(data.kupniCena, data.najemne)}
                 </div>
               </div>
             </button>
@@ -112,13 +123,15 @@ export function ApartmentSizeCards({
         })}
       </div>
 
-      {/* Mobile: Horizontal scrollable with visible overflow hint */}
+      {/* Mobile: Horizontal scrollable - cuts off at screen edges */}
       <div 
         className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:hidden" 
         style={{ 
           scrollSnapType: "x mandatory",
           scrollPaddingLeft: "16px",
-          scrollPaddingRight: "16px"
+          scrollPaddingRight: "16px",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
         }}
       >
         {SIZES.map((size) => {
@@ -128,28 +141,40 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="min-w-[260px] shrink-0 rounded-[18px] p-4 text-left"
+              className="min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left focus:outline-none"
               style={{
                 border: isSelected
-                  ? "2px solid var(--color-primary)"
-                  : "1px solid var(--color-border)",
-                background: isSelected ? "var(--bg-lilac-section)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--shadow-card-hover)" : "var(--shadow-card)",
+                  ? "2px solid rgba(125,90,226,0.8)"
+                  : "2px solid var(--color-border)",
+                background: isSelected ? "rgba(125,90,226,0.03)" : "var(--bg-card)",
+                boxShadow: isSelected ? "0 4px 12px rgba(125,90,226,0.15)" : "var(--shadow-card)",
                 scrollSnapAlign: "start",
-                transition: "all var(--transition-duration) var(--transition-easing)",
+                transform: "scale(1)",
+                transitionProperty: "transform, box-shadow, border-color, background-color",
+                transitionDuration: "var(--transition-duration)",
+                transitionTimingFunction: "var(--transition-easing)",
+              }}
+              onFocus={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = "#9F7AEA";
+                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(159, 122, 234, 0.1)";
+                }
+              }}
+              onBlur={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-card)";
+                }
               }}
             >
-              <div className="space-y-3">
+              <div className="space-y-2">
+                {/* Line 1: Apartment size */}
                 <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                <div className="space-y-1.5">
-                  <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
-                    {formatPrice(data.kupniCena)}
-                  </div>
-                  <div className="font-uiSans text-sm text-[var(--color-secondary)]">
-                    {formatRent(data.najemne)}
-                  </div>
+                {/* Line 2: Price and rent merged */}
+                <div className="font-uiSans text-sm text-[var(--color-secondary)]">
+                  {formatCardText(data.kupniCena, data.najemne)}
                 </div>
               </div>
             </button>

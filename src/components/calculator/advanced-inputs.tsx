@@ -1,13 +1,13 @@
 "use client";
 
+import * as React from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { InputWithSuffix } from "./input-with-suffix";
 import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
 
 interface AdvancedInputsProps {
@@ -15,197 +15,190 @@ interface AdvancedInputsProps {
   updateState: (updates: Partial<CalculatorState>) => void;
 }
 
+function formatNumber(value: number): string {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+function parseNumber(value: string): number {
+  const cleanValue = value.replace(/\s/g, "");
+  return cleanValue === "" ? 0 : Number(cleanValue);
+}
+
 export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible onValueChange={(value) => setIsExpanded(value === "advanced")}>
       <AccordionItem
         value="advanced"
-        className="rounded-[var(--radius-card)] border-0 bg-[var(--bg-card)] transition-all"
-        style={{ 
-          border: "1px solid var(--color-border)",
-          boxShadow: "var(--shadow-card)",
-        }}
+        className="rounded-none border-none bg-transparent p-0 shadow-none transition-all md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)]"
         onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = "var(--shadow-card-hover)";
+          if (window.innerWidth >= 768 && !isExpanded) {
+            e.currentTarget.style.background = "rgba(15,23,42,0.02)";
+            e.currentTarget.style.borderColor = "var(--color-border-hover)";
+          }
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = "var(--shadow-card)";
+          if (window.innerWidth >= 768 && !isExpanded) {
+            e.currentTarget.style.background = "var(--bg-card)";
+            e.currentTarget.style.borderColor = "var(--color-border)";
+          }
         }}
       >
         <AccordionTrigger 
-          className="w-full cursor-pointer px-5 py-4 font-uiSans text-[18px] font-semibold text-[var(--color-primary)] hover:no-underline md:px-6"
+          className="w-full cursor-pointer px-4 py-4 font-uiSans text-lg font-semibold hover:no-underline md:px-6 md:text-xl"
           style={{
+            color: "var(--color-primary)",
             transitionDuration: "var(--transition-duration)",
             transitionTimingFunction: "var(--transition-easing)",
-            fontFamily: "var(--font-ui-sans)",
           }}
         >
-          <span className="font-uiSans">Rozšířené předpoklady</span>
+          <span>Rozšířené předpoklady</span>
         </AccordionTrigger>
-        <AccordionContent className="space-y-5 px-5 pb-5 pt-2 md:px-6 md:pb-6">
-          <p className="font-uiSans text-sm text-[var(--color-secondary)]">
+        <AccordionContent className="space-y-5 px-4 pb-5 pt-2 md:px-6 md:pb-6">
+          <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
             Vše je předvyplněné realistickými hodnotami, měnit je nemusíš.
           </p>
 
-          {/* Příspěvek od rodičů */}
-          <div className="space-y-2">
-            <Label htmlFor="prispevek-rodicu" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Příspěvek od rodičů na koupi nemovitosti (Kč)
-            </Label>
-            <Input
-              id="prispevek-rodicu"
-              type="number"
-              value={state.prispevekRodicu}
-              onChange={(e) => updateState({ prispevekRodicu: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Jednorázový finanční dar od rodičů (pouze při koupi bytu)
-            </p>
-          </div>
+          {/* 1. Příspěvek od rodičů */}
+          <InputWithSuffix
+            id="prispevek-rodicu"
+            label="Příspěvek od rodičů na koupi nemovitosti"
+            value={formatNumber(state.prispevekRodicu)}
+            suffix="Kč"
+            helperText="Jednorázový finanční dar od rodičů (pouze při koupi bytu)"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9 ]*"
+            onChange={(value) => {
+              const numValue = parseNumber(value);
+              if (!isNaN(numValue)) {
+                updateState({ prispevekRodicu: numValue });
+              }
+            }}
+          />
 
-          {/* Zařízení nemovitosti */}
-          <div className="space-y-2">
-            <Label htmlFor="zarizeni" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Zařízení nemovitosti (Kč, jednorázově)
-            </Label>
-            <Input
-              id="zarizeni"
-              type="number"
-              value={state.zarizeniNemovitosti}
-              onChange={(e) => updateState({ zarizeniNemovitosti: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Náklady na nábytek a vybavení bytu
-            </p>
-          </div>
+          {/* 2. Zařízení nemovitosti */}
+          <InputWithSuffix
+            id="zarizeni"
+            label="Zařízení nemovitosti"
+            value={formatNumber(state.zarizeniNemovitosti)}
+            suffix="Kč"
+            helperText="Náklady na nábytek a vybavení bytu (jednorázově)"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9 ]*"
+            onChange={(value) => {
+              const numValue = parseNumber(value);
+              if (!isNaN(numValue)) {
+                updateState({ zarizeniNemovitosti: numValue });
+              }
+            }}
+          />
 
-          {/* Růst hodnoty nemovitosti */}
-          <div className="space-y-2">
-            <Label htmlFor="rust-hodnoty" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Růst hodnoty nemovitosti (% p.a.)
-            </Label>
-            <Input
-              id="rust-hodnoty"
-              type="number"
-              step="0.1"
-              value={state.rustHodnotyNemovitosti}
-              onChange={(e) => updateState({ rustHodnotyNemovitosti: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Očekávané roční zhodnocení nemovitosti
-            </p>
-          </div>
+          {/* 3. Růst hodnoty nemovitosti */}
+          <InputWithSuffix
+            id="rust-hodnoty"
+            label="Růst hodnoty nemovitosti (% p.a.)"
+            value={state.rustHodnotyNemovitosti}
+            suffix="%"
+            helperText="Očekávané roční zhodnocení nemovitosti"
+            type="text"
+            inputMode="decimal"
+            onChange={(value) => updateState({ rustHodnotyNemovitosti: Number(value) })}
+          />
 
-          {/* Fond oprav */}
-          <div className="space-y-2">
-            <Label htmlFor="fond-oprav" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Fond oprav (Kč / měsíc)
-            </Label>
-            <Input
-              id="fond-oprav"
-              type="number"
-              value={state.fondOprav}
-              onChange={(e) => updateState({ fondOprav: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Měsíční příspěvek do fondu oprav domu
-            </p>
-          </div>
+          {/* 4. Fond oprav */}
+          <InputWithSuffix
+            id="fond-oprav"
+            label="Fond oprav (Kč / měsíc)"
+            value={formatNumber(state.fondOprav)}
+            suffix="Kč"
+            helperText="Měsíční příspěvek do fondu oprav domu"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9 ]*"
+            onChange={(value) => {
+              const numValue = parseNumber(value);
+              if (!isNaN(numValue)) {
+                updateState({ fondOprav: numValue });
+              }
+            }}
+          />
 
-          {/* Pojištění nemovitosti */}
-          <div className="space-y-2">
-            <Label htmlFor="pojisteni" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Pojištění nemovitosti (Kč / rok)
-            </Label>
-            <Input
-              id="pojisteni"
-              type="number"
-              value={state.pojisteniNemovitosti}
-              onChange={(e) => updateState({ pojisteniNemovitosti: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Roční náklady na pojištění nemovitosti
-            </p>
-          </div>
+          {/* 5. Pojištění nemovitosti */}
+          <InputWithSuffix
+            id="pojisteni"
+            label="Pojištění nemovitosti (Kč / rok)"
+            value={formatNumber(state.pojisteniNemovitosti)}
+            suffix="Kč"
+            helperText="Roční náklady na pojištění bytu"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9 ]*"
+            onChange={(value) => {
+              const numValue = parseNumber(value);
+              if (!isNaN(numValue)) {
+                updateState({ pojisteniNemovitosti: numValue });
+              }
+            }}
+          />
 
-          {/* Daň z nemovitosti */}
-          <div className="space-y-2">
-            <Label htmlFor="dan" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Daň z nemovitosti (Kč / rok)
-            </Label>
-            <Input
-              id="dan"
-              type="number"
-              value={state.danZNemovitosti}
-              onChange={(e) => updateState({ danZNemovitosti: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Roční daň z nemovitosti
-            </p>
-          </div>
+          {/* 6. Daň z nemovitosti */}
+          <InputWithSuffix
+            id="dan"
+            label="Daň z nemovitosti (Kč / rok)"
+            value={formatNumber(state.danZNemovitosti)}
+            suffix="Kč"
+            helperText="Roční daň z nemovitosti"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9 ]*"
+            onChange={(value) => {
+              const numValue = parseNumber(value);
+              if (!isNaN(numValue)) {
+                updateState({ danZNemovitosti: numValue });
+              }
+            }}
+          />
 
-          {/* Náklady na údržbu */}
-          <div className="space-y-2">
-            <Label htmlFor="udrzba" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Náklady na údržbu (% z hodnoty / rok)
-            </Label>
-            <Input
-              id="udrzba"
-              type="number"
-              step="0.1"
-              value={state.nakladyUdrzba}
-              onChange={(e) => updateState({ nakladyUdrzba: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Roční náklady na údržbu jako procento hodnoty nemovitosti
-            </p>
-          </div>
+          {/* 7. Náklady na údržbu */}
+          <InputWithSuffix
+            id="naklady-udrzba"
+            label="Náklady na údržbu (% z hodnoty / rok)"
+            value={state.nakladyUdrzba}
+            suffix="%"
+            helperText="Roční náklady na údržbu jako procento z hodnoty bytu"
+            type="text"
+            inputMode="decimal"
+            onChange={(value) => updateState({ nakladyUdrzba: Number(value) })}
+          />
 
-          {/* Očekávaná inflace nákladů */}
-          <div className="space-y-2">
-            <Label htmlFor="inflace" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Očekávaná inflace nákladů (% p.a.)
-            </Label>
-            <Input
-              id="inflace"
-              type="number"
-              step="0.1"
-              value={state.ocekavanaInflace}
-              onChange={(e) => updateState({ ocekavanaInflace: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Očekávaný roční růst všech nákladů
-            </p>
-          </div>
+          {/* 8. Očekávaná inflace nákladů */}
+          <InputWithSuffix
+            id="inflace"
+            label="Očekávaná inflace nákladů (% p.a.)"
+            value={state.ocekavanaInflace}
+            suffix="%"
+            helperText="Roční růst nákladů (pojištění, údržba, atd.)"
+            type="text"
+            inputMode="decimal"
+            onChange={(value) => updateState({ ocekavanaInflace: Number(value) })}
+          />
 
-          {/* Růst nájemného */}
-          <div className="space-y-2">
-            <Label htmlFor="rust-najemneho" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-              Růst nájemného (% p.a.)
-            </Label>
-            <Input
-              id="rust-najemneho"
-              type="number"
-              step="0.1"
-              value={state.rustNajemneho}
-              onChange={(e) => updateState({ rustNajemneho: Number(e.target.value) })}
-              className="font-uiSans text-base"
-            />
-            <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-              Očekávaný roční růst nájemného
-            </p>
-          </div>
+          {/* 9. Růst nájemného */}
+          <InputWithSuffix
+            id="rust-najemneho"
+            label="Růst nájemného (% p.a.)"
+            value={state.rustNajemneho}
+            suffix="%"
+            helperText="Očekávaný roční růst nájemného"
+            type="text"
+            inputMode="decimal"
+            onChange={(value) => updateState({ rustNajemneho: Number(value) })}
+          />
         </AccordionContent>
       </AccordionItem>
     </Accordion>
   );
 }
-

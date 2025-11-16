@@ -9,7 +9,6 @@ interface CitySelectorProps {
   onCitySelect: (city: string) => void;
 }
 
-// Mock city data with median apartment prices
 const POPULAR_CITIES = [
   { name: "Praha", medianPrice: 8500000 },
   { name: "Brno", medianPrice: 5200000 },
@@ -45,35 +44,51 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
     city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Check if selected city is one of the popular cities
+  const isPopularCity = POPULAR_CITIES.some((city) => city.name === selectedCity);
+  const showSelectedInMoreCities = selectedCity && !isPopularCity;
+
   return (
     <div className="space-y-4">
       {/* Popular city chips */}
-      <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
+      <div className="flex flex-wrap gap-2">
         {POPULAR_CITIES.map((city) => {
           const isSelected = selectedCity === city.name;
           return (
             <button
               key={city.name}
               onClick={() => onCitySelect(city.name)}
-              className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2 font-uiSans text-sm font-medium transition-all"
+              className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none"
               style={{
-                background: isSelected ? "var(--btn-primary-bg)" : "var(--btn-secondary-bg)",
-                color: isSelected ? "var(--btn-primary-text)" : "var(--btn-secondary-text)",
-                border: `1px solid ${isSelected ? "var(--btn-primary-bg)" : "var(--btn-secondary-border)"}`,
-                boxShadow: isSelected ? "var(--btn-primary-shadow)" : "none",
+                background: isSelected ? "var(--color-primary)" : "var(--bg-card)",
+                color: isSelected ? "#FFFFFF" : "var(--color-primary)",
+                border: `1px solid ${isSelected ? "var(--color-primary)" : "var(--color-border)"}`,
+                boxShadow: isSelected ? "var(--shadow-card)" : "none",
                 transitionDuration: "var(--transition-duration)",
                 transitionTimingFunction: "var(--transition-easing)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "var(--btn-secondary-hover-bg)";
-                  e.currentTarget.style.borderColor = "var(--btn-secondary-border-hover)";
+                  e.currentTarget.style.background = "rgba(15,23,42,0.04)";
+                  e.currentTarget.style.borderColor = "var(--color-border-hover)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "var(--btn-secondary-bg)";
-                  e.currentTarget.style.borderColor = "var(--btn-secondary-border)";
+                  e.currentTarget.style.background = "var(--bg-card)";
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                }
+              }}
+              onFocus={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = "#9F7AEA";
+                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(159, 122, 234, 0.1)";
+                }
+              }}
+              onBlur={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                  e.currentTarget.style.boxShadow = "none";
                 }
               }}
             >
@@ -81,28 +96,47 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             </button>
           );
         })}
+        
+        {/* "Více měst" dropdown button - shows selected city if not popular */}
         <button
           onClick={() => setShowAllCities(!showAllCities)}
-          className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2 font-uiSans text-sm font-medium transition-all"
+          className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none inline-flex items-center gap-1.5"
           style={{
-            background: "var(--btn-secondary-bg)",
-            color: "var(--btn-secondary-text)",
-            border: "1px solid var(--btn-secondary-border)",
+            background: showSelectedInMoreCities ? "var(--color-primary)" : "var(--bg-card)",
+            color: showSelectedInMoreCities ? "#FFFFFF" : "var(--color-primary)",
+            border: `1px solid ${showSelectedInMoreCities ? "var(--color-primary)" : "var(--color-border)"}`,
+            boxShadow: showSelectedInMoreCities ? "var(--shadow-card)" : "none",
             transitionDuration: "var(--transition-duration)",
             transitionTimingFunction: "var(--transition-easing)",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "var(--btn-secondary-hover-bg)";
-            e.currentTarget.style.borderColor = "var(--btn-secondary-border-hover)";
+            if (!showSelectedInMoreCities) {
+              e.currentTarget.style.background = "rgba(15,23,42,0.04)";
+              e.currentTarget.style.borderColor = "var(--color-border-hover)";
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--btn-secondary-bg)";
-            e.currentTarget.style.borderColor = "var(--btn-secondary-border)";
+            if (!showSelectedInMoreCities) {
+              e.currentTarget.style.background = "var(--bg-card)";
+              e.currentTarget.style.borderColor = "var(--color-border)";
+            }
+          }}
+          onFocus={(e) => {
+            if (!showSelectedInMoreCities) {
+              e.currentTarget.style.borderColor = "#9F7AEA";
+              e.currentTarget.style.boxShadow = "0 0 0 3px rgba(159, 122, 234, 0.1)";
+            }
+          }}
+          onBlur={(e) => {
+            if (!showSelectedInMoreCities) {
+              e.currentTarget.style.borderColor = "var(--color-border)";
+              e.currentTarget.style.boxShadow = "none";
+            }
           }}
         >
-          <span>Více měst…</span>
+          <span>{showSelectedInMoreCities ? selectedCity : "Více měst"}</span>
           <ChevronDown
-            className="ml-1.5 inline-block h-4 w-4"
+            className="h-4 w-4"
             style={{
               transform: showAllCities ? "rotate(180deg)" : "rotate(0deg)",
               transition: "transform var(--transition-duration) var(--transition-easing)",
@@ -114,10 +148,11 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
       {/* Expandable city list */}
       {showAllCities && (
         <div
-          className="space-y-3 rounded-lg p-4"
+          className="space-y-3 rounded-[var(--radius-card)] p-4"
           style={{
             border: "1px solid var(--color-border)",
             background: "var(--bg-card)",
+            boxShadow: "var(--shadow-card)",
           }}
         >
           <Input
@@ -128,29 +163,43 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             className="font-uiSans"
           />
           <div className="max-h-64 space-y-1 overflow-y-auto">
-            {filteredCities.map((city) => (
-              <button
-                key={city.name}
-                onClick={() => {
-                  onCitySelect(city.name);
-                  setShowAllCities(false);
-                  setSearchQuery("");
-                }}
-                className="block w-full rounded-md px-3 py-2 text-left font-uiSans text-sm transition-colors hover:bg-[var(--bg-lilac-section)]"
-                style={{
-                  background:
-                    selectedCity === city.name ? "var(--bg-lilac-section)" : "transparent",
-                  color: "var(--color-primary)",
-                }}
-              >
-                <div className="flex items-baseline justify-between">
-                  <span className="font-medium">{city.name}</span>
-                  <span className="text-xs text-[var(--color-secondary)]">
-                    od {(city.medianPrice / 1000000).toFixed(1)} mil. Kč
-                  </span>
-                </div>
-              </button>
-            ))}
+            {filteredCities.map((city) => {
+              const isSelected = selectedCity === city.name;
+              return (
+                <button
+                  key={city.name}
+                  onClick={() => {
+                    onCitySelect(city.name);
+                    setShowAllCities(false);
+                    setSearchQuery("");
+                  }}
+                  className="block w-full rounded-md px-3 py-2 text-left font-uiSans text-sm transition-all"
+                  style={{
+                    background: isSelected ? "var(--bg-lilac-section)" : "transparent",
+                    color: "var(--color-primary)",
+                    transitionDuration: "var(--transition-duration)",
+                    transitionTimingFunction: "var(--transition-easing)",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = "rgba(15,23,42,0.02)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = "transparent";
+                    }
+                  }}
+                >
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-medium">{city.name}</span>
+                    <span className="text-xs text-[var(--color-secondary)]">
+                      od {(city.medianPrice / 1000000).toFixed(1)} mil. Kč
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

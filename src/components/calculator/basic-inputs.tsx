@@ -1,7 +1,7 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useState, useEffect } from "react";
+import { InputWithSuffix } from "./input-with-suffix";
 import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
 
 interface BasicInputsProps {
@@ -13,125 +13,109 @@ function formatNumber(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+function parseNumber(value: string): number {
+  const cleanValue = value.replace(/\s/g, "");
+  return cleanValue === "" ? 0 : Number(cleanValue);
+}
+
 export function BasicInputs({ state, updateState }: BasicInputsProps) {
-  const handleNumberInput = (
-    field: keyof CalculatorState,
-    value: string,
-    isBlur: boolean = false
-  ) => {
-    // Remove spaces for parsing
-    const cleanValue = value.replace(/\s/g, "");
-    const numValue = cleanValue === "" ? 0 : Number(cleanValue);
-    
-    if (!isNaN(numValue)) {
-      updateState({ [field]: numValue } as Partial<CalculatorState>);
-    }
+  // Track which fields are animating
+  const [animatingFields, setAnimatingFields] = useState<Set<string>>(new Set());
+
+  // Trigger animation when kupniCena or najemne change from outside
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimatingFields(new Set());
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [state.kupniCena, state.najemne]);
+
+  const triggerAnimation = (field: string) => {
+    setAnimatingFields(prev => new Set(prev).add(field));
+    setTimeout(() => {
+      setAnimatingFields(prev => {
+        const next = new Set(prev);
+        next.delete(field);
+        return next;
+      });
+    }, 300);
   };
 
   return (
     <div className="space-y-5">
       {/* 1. Kupní cena nemovitosti */}
-      <div className="space-y-2">
-        <Label htmlFor="kupni-cena" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-          Kupní cena nemovitosti (Kč)
-        </Label>
-        <Input
-          id="kupni-cena"
-          type="text"
-          value={formatNumber(state.kupniCena)}
-          onChange={(e) => handleNumberInput("kupniCena", e.target.value)}
-          onBlur={(e) => {
-            // Reformat on blur
-            e.target.value = formatNumber(state.kupniCena);
-          }}
-          className="font-uiSans text-base transition-all"
-          style={{
-            animation: "fadeIn 0.3s ease-out",
-          }}
-        />
-        <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-          Celková cena bytu, který chceš koupit
-        </p>
-      </div>
+      <InputWithSuffix
+        id="kupni-cena"
+        label="Kupní cena nemovitosti"
+        value={formatNumber(state.kupniCena)}
+        suffix="Kč"
+        helperText="Celková cena bytu, který chceš koupit"
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9 ]*"
+        onChange={(value) => {
+          const numValue = parseNumber(value);
+          if (!isNaN(numValue)) {
+            updateState({ kupniCena: numValue });
+          }
+        }}
+        isAnimating={animatingFields.has("kupniCena")}
+      />
 
       {/* 2. Vlastní zdroje */}
-      <div className="space-y-2">
-        <Label htmlFor="vlastni-zdroje" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-          Vlastní zdroje (%)
-        </Label>
-        <Input
-          id="vlastni-zdroje"
-          type="number"
-          value={state.vlastniZdroje}
-          onChange={(e) => updateState({ vlastniZdroje: Number(e.target.value) })}
-          className="font-uiSans text-base"
-          min={0}
-          max={100}
-        />
-        <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-          Kolik procent kupní ceny máš našetřeno
-        </p>
-      </div>
+      <InputWithSuffix
+        id="vlastni-zdroje"
+        label="Vlastní zdroje (%)"
+        value={state.vlastniZdroje}
+        suffix="%"
+        helperText="Kolik procent kupní ceny máš našetřeno"
+        type="text"
+        inputMode="decimal"
+        onChange={(value) => updateState({ vlastniZdroje: Number(value) })}
+      />
 
       {/* 3. Úroková sazba hypotéky */}
-      <div className="space-y-2">
-        <Label htmlFor="urokova-sazba" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-          Úroková sazba hypotéky (% p.a.)
-        </Label>
-        <Input
-          id="urokova-sazba"
-          type="number"
-          step="0.1"
-          value={state.urokovaSazba}
-          onChange={(e) => updateState({ urokovaSazba: Number(e.target.value) })}
-          className="font-uiSans text-base"
-        />
-        <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-          Roční úroková sazba hypotéky
-        </p>
-      </div>
+      <InputWithSuffix
+        id="urokova-sazba"
+        label="Úroková sazba hypotéky (% p.a.)"
+        value={state.urokovaSazba}
+        suffix="%"
+        helperText="Roční úroková sazba hypotéky"
+        type="text"
+        inputMode="decimal"
+        onChange={(value) => updateState({ urokovaSazba: Number(value) })}
+      />
 
       {/* 4. Nájemné */}
-      <div className="space-y-2">
-        <Label htmlFor="najemne" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-          Nájemné (Kč / měsíc)
-        </Label>
-        <Input
-          id="najemne"
-          type="text"
-          value={formatNumber(state.najemne)}
-          onChange={(e) => handleNumberInput("najemne", e.target.value)}
-          onBlur={(e) => {
-            // Reformat on blur
-            e.target.value = formatNumber(state.najemne);
-          }}
-          className="font-uiSans text-base transition-all"
-          style={{
-            animation: "fadeIn 0.3s ease-out",
-          }}
-        />
-        <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-          Měsíční nájem za podobný byt
-        </p>
-      </div>
+      <InputWithSuffix
+        id="najemne"
+        label="Nájemné (Kč / měsíc)"
+        value={formatNumber(state.najemne)}
+        suffix="Kč"
+        helperText="Měsíční nájem za podobný byt"
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9 ]*"
+        onChange={(value) => {
+          const numValue = parseNumber(value);
+          if (!isNaN(numValue)) {
+            updateState({ najemne: numValue });
+          }
+        }}
+        isAnimating={animatingFields.has("najemne")}
+      />
 
       {/* 5. Očekávaný výnos ETF */}
-      <div className="space-y-2">
-        <Label htmlFor="etf-vynos" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-          Očekávaný výnos ETF (% p.a.)
-        </Label>
-        <Input
-          id="etf-vynos"
-          type="number"
-          step="0.1"
-          value={state.etfVynos}
-          onChange={(e) => updateState({ etfVynos: Number(e.target.value) })}
-          className="font-uiSans text-base"
-        />
-        <p className="font-uiSans text-xs text-[var(--color-secondary)]">
-          Průměrný roční výnos investice do ETF
-        </p>
-      </div>
+      <InputWithSuffix
+        id="etf-vynos"
+        label="Očekávaný výnos ETF (% p.a.)"
+        value={state.etfVynos}
+        suffix="%"
+        helperText="Průměrný roční výnos investice do ETF"
+        type="text"
+        inputMode="decimal"
+        onChange={(value) => updateState({ etfVynos: Number(value) })}
+      />
     </div>
   );
 }
