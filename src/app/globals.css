@@ -9,9 +9,15 @@
 }
 
 :root {
-  /* Surface */
-  --bg-page: #f8fafc;
-  --bg-section-alt: #f2f4ff;
+  /* Surface - Ultra-subtle analytical tints (Wealthsimple-style) */
+  --surface-tint-0: #ffffff;
+  --surface-tint-1: #F9FAFB;         /* near-white neutral */
+  --surface-tint-2: #F6F7FB;         /* ultra-light lavender-grey */
+  --surface-tint-3: #F3F5FA;         /* very subtle bluish-lilac */
+  
+  /* Legacy aliases for compatibility */
+  --bg-page: #F9FAFB;                /* was #f8fafc - now matching tint-1 */
+  --bg-section-alt: #F6F7FB;         /* was #f2f4ff (too purple) - now tint-2 */
   --bg-card: #ffffff;
 
   /* Text */
@@ -38,7 +44,7 @@
   --cta-primary-text: #ffffff;
 
   /* Unified card system */
-  --shadow-card: 0 18px 40px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.06);  /* Pure neutral shadow, no color tint */
   --radius-card: 20px; /* Mobile first */
   --radius-faq: 16px;
   --radius-pill: 999px;

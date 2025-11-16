@@ -129,7 +129,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-18">
+      <section className="bg-[var(--surface-tint-0)] py-10 md:py-18">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -658,8 +658,8 @@ export default function HomePage() {
               >
                 <a
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
                   className="text-[var(--text-primary)]"
                 >
                   Otevřít metodiku v Google Sheets
@@ -684,7 +684,7 @@ export default function HomePage() {
               
               <div className="mt-6 flex items-start gap-4">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full">
-                  <Image
+            <Image
                     src="/michal.jpeg"
                     alt="Michal Humaj"
                     width={64}
@@ -729,7 +729,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
@@ -787,15 +787,15 @@ export default function HomePage() {
           <p className="mt-4">
             <a
               href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
               className="text-xs text-[var(--text-primary)] underline underline-offset-4 hover:text-[var(--text-primary)] font-uiSans"
               style={{
                 transition: `color var(--transition-duration) var(--transition-easing)`
               }}
-            >
+          >
               Metodika v Google Sheets
-            </a>
+          </a>
           </p>
         </div>
       </footer>

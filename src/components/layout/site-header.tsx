@@ -44,7 +44,7 @@ export function SiteHeader() {
     <header 
       className="border-b"
       style={{
-        background: 'var(--bg-page)',
+        background: 'var(--surface-tint-0)',
         borderBottomColor: 'var(--border-subtle)'
       }}
     >
