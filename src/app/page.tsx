@@ -232,7 +232,7 @@ export default function HomePage() {
                 {HERO_BULLETS.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <span 
-                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                      className="mt-[0.4em] h-1.5 w-1.5 shrink-0 rounded-full" 
                       style={{ background: 'var(--color-bullet)' }}
                       aria-hidden 
                     />
@@ -510,7 +510,7 @@ export default function HomePage() {
                 {REALITY_LIST.map((reality) => (
                   <li key={reality} className="flex items-start gap-2.5 text-base leading-relaxed text-[#0F172A] font-uiSans">
                     <span 
-                      className="shrink-0 mt-1.5 h-1.5 w-1.5 rounded-full" 
+                      className="shrink-0 mt-[0.4em] h-1.5 w-1.5 rounded-full" 
                       style={{ background: 'var(--color-bullet)' }}
                     />
                     <span>{reality}</span>
@@ -573,7 +573,7 @@ export default function HomePage() {
                   {scenario.bullets.map((bullet) => (
                     <li key={bullet} className="flex items-start gap-2.5 text-base leading-relaxed text-[#4B5563] font-uiSans">
                       <span 
-                        className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                        className="mt-[0.4em] h-1.5 w-1.5 shrink-0 rounded-full" 
                         style={{ background: 'var(--color-bullet)' }}
                       />
                       <span>{bullet}</span>
