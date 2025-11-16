@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 
 const HERO_BULLETS = [
   "Počítáme s realistickými předpoklady výnosů globálních ETF",
@@ -180,25 +179,23 @@ export default function HomePage() {
                     Spočítat moje bydlení
                   </Link>
                   
-                  <Button
+                  <button
                     onClick={() => scrollToSection("transparentnost")}
-                    variant="outline"
-                    className="h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[15px] font-medium px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+                    className="inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
                       borderColor: 'var(--btn-secondary-border)',
-                      color: 'var(--btn-secondary-text)',
-                      boxShadow: 'var(--shadow-card)'
+                      color: 'var(--btn-secondary-text)'
                     }}
                   >
                     Zjistit, jak výpočet funguje
-                  </Button>
+                  </button>
                 </div>
 
                 {/* Mobile: stacked with ghost secondary */}
                 <div className="flex sm:hidden flex-col">
                   <Link 
                     href="/bydleni-kalkulacka"
-                    className="inline-flex items-center justify-center w-full h-[52px] rounded-full bg-[var(--btn-primary-bg)] hover:bg-[var(--btn-primary-hover-bg)] text-white text-[15px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+                    className="inline-flex items-center justify-center w-full h-[52px] rounded-full bg-[var(--btn-primary-bg)] hover:bg-[var(--btn-primary-hover-bg)] text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
                       boxShadow: 'var(--btn-primary-shadow)'
                     }}
@@ -212,18 +209,16 @@ export default function HomePage() {
                     Spočítat moje bydlení
                   </Link>
                   
-                  <Button
-                    variant="outline"
+                  <button
                     onClick={() => scrollToSection("transparentnost")}
-                    className="mt-4 w-full h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[14px] font-medium px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+                    className="mt-4 w-full inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                     style={{
                       borderColor: 'var(--btn-secondary-border)',
-                      color: 'var(--btn-secondary-text)',
-                      boxShadow: 'var(--shadow-card)'
+                      color: 'var(--btn-secondary-text)'
                     }}
                   >
                     Zjistit, jak výpočet funguje
-                  </Button>
+                  </button>
                 </div>
               </div>
 
@@ -407,12 +402,12 @@ export default function HomePage() {
               {/* Scenario A */}
               <div className="flex h-full flex-col gap-3 p-4 md:p-6">
                 <span 
-                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[13px] font-uiSans"
+                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[14px] font-uiSans"
                   style={{
                     background: 'var(--scenario-a-bg)',
                     color: 'var(--scenario-a-dot)',
                     borderRadius: 'var(--radius-pill)',
-                    padding: '3px 8px'
+                    padding: '2px 10px'
                   }}
                 >
                   <span 
@@ -439,12 +434,12 @@ export default function HomePage() {
                 className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 md:border-l border-[#EDEEF3]"
               >
                 <span 
-                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[13px] font-uiSans"
+                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[14px] font-uiSans"
                   style={{
                     background: 'var(--scenario-b-bg)',
                     color: 'var(--scenario-b-dot)',
                     borderRadius: 'var(--radius-pill)',
-                    padding: '3px 8px'
+                    padding: '2px 10px'
                   }}
                 >
                   <span 
@@ -555,12 +550,12 @@ export default function HomePage() {
                 className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
               >
                 <span 
-                  className="inline-flex items-center gap-1.5 font-medium text-[13px] font-uiSans"
+                  className="inline-flex items-center gap-1.5 font-medium text-[14px] font-uiSans"
                   style={{
                     background: scenario.id === "A" ? 'var(--scenario-a-bg)' : 'var(--scenario-b-bg)',
                     color: scenario.id === "A" ? 'var(--scenario-a-dot)' : 'var(--scenario-b-dot)',
                     borderRadius: 'var(--radius-pill)',
-                    padding: '3px 8px'
+                    padding: '2px 10px'
                   }}
                 >
                   <span 
@@ -592,7 +587,7 @@ export default function HomePage() {
       </section>
 
       {/* Transparency section */}
-      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
+      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-lilac-section)] pt-[var(--section-padding-y-mobile)] md:pt-[var(--section-padding-y-desktop)] pb-12 md:pb-16">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Transparentní výpočet, žádná tajemství
@@ -641,25 +636,18 @@ export default function HomePage() {
                 </li>
               </ul>
 
-              <Button 
-                asChild 
-                variant="outline"
-                className="mt-6 h-[44px] rounded-full bg-white text-[14px] font-medium px-5 transition-all duration-200 ease-out border hover:bg-[rgba(15,23,42,0.02)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
+              <a
+                href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                 style={{
                   borderColor: 'var(--btn-secondary-border)',
-                  color: 'var(--btn-secondary-text)',
-                  boxShadow: 'var(--shadow-card)'
+                  color: 'var(--btn-secondary-text)'
                 }}
               >
-                <a
-                  href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center"
-                >
-                  Otevřít metodiku v Google Sheets
-                </a>
-              </Button>
+                Otevřít metodiku v Google Sheets
+              </a>
             </div>
 
             {/* Right: Author card */}
@@ -695,7 +683,7 @@ export default function HomePage() {
       </section>
 
       {/* What calculator doesn't solve */}
-      <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
+      <section className="bg-[var(--bg-base)] py-12 md:py-16">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <div className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-8 md:p-10">
             <h3 className="text-xl font-semibold md:text-2xl">
@@ -717,7 +705,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
+      <section className="bg-[var(--bg-lilac-section)] pt-12 md:pt-16 pb-[var(--section-padding-y-mobile)] md:pb-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
@@ -731,9 +719,15 @@ export default function HomePage() {
               <AccordionItem
                 key={faq.question}
                 value={faq.question}
-                className="rounded-2xl bg-white border border-[var(--color-border)] p-5 md:p-6 transition-all duration-200 ease-out font-uiSans cursor-pointer hover:bg-[rgba(15,23,42,0.02)]"
+                className="rounded-3xl bg-white border border-[var(--color-border)] p-6 md:p-8 transition-all duration-200 ease-out font-uiSans cursor-pointer"
                 style={{
                   boxShadow: 'var(--shadow-card)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = 'var(--shadow-card-hover)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = 'var(--shadow-card)';
                 }}
               >
                 <AccordionTrigger 
