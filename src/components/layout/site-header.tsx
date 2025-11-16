@@ -50,7 +50,7 @@ export function SiteHeader() {
           kamspenezi.cz
         </Link>
 
-        <nav className="hidden items-center gap-8 text-body font-medium text-[var(--text-muted)] md:flex">
+        <nav className="hidden items-center gap-8 text-body font-medium md:flex">
           {NAV_LINKS.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -58,8 +58,10 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "transition-colors hover:text-[var(--text-primary)]",
-                  isActive && "text-[var(--text-primary)]"
+                  "relative pb-1 transition-colors",
+                  isActive 
+                    ? "text-[#111827] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-[#111827]" 
+                    : "text-[#4B5563] hover:text-[#111827]"
                 )}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -96,14 +98,22 @@ export function SiteHeader() {
                 <div className="flex flex-col gap-5 text-slate-900">
                   <Link
                     href="/"
-                    className="text-[1.3rem] font-semibold"
+                    className={cn(
+                      "text-[1.3rem] font-semibold",
+                      pathname === "/" && "border-l-[3px] border-[#111827] pl-3"
+                    )}
+                    aria-current={pathname === "/" ? "page" : undefined}
                   >
                     Bydlení
                   </Link>
                   <div className="flex items-center gap-2">
                     <Link
                       href="/investice"
-                      className="text-[1.3rem] font-semibold"
+                      className={cn(
+                        "text-[1.3rem] font-semibold",
+                        pathname.startsWith("/investice") && "border-l-[3px] border-[#111827] pl-3"
+                      )}
+                      aria-current={pathname.startsWith("/investice") ? "page" : undefined}
                     >
                       Investice
                     </Link>
@@ -114,8 +124,24 @@ export function SiteHeader() {
                 </div>
                 <div className="h-px bg-slate-200" />
                 <div className="flex flex-col gap-3 text-body font-medium text-slate-900">
-                  <Link href="/o-projektu">O projektu</Link>
-                  <Link href="/kontakt">Kontakt</Link>
+                  <Link 
+                    href="/o-projektu"
+                    className={cn(
+                      pathname === "/o-projektu" && "border-l-[3px] border-[#111827] pl-3"
+                    )}
+                    aria-current={pathname === "/o-projektu" ? "page" : undefined}
+                  >
+                    O projektu
+                  </Link>
+                  <Link 
+                    href="/kontakt"
+                    className={cn(
+                      pathname === "/kontakt" && "border-l-[3px] border-[#111827] pl-3"
+                    )}
+                    aria-current={pathname === "/kontakt" ? "page" : undefined}
+                  >
+                    Kontakt
+                  </Link>
                 </div>
                 <div className="flex flex-col gap-3">
                   <Button asChild>

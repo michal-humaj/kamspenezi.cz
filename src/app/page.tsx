@@ -156,7 +156,7 @@ export default function HomePage() {
               </p>
 
               {/* CTAs */}
-              <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+              <div className="mt-7 flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-6">
                 <Button 
                   size="lg" 
                   asChild 
@@ -174,7 +174,7 @@ export default function HomePage() {
               </div>
 
               {/* Simple meta text */}
-              <p className="mt-5 text-sm text-[var(--text-soft)]">
+              <p className="mt-2 text-[12px] tracking-wide text-[#8E929D]">
                 Zdarma, bez registrace.
               </p>
 
@@ -296,7 +296,7 @@ export default function HomePage() {
             <div className="mt-6 grid gap-0 md:grid-cols-2 md:gap-0">
               {/* Scenario A */}
               <div className="flex h-full flex-col gap-3 p-6 md:border-r md:border-[var(--border-subtle)]">
-                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--mortgage-accent)] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]">
+                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--mortgage-accent)] px-3 py-1 text-[13px] font-medium text-[var(--text-primary)]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-primary)]" />
                   Byt na hypotéku
                 </span>
@@ -315,7 +315,7 @@ export default function HomePage() {
 
               {/* Scenario B */}
               <div className="flex h-full flex-col gap-3 p-6 border-t md:border-t-0 border-[var(--border-subtle)] md:border-l-0">
-                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--rent-etf-accent)] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]">
+                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--rent-etf-accent)] px-3 py-1 text-[13px] font-medium text-[var(--text-primary)]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-primary)]" />
                   Nájem + ETF
                 </span>
@@ -416,7 +416,7 @@ export default function HomePage() {
                 style={{ boxShadow: 'var(--shadow-soft)' }}
               >
                 <span className={cn(
-                  "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]",
+                  "inline-flex items-center gap-2 rounded-full px-3 py-1 text-[13px] font-medium text-[var(--text-primary)]",
                   scenario.id === "A" 
                     ? "bg-[var(--mortgage-accent)]" 
                     : "bg-[var(--rent-etf-accent)]"
