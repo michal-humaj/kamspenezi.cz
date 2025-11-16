@@ -40,6 +40,15 @@ export function InputWithSuffix({
   inputMode,
   pattern,
 }: InputWithSuffixProps) {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Move cursor to the end of the input
+    const input = e.target;
+    const length = input.value.length;
+    setTimeout(() => {
+      input.setSelectionRange(length, length);
+    }, 0);
+  };
+
   return (
     <div className="space-y-2">
       <Label htmlFor={id} className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
@@ -52,6 +61,7 @@ export function InputWithSuffix({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
+          onFocus={handleFocus}
           step={step}
           min={min}
           max={max}
@@ -59,20 +69,12 @@ export function InputWithSuffix({
           inputMode={inputMode}
           pattern={pattern}
           className={`
-            font-uiSans text-base pr-12 text-right tabular-nums transition-all duration-200
-            ${isAnimating ? 'bg-[rgba(125,90,226,0.06)]' : ''}
+            calc-input pr-16 text-right tabular-nums
+            ${isAnimating ? 'bg-[var(--bg-lilac-highlight)]' : ''}
             ${className}
           `}
-          style={{
-            transitionProperty: 'background-color, opacity',
-            transitionDuration: '250ms',
-            transitionTimingFunction: 'ease-out',
-          }}
         />
-        <span
-          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center font-uiSans text-sm text-gray-400"
-          style={{ userSelect: 'none', lineHeight: '1' }}
-        >
+        <span className="calc-input-unit">
           {suffix}
         </span>
       </div>

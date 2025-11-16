@@ -10,14 +10,18 @@
 
 :root {
   /* Section Backgrounds */
-  --bg-base: #F9FAFB;           /* Base light background */
+  --bg-base: #F5F6F8;           /* Base light background - slightly darker for better contrast */
   --bg-lilac-section: #F4F5FB;  /* Soft analytic lilac sections */
-  --bg-card: #ffffff;           /* Pure white for all cards */
+  --bg-card: #FFFFFF;           /* Pure white for all cards */
+  --bg-hover: rgba(15, 23, 42, 0.02); /* Subtle hover background */
+  --bg-hover-strong: rgba(15, 23, 42, 0.04); /* Stronger hover background */
+  --bg-lilac-highlight: rgba(125, 90, 226, 0.06); /* Lilac highlight for animations */
 
   /* Text Colors */
   --color-primary: #0F172A;     /* Main navy/ink */
   --color-primary-hover: #1A2433; /* Primary navy hover (8% lighter) */
   --color-secondary: #6B7280;   /* Secondary text */
+  --color-on-primary: #FFFFFF;  /* Text on primary color */
   --color-border: #EDEEF3;      /* Card borders */
   --color-border-hover: #D8DBE5; /* Border hover state */
   --color-bullet: #9CA3AF;      /* Generic bullets */
@@ -27,6 +31,13 @@
   --scenario-a-dot: #C98D4E;    /* Terracotta dot */
   --scenario-b-bg: #EAE7FF;     /* Soft lilac background */
   --scenario-b-dot: #7D5AE2;    /* Purple dot */
+
+  /* Selection/Active States (Lilac) */
+  --selection-border: rgba(125, 90, 226, 0.7); /* Lilac border for selected items */
+  --selection-bg: rgba(125, 90, 226, 0.02);    /* Lilac background for selected items */
+  --selection-shadow: 0 4px 16px rgba(125, 90, 226, 0.12); /* Lilac outer shadow */
+  --selection-shadow-inner: inset 0 1px 4px rgba(125, 90, 226, 0.08); /* Lilac inner glow */
+  --toggle-bg-inactive: rgba(244, 245, 251, 0.5); /* Very light lilac for toggle background */
 
   /* Button System */
   --btn-primary-bg: #0F172A;
@@ -41,7 +52,7 @@
   --btn-secondary-hover-bg: rgba(15, 23, 42, 0.02);
   --btn-secondary-text: #0F172A;
   
-  --btn-focus-ring: #7D5AE2;    /* Lilac focus ring */
+  --btn-focus-ring: #9F7AEA;    /* Lilac focus ring */
 
   /* Card System */
   --shadow-card: 0 8px 28px rgba(15, 23, 42, 0.06);
@@ -102,6 +113,103 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  /* Calculator-specific utility classes */
+  .calc-section-title {
+    @apply font-uiSans font-semibold text-[var(--color-primary)] text-lg md:text-xl;
+    letter-spacing: -0.01em;
+  }
+
+  .calc-result-value {
+    @apply font-displaySerif font-semibold text-[var(--color-primary)];
+    font-size: 1.5rem;      /* 24px on mobile */
+    line-height: 1.25;
+  }
+
+  @media (min-width: 768px) {
+    .calc-result-value {
+      font-size: 1.75rem;   /* 28px */
+    }
+  }
+
+  .calc-scenario-label {
+    @apply text-xs font-uiSans text-[var(--color-secondary)];
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .calc-input {
+    @apply w-full rounded-full bg-white text-[var(--color-primary)] font-uiSans;
+    border: 1px solid var(--color-border);
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    outline: none;
+    transition: border-color var(--transition-duration) var(--transition-easing),
+                box-shadow var(--transition-duration) var(--transition-easing),
+                background-color var(--transition-duration) var(--transition-easing);
+  }
+
+  .calc-input:hover:not(:focus) {
+    border-color: var(--color-border-hover);
+  }
+
+  .calc-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04),
+                0 8px 20px rgba(15, 23, 42, 0.06);
+    background-color: #ffffff;
+  }
+
+  .calc-input-unit {
+    @apply absolute inset-y-0 right-4 flex items-center text-sm font-uiSans;
+    color: var(--color-secondary);
+    pointer-events: none;
+  }
+
+  .calc-secondary-button {
+    @apply w-full rounded-[var(--radius-pill)] px-6 py-3 font-uiSans text-base font-medium;
+    background: white;
+    border: 1px solid var(--color-border);
+    color: var(--color-primary);
+    transition: border-color var(--transition-duration) var(--transition-easing),
+                box-shadow var(--transition-duration) var(--transition-easing);
+  }
+
+  .calc-secondary-button:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-card);
+  }
+
+  .calc-collapse-header {
+    @apply flex items-center justify-between w-full;
+    padding: 12px 16px;
+    background-color: #F3F4F6;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color var(--transition-duration) var(--transition-easing),
+                box-shadow var(--transition-duration) var(--transition-easing);
+  }
+
+  .calc-collapse-header:hover {
+    box-shadow: var(--shadow-card);
+  }
+
+  .calc-collapse-header-title {
+    @apply font-uiSans font-medium text-[var(--color-primary)];
+  }
+
+  /* Animations */
+  @keyframes result-fade {
+    0% {
+      opacity: 0.6;
+      transform: scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 

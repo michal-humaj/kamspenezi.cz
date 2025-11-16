@@ -69,21 +69,18 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="group rounded-[var(--radius-card)] p-5 text-left focus:outline-none"
+              className="group rounded-[var(--radius-card)] p-5 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 border: isSelected
-                  ? "2px solid rgba(125,90,226,0.8)"
+                  ? "2px solid var(--selection-border)"
                   : "2px solid var(--color-border)",
-                background: isSelected ? "rgba(125,90,226,0.03)" : "var(--bg-card)",
-                boxShadow: isSelected ? "0 4px 12px rgba(125,90,226,0.15)" : "var(--shadow-card)",
+                background: isSelected ? "var(--selection-bg)" : "var(--bg-card)",
+                boxShadow: isSelected ? "var(--selection-shadow), var(--selection-shadow-inner)" : "var(--shadow-card)",
                 transform: "scale(1)",
-                transitionProperty: "transform, box-shadow, border-color, background-color",
-                transitionDuration: "var(--transition-duration)",
-                transitionTimingFunction: "var(--transition-easing)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "rgba(15,23,42,0.02)";
+                  e.currentTarget.style.background = "var(--bg-hover)";
                   e.currentTarget.style.borderColor = "var(--color-border-hover)";
                   e.currentTarget.style.boxShadow = "var(--shadow-card-hover)";
                 }
@@ -91,18 +88,6 @@ export function ApartmentSizeCards({
               onMouseLeave={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "var(--bg-card)";
-                  e.currentTarget.style.borderColor = "var(--color-border)";
-                  e.currentTarget.style.boxShadow = "var(--shadow-card)";
-                }
-              }}
-              onFocus={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.borderColor = "#9F7AEA";
-                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(159, 122, 234, 0.1)";
-                }
-              }}
-              onBlur={(e) => {
-                if (!isSelected) {
                   e.currentTarget.style.borderColor = "var(--color-border)";
                   e.currentTarget.style.boxShadow = "var(--shadow-card)";
                 }
@@ -141,30 +126,15 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
-              className="min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left focus:outline-none"
+              className="min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 border: isSelected
-                  ? "2px solid rgba(125,90,226,0.8)"
+                  ? "2px solid var(--selection-border)"
                   : "2px solid var(--color-border)",
-                background: isSelected ? "rgba(125,90,226,0.03)" : "var(--bg-card)",
-                boxShadow: isSelected ? "0 4px 12px rgba(125,90,226,0.15)" : "var(--shadow-card)",
+                background: isSelected ? "var(--selection-bg)" : "var(--bg-card)",
+                boxShadow: isSelected ? "var(--selection-shadow), var(--selection-shadow-inner)" : "var(--shadow-card)",
                 scrollSnapAlign: "start",
                 transform: "scale(1)",
-                transitionProperty: "transform, box-shadow, border-color, background-color",
-                transitionDuration: "var(--transition-duration)",
-                transitionTimingFunction: "var(--transition-easing)",
-              }}
-              onFocus={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.borderColor = "#9F7AEA";
-                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(159, 122, 234, 0.1)";
-                }
-              }}
-              onBlur={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.borderColor = "var(--color-border)";
-                  e.currentTarget.style.boxShadow = "var(--shadow-card)";
-                }
               }}
             >
               <div className="space-y-2">

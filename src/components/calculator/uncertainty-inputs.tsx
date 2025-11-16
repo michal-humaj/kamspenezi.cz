@@ -17,6 +17,18 @@ interface UncertaintyInputsProps {
   resultsMode: "realistic" | "fixed";
 }
 
+function formatDecimal(value: number): string {
+  if (isNaN(value) || value === null || value === undefined) return "0";
+  return value.toString().replace(".", ",");
+}
+
+function parseDecimal(value: string): number {
+  if (!value || value.trim() === "") return 0;
+  const cleanValue = value.replace(/,/g, ".");
+  const parsed = Number(cleanValue);
+  return isNaN(parsed) ? 0 : parsed;
+}
+
 // Component for single input in fixed mode
 function SingleInput({
   label,
@@ -31,6 +43,32 @@ function SingleInput({
   value: number;
   onChange: (value: number) => void;
 }) {
+  const [localValue, setLocalValue] = React.useState<string | null>(null);
+  
+  const displayValue = localValue !== null ? localValue : formatDecimal(value);
+  
+  const handleChange = (newValue: string) => {
+    setLocalValue(newValue);
+  };
+  
+  const handleBlur = () => {
+    // If no local value, don't update (prevents resetting to 0)
+    if (localValue === null) {
+      return;
+    }
+    const parsed = parseDecimal(localValue);
+    onChange(parsed);
+    setLocalValue(null);
+  };
+  
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const input = e.target;
+    const length = input.value.length;
+    setTimeout(() => {
+      input.setSelectionRange(length, length);
+    }, 0);
+  };
+  
   return (
     <div className="space-y-2">
       <Label htmlFor={id} className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
@@ -41,11 +79,13 @@ function SingleInput({
           id={id}
           type="text"
           inputMode="decimal"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          className="font-uiSans text-base pr-12 text-right tabular-nums"
+          value={displayValue}
+          onChange={(e) => handleChange(e.target.value)}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          className="calc-input pr-16 text-right tabular-nums"
         />
-        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center font-uiSans text-sm text-gray-400" style={{ lineHeight: '1' }}>
+        <span className="calc-input-unit">
           {unit}
         </span>
       </div>
@@ -79,6 +119,18 @@ function TripleInput({
   onExpectedChange: (value: number) => void;
   onMaxChange: (value: number) => void;
 }) {
+  const [localMin, setLocalMin] = React.useState<string | null>(null);
+  const [localExpected, setLocalExpected] = React.useState<string | null>(null);
+  const [localMax, setLocalMax] = React.useState<string | null>(null);
+  
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const input = e.target;
+    const length = input.value.length;
+    setTimeout(() => {
+      input.setSelectionRange(length, length);
+    }, 0);
+  };
+  
   return (
     <div className="space-y-2">
       <Label className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
@@ -86,55 +138,76 @@ function TripleInput({
       </Label>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <Label htmlFor={minId} className="font-uiSans text-xs uppercase tracking-wide text-[var(--color-secondary)]">
-            Pesimisticky
+          <Label htmlFor={minId} className="font-uiSans text-xs font-medium text-[var(--color-secondary)]">
+            pesimisticky
           </Label>
           <div className="relative mt-1">
             <Input
               id={minId}
               type="text"
               inputMode="decimal"
-              value={minValue}
-              onChange={(e) => onMinChange(Number(e.target.value))}
-              className="font-uiSans text-base pr-9 text-right tabular-nums"
+              value={localMin !== null ? localMin : formatDecimal(minValue)}
+              onChange={(e) => setLocalMin(e.target.value)}
+              onBlur={() => {
+                if (localMin !== null) {
+                  onMinChange(parseDecimal(localMin));
+                }
+                setLocalMin(null);
+              }}
+              onFocus={handleFocus}
+              className="calc-input pr-10 text-right tabular-nums text-sm"
             />
-            <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center font-uiSans text-xs text-gray-400" style={{ lineHeight: '1' }}>
+            <span className="calc-input-unit text-xs">
               {unit}
             </span>
           </div>
         </div>
         <div>
-          <Label htmlFor={expectedId} className="font-uiSans text-xs uppercase tracking-wide text-[var(--color-secondary)]">
-            Očekávaně
+          <Label htmlFor={expectedId} className="font-uiSans text-xs font-medium text-[var(--color-secondary)]">
+            očekávaně
           </Label>
           <div className="relative mt-1">
             <Input
               id={expectedId}
               type="text"
               inputMode="decimal"
-              value={expectedValue}
-              onChange={(e) => onExpectedChange(Number(e.target.value))}
-              className="font-uiSans text-base pr-9 text-right tabular-nums"
+              value={localExpected !== null ? localExpected : formatDecimal(expectedValue)}
+              onChange={(e) => setLocalExpected(e.target.value)}
+              onBlur={() => {
+                if (localExpected !== null) {
+                  onExpectedChange(parseDecimal(localExpected));
+                }
+                setLocalExpected(null);
+              }}
+              onFocus={handleFocus}
+              className="calc-input pr-10 text-right tabular-nums text-sm"
             />
-            <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center font-uiSans text-xs text-gray-400" style={{ lineHeight: '1' }}>
+            <span className="calc-input-unit text-xs">
               {unit}
             </span>
           </div>
         </div>
         <div>
-          <Label htmlFor={maxId} className="font-uiSans text-xs uppercase tracking-wide text-[var(--color-secondary)]">
-            Optimisticky
+          <Label htmlFor={maxId} className="font-uiSans text-xs font-medium text-[var(--color-secondary)]">
+            optimisticky
           </Label>
           <div className="relative mt-1">
             <Input
               id={maxId}
               type="text"
               inputMode="decimal"
-              value={maxValue}
-              onChange={(e) => onMaxChange(Number(e.target.value))}
-              className="font-uiSans text-base pr-9 text-right tabular-nums"
+              value={localMax !== null ? localMax : formatDecimal(maxValue)}
+              onChange={(e) => setLocalMax(e.target.value)}
+              onBlur={() => {
+                if (localMax !== null) {
+                  onMaxChange(parseDecimal(localMax));
+                }
+                setLocalMax(null);
+              }}
+              onFocus={handleFocus}
+              className="calc-input pr-10 text-right tabular-nums text-sm"
             />
-            <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center font-uiSans text-xs text-gray-400" style={{ lineHeight: '1' }}>
+            <span className="calc-input-unit text-xs">
               {unit}
             </span>
           </div>
@@ -154,7 +227,7 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
         className="rounded-none border-none bg-transparent p-0 shadow-none transition-all md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)]"
         onMouseEnter={(e) => {
           if (window.innerWidth >= 768 && !isExpanded) {
-            e.currentTarget.style.background = "rgba(15,23,42,0.02)";
+            e.currentTarget.style.background = "var(--bg-hover)";
             e.currentTarget.style.borderColor = "var(--color-border-hover)";
           }
         }}
@@ -166,17 +239,12 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
         }}
       >
         <AccordionTrigger 
-          className="w-full cursor-pointer px-4 py-4 font-uiSans text-lg font-semibold hover:no-underline md:px-6 md:text-xl"
-          style={{
-            color: "var(--color-primary)",
-            transitionDuration: "var(--transition-duration)",
-            transitionTimingFunction: "var(--transition-easing)",
-          }}
+          className="calc-section-title w-full cursor-pointer px-4 py-4 hover:no-underline md:px-6"
         >
-          <div className="flex w-full items-center justify-between pr-2">
+          <div className="flex w-full items-center justify-between gap-3 pr-2">
             <span>Nejistota vývoje v čase</span>
             <span 
-              className="rounded-[var(--radius-pill)] px-3 py-1 font-uiSans text-xs font-medium"
+              className="rounded-[var(--radius-pill)] px-3 py-1 font-uiSans text-xs font-medium whitespace-nowrap"
               style={{
                 background: "var(--bg-lilac-section)",
                 color: "var(--color-secondary)",

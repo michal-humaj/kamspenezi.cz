@@ -48,19 +48,11 @@ export function InputWithUnit({
           min={min}
           max={max}
           className={`
-            font-uiSans text-base pr-20 transition-all duration-200
-            ${isAnimating ? 'bg-[rgba(125,90,226,0.06)]' : ''}
+            calc-input pr-16 text-right tabular-nums
+            ${isAnimating ? 'bg-[var(--bg-lilac-highlight)]' : ''}
           `}
-          style={{
-            transitionProperty: 'background-color, opacity',
-            transitionDuration: '250ms',
-            transitionTimingFunction: 'ease-out',
-          }}
         />
-        <span
-          className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 font-uiSans text-sm text-[var(--color-secondary)]"
-          style={{ userSelect: 'none' }}
-        >
+        <span className="calc-input-unit">
           {unit}
         </span>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { CitySelector } from "@/components/calculator/city-selector";
 import { ApartmentSizeCards } from "@/components/calculator/apartment-size-cards";
 import { BasicInputs } from "@/components/calculator/basic-inputs";
@@ -82,31 +82,28 @@ const initialState: CalculatorState = {
 
 export default function BydleniKalkulackaPage() {
   const [state, setState] = useState<CalculatorState>(initialState);
-  const [resultsMode, setResultsMode] = useState<"realistic" | "fixed">("realistic");
-  const [previousKupniCena, setPreviousKupniCena] = useState(state.kupniCena);
-  const [previousNajemne, setPreviousNajemne] = useState(state.najemne);
-
-  // Track external changes to kupniCena and najemne (from city/apartment selection)
-  useEffect(() => {
-    if (state.kupniCena !== previousKupniCena) {
-      setPreviousKupniCena(state.kupniCena);
-    }
-    if (state.najemne !== previousNajemne) {
-      setPreviousNajemne(state.najemne);
-    }
-  }, [state.kupniCena, state.najemne, previousKupniCena, previousNajemne]);
+  const [resultsMode, setResultsMode] = useState<"realistic" | "fixed">("fixed");
+  const [animatingFields, setAnimatingFields] = useState<Set<string>>(new Set());
 
   const handleCitySelect = (city: string) => {
     setState((prev) => ({ ...prev, selectedCity: city }));
   };
 
   const handleApartmentSelect = (size: string, kupniCena: number, najemne: number) => {
+    // Mark fields as animating
+    setAnimatingFields(new Set(["kupniCena", "najemne"]));
+    
     setState((prev) => ({
       ...prev,
       selectedApartmentSize: size,
       kupniCena,
       najemne,
     }));
+
+    // Clear animation state after 400ms
+    setTimeout(() => {
+      setAnimatingFields(new Set());
+    }, 400);
   };
 
   const updateState = (updates: Partial<CalculatorState>) => {
@@ -173,7 +170,7 @@ export default function BydleniKalkulackaPage() {
           className="space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
         >
           <div className="space-y-2 px-4 md:px-0">
-            <h2 className="font-uiSans text-xl font-semibold text-[var(--color-primary)] md:text-2xl">
+            <h2 className="calc-section-title">
               Začni městem a velikostí bytu
             </h2>
             <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)] md:text-base">
@@ -220,10 +217,14 @@ export default function BydleniKalkulackaPage() {
             <section
               className="space-y-5 rounded-none border-none bg-transparent p-4 shadow-none md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
             >
-              <h2 className="font-uiSans text-lg font-semibold text-[var(--color-primary)] md:text-xl">
+              <h2 className="calc-section-title">
                 Základní nastavení
               </h2>
-              <BasicInputs state={state} updateState={updateState} />
+              <BasicInputs 
+                state={state} 
+                updateState={updateState} 
+                animatingFields={animatingFields}
+              />
             </section>
 
             {/* Uncertainty Inputs (Advanced, Collapsed) */}
