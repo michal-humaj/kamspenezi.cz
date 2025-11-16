@@ -42,10 +42,9 @@ export function SiteHeader() {
 
   return (
     <header 
-      className="border-b"
+      className="border-b border-[#EDEEF3]"
       style={{
-        background: 'var(--bg-page)',
-        borderBottomColor: 'var(--border-subtle)'
+        background: 'var(--bg-base)'
       }}
     >
       <div className="container flex h-16 items-center justify-between md:h-20">

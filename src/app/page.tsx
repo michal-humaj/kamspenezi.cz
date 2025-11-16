@@ -272,9 +272,12 @@ export default function HomePage() {
       </section>
 
       {/* City Presets Section */}
-      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-alt)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <h2 className="text-2xl md:text-3xl">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
+            Začni podle města
+          </p>
+          <h2 className="mt-2 text-2xl md:text-3xl">
             Začni podle svého města a velikosti bytu
           </h2>
           <p className="mt-2 max-w-3xl text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
@@ -289,16 +292,11 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
-                whileHover={{ scale: 1.01 }}
-                className="flex flex-col border"
-                style={{
-                  background: 'var(--bg-card)',
-                  borderColor: 'var(--border-subtle)',
-                  borderRadius: 'var(--radius-card)',
-                  boxShadow: 'var(--shadow-card)',
-                  padding: 'var(--card-padding)',
-                  transition: `transform var(--transition-duration) var(--transition-easing)`
+                whileHover={{ 
+                  y: -2,
+                  transition: { duration: 0.2, ease: "easeOut" }
                 }}
+                className="flex flex-col rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
               >
                 <h4 className="text-lg font-semibold leading-tight text-[var(--text-primary)] font-uiSans">
                   {preset.title}
@@ -322,9 +320,9 @@ export default function HomePage() {
       </section>
 
       {/* Results Section */}
-      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-base)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
             Výsledek
           </p>
           <h2 className="mt-2 text-2xl md:text-3xl">
@@ -335,18 +333,18 @@ export default function HomePage() {
             <p className="text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
               Výsledek není jen jedno číslo. Uvidíš:
             </p>
-            <ul className="space-y-2.5 text-sm md:text-base text-[var(--text-secondary)] font-uiSans">
+            <ul className="space-y-2.5 text-base text-[#4B5563] font-uiSans leading-relaxed">
               <li className="flex items-start gap-3">
                 <span 
                   className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
-                  style={{ background: 'var(--accent-bullet)' }}
+                  style={{ background: 'var(--color-bullet)' }}
                 />
                 <span>Dva sloupce nebo box ploty pro scénář vlastního bydlení a scénář nájem plus ETF</span>
               </li>
               <li className="flex items-start gap-3">
                 <span 
                   className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
-                  style={{ background: 'var(--accent-bullet)' }}
+                  style={{ background: 'var(--color-bullet)' }}
                 />
                 <span>Střední odhad hodnoty majetku po třiceti letech</span>
               </li>
@@ -463,9 +461,9 @@ export default function HomePage() {
       </section>
 
       {/* Myth vs Reality */}
-      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-alt)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
             Mýty o nájmu
           </p>
           <h2 className="mt-2 text-2xl md:text-3xl">
@@ -513,9 +511,9 @@ export default function HomePage() {
       </section>
 
       {/* Scenarios section */}
-      <section className="bg-[var(--bg-section-soft)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-base)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
             Dvě cesty
           </p>
           <h2 className="mt-2 text-2xl md:text-3xl">
@@ -582,7 +580,7 @@ export default function HomePage() {
       </section>
 
       {/* Transparency section */}
-      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
+      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-alt)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Transparentní výpočet, žádná tajemství
@@ -687,27 +685,29 @@ export default function HomePage() {
       </section>
 
       {/* What calculator doesn't solve */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-14">
+      <section className="bg-[var(--bg-base)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
-          <h3 className="text-xl font-semibold md:text-2xl">
-            Co kalkulačka neřeší
-          </h3>
-          <ul className="mt-6 space-y-3">
-            {CALCULATOR_LIMITS.map((limit) => (
-              <li key={limit} className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base font-uiSans">
-                <span 
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
-                  style={{ background: 'var(--accent-bullet)' }}
-                />
-                <span>{limit}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-8 md:p-10">
+            <h3 className="text-xl font-semibold md:text-2xl">
+              Co kalkulačka neřeší
+            </h3>
+            <ul className="mt-6 space-y-3">
+              {CALCULATOR_LIMITS.map((limit) => (
+                <li key={limit} className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
+                  <span 
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                    style={{ background: 'var(--color-bullet)' }}
+                  />
+                  <span>{limit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
+      <section className="bg-[var(--bg-base)] py-16 md:py-24">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
@@ -721,24 +721,14 @@ export default function HomePage() {
               <AccordionItem
                 key={faq.question}
                 value={faq.question}
-                className="border-0 font-uiSans"
-                style={{
-                  background: 'var(--bg-card)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-faq)',
-                  padding: '16px 20px',
-                  transition: `border-color var(--transition-duration) var(--transition-easing)`
-                }}
+                className="rounded-2xl bg-white border border-[#E4E7EF] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-5 md:p-6 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)] hover:border-[#D8DBE5] font-uiSans"
               >
                 <AccordionTrigger 
-                  className="text-left text-[15px] md:text-base font-medium text-[var(--text-primary)] hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0"
-                  style={{
-                    focusVisibleRing: 'var(--border-subtle)'
-                  }}
+                  className="text-left text-base font-medium text-[#0F172A] hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-[#4A4FFF]"
                 >
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm md:text-[15px] leading-relaxed text-[var(--text-secondary)]">
+                <AccordionContent className="text-base text-[#4B5563] leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -749,10 +739,9 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer 
-        className="border-t py-12"
+        className="border-t border-[#EDEEF3] py-12"
         style={{
-          background: 'var(--bg-page)',
-          borderTopColor: 'var(--border-subtle)'
+          background: 'var(--bg-base)'
         }}
       >
         <div className="mx-auto w-full max-w-6xl px-4 text-center lg:px-8">
