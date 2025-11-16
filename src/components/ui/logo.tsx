@@ -6,8 +6,15 @@ export function Logo() {
       href="/" 
       className="inline-flex items-center hover:opacity-90 transition-opacity"
     >
-      <span className="font-semibold tracking-tight text-slate-900 text-lg md:text-xl leading-none font-uiSans">
-        kamspenezi.cz
+      <span 
+        className="font-uiSans text-slate-900 leading-none"
+        style={{
+          fontSize: 'clamp(16px, 4vw, 19px)',
+          fontWeight: 600,
+          letterSpacing: '0.015em'
+        }}
+      >
+        kamspenezi<span style={{ opacity: 0.75 }}>.cz</span>
       </span>
     </Link>
   );
