@@ -1,7 +1,7 @@
 # Design Manual — kamspenezi.cz
 
 > Last updated: November 16, 2025  
-> This document reflects the current production design system.  
+> This document reflects the current production design system after surgical polish.  
 > All changes to brand, UI, or components must update this file first.
 
 ───────────────────────────────
@@ -16,6 +16,7 @@
 - Serif for major headings only, sans for everything else
 - Generous whitespace and breathing room
 - Color is earned, not default
+- Clear visual hierarchy through size, weight, and spacing (not color inversions)
 
 **References**: Wealthsimple, Wispr Flow (visual restraint and analytical tone)
 
@@ -35,6 +36,7 @@
 **Serif (Newsreader)** — Use ONLY for:
 - H1 on landing pages
 - H2, H3 section headings (e.g., "Začni podle svého města", "Jak vypadá výsledek", "Transparentní výpočet")
+- Large monetary values in result cards (exception for emphasis)
 
 **Sans (Figtree)** — Use for EVERYTHING else:
 - All card titles (city preset cards, scenario cards, author card)
@@ -46,15 +48,19 @@
 
 ### 2.3 Type Scale
 
-**Desktop**:
+**Headings**:
 - H1: `clamp(36px, 5vw, 52px)`, line-height 1.1, tracking-tight
 - H2: `text-2xl` (24px) to `md:text-3xl` (30px)
 - H3 (card titles, scenario titles): `text-xl` (20px) to `md:text-[22px]`
-- Body: `text-base` (16px) to `md:text-lg` (18px), line-height 1.6
-- Buttons: `text-base` (16px), font-medium
-- Small/meta: `text-xs` (12px) to `text-sm` (14px)
 
-**Mobile**: Same scale, responsive with `clamp` or responsive Tailwind classes.
+**Body & UI**:
+- Body: `text-base` (16px) to `md:text-lg` (18px), line-height 1.6
+- Buttons: 
+  - Primary: 16px desktop, 15px mobile
+  - Secondary: 15px desktop, 14px mobile
+  - Tertiary: 14px
+- Scenario pills: `13px` (between xs and sm for readability)
+- Small/meta: `text-xs` (12px) to `text-sm` (14px)
 
 ───────────────────────────────
 
@@ -63,50 +69,56 @@
 ### 3.1 Surface Colors
 
 ```css
---bg-page: #F9FAFB;            /* Main page background - near white */
---bg-section-soft: #F6F7FB;    /* Soft lilac sections - ultra-subtle */
+--bg-base: #F9FAFB;            /* Base light background */
+--bg-lilac-section: #F4F5FB;   /* Soft analytic lilac sections */
 --bg-card: #ffffff;            /* Card surface - pure white */
 ```
 
 **Usage**:
-- `bg-page`: Hero, Transparency section, What calculator doesn't solve, FAQ, Footer
-- `bg-section-soft`: Only 3 lilac bands:
-  1. City Presets ("Začni podle svého města")
-  2. Results ("Jak vypadá výsledek")
-  3. Myths + Scenarios (grouped together)
-- `bg-card`: All cards (city cards, result card, scenario cards, author card, FAQ items)
+- `--bg-base`: Hero, Transparency section, What calculator doesn't solve, Footer
+- `--bg-lilac-section`: City Presets, Results, Myths+Scenarios (grouped), FAQ
+- `--bg-card`: All cards (city cards, result card, scenario cards, author card, FAQ items)
+
+**Alternation Pattern**:
+1. Hero: base
+2. City Presets: lilac-section
+3. Results: base
+4. Myths: lilac-section
+5. Scenarios: base
+6. Transparency: lilac-section
+7. What doesn't solve: base
+8. FAQ: lilac-section
+9. Footer: base
 
 ### 3.2 Text Colors
 
 ```css
---text-primary: #0b1120;
---text-secondary: #4b5563;
---text-muted: #9ca3af;
+--color-primary: #0F172A;       /* Main navy/ink */
+--color-primary-hover: #1A2433; /* Primary navy hover (8% lighter) */
+--color-secondary: #6B7280;     /* Secondary text */
+--color-bullet: #9CA3AF;        /* Generic bullets */
 ```
 
 **Usage**:
-- `text-primary`: Headings, primary body text, dark text on light backgrounds
-- `text-secondary`: Body text, descriptions, secondary information
-- `text-muted`: Meta text, labels, "Zdarma, bez registrace", small captions
+- `--color-primary`: Headings, primary body text, dark text on light backgrounds
+- `--color-primary-hover`: Button hover states (never for text)
+- `--color-secondary`: Body text, descriptions, secondary information
+- `--color-bullet`: Generic bullets (hero, "Co kalkulačka neřeší") - NEVER orange
 
 ### 3.3 Borders
 
 ```css
---border-subtle: #e2e8f0;
---border-soft: #e5e7eb;
+--color-border: #EDEEF3;        /* Card borders, default borders */
+--color-border-hover: #D8DBE5;  /* Border hover state for interactive elements */
 ```
-
-**Usage**:
-- `border-subtle`: All card borders, dividers, default borders
-- `border-soft`: Scenario dividers in result card
 
 ### 3.4 Scenario Colors (ONLY for pills and accents)
 
 ```css
---scenario-a-bg: #fde7ce;      /* Soft orange background */
---scenario-a-text: #92400e;    /* Dark orange text */
---scenario-b-bg: #e5e4ff;      /* Soft lilac background */
---scenario-b-text: #4338ca;    /* Dark purple text */
+--scenario-a-bg: #F7EAD9;       /* Soft terracotta background */
+--scenario-a-dot: #C98D4E;      /* Terracotta dot */
+--scenario-b-bg: #EAE7FF;       /* Soft lilac background */
+--scenario-b-dot: #7D5AE2;      /* Purple dot */
 ```
 
 **Strict Rules**:
@@ -114,130 +126,246 @@
 - NEVER use in: Section backgrounds, generic bullets, large background areas
 - Always pair with explicit labels ("Byt na hypotéku", "Nájem + ETF")
 
-### 3.5 Accent and CTAs
+───────────────────────────────
 
-```css
---accent-bullet: #9ca3af;      /* Neutral grey bullets */
---accent-neutral: #9ca3af;     /* Neutral accents */
---cta-primary-bg: #0b1120;     /* Dark charcoal */
---cta-primary-text: #ffffff;   /* White */
+## 4. Button System
+
+### 4.1 Button Hierarchy
+
+**Three distinct button variants:**
+1. **Primary** - Main actions (e.g., "Spočítat moje bydlení")
+2. **Secondary** - Supporting actions (e.g., "Zjistit, jak výpočet funguje")
+3. **Tertiary** - Subtle actions (e.g., "Otevřít metodiku v Google Sheets")
+
+### 4.2 PrimaryButton
+
+**Desktop**:
+```
+Height: 52px
+Font size: 16px
+Font weight: 600 (semibold)
+Horizontal padding: 24px (px-6)
 ```
 
-**Usage**:
-- `accent-bullet`: Generic bullets (hero, "Co kalkulačka neřeší") - NEVER orange
-- `cta-primary-bg/text`: Primary CTA buttons, solid dark with white text
+**Mobile**:
+```
+Height: 52px
+Font size: 15px
+Font weight: 600 (semibold)
+```
+
+**Styling**:
+```css
+--btn-primary-bg: #0F172A;
+--btn-primary-hover-bg: #1A2433;  /* 8% lighter */
+--btn-primary-text: #ffffff;
+--btn-primary-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+--btn-primary-shadow-hover: 0 6px 20px rgba(15, 23, 42, 0.22);
+--btn-focus-ring: #7D5AE2;  /* Lilac */
+```
+
+**States**:
+- Default: Dark navy background, white text, soft wide shadow
+- Hover: Slightly lighter navy (8%), stronger shadow
+- Focus: 2px lilac ring, outside button, respects border radius
+- Border radius: `var(--radius-pill)` (999px)
+
+### 4.3 SecondaryButton
+
+**Desktop**:
+```
+Height: 48px
+Font size: 15px
+Font weight: 500 (medium)
+Horizontal padding: 20px (px-5)
+```
+
+**Mobile**:
+```
+Height: 48px
+Font size: 14px
+Font weight: 500 (medium)
+```
+
+**Styling**:
+```css
+--btn-secondary-bg: #ffffff;
+--btn-secondary-border: #EDEEF3;
+--btn-secondary-border-hover: #CBD0E5;
+--btn-secondary-hover-bg: rgba(15, 23, 42, 0.02);  /* Very subtle tint */
+--btn-secondary-text: #0F172A;
+```
+
+**States**:
+- Default: White background, 1px subtle grey border, primary navy text
+- Hover: Very light tint, slightly darker border, text stays navy
+- **NEVER** turns solid dark on hover
+- Focus: Same lilac ring as primary
+- Shadow: Very soft (--shadow-card) or none
+
+### 4.4 TertiaryButton
+
+**Size**:
+```
+Height: 44px
+Font size: 14px
+Font weight: 500 (medium)
+Horizontal padding: 20px (px-5)
+```
+
+**Styling**:
+- Same tokens as SecondaryButton
+- Even more subtle presence
+- Used for less prominent actions (e.g., external links)
+- Must NEVER visually compete with primary CTA
+
+**Critical Rule**: Secondary and tertiary buttons share styling to maintain simplicity. Hierarchy comes from context and placement, not visual weight.
+
+### 4.5 Button Sizing Hierarchy
+
+```
+Primary:    52px height, 16px text (desktop) / 15px (mobile)
+Secondary:  48px height, 15px text (desktop) / 14px (mobile)
+Tertiary:   44px height, 14px text
+```
+
+**Visual Result**: Primary button is clearly the strongest element without being oversized. Button text is deliberately smaller than body text (16px base) to maintain hierarchy.
 
 ───────────────────────────────
 
-## 4. Unified Card System
+## 5. Unified Card System
 
-### 4.1 Card Styling
+### 5.1 Card Styling
 
 ```css
---shadow-card: 0 18px 40px rgba(0, 0, 0, 0.06);  /* Soft vertical shadow */
---radius-card: 24px;                             /* Unified radius for all cards */
---card-padding: 20px 20px;                       /* Mobile: 20px all around */
-                                                 /* Desktop: 24px 28px (via media query) */
+--shadow-card: 0 8px 28px rgba(15, 23, 42, 0.06);  /* Soft vertical shadow */
+--shadow-card-hover: 0 12px 32px rgba(15, 23, 42, 0.10);  /* Hover state */
+--radius-card: 24px;  /* rounded-3xl - all standard cards */
+--radius-pill: 999px;  /* rounded-full - buttons and pills */
 ```
 
-**Apply to ALL cards**:
+**Apply to ALL standard cards**:
 - Hero illustration card
 - City preset cards
 - Sample result card ("30 let dopředu, dva scénáře")
 - Scenario explanation cards ("Scénář A/B – Co přesně...")
 - Author card ("Kdo za kalkulačkou stojí")
-- FAQ accordion items
+- "Co kalkulačka neřeší" card wrapper
+
+**FAQ Exception**: FAQ items use `rounded-2xl` (16px) for slightly tighter radius, appropriate for accordion items.
 
 **Rules**:
-- Every card uses `radius-card` (24px)
-- Every card uses `shadow-card` (same soft shadow)
-- Every card uses `bg-card` (#ffffff)
-- Every card uses `border-subtle` (1px solid)
+- Every card uses `--radius-card` (24px) or `rounded-2xl` (FAQ only)
+- Every card uses `--shadow-card` (same soft shadow)
+- Every card uses `--bg-card` (#ffffff)
+- Every card uses `--color-border` (1px solid)
 - No mixing of radii or shadows
+- Hover: Subtle background tint (`--btn-secondary-hover-bg`) for interactive cards
 
-### 4.2 Buttons
+### 5.2 Scenario Pills
 
-**Primary**:
-```jsx
-background: 'var(--cta-primary-bg)'
-color: 'var(--cta-primary-text)'
-borderRadius: 'var(--radius-pill)'  // 999px
-text-base font-medium
+**Typography**:
+```
+Font size: 13px (between xs and sm)
+Font weight: 500 (medium)
+Font family: Figtree (--font-ui-sans)
 ```
 
-**Secondary** (Desktop):
-- Text link with underline on hover
-- `text-base font-medium`
-- `text-primary` color
+**Sizing**:
+```
+Padding: 3px 8px
+Gap: 1.5 (6px between dot and text)
+Border radius: var(--radius-pill)
+```
 
-**Secondary** (Mobile):
-- Ghost button: transparent background
-- 1px `border-subtle` border
-- `radius-pill` shape
-- Full width, stacked below primary
+**Colors**:
+```css
+/* Scenario A (Property/Own) */
+background: var(--scenario-a-bg)
+color: var(--scenario-a-dot)
+dot: var(--scenario-a-dot)
 
-**Button Sizing**:
-- Desktop and mobile CTAs use SAME text size (`text-base`)
-- Do not make buttons oversized
-- Hierarchy through fill/border/weight, not giant text
+/* Scenario B (Rent/ETF) */
+background: var(--scenario-b-bg)
+color: var(--scenario-b-dot)
+dot: var(--scenario-b-dot)
+```
 
-───────────────────────────────
-
-## 5. Section Backgrounds and Rhythm
-
-### 5.1 Background Pattern
-
-**3 Lilac Bands Only**:
-1. **Hero**: `bg-page` (white)
-2. **City Presets**: `bg-section-soft` (lilac)
-3. **Results**: `bg-section-soft` (lilac)
-4. **Myths + Scenarios**: `bg-section-soft` (lilac) — treated as one continuous band
-5. **Transparency**: `bg-page` (white)
-6. **What calculator doesn't solve**: `bg-page` (white)
-7. **FAQ**: `bg-page` (white)
-8. **Footer**: `bg-page` (white)
-
-When scrolling, you see clear alternation: White → Lilac (3 sections grouped) → White (rest of page).
-
-### 5.2 Section Spacing
-
-**Desktop**:
-- `py-10 md:py-18 lg:py-20` (standard for most sections)
-- Hero: `py-10 md:py-18` (slightly less on top)
-
-**Mobile**:
-- Consistent `py-10` across sections
-- Adjust with responsive classes as needed
-
-**Consistent siblings**: Sections on the same background (e.g., City Presets and Results on lilac) should use identical padding values.
+**Usage**: Results card, scenario explanation cards. Always accompanied by clear labels.
 
 ───────────────────────────────
 
-## 6. Hero Section Specifics
+## 6. Section Spacing System
 
-### 6.1 Hero Structure (Desktop)
+### 6.1 Spacing Tokens
+
+```css
+--section-padding-y-desktop: 96px;
+--section-padding-y-mobile: 64px;
+```
+
+**Application**:
+```jsx
+py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]
+```
+
+**Sections using these tokens**:
+- Hero
+- City Presets ("Začni podle svého města a velikosti bytu")
+- Results ("Jak vypadá výsledek")
+- Myths ("Mýty o nájmu")
+- Scenarios ("Co přesně kalkulačka porovnává")
+- Transparency ("Transparentní výpočet, žádná tajemství")
+- What calculator doesn't solve ("Co kalkulačka neřeší")
+- FAQ ("Nejčastější otázky")
+
+**Result**: Consistent vertical rhythm throughout the page. Adjacent sections with the same background color maintain clear visual separation through this spacing.
+
+### 6.2 Internal Spacing
+
+**Hero section**:
+- Space between elements: 24px (mt-6)
+- Space between CTAs and "Zdarma, bez registrace": 8px (mt-2)
+- Space between meta text and bullets: 24px (mt-6)
+- Bullet spacing: 10px (space-y-2.5)
+
+**Card internal padding**:
+- Standard cards: p-6 md:p-8
+- FAQ items: p-5 md:p-6
+- "Co kalkulačka neřeší" card: p-8 md:p-10 (more generous)
+
+**Line height**:
+- Headings: 1.1 (tight)
+- Body text: 1.6 (relaxed / leading-relaxed)
+- Bullets: 1.6 (same as body for consistency)
+
+───────────────────────────────
+
+## 7. Hero Section Specifics
+
+### 7.1 Hero Structure (Desktop)
 
 ```
 ┌─────────────────────────────────────────────┐
 │ Left Column (text)      Right Column (card) │
-│ - Badge                 - Illustration card │
+│ - Badge (lilac pill)    - Illustration card │
 │ - H1 (Newsreader)       - Icon              │
 │ - Subtitle (Figtree)    - Title (sans)      │
 │ - Italic line           - Description       │
-│ - Primary CTA           │                    │
-│ - Secondary CTA (link)  │                    │
-│ - "Zdarma, bez..."      │                    │
-│ - Bullet list           │                    │
+│ - Primary CTA (52px)    │                    │
+│ - Secondary CTA (48px)  │                    │
+│ - "Zdarma, bez..." (mt-2) │                  │
+│ - Bullet list (mt-6)    │                    │
 └─────────────────────────────────────────────┘
 ```
 
 **Desktop CTAs**:
-- Side by side: `gap-6` (breathes nicely)
-- Primary: solid dark button
-- Secondary: text link with underline on hover
-- Same text size: `text-base font-medium`
+- Side by side: `gap-6`
+- Primary: 52px height, 16px text, semibold
+- Secondary: 48px height, 15px text, medium
+- Visual hierarchy clear through size and weight
 
-### 6.2 Hero Structure (Mobile)
+### 7.2 Hero Structure (Mobile)
 
 ```
 ┌─────────────────────────────┐
@@ -245,13 +373,13 @@ When scrolling, you see clear alternation: White → Lilac (3 sections grouped) 
 │ - H1                        │
 │ - Subtitle                  │
 │ - Italic line               │
-│ - Primary CTA (full width)  │
+│ - Primary CTA (full width,  │
+│   52px height)              │
 │ - mt-4 gap                  │
-│ - Secondary CTA (full width │
-│   ghost button)             │
-│ - "Zdarma, bez..." (small,  │
-│   under secondary CTA)      │
-│ - mt-5 gap                  │
+│ - Secondary CTA (full width,│
+│   48px height, ghost)       │
+│ - "Zdarma, bez..." (mt-2)   │
+│ - mt-6 gap                  │
 │ - Bullet list               │
 │ - Illustration card         │
 └─────────────────────────────┘
@@ -259,73 +387,48 @@ When scrolling, you see clear alternation: White → Lilac (3 sections grouped) 
 
 **Mobile CTAs**:
 - Stacked, full width
-- `mt-4` between primary and secondary for clear separation
-- "Zdarma, bez registrace": `text-xs text-muted`, `mt-2` under secondary CTA
-- Bullet list: `mt-5` after meta text (clear separation from CTA block)
+- `mt-4` between primary and secondary
+- "Zdarma, bez registrace": `text-sm`, `mt-2` (closer to CTAs than before)
+- Bullet list: `mt-6` after meta text
 
-### 6.3 Hero Bullets
+### 7.3 Hero Bullets
 
-- Neutral grey bullets (`accent-bullet`), NOT orange
+- Neutral grey bullets (`--color-bullet`), NOT orange
 - Small dot: `h-1.5 w-1.5 rounded-full mt-1.5`
-- Text: `text-sm md:text-[15px] text-secondary`
+- Text: `text-base text-[#4B5563] font-uiSans leading-relaxed`
 - Spacing: `space-y-2.5`
-
-───────────────────────────────
-
-## 7. Result Card Specifics
-
-### 7.1 Structure
-
-```
-┌──────────────────────────────────────┐
-│ "Ukázkové srovnání" (small label)   │
-│ "30 let dopředu, dva scénáře" (h3)  │ ← sans-serif!
-│                                      │
-│ ┌─────────────────┬────────────────┐│
-│ │ Scenario A pill │ Scenario B pill││
-│ │ Number (serif)  │ Number (serif) ││
-│ │ Description     │ Description    ││
-│ └─────────────────┴────────────────┘│
-└──────────────────────────────────────┘
-```
-
-**Mobile spacing**: 
-- `mt-3` (not `mt-4`) between card header and first scenario
-- This keeps header and scenarios visually connected on mobile
-
-**Scenario Pills**:
-- `text-[13px] md:text-[14px] font-medium font-uiSans`
-- Background: `scenario-a-bg` / `scenario-b-bg`
-- Text: `scenario-a-text` / `scenario-b-text`
-- Dot: same as text color, `h-1.5 w-1.5 rounded-full`
-- Padding: `padding: '4px 10px'`
-- Border radius: `radius-pill`
-
-**Numbers in result card**:
-- Use `font-displaySerif` (Newsreader) for the large monetary values
-- This is an exception to the "sans for card content" rule
+- Same line height as body text (1.6) for visual consistency
 
 ───────────────────────────────
 
 ## 8. FAQ Section
 
 **Structure**:
-- Background: `bg-page` (white)
+- Background: `--bg-lilac-section`
 - Width: `max-w-3xl mx-auto`
-- Accordion items use card system:
-  - `bg-card` (#ffffff)
-  - `border-subtle` (1px solid)
-  - Radius: 16px (FAQ has its own slightly smaller radius)
-  - Padding: `16px 20px` (mobile), `20px 24px` (desktop)
+- Accordion items: Slightly smaller radius than standard cards
+
+**Card Styling**:
+```css
+Border radius: rounded-2xl (16px)
+Background: var(--bg-card)
+Border: 1px solid var(--color-border)
+Shadow: var(--shadow-card)
+Padding: p-5 md:p-6
+```
 
 **Typography**:
-- Questions: `font-uiSans text-[15px] md:text-base font-medium text-primary`
-- Answers: `font-uiSans text-sm md:text-[15px] text-secondary`
+- Questions: `text-base font-medium` (Figtree, weight 500)
+- Answers: `text-base leading-relaxed` (Figtree)
+- Colors: `--color-primary` (questions), `--color-secondary` (answers)
 
-**Focus state**:
-- No blue focus ring
-- `focus-visible:ring-2 focus-visible:ring-offset-0` with neutral ring color
-- Chevron rotates 180° on open with smooth transition
+**Interactive States**:
+- Hover: Very subtle background tint (`--btn-secondary-hover-bg`)
+- Cursor: pointer
+- Focus: 2px ring in lilac (`--btn-focus-ring`), no blue
+- Chevron: Rotates 180° on open with smooth transition (200ms ease-out)
+
+**Critical Rule**: FAQ questions use font-weight 500 (medium) to clearly signal interactivity. Never use bold or heavy weights.
 
 ───────────────────────────────
 
@@ -335,39 +438,54 @@ When scrolling, you see clear alternation: White → Lilac (3 sections grouped) 
 
 ```css
 --transition-duration: 200ms;
---transition-easing: cubic-bezier(0.18, 0.89, 0.32, 1.28);
---radius-pill: 999px;
+--transition-easing: ease-out;
+```
+
+**Application**:
+```css
+transition: all var(--transition-duration) var(--transition-easing);
 ```
 
 ### 9.2 Framer Motion Animations
 
 **Page sections**:
-- `initial={{ opacity: 0, y: 24 }}`
-- `whileInView={{ opacity: 1, y: 0 }}`
-- `transition={{ duration: 0.4, ease: "easeOut" }}`
-- `viewport={{ once: true, margin: "-50px" }}`
+```jsx
+initial={{ opacity: 0, y: 24 }}
+whileInView={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.4, ease: "easeOut" }}
+viewport={{ once: true, margin: "-50px" }}
+```
 
 **Cards**:
-- Hover: `whileHover={{ scale: 1.01 }}`
-- Use same transition easing
+```jsx
+whileHover={{ 
+  y: -2,
+  transition: { duration: 0.2, ease: "easeOut" }
+}}
+```
 
 **Buttons**:
-- Hover: background change, slight translate-y
-- Duration: `var(--transition-duration)`
-- Easing: `var(--transition-easing)`
+- Hover: background change, shadow intensification
+- Duration: `var(--transition-duration)` (200ms)
+- Easing: `ease-out`
+- Primary button: Slightly lift on hover (already in place through shadow increase)
+
+**General Principle**: Transitions should be fast (200ms) and use ease-out for responsiveness. Animations should be subtle and purposeful, never distracting.
 
 ───────────────────────────────
 
 ## 10. Forbidden Elements
 
 **Never use**:
-- Pills as section headings (small label pills above H2)
-- Orange bullets for generic lists (use neutral grey)
-- Scenario colors in section backgrounds
-- Multiple card radii (always 24px except FAQ at 16px)
-- Different shadows for different cards (always `shadow-card`)
-- Oversized button text (stick to `text-base`)
-- Serif for card titles or scenario labels
+- Pills as section headings (small label pills above H2) ← Already removed
+- Orange bullets for generic lists (use `--color-bullet`)
+- Scenario colors in section backgrounds or for generic elements
+- Multiple card radii (always 24px for standard cards, 16px for FAQ only)
+- Different shadows for different cards (always `--shadow-card`)
+- Oversized button text (primary: 16px desktop, secondary: 15px desktop, tertiary: 14px)
+- Serif for card titles, scenario labels, or FAQ questions
+- Solid dark hover fills for secondary/tertiary buttons
+- Blue focus rings (use lilac `--btn-focus-ring`)
 - Tailwind gradients
 - Default shadcn shadows
 - Emoji or playful elements
@@ -387,7 +505,7 @@ theme: {
       displaySerif: ['var(--font-display-serif)'],
       uiSans: ['var(--font-ui-sans)'],
     },
-    // Use tokens from globals.css
+    // Colors and other tokens pulled from globals.css variables
   }
 }
 ```
@@ -399,81 +517,129 @@ theme: {
 ```css
 :root {
   /* Fonts */
-  --font-ui-sans: "Figtree", system-ui, sans-serif;
+  --font-ui-sans: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display-serif: "Newsreader", "Times New Roman", serif;
 
-  /* Surface */
-  --bg-page: #F9FAFB;
-  --bg-section-soft: #F6F7FB;
+  /* Section Backgrounds */
+  --bg-base: #F9FAFB;
+  --bg-lilac-section: #F4F5FB;
   --bg-card: #ffffff;
 
-  /* Text */
-  --text-primary: #0b1120;
-  --text-secondary: #4b5563;
-  --text-muted: #9ca3af;
+  /* Text Colors */
+  --color-primary: #0F172A;
+  --color-primary-hover: #1A2433;
+  --color-secondary: #6B7280;
+  --color-border: #EDEEF3;
+  --color-border-hover: #D8DBE5;
+  --color-bullet: #9CA3AF;
 
-  /* Borders */
-  --border-subtle: #e2e8f0;
-  --border-soft: #e5e7eb;
+  /* Scenario Colors */
+  --scenario-a-bg: #F7EAD9;
+  --scenario-a-dot: #C98D4E;
+  --scenario-b-bg: #EAE7FF;
+  --scenario-b-dot: #7D5AE2;
 
-  /* Scenario colors */
-  --scenario-a-bg: #fde7ce;
-  --scenario-a-text: #92400e;
-  --scenario-b-bg: #e5e4ff;
-  --scenario-b-text: #4338ca;
+  /* Button System */
+  --btn-primary-bg: #0F172A;
+  --btn-primary-hover-bg: #1A2433;
+  --btn-primary-text: #ffffff;
+  --btn-primary-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+  --btn-primary-shadow-hover: 0 6px 20px rgba(15, 23, 42, 0.22);
+  
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-border: #EDEEF3;
+  --btn-secondary-border-hover: #CBD0E5;
+  --btn-secondary-hover-bg: rgba(15, 23, 42, 0.02);
+  --btn-secondary-text: #0F172A;
+  
+  --btn-focus-ring: #7D5AE2;
 
-  /* Accents */
-  --accent-bullet: #9ca3af;
-  --accent-neutral: #9ca3af;
-
-  /* CTA */
-  --cta-primary-bg: #0b1120;
-  --cta-primary-text: #ffffff;
-
-  /* Card system */
-  --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.06);
+  /* Card System */
+  --shadow-card: 0 8px 28px rgba(15, 23, 42, 0.06);
+  --shadow-card-hover: 0 12px 32px rgba(15, 23, 42, 0.10);
   --radius-card: 24px;
   --radius-pill: 999px;
-  --card-padding: 20px 20px;
+
+  /* Section Spacing */
+  --section-padding-y-desktop: 96px;
+  --section-padding-y-mobile: 64px;
 
   /* Motion */
   --transition-duration: 200ms;
-  --transition-easing: cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-@media (min-width: 768px) {
-  :root {
-    --card-padding: 24px 28px;
-  }
+  --transition-easing: ease-out;
 }
 ```
 
 ### 11.3 Component Standards
 
-**Always**:
-- Use CSS variables, never hardcoded hex
-- All cards use `border`, `borderRadius: 'var(--radius-card)'`, `boxShadow: 'var(--shadow-card)'`
-- All scenario pills use reusable pattern with `scenario-a-bg` / `scenario-b-bg`
-- Sans-serif (`font-uiSans`) for all UI elements except H1, H2, H3 section headings
+**Button Component Pattern**:
 
-**Scenario Badge Component Pattern**:
+```jsx
+// Primary Button (Desktop)
+<Button 
+  className="h-[52px] rounded-full text-white text-[16px] font-semibold px-6"
+  style={{
+    background: 'var(--btn-primary-bg)',
+    boxShadow: 'var(--btn-primary-shadow)'
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.background = 'var(--btn-primary-hover-bg)';
+    e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.background = 'var(--btn-primary-bg)';
+    e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
+  }}
+>
+  CTA Text
+</Button>
+
+// Secondary/Tertiary Button
+<Button 
+  className="h-[48px] rounded-full text-[15px] font-medium px-5"
+  style={{
+    background: 'var(--btn-secondary-bg)',
+    border: '1px solid var(--btn-secondary-border)',
+    color: 'var(--btn-secondary-text)',
+    boxShadow: 'var(--shadow-card)'
+  }}
+>
+  Action Text
+</Button>
+```
+
+**Scenario Pill Pattern**:
 
 ```jsx
 <span 
-  className="inline-flex items-center gap-2 font-medium text-[13px] md:text-[14px] font-uiSans"
+  className="inline-flex items-center gap-1.5 font-medium text-[13px] font-uiSans"
   style={{
     background: 'var(--scenario-a-bg)',  // or scenario-b-bg
-    color: 'var(--scenario-a-text)',     // or scenario-b-text
+    color: 'var(--scenario-a-dot)',      // or scenario-b-dot
     borderRadius: 'var(--radius-pill)',
-    padding: '4px 10px'
+    padding: '3px 8px'
   }}
 >
   <span 
     className="h-1.5 w-1.5 rounded-full"
-    style={{ background: 'var(--scenario-a-text)' }}  // matches text color
+    style={{ background: 'var(--scenario-a-dot)' }}
   />
   Label text
 </span>
+```
+
+**Card Pattern**:
+
+```jsx
+<div 
+  className="rounded-3xl bg-white border p-6 md:p-8"
+  style={{
+    borderColor: 'var(--color-border)',
+    boxShadow: 'var(--shadow-card)'
+  }}
+>
+  Card content
+</div>
 ```
 
 ───────────────────────────────
@@ -482,19 +648,43 @@ theme: {
 
 Before shipping any page, verify:
 
-- [ ] Only 3 lilac bands visible (City Presets + Results + Myths/Scenarios)
+**Layout & Structure**:
+- [ ] Strict alternation between `--bg-base` and `--bg-lilac-section`
+- [ ] All sections use consistent padding tokens (64px mobile, 96px desktop)
+- [ ] Hero CTAs side-by-side on desktop, stacked on mobile
+- [ ] "Zdarma, bez registrace" positioned 8px below CTAs (mt-2)
+
+**Typography**:
 - [ ] Serif only in H1, H2, H3 section headings
 - [ ] All card titles are sans-serif
 - [ ] All scenario labels ("Scénář A – ...") are sans-serif
-- [ ] FAQ questions are sans-serif
-- [ ] Hero CTAs have same text size
-- [ ] "Zdarma, bez registrace" is small (`text-xs`), positioned correctly
-- [ ] Generic bullets are neutral grey, not orange
-- [ ] All cards share 24px radius and same soft shadow
+- [ ] FAQ questions are sans-serif, font-medium (weight 500)
+- [ ] Button text is smaller than body text (button: 14-16px, body: 16px)
+
+**Button System**:
+- [ ] Primary button is visually strongest (52px height, 16px text, semibold)
+- [ ] Secondary button is clearly subordinate (48px height, 15px text, medium weight)
+- [ ] Tertiary button most subtle (44px height, 14px text)
+- [ ] Secondary/tertiary buttons never turn solid dark on hover
+- [ ] All buttons use lilac focus ring, not blue
+
+**Colors & Accents**:
+- [ ] Generic bullets are neutral grey (`--color-bullet`), not orange
 - [ ] Scenario colors only in pills/badges, never in section backgrounds
-- [ ] On mobile, result card header and first scenario are tightly connected (`mt-3`)
+- [ ] All cards share 24px radius (except FAQ: 16px)
+- [ ] All cards use same soft shadow (`--shadow-card`)
+
+**Interactive States**:
+- [ ] Primary button hover: lighter navy, stronger shadow
+- [ ] Secondary/tertiary hover: subtle tint, darker border, text stays navy
+- [ ] FAQ hover: very subtle background tint
+- [ ] All focus states: lilac ring, no blue
+
+**Consistency**:
 - [ ] No pills as section labels
 - [ ] Consistent spacing across similar sections
+- [ ] All section backgrounds use semantic tokens
+- [ ] Line height 1.6 (leading-relaxed) for all body text and bullets
 
 ───────────────────────────────
 
@@ -505,33 +695,61 @@ Before shipping any page, verify:
 ✅ **Do**: Use serif for H1, H2, H3 section headings  
 ❌ **Don't**: Use serif for card titles, scenario labels, FAQ questions, or body text
 
-✅ **Do**: Use sans (Figtree) for all UI, buttons, cards  
+✅ **Do**: Use sans (Figtree) for all UI, buttons, cards, pills  
 ❌ **Don't**: Mix serif into card content or labels
+
+✅ **Do**: Keep button text smaller than body text for hierarchy  
+❌ **Don't**: Make buttons oversized (primary max: 16px text)
 
 ### Colors
 
-✅ **Do**: Use 3 lilac bands (City Presets, Results, Myths+Scenarios)  
-❌ **Don't**: Add lilac to other sections or create more than 3 bands
+✅ **Do**: Alternate `--bg-base` and `--bg-lilac-section` strictly  
+❌ **Don't**: Add new background shades or break alternation
 
-✅ **Do**: Use neutral grey bullets for generic lists  
+✅ **Do**: Use neutral grey bullets (`--color-bullet`) for generic lists  
 ❌ **Don't**: Use orange or scenario colors for generic bullets
 
 ✅ **Do**: Use scenario colors only in pills and dots  
 ❌ **Don't**: Use scenario colors in section backgrounds or large areas
 
+### Button System
+
+✅ **Do**: Maintain clear 3-tier hierarchy (primary 52px > secondary 48px > tertiary 44px)  
+❌ **Don't**: Create additional button variants or sizes
+
+✅ **Do**: Use subtle hover for secondary/tertiary (light tint, darker border)  
+❌ **Don't**: Make secondary/tertiary turn solid dark on hover
+
+✅ **Do**: Use lilac focus ring (`--btn-focus-ring`) for all interactive elements  
+❌ **Don't**: Use blue focus rings
+
 ### Components
 
-✅ **Do**: Use 24px radius for all cards  
-❌ **Don't**: Mix card radii (16px, 20px, 24px)
+✅ **Do**: Use 24px radius for all standard cards, 16px for FAQ  
+❌ **Don't**: Mix card radii or create custom sizes
 
-✅ **Do**: Use same soft shadow for all cards  
+✅ **Do**: Use same soft shadow (`--shadow-card`) for all cards  
 ❌ **Don't**: Create custom shadows or vary shadow intensity
 
-✅ **Do**: Keep CTA text size at `text-base`  
-❌ **Don't**: Make buttons oversized with larger text
+✅ **Do**: Use scenario pills at 13px font size  
+❌ **Don't**: Make pills too large (competing with body text) or too small (unreadable)
+
+### Spacing
+
+✅ **Do**: Use section padding tokens (64px mobile, 96px desktop)  
+❌ **Don't**: Create ad-hoc spacing values
+
+✅ **Do**: Maintain 8px gap between CTAs and "Zdarma, bez registrace" (mt-2)  
+❌ **Don't**: Let meta text drift away from CTA block
 
 ───────────────────────────────
 
 **End of Design Manual**
 
-This manual is the single source of truth for the kamspenezi.cz brand and UI. Any deviation requires explicit approval and must be documented here first.
+This manual is the single source of truth for the kamspenezi.cz brand and UI after surgical polish. Any deviation requires explicit approval and must be documented here first.
+
+The design system prioritizes:
+1. **Clarity** - Clear visual hierarchy through size, weight, and spacing
+2. **Consistency** - Shared tokens for colors, spacing, shadows, radii
+3. **Restraint** - Color is earned, not default. Serif is rare and purposeful.
+4. **Polish** - Wealthsimple-level attention to detail in every interaction
