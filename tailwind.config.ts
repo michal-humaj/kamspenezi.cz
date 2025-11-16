@@ -27,28 +27,16 @@ const config = {
     },
     extend: {
       colors: {
-        bg: {
-          default: "#F7F2EC",
-          subtle: "#F3E9E0",
-        },
-        surface: {
-          default: "#FFFFFF",
-          soft: "#FBF5F0",
-        },
-        text: {
-          main: "#201A17",
-          muted: "#6E6259",
-          soft: "#9A8F86",
-        },
-        accent: {
-          dark: "#141414",
-          peach: "#F4D2B7",
-          peachSoft: "#F9E3CF",
-          lilac: "#DCD8FF",
-          lilacSoft: "#EAE7FF",
-        },
-        border: {
-          subtle: "#E3D7CC",
+        brand: {
+          bgMain: "#FAF6F0",
+          bgAlt: "#F4EEE6",
+          cardBg: "#FFFCF8",
+          textPrimary: "#1F130C",
+          textSecondary: "#5C5145",
+          accentOwn: "#F3B980",
+          accentEtf: "#C7D1FF",
+          accentNeutralPill: "#E6D9C7",
+          cta: "#111111",
         },
       },
       borderRadius: {
@@ -58,9 +46,7 @@ const config = {
         pill: "9999px",
       },
       boxShadow: {
-        hero: "0 24px 60px rgba(0,0,0,0.12)",
-        card: "0 18px 50px rgba(0,0,0,0.08)",
-        step: "0 14px 40px rgba(0,0,0,0.06)",
+        card: "0 18px 45px rgba(15,7,1,0.12)",
       },
       fontSize: {
         "display-landing": [

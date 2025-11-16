@@ -8,25 +8,39 @@
   --font-display-serif: "Newsreader", "Times New Roman", serif;
 }
 
+:root {
+  --bg-main: #FAF6F0;
+  --bg-alt: #F4EEE6;
+  --card-bg: #FFFCF8;
+  --text-primary: #1F130C;
+  --text-secondary: #5C5145;
+  --accent-own: #F3B980;
+  --accent-etf: #C7D1FF;
+  --accent-neutral-pill: #E6D9C7;
+}
+
 @layer base {
   * {
-    @apply border-border-subtle;
+    @apply border-gray-200;
   }
 
   body {
-    @apply bg-bg-default text-text-main font-uiSans antialiased;
+    @apply bg-[var(--bg-main)] text-[var(--text-primary)] font-uiSans antialiased;
   }
 
   h1,
   h2,
-  h3,
+  h3 {
+    @apply font-displaySerif font-semibold text-[var(--text-primary)];
+  }
+
   h4,
   h5,
   h6 {
-    @apply text-text-main;
+    @apply font-semibold text-[var(--text-primary)];
   }
 
   p {
-    @apply text-text-muted text-[16px] leading-[1.6];
+    @apply text-[var(--text-secondary)] text-[16px] leading-[1.6];
   }
 }

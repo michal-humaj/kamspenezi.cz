@@ -5,18 +5,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-uiSans text-base font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-dark focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-uiSans text-base font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cta focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-accent-dark text-white hover:translate-y-px hover:shadow-[0_10px_26px_rgba(0,0,0,0.18)]",
+        default: "bg-brand-cta text-white hover:bg-[#1a1a1a]",
         secondary:
-          "border border-text-main/30 bg-surface-default text-text-main hover:bg-bg-subtle",
+          "border border-[var(--text-primary)]/30 bg-[var(--card-bg)] text-[var(--text-primary)] hover:bg-[var(--bg-alt)]",
         ghost:
-          "text-text-muted hover:text-text-main hover:bg-bg-subtle/70",
+          "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-alt)]",
         destructive:
-          "border border-text-main text-text-main hover:bg-bg-subtle",
-        link: "text-text-main underline underline-offset-4 hover:text-text-muted",
+          "border border-[var(--text-primary)] text-[var(--text-primary)] hover:bg-[var(--bg-alt)]",
+        link: "text-[var(--text-primary)] underline underline-offset-4 hover:text-[var(--text-secondary)]",
       },
       size: {
         default: "h-12 px-6",
