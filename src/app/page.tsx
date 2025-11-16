@@ -156,27 +156,29 @@ export default function HomePage() {
               </p>
 
               {/* CTAs */}
-              <div className="mt-7 flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-6">
-                <Button 
-                  size="lg" 
-                  asChild 
-                  className="bg-[var(--cta-primary-bg)] text-[var(--cta-primary-text)] transition-all duration-200 hover:scale-[1.02] hover:opacity-90"
-                >
-                  <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
-                </Button>
-                
-                <button
-                  onClick={() => scrollToSection("transparentnost")}
-                  className="inline-block text-sm font-medium text-[var(--cta-secondary-text)] underline underline-offset-4 transition-colors hover:text-[var(--text-muted)] md:text-base"
-                >
-                  Zjistit, jak výpočet funguje
-                </button>
-              </div>
+              <div className="mt-7">
+                <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
+                  <Button 
+                    size="lg" 
+                    asChild 
+                    className="bg-[var(--cta-primary-bg)] text-[var(--cta-primary-text)] transition-all duration-200 hover:scale-[1.02] hover:opacity-90"
+                  >
+                    <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
+                  </Button>
+                  
+                  <button
+                    onClick={() => scrollToSection("transparentnost")}
+                    className="inline-block text-sm font-medium text-[var(--cta-secondary-text)] underline underline-offset-4 transition-colors hover:text-[var(--text-muted)] md:text-base"
+                  >
+                    Zjistit, jak výpočet funguje
+                  </button>
+                </div>
 
-              {/* Simple meta text */}
-              <p className="mt-2 text-[12px] tracking-wide text-[#8E929D]">
-                Zdarma, bez registrace.
-              </p>
+                {/* Simple meta text */}
+                <p className="mt-3 text-[12px] tracking-wide text-[#8E929D]">
+                  Zdarma, bez registrace.
+                </p>
+              </div>
 
               {/* Hero bullets */}
               <ul className="mt-6 space-y-2 text-sm text-[var(--text-muted)] md:text-base">
