@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 const HERO_BULLETS = [
   "Počítáme s realistickými předpoklady výnosů globálních ETF",
@@ -344,7 +343,7 @@ export default function HomePage() {
       {/* Results Section */}
       <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
             Výsledek
           </p>
           <h2 className="mt-2 text-2xl md:text-3xl">
@@ -352,20 +351,29 @@ export default function HomePage() {
           </h2>
           
           <div className="mt-6 max-w-3xl space-y-3">
-            <p className="text-base text-kp-text-muted md:text-lg">
+            <p className="text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
               Výsledek není jen jedno číslo. Uvidíš:
             </p>
-            <ul className="space-y-2.5 text-sm text-kp-text-main md:text-base">
+            <ul className="space-y-2.5 text-sm md:text-base text-[var(--text-secondary)] font-uiSans">
               <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
+                <span 
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                  style={{ background: 'var(--accent-bullet)' }}
+                />
                 <span>Dva sloupce nebo box ploty pro scénář vlastního bydlení a scénář nájem plus ETF</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
+                <span 
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                  style={{ background: 'var(--accent-bullet)' }}
+                />
                 <span>Střední odhad hodnoty majetku po třiceti letech</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
+                <span 
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                  style={{ background: 'var(--accent-bullet)' }}
+                />
                 <span>Pásmo, ve kterém se výsledky typicky pohybují, pokud se trh vyvíjí lépe nebo hůř</span>
               </li>
             </ul>
@@ -377,63 +385,96 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mx-auto mt-8 md:mt-10 max-w-5xl border border-kp-border-subtle bg-kp-surface p-6 md:p-8 rounded-card-mobile md:rounded-card shadow-card"
+            whileHover={{ scale: 1.01 }}
+            className="mx-auto mt-8 md:mt-10 max-w-5xl border"
+            style={{
+              background: 'var(--bg-card)',
+              borderColor: 'var(--border-subtle)',
+              borderRadius: 'var(--radius-card-mobile)',
+              boxShadow: 'var(--shadow-card)',
+              padding: '24px 20px',
+              transition: `transform var(--transition-duration) var(--transition-easing)`
+            }}
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
               Ukázkové srovnání
             </p>
-            <h3 className="mt-2 font-displaySerif text-xl font-semibold md:text-2xl">
+            <h3 className="mt-2 text-xl font-semibold md:text-2xl">
               30 let dopředu, dva scénáře
             </h3>
 
-            <div className="mt-5 md:mt-6 grid gap-0 md:grid-cols-2 md:gap-0">
+            <div className="mt-4 md:mt-5 grid gap-0 md:grid-cols-2 md:gap-0">
               {/* Scenario A */}
-              <div className="flex h-full flex-col gap-3 p-4 md:p-6 md:border-r md:border-kp-border-subtle">
+              <div className="flex h-full flex-col gap-3 p-4 md:p-6">
                 <span 
-                  className="inline-flex w-fit items-center gap-2 rounded-pill bg-kp-scenario-a-soft px-3 py-1 text-[13px] font-medium text-kp-text-main"
+                  className="inline-flex w-fit items-center gap-2 font-medium text-[13px] md:text-[14px] font-uiSans"
+                  style={{
+                    background: 'var(--scenario-a-bg)',
+                    color: 'var(--scenario-a-text)',
+                    borderRadius: 'var(--radius-pill)',
+                    padding: '4px 10px'
+                  }}
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-kp-scenario-a" />
+                  <span 
+                    className="h-1.5 w-1.5 rounded-full" 
+                    style={{ background: 'var(--scenario-a-text)' }}
+                  />
                   Byt na hypotéku
                 </span>
                 <div className="mt-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-kp-text-muted">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)] font-uiSans">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-kp-text-main md:text-3xl">
+                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--text-primary)] font-displaySerif">
                     8,4 mil. Kč
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-kp-text-muted">
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
                     Hodnota bytu po odečtení poplatků a zůstatku hypotéky.
                   </p>
                 </div>
               </div>
 
               {/* Scenario B */}
-              <div className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 border-kp-border-subtle md:border-l-0">
+              <div 
+                className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 md:border-l"
+                style={{ 
+                  borderTopColor: 'var(--border-soft)',
+                  borderLeftColor: 'var(--border-soft)'
+                }}
+              >
                 <span 
-                  className="inline-flex w-fit items-center gap-2 rounded-pill bg-kp-scenario-b-soft px-3 py-1 text-[13px] font-medium text-kp-text-main"
+                  className="inline-flex w-fit items-center gap-2 font-medium text-[13px] md:text-[14px] font-uiSans"
+                  style={{
+                    background: 'var(--scenario-b-bg)',
+                    color: 'var(--scenario-b-text)',
+                    borderRadius: 'var(--radius-pill)',
+                    padding: '4px 10px'
+                  }}
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-kp-scenario-b" />
+                  <span 
+                    className="h-1.5 w-1.5 rounded-full" 
+                    style={{ background: 'var(--scenario-b-text)' }}
+                  />
                   Nájem + ETF
                 </span>
                 <div className="mt-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-kp-text-muted">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--text-muted)] font-uiSans">
                     Medián čistého majetku
                   </p>
-                  <p className="mt-1 font-displaySerif text-2xl font-semibold leading-none text-kp-text-main md:text-3xl">
+                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--text-primary)] font-displaySerif">
                     7,1 mil. Kč
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-kp-text-muted">
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
                     Hodnota investičního portfolia z rozdílu mezi nájmem a hypotékou.
                   </p>
                 </div>
               </div>
             </div>
 
-            <p className="mt-5 md:mt-6 px-4 md:px-6 text-sm leading-[1.6] text-kp-text-muted">
+            <p className="mt-5 md:mt-6 px-4 md:px-6 text-sm leading-[1.6] text-[var(--text-secondary)] font-uiSans">
               Scénáře porovnávají stejné měsíční výdaje – rozdíl je jen v tom, kam peníze jdou.
             </p>
-            <p className="mt-2 px-4 md:px-6 text-xs text-kp-text-muted">
+            <p className="mt-2 px-4 md:px-6 text-xs text-[var(--text-muted)] font-uiSans">
               Čísla jsou ilustrativní. Přesný výsledek uvidíš po zadání svých parametrů.
             </p>
           </motion.div>
@@ -441,28 +482,28 @@ export default function HomePage() {
       </section>
 
       {/* Myth vs Reality */}
-      <section className="bg-kp-bg-hero py-16 md:py-24 lg:py-32">
+      <section className="bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
             Mýty o nájmu
           </p>
           <h2 className="mt-2 text-2xl md:text-3xl">
             Nájem není vyhazování peněz z okna
           </h2>
-          <p className="mt-3 text-base text-kp-text-muted md:text-lg">
+          <p className="mt-3 text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
             Pokud peníze navíc pracují
           </p>
 
           <div className="mt-10 grid gap-10 md:grid-cols-2 md:items-start">
             {/* Myth column */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-kp-text-muted">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-muted)] font-uiSans">
                 Mýtus
-              </h3>
+              </h4>
               <ul className="mt-4 space-y-4">
                 {MYTH_LIST.map((myth) => (
-                  <li key={myth} className="flex items-start gap-2.5 text-sm leading-relaxed text-kp-text-muted md:text-base">
-                    <span className="shrink-0 mt-1 text-kp-text-muted">×</span>
+                  <li key={myth} className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base font-uiSans">
+                    <span className="shrink-0 mt-1 text-[var(--text-muted)] text-lg">×</span>
                     <span>{myth}</span>
                   </li>
                 ))}
@@ -471,13 +512,16 @@ export default function HomePage() {
 
             {/* Reality column */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-kp-text-main">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-[var(--text-primary)] font-uiSans">
                 Realita
-              </h3>
+              </h4>
               <ul className="mt-4 space-y-4">
                 {REALITY_LIST.map((reality) => (
-                  <li key={reality} className="flex items-start gap-2.5 text-sm leading-relaxed text-kp-text-main md:text-base">
-                    <span className="shrink-0 mt-1.5 h-1.5 w-1.5 rounded-full bg-kp-text-main" />
+                  <li key={reality} className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--text-primary)] md:text-base font-uiSans">
+                    <span 
+                      className="shrink-0 mt-1.5 h-1.5 w-1.5 rounded-full" 
+                      style={{ background: 'var(--accent-bullet)' }}
+                    />
                     <span>{reality}</span>
                   </li>
                 ))}
@@ -488,15 +532,15 @@ export default function HomePage() {
       </section>
 
       {/* Scenarios section */}
-      <section className="bg-kp-bg-hero py-16 md:py-24">
+      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
             Dvě cesty
           </p>
           <h2 className="mt-2 text-2xl md:text-3xl">
             Co přesně kalkulačka porovnává
           </h2>
-          <p className="mt-3 max-w-3xl text-base text-kp-text-muted md:text-lg">
+          <p className="mt-3 max-w-3xl text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
             Stejný měsíční rozpočet. Jiný výsledek po třiceti letech.
           </p>
 
@@ -508,30 +552,44 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                whileHover={{ y: -1, boxShadow: "0 22px 55px rgba(15, 23, 42, 0.12)" }}
-                className="border border-kp-border-subtle bg-kp-surface p-6 md:p-7 rounded-card-mobile md:rounded-card shadow-card transition-all duration-220 ease-premium"
+                whileHover={{ scale: 1.01 }}
+                className="border"
+                style={{
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--border-subtle)',
+                  borderRadius: 'var(--radius-card-mobile)',
+                  boxShadow: 'var(--shadow-card)',
+                  padding: '24px 20px',
+                  transition: `transform var(--transition-duration) var(--transition-easing)`
+                }}
               >
                 <span 
-                  className={cn(
-                    "inline-flex items-center gap-2 rounded-pill px-3 py-1 text-[13px] font-medium text-kp-text-main",
-                    scenario.id === "A" 
-                      ? "bg-kp-scenario-a-soft" 
-                      : "bg-kp-scenario-b-soft"
-                  )}
+                  className="inline-flex items-center gap-2 font-medium text-[13px] md:text-[14px] font-uiSans"
+                  style={{
+                    background: scenario.id === "A" ? 'var(--scenario-a-bg)' : 'var(--scenario-b-bg)',
+                    color: scenario.id === "A" ? 'var(--scenario-a-text)' : 'var(--scenario-b-text)',
+                    borderRadius: 'var(--radius-pill)',
+                    padding: '4px 10px'
+                  }}
                 >
-                  <span className={cn(
-                    "h-1.5 w-1.5 rounded-full",
-                    scenario.id === "A" ? "bg-kp-scenario-a" : "bg-kp-scenario-b"
-                  )} />
+                  <span 
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{
+                      background: scenario.id === "A" ? 'var(--scenario-a-text)' : 'var(--scenario-b-text)'
+                    }}
+                  />
                   {scenario.badge}
                 </span>
-                <h3 className="mt-4 font-displaySerif text-xl font-semibold leading-tight md:text-[22px]">
+                <h3 className="mt-4 text-xl font-semibold leading-tight md:text-[22px]">
                   {scenario.label}
                 </h3>
                 <ul className="mt-4 space-y-2.5">
                   {scenario.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2.5 text-sm leading-relaxed text-kp-text-muted md:text-[15px]">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-kp-text-muted" />
+                    <li key={bullet} className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                      <span 
+                        className="mt-2 h-1 w-1 shrink-0 rounded-full" 
+                        style={{ background: 'var(--accent-neutral)' }}
+                      />
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -543,7 +601,7 @@ export default function HomePage() {
       </section>
 
       {/* Transparency section */}
-      <section id="transparentnost" className="scroll-mt-20 bg-kp-bg-hero py-16 md:py-24 lg:py-32">
+      <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-section-alt)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Transparentní výpočet, žádná tajemství
@@ -552,30 +610,42 @@ export default function HomePage() {
           <div className="mt-10 grid gap-10 lg:grid-cols-2">
             {/* Left: Methodology */}
             <div className="space-y-6">
-              <p className="text-base text-kp-text-muted md:text-lg">
+              <p className="text-base text-[var(--text-secondary)] md:text-lg font-uiSans">
                 Nejsme banka ani prodejce hypoték. Kalkulačku jsme postavili tak, aby si každý mohl výpočty zkontrolovat a upravit podle sebe.
               </p>
               
               <ul className="space-y-3">
-                <li className="flex items-start gap-3 text-sm leading-relaxed text-kp-text-muted md:text-[15px]">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
+                <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                  <span 
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                    style={{ background: 'var(--accent-bullet)' }}
+                  />
                   <span>
                     <a
                       href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline underline-offset-2 transition-colors duration-180 ease-premium hover:text-kp-primary"
+                      className="underline underline-offset-2 text-[var(--text-primary)] hover:text-[var(--text-primary)] font-uiSans"
+                      style={{
+                        transition: `color var(--transition-duration) var(--transition-easing)`
+                      }}
                     >
                       Veřejný Google Sheet se všemi vzorci a předpoklady
                     </a>
                   </span>
                 </li>
-                <li className="flex items-start gap-3 text-sm leading-relaxed text-kp-text-muted md:text-[15px]">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
+                <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                  <span 
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                    style={{ background: 'var(--accent-bullet)' }}
+                  />
                   <span>Popis vstupních dat a zdrojů</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm leading-relaxed text-kp-text-muted md:text-[15px]">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
+                <li className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-[15px] font-uiSans">
+                  <span 
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                    style={{ background: 'var(--accent-bullet)' }}
+                  />
                   <span>Možnost změnit parametry a spočítat si vlastní scénáře</span>
                 </li>
               </ul>
@@ -583,7 +653,7 @@ export default function HomePage() {
               <Button 
                 asChild 
                 variant="secondary"
-                className="mt-4"
+                className="mt-4 font-uiSans"
               >
                 <a 
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
@@ -597,9 +667,16 @@ export default function HomePage() {
 
             {/* Right: Author card */}
             <div 
-              className="border border-kp-border-subtle bg-kp-surface p-6 md:p-8 rounded-card-mobile md:rounded-card shadow-card"
+              className="border"
+              style={{
+                background: 'var(--bg-card)',
+                borderColor: 'var(--border-subtle)',
+                borderRadius: 'var(--radius-card-mobile)',
+                boxShadow: 'var(--shadow-card)',
+                padding: '24px 20px'
+              }}
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kp-text-muted">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)] font-uiSans">
                 Kdo za kalkulačkou stojí
               </p>
               
@@ -615,11 +692,11 @@ export default function HomePage() {
                 </div>
                 
                 <div>
-                  <p className="font-semibold text-kp-text-main">Michal Humaj</p>
-                  <p className="mt-1 text-sm leading-relaxed text-kp-text-muted">
+                  <p className="font-semibold text-[var(--text-primary)] font-uiSans">Michal Humaj</p>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
                     Produktový manažer a investor, který řeší stejné otázky jako ty.
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-kp-text-muted">
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)] font-uiSans">
                     Kalkulačku jsem postavil hlavně pro sebe, abych porovnal vlastní bydlení s nájmem a investicemi. Neprodávám hypotéky ani investiční produkty.
                   </p>
                 </div>
@@ -630,15 +707,18 @@ export default function HomePage() {
       </section>
 
       {/* What calculator doesn't solve */}
-      <section className="bg-kp-bg-hero py-12 md:py-16">
+      <section className="bg-[var(--bg-page)] py-10 md:py-14">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h3 className="text-xl font-semibold md:text-2xl">
             Co kalkulačka neřeší
           </h3>
           <ul className="mt-6 space-y-3">
             {CALCULATOR_LIMITS.map((limit) => (
-              <li key={limit} className="flex items-start gap-3 text-sm leading-relaxed text-kp-text-muted md:text-base">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" />
+              <li key={limit} className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-secondary)] md:text-base font-uiSans">
+                <span 
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" 
+                  style={{ background: 'var(--accent-bullet)' }}
+                />
                 <span>{limit}</span>
               </li>
             ))}
@@ -647,12 +727,12 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-kp-bg-hero py-16 md:py-24">
+      <section className="bg-[var(--bg-page)] py-10 md:py-18 lg:py-20">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
             Nejčastější otázky
           </h2>
-          <p className="mt-3 text-sm text-kp-text-muted md:text-base">
+          <p className="mt-3 text-sm text-[var(--text-secondary)] md:text-base font-uiSans">
             Shrnujeme odpovědi na otázky, které slyšíme nejčastěji. Pokud hledáš detailnější metodiku, otevři veřejný Google Sheet.
           </p>
 
@@ -661,12 +741,24 @@ export default function HomePage() {
               <AccordionItem
                 key={faq.question}
                 value={faq.question}
-                className="border border-kp-border-subtle bg-kp-surface px-5 md:px-6 py-4 md:py-5 rounded-faq focus-within:border-kp-primary transition-colors duration-180 ease-premium"
+                className="border font-uiSans"
+                style={{
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--border-subtle)',
+                  borderRadius: 'var(--radius-faq)',
+                  padding: '16px 20px',
+                  transition: `border-color var(--transition-duration) var(--transition-easing)`
+                }}
               >
-                <AccordionTrigger className="text-left text-[15px] md:text-base font-medium text-kp-text-main hover:no-underline">
+                <AccordionTrigger 
+                  className="text-left text-[15px] md:text-base font-medium text-[var(--text-primary)] hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0"
+                  style={{
+                    focusVisibleRing: 'var(--border-subtle)'
+                  }}
+                >
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm md:text-[15px] leading-relaxed text-kp-text-muted">
+                <AccordionContent className="text-sm md:text-[15px] leading-relaxed text-[var(--text-secondary)]">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -676,12 +768,18 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-kp-border-subtle bg-kp-bg-hero py-12">
+      <footer 
+        className="border-t py-12"
+        style={{
+          background: 'var(--bg-page)',
+          borderTopColor: 'var(--border-subtle)'
+        }}
+      >
         <div className="mx-auto w-full max-w-6xl px-4 text-center lg:px-8">
-          <p className="text-sm text-kp-text-muted">
+          <p className="text-sm text-[var(--text-secondary)] font-uiSans">
             © {new Date().getFullYear()} kamspenezi.cz
           </p>
-          <p className="mt-2 text-xs text-kp-text-muted">
+          <p className="mt-2 text-xs text-[var(--text-muted)] font-uiSans">
             Nejedná se o investiční ani hypoteční poradenství. Používej vlastní rozum a případně se poraď s odborníkem.
           </p>
           <p className="mt-4">
@@ -689,7 +787,10 @@ export default function HomePage() {
               href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-kp-text-main underline underline-offset-4 transition-colors duration-180 ease-premium hover:text-kp-primary"
+              className="text-xs text-[var(--text-primary)] underline underline-offset-4 hover:text-[var(--text-primary)] font-uiSans"
+              style={{
+                transition: `color var(--transition-duration) var(--transition-easing)`
+              }}
             >
               Metodika v Google Sheets
             </a>

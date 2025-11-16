@@ -41,11 +41,17 @@ export function SiteHeader() {
   const cta = CTA_CONFIG.find((config) => config.match(pathname))!;
 
   return (
-    <header className="border-b border-kp-border-subtle bg-kp-bg-hero">
+    <header 
+      className="border-b"
+      style={{
+        background: 'var(--bg-page)',
+        borderBottomColor: 'var(--border-subtle)'
+      }}
+    >
       <div className="container flex h-16 items-center justify-between md:h-20">
         <Link
           href="/"
-          className="font-displaySerif text-[1.25rem] font-semibold text-kp-text-main"
+          className="font-displaySerif text-[1.25rem] font-semibold text-[var(--text-primary)]"
         >
           kamspenezi.cz
         </Link>
@@ -58,14 +64,23 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative pb-1 transition-colors duration-180 ease-premium",
+                  "relative pb-1 font-uiSans",
                   isActive 
-                    ? "text-kp-text-main font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-kp-primary" 
-                    : "text-kp-text-muted hover:text-kp-text-main"
+                    ? "text-[var(--text-primary)] font-semibold" 
+                    : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                 )}
+                style={{
+                  transition: `color var(--transition-duration) var(--transition-easing)`
+                }}
                 aria-current={isActive ? "page" : undefined}
               >
                 {item.label}
+                {isActive && (
+                  <span 
+                    className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
+                    style={{ background: 'var(--text-primary)' }}
+                  />
+                )}
               </Link>
             );
           })}
@@ -81,27 +96,37 @@ export function SiteHeader() {
           <Sheet>
             <SheetTrigger asChild>
               <button
-                className="inline-flex items-center justify-center rounded-pill border border-kp-border-subtle p-2 text-kp-text-main"
+                className="inline-flex items-center justify-center border p-2 font-uiSans"
+                style={{
+                  borderRadius: 'var(--radius-pill)',
+                  borderColor: 'var(--border-subtle)',
+                  color: 'var(--text-primary)'
+                }}
                 aria-label="Otevřít navigaci"
               >
                 <Menu className="size-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-sm bg-kp-surface">
+            <SheetContent 
+              side="right" 
+              className="w-full max-w-sm"
+              style={{ background: 'var(--bg-card)' }}
+            >
               <nav className="flex flex-col gap-6 pt-16">
                 <Link
                   href="/"
-                  className="font-displaySerif text-[1.4rem] font-semibold text-kp-text-main"
+                  className="font-displaySerif text-[1.4rem] font-semibold text-[var(--text-primary)]"
                 >
                   kamspenezi.cz
                 </Link>
-                <div className="flex flex-col gap-5 text-kp-text-main">
+                <div className="flex flex-col gap-5 text-[var(--text-primary)] font-uiSans">
                   <Link
                     href="/"
                     className={cn(
                       "text-[1.3rem] font-semibold",
-                      pathname === "/" && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
+                      pathname === "/" && "border-l-[3px] pl-3"
                     )}
+                    style={pathname === "/" ? { borderLeftColor: 'var(--text-primary)' } : {}}
                     aria-current={pathname === "/" ? "page" : undefined}
                   >
                     Bydlení
@@ -111,24 +136,33 @@ export function SiteHeader() {
                       href="/investice"
                       className={cn(
                         "text-[1.3rem] font-semibold",
-                        pathname.startsWith("/investice") && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
+                        pathname.startsWith("/investice") && "border-l-[3px] pl-3"
                       )}
+                      style={pathname.startsWith("/investice") ? { borderLeftColor: 'var(--text-primary)' } : {}}
                       aria-current={pathname.startsWith("/investice") ? "page" : undefined}
                     >
                       Investice
                     </Link>
-                    <span className="rounded-pill bg-kp-bg-band px-3 py-1 text-xs font-medium text-kp-text-muted">
+                    <span 
+                      className="px-3 py-1 text-xs font-medium"
+                      style={{
+                        background: 'var(--bg-section-alt)',
+                        color: 'var(--text-muted)',
+                        borderRadius: 'var(--radius-pill)'
+                      }}
+                    >
                       Nové
                     </span>
                   </div>
                 </div>
-                <div className="h-px bg-kp-border-subtle" />
-                <div className="flex flex-col gap-3 text-body font-medium text-kp-text-main">
+                <div className="h-px" style={{ background: 'var(--border-subtle)' }} />
+                <div className="flex flex-col gap-3 text-body font-medium text-[var(--text-primary)] font-uiSans">
                   <Link 
                     href="/o-projektu"
                     className={cn(
-                      pathname === "/o-projektu" && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
+                      pathname === "/o-projektu" && "border-l-[3px] pl-3"
                     )}
+                    style={pathname === "/o-projektu" ? { borderLeftColor: 'var(--text-primary)' } : {}}
                     aria-current={pathname === "/o-projektu" ? "page" : undefined}
                   >
                     O projektu
@@ -136,8 +170,9 @@ export function SiteHeader() {
                   <Link 
                     href="/kontakt"
                     className={cn(
-                      pathname === "/kontakt" && "border-l-[3px] border-kp-primary pl-3 text-kp-primary"
+                      pathname === "/kontakt" && "border-l-[3px] pl-3"
                     )}
+                    style={pathname === "/kontakt" ? { borderLeftColor: 'var(--text-primary)' } : {}}
                     aria-current={pathname === "/kontakt" ? "page" : undefined}
                   >
                     Kontakt
