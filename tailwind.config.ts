@@ -27,26 +27,42 @@ const config = {
     },
     extend: {
       colors: {
-        brand: {
-          bgMain: "#FAF6F0",
-          bgAlt: "#F4EEE6",
-          cardBg: "#FFFCF8",
-          textPrimary: "#1F130C",
-          textSecondary: "#5C5145",
-          accentOwn: "#F3B980",
-          accentEtf: "#C7D1FF",
-          accentNeutralPill: "#E6D9C7",
-          cta: "#111111",
+        kp: {
+          'bg-page': '#F7F9FC',
+          'bg-hero': '#FCFDFE',
+          'bg-band': '#EEF2FF',
+          'surface': '#FFFFFF',
+          'border-subtle': '#E2E8F0',
+          'text-main': '#0F172A',
+          'text-muted': '#6B7280',
+          'text-soft': '#9CA3AF',
+          'primary': '#020617',
+          'primary-hover': '#02051A',
+          'scenario-a': '#F8B686',
+          'scenario-a-soft': '#FFF3E8',
+          'scenario-b': '#9C88FF',
+          'scenario-b-soft': '#F2EFFF',
         },
       },
       borderRadius: {
         sm: "6px",
         md: "12px",
         lg: "18px",
+        card: "24px",
+        'card-mobile': "18px",
+        'faq': "16px",
         pill: "9999px",
       },
       boxShadow: {
-        card: "0 18px 45px rgba(15,7,1,0.12)",
+        card: "0 18px 45px rgba(15, 23, 42, 0.08)",
+        'card-hover': "0 22px 55px rgba(15, 23, 42, 0.12)",
+      },
+      transitionTimingFunction: {
+        'premium': 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+      },
+      transitionDuration: {
+        '180': '180ms',
+        '220': '220ms',
       },
       fontSize: {
         "display-landing": [

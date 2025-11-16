@@ -17,7 +17,7 @@ const HERO_BULLETS = [
       href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
       target="_blank"
       rel="noopener noreferrer"
-      className="underline underline-offset-2 transition-colors hover:text-[var(--rent-etf-accent)]"
+      className="underline underline-offset-2 transition-colors duration-180 ease-premium hover:text-kp-primary"
     >
       Google Sheets krok za krokem
     </a>
@@ -130,7 +130,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[var(--bg-body)] pt-10 pb-16 lg:pt-16 lg:pb-24">
+      <section className="bg-kp-bg-hero py-16 md:py-24 lg:py-32">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
             {/* Left: Copy and CTAs */}
@@ -139,7 +139,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <span className="inline-flex items-center rounded-full bg-[var(--bg-section-soft)] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
+              <span className="inline-flex items-center rounded-full bg-kp-bg-band px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-kp-text-muted">
                 Online kalkulačka bydlení
               </span>
               
@@ -147,51 +147,65 @@ export default function HomePage() {
                 Bydlet ve vlastním, nebo v nájmu
               </h1>
 
-              <p className="mt-4 max-w-xl text-lg text-[var(--text-main)] md:text-xl">
+              <p className="mt-4 max-w-xl text-lg text-kp-text-main md:text-xl">
                 Kalkulačka porovná dvě cesty: koupit byt na hypotéku, nebo bydlet v nájmu a rozdíl v platbách investovat do ETF. Uvidíš, jaký majetek ti vyjde po třiceti letech.
               </p>
 
-              <p className="mt-3 max-w-xl text-base italic text-[var(--text-muted)] md:text-lg">
+              <p className="mt-3 max-w-xl text-base italic text-kp-text-muted md:text-lg">
                 Rozhodnutí o bydlení ti ovlivní celý život. Udělej ho na datech, ne na pocitu.
               </p>
 
               {/* CTAs */}
-              <div className="mt-7">
-                <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
+              <div className="mt-7 mb-6">
+                {/* Desktop: side by side */}
+                <div className="hidden sm:flex items-center gap-4">
                   <Button 
                     size="lg" 
                     asChild 
-                    className="w-full sm:w-auto bg-[var(--accent-primary)] text-white hover:bg-[var(--accent-primary-soft)] transition-all hover:-translate-y-px"
-                    style={{ 
-                      borderRadius: 'var(--radius-pill)', 
-                      transition: 'var(--transition-fast)',
-                      paddingLeft: '28px',
-                      paddingRight: '28px'
-                    }}
+                    className="bg-kp-primary text-white hover:bg-kp-primary-hover hover:-translate-y-px transition-all duration-180 ease-premium rounded-pill px-7"
                   >
                     <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
                   </Button>
                   
                   <button
                     onClick={() => scrollToSection("transparentnost")}
-                    className="text-base font-medium text-[var(--accent-link)] hover:text-[var(--accent-link-hover)] hover:underline transition-colors"
-                    style={{ transition: 'var(--transition-fast)' }}
+                    className="text-base font-medium text-kp-text-main hover:text-kp-primary hover:underline transition-colors duration-180 ease-premium"
                   >
                     Zjistit, jak výpočet funguje
                   </button>
                 </div>
 
+                {/* Mobile: stacked with ghost secondary */}
+                <div className="flex sm:hidden flex-col gap-3">
+                  <Button 
+                    size="lg" 
+                    asChild 
+                    className="w-full h-14 bg-kp-primary text-white hover:bg-kp-primary-hover hover:-translate-y-px transition-all duration-180 ease-premium rounded-pill text-base"
+                  >
+                    <Link href="/bydleni-kalkulacka">Spočítat moje bydlení</Link>
+                  </Button>
+                  
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => scrollToSection("transparentnost")}
+                    className="w-full h-14 bg-transparent border border-kp-border-subtle text-kp-text-main hover:bg-kp-surface hover:border-kp-text-main transition-all duration-180 ease-premium rounded-pill"
+                  >
+                    Zjistit, jak výpočet funguje
+                  </Button>
+                </div>
+
                 {/* Simple meta text */}
-                <p className="mt-1.5 text-[13px] text-[var(--text-subtle)]">
+                <p className="mt-2 text-xs text-kp-text-soft">
                   Zdarma, bez registrace.
                 </p>
               </div>
 
               {/* Hero bullets */}
-              <ul className="mt-6 space-y-2.5 text-sm text-[var(--text-main)] md:text-base">
+              <ul className="mt-6 space-y-2.5 text-sm text-kp-text-main md:text-base">
                 {HERO_BULLETS.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--scenario-a-dot)]" aria-hidden />
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-kp-scenario-a" aria-hidden />
                     <span>{bullet}</span>
                   </li>
                 ))}
@@ -206,23 +220,19 @@ export default function HomePage() {
               className="mt-10 lg:mt-0 lg:w-[380px] xl:w-[420px] lg:ml-auto"
             >
               <div 
-                className="flex flex-col items-center border border-[var(--border-subtle)] bg-[var(--bg-card)] p-8 text-center" 
-                style={{ 
-                  borderRadius: 'var(--radius-card)', 
-                  boxShadow: 'var(--shadow-card)' 
-                }}
+                className="flex flex-col items-center border border-kp-border-subtle bg-kp-surface p-8 text-center rounded-card-mobile md:rounded-card shadow-card" 
               >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#EEF1FF]">
-                  <svg className="h-10 w-10 text-[#CBD5F5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-kp-bg-band">
+                  <svg className="h-10 w-10 text-kp-scenario-b" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <rect x="3" y="13" width="4" height="8" rx="1" />
                     <rect x="10" y="9" width="4" height="12" rx="1" />
                     <rect x="17" y="5" width="4" height="16" rx="1" />
                   </svg>
                 </div>
-                <h3 className="mt-6 font-displaySerif text-xl font-semibold text-[var(--text-main)]">
+                <h3 className="mt-6 text-xl font-semibold text-kp-text-main">
                   Vizualizace výsledků tvého bydlení
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                <p className="mt-3 text-sm leading-relaxed text-kp-text-muted">
                   Později sem doplníme prémiovou ilustraci s výsledkem kalkulačky.
                 </p>
               </div>

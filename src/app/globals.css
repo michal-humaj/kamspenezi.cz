@@ -36,22 +36,22 @@
   }
 
   body {
-    @apply bg-[var(--bg-body)] text-[var(--text-main)] font-uiSans antialiased;
+    @apply bg-kp-bg-page text-kp-text-main font-uiSans antialiased;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-displaySerif font-semibold text-[var(--text-main)];
+    @apply font-displaySerif font-semibold text-kp-text-main;
   }
 
   h4,
   h5,
   h6 {
-    @apply font-semibold text-[var(--text-main)];
+    @apply font-semibold text-kp-text-main;
   }
 
   p {
-    @apply text-[var(--text-main)] text-[16px] leading-[1.6];
+    @apply text-kp-text-main text-[16px] leading-[1.6];
   }
 }
