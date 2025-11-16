@@ -48,14 +48,14 @@ export interface CalculatorState {
   urokovaSazbaMax: number;
 }
 
-// Initial state with placeholder values
+// Initial state with Praha + 2+kk preselected
 const initialState: CalculatorState = {
-  selectedCity: null,
-  selectedApartmentSize: null,
-  kupniCena: 0,
+  selectedCity: "Praha",
+  selectedApartmentSize: "2+kk",
+  kupniCena: 7800000, // Praha 2+kk default
   vlastniZdroje: 20,
   urokovaSazba: 5.5,
-  najemne: 0,
+  najemne: 24000, // Praha 2+kk default
   etfVynos: 8.0,
   prispevekRodicu: 0,
   zarizeniNemovitosti: 150000,
@@ -116,7 +116,7 @@ export default function BydleniKalkulackaPage() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 md:space-y-12 md:px-6 md:py-12">
+    <main className="mx-auto max-w-6xl space-y-8 px-4 md:space-y-12 md:px-6" style={{ paddingTop: "var(--section-padding-y-mobile)", paddingBottom: "var(--section-padding-y-mobile)" }}>
       {/* Hero Header */}
       <header className="space-y-3 text-center">
         <h1 className="font-displaySerif text-3xl font-bold text-[var(--color-primary)] md:text-4xl">
@@ -130,8 +130,11 @@ export default function BydleniKalkulackaPage() {
 
       {/* City and Apartment Selection Section */}
       <section
-        className="space-y-6 rounded-2xl bg-[var(--bg-card)] p-4 shadow-[var(--shadow-card)] md:p-6"
-        style={{ border: "1px solid var(--color-border)" }}
+        className="space-y-6 rounded-[var(--radius-card)] bg-[var(--bg-card)] p-4 md:p-6"
+        style={{ 
+          border: "1px solid var(--color-border)",
+          boxShadow: "var(--shadow-card)"
+        }}
       >
         <div className="space-y-2">
           <h2 className="font-uiSans text-xl font-semibold text-[var(--color-primary)] md:text-2xl">
@@ -177,8 +180,11 @@ export default function BydleniKalkulackaPage() {
         <div id="nastaveni" className="space-y-6">
           {/* Basic Inputs */}
           <section
-            className="space-y-4 rounded-2xl bg-[var(--bg-card)] p-4 shadow-[var(--shadow-card)] md:p-6"
-            style={{ border: "1px solid var(--color-border)" }}
+            className="space-y-4 rounded-[var(--radius-card)] bg-[var(--bg-card)] p-4 md:p-6"
+            style={{ 
+              border: "1px solid var(--color-border)",
+              boxShadow: "var(--shadow-card)"
+            }}
           >
             <h2 className="font-uiSans text-lg font-semibold text-[var(--color-primary)] md:text-xl">
               Základní nastavení

@@ -9,19 +9,38 @@ interface BasicInputsProps {
   updateState: (updates: Partial<CalculatorState>) => void;
 }
 
+// Format number with spaces as thousand separators
+function formatNumber(value: number): string {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+// Parse formatted number back to plain number
+function parseFormattedNumber(value: string): number {
+  return Number(value.replace(/\s/g, ""));
+}
+
 export function BasicInputs({ state, updateState }: BasicInputsProps) {
   return (
     <div className="space-y-5">
-      {/* Kupní cena nemovitosti */}
+      {/* 1. Kupní cena nemovitosti - CRITICAL */}
       <div className="space-y-2">
         <Label htmlFor="kupni-cena" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Kupní cena nemovitosti (Kč)
         </Label>
         <Input
           id="kupni-cena"
-          type="number"
-          value={state.kupniCena}
-          onChange={(e) => updateState({ kupniCena: Number(e.target.value) })}
+          type="text"
+          value={formatNumber(state.kupniCena)}
+          onChange={(e) => {
+            const parsed = parseFormattedNumber(e.target.value);
+            if (!isNaN(parsed)) {
+              updateState({ kupniCena: parsed });
+            }
+          }}
+          onBlur={(e) => {
+            // Re-format on blur
+            e.target.value = formatNumber(state.kupniCena);
+          }}
           className="font-uiSans text-base"
         />
         <p className="font-uiSans text-xs text-[var(--color-secondary)]">
@@ -29,7 +48,7 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
         </p>
       </div>
 
-      {/* Vlastní zdroje */}
+      {/* 2. Vlastní zdroje - CRITICAL */}
       <div className="space-y-2">
         <Label htmlFor="vlastni-zdroje" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Vlastní zdroje (%)
@@ -42,13 +61,14 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
           className="font-uiSans text-base"
           min={0}
           max={100}
+          step={1}
         />
         <p className="font-uiSans text-xs text-[var(--color-secondary)]">
           Kolik procent kupní ceny máš našetřeno
         </p>
       </div>
 
-      {/* Úroková sazba hypotéky */}
+      {/* 3. Úroková sazba hypotéky - CRITICAL */}
       <div className="space-y-2">
         <Label htmlFor="urokova-sazba" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Úroková sazba hypotéky (% p.a.)
@@ -66,16 +86,25 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
         </p>
       </div>
 
-      {/* Nájemné */}
+      {/* 4. Nájemné - CRITICAL */}
       <div className="space-y-2">
         <Label htmlFor="najemne" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Nájemné (Kč / měsíc)
         </Label>
         <Input
           id="najemne"
-          type="number"
-          value={state.najemne}
-          onChange={(e) => updateState({ najemne: Number(e.target.value) })}
+          type="text"
+          value={formatNumber(state.najemne)}
+          onChange={(e) => {
+            const parsed = parseFormattedNumber(e.target.value);
+            if (!isNaN(parsed)) {
+              updateState({ najemne: parsed });
+            }
+          }}
+          onBlur={(e) => {
+            // Re-format on blur
+            e.target.value = formatNumber(state.najemne);
+          }}
           className="font-uiSans text-base"
         />
         <p className="font-uiSans text-xs text-[var(--color-secondary)]">
@@ -83,7 +112,7 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
         </p>
       </div>
 
-      {/* Očekávaný výnos ETF */}
+      {/* 5. Očekávaný výnos ETF */}
       <div className="space-y-2">
         <Label htmlFor="etf-vynos" className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
           Očekávaný výnos ETF (% p.a.)
@@ -103,4 +132,3 @@ export function BasicInputs({ state, updateState }: BasicInputsProps) {
     </div>
   );
 }
-

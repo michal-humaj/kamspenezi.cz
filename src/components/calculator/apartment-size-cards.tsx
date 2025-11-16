@@ -7,7 +7,6 @@ interface ApartmentSizeCardsProps {
 }
 
 // Mock apartment data by city and size
-// Structure: city -> size -> { kupniCena, najemne }
 const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne: number }>> = {
   Praha: {
     "1+kk": { kupniCena: 5200000, najemne: 18000 },
@@ -44,6 +43,14 @@ const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne
 
 const SIZES = ["1+kk", "2+kk", "3+kk", "4+kk"];
 
+function formatPrice(price: number): string {
+  return (price / 1000000).toFixed(1) + " mil. Kč";
+}
+
+function formatRent(rent: number): string {
+  return rent.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " Kč / měsíc";
+}
+
 export function ApartmentSizeCards({
   selectedCity,
   selectedSize,
@@ -67,10 +74,25 @@ export function ApartmentSizeCards({
               className="rounded-xl p-4 text-left transition-all"
               style={{
                 border: isSelected
-                  ? "2px solid var(--btn-primary-bg)"
+                  ? "2px solid var(--scenario-b-dot)"
                   : "1px solid var(--color-border)",
-                background: isSelected ? "var(--bg-lilac-section)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--shadow-card)" : "none",
+                background: isSelected ? "var(--scenario-b-bg)" : "var(--bg-card)",
+                boxShadow: isSelected ? "var(--shadow-card-hover)" : "none",
+                cursor: "pointer",
+                transitionDuration: "var(--transition-duration)",
+                transitionTimingFunction: "var(--transition-easing)",
+              }}
+              onMouseEnter={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.background = "var(--bg-lilac-section)";
+                  e.currentTarget.style.borderColor = "var(--color-border-hover)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.background = "var(--bg-card)";
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                }
               }}
             >
               <div className="space-y-3">
@@ -78,21 +100,11 @@ export function ApartmentSizeCards({
                   {size}
                 </div>
                 <div className="space-y-1">
-                  <div>
-                    <div className="font-uiSans text-xs text-[var(--color-secondary)]">
-                      Kupní cena
-                    </div>
-                    <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
-                      {(data.kupniCena / 1000000).toFixed(1)} mil. Kč
-                    </div>
+                  <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
+                    {formatPrice(data.kupniCena)}
                   </div>
-                  <div>
-                    <div className="font-uiSans text-xs text-[var(--color-secondary)]">
-                      Nájem
-                    </div>
-                    <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
-                      {(data.najemne / 1000).toFixed(0)} tis. Kč/měsíc
-                    </div>
+                  <div className="font-uiSans text-sm text-[var(--color-secondary)]">
+                    {formatRent(data.najemne)}
                   </div>
                 </div>
               </div>
@@ -102,7 +114,13 @@ export function ApartmentSizeCards({
       </div>
 
       {/* Mobile: Horizontal scrollable */}
-      <div className="flex gap-3 overflow-x-auto pb-2 md:hidden" style={{ scrollSnapType: "x mandatory" }}>
+      <div 
+        className="flex gap-3 overflow-x-auto pb-2 md:hidden" 
+        style={{ 
+          scrollSnapType: "x mandatory",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
         {SIZES.map((size) => {
           const data = cityData[size];
           const isSelected = selectedSize === size;
@@ -113,11 +131,14 @@ export function ApartmentSizeCards({
               className="min-w-[260px] shrink-0 rounded-xl p-4 text-left transition-all"
               style={{
                 border: isSelected
-                  ? "2px solid var(--btn-primary-bg)"
+                  ? "2px solid var(--scenario-b-dot)"
                   : "1px solid var(--color-border)",
-                background: isSelected ? "var(--bg-lilac-section)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--shadow-card)" : "none",
+                background: isSelected ? "var(--scenario-b-bg)" : "var(--bg-card)",
+                boxShadow: isSelected ? "var(--shadow-card-hover)" : "none",
                 scrollSnapAlign: "start",
+                cursor: "pointer",
+                transitionDuration: "var(--transition-duration)",
+                transitionTimingFunction: "var(--transition-easing)",
               }}
             >
               <div className="space-y-3">
@@ -125,21 +146,11 @@ export function ApartmentSizeCards({
                   {size}
                 </div>
                 <div className="space-y-1">
-                  <div>
-                    <div className="font-uiSans text-xs text-[var(--color-secondary)]">
-                      Kupní cena
-                    </div>
-                    <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
-                      {(data.kupniCena / 1000000).toFixed(1)} mil. Kč
-                    </div>
+                  <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
+                    {formatPrice(data.kupniCena)}
                   </div>
-                  <div>
-                    <div className="font-uiSans text-xs text-[var(--color-secondary)]">
-                      Nájem
-                    </div>
-                    <div className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
-                      {(data.najemne / 1000).toFixed(0)} tis. Kč/měsíc
-                    </div>
+                  <div className="font-uiSans text-sm text-[var(--color-secondary)]">
+                    {formatRent(data.najemne)}
                   </div>
                 </div>
               </div>
@@ -150,4 +161,3 @@ export function ApartmentSizeCards({
     </div>
   );
 }
-

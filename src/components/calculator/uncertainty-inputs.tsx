@@ -20,18 +20,39 @@ export function UncertaintyInputs({ state, updateState }: UncertaintyInputsProps
     <Accordion type="single" collapsible>
       <AccordionItem
         value="uncertainty"
-        className="rounded-2xl border-0 bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)] md:p-6"
-        style={{ border: "1px solid var(--color-border)" }}
+        className="rounded-[var(--radius-card)] border-0 bg-[var(--bg-card)] transition-all"
+        style={{ 
+          border: "1px solid var(--color-border)",
+          boxShadow: "var(--shadow-card)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = "var(--shadow-card-hover)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = "var(--shadow-card)";
+        }}
       >
-        <AccordionTrigger className="font-uiSans text-lg font-semibold text-[var(--color-primary)] hover:no-underline">
-          <div className="flex items-center gap-2">
+        <AccordionTrigger 
+          className="w-full cursor-pointer px-5 py-4 font-uiSans text-lg font-semibold text-[var(--color-primary)] hover:no-underline md:px-6"
+          style={{
+            transitionDuration: "var(--transition-duration)",
+            transitionTimingFunction: "var(--transition-easing)",
+          }}
+        >
+          <div className="flex w-full items-center justify-between pr-2">
             <span>Nejistota vývoje v čase</span>
-            <span className="rounded-full bg-[var(--bg-lilac-section)] px-2 py-0.5 font-uiSans text-xs font-medium text-[var(--color-secondary)]">
+            <span 
+              className="rounded-[var(--radius-pill)] px-3 py-1 font-uiSans text-xs font-medium"
+              style={{
+                background: "var(--bg-lilac-section)",
+                color: "var(--color-secondary)",
+              }}
+            >
               Pro pokročilé
             </span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="space-y-5 pt-4">
+        <AccordionContent className="space-y-5 px-5 pb-5 pt-2 md:px-6 md:pb-6">
           <p className="font-uiSans text-sm text-[var(--color-secondary)]">
             Nastav pesimistické, očekávané a optimistické hodnoty pro nejistotu v budoucnosti.
           </p>
@@ -232,4 +253,3 @@ export function UncertaintyInputs({ state, updateState }: UncertaintyInputsProps
     </Accordion>
   );
 }
-

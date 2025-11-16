@@ -12,9 +12,15 @@ interface ResultsPanelProps {
 
 // Placeholder component for animated numbers (to be implemented later)
 function AnimatedNumberPlaceholder({ value }: { value: number }) {
+  // Format with spaces as thousand separators
+  const formatted = value.toLocaleString("cs-CZ", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).replace(/,/g, " ");
+  
   return (
     <span className="font-displaySerif text-3xl font-bold text-[var(--color-primary)] md:text-4xl">
-      {value.toLocaleString("cs-CZ")} Kč
+      {formatted} Kč
     </span>
   );
 }
@@ -25,54 +31,80 @@ export function ResultsPanel({
   setResultsMode,
   onEditSettings,
 }: ResultsPanelProps) {
-  // Placeholder calculation - will be replaced with actual logic
-  const scenarioAResult = state.kupniCena * 1.5;
-  const scenarioBResult = state.kupniCena * 1.7;
+  // Simple placeholder calculation based on inputs
+  // Scenario A: Mortgage - value grows with property appreciation
+  const propertyValue = state.kupniCena * (1 + state.rustHodnotyNemovitosti / 100) ** 30;
+  const downPayment = state.kupniCena * (state.vlastniZdroje / 100);
+  const scenarioAResult = propertyValue - (state.kupniCena - downPayment) * 0.7; // Rough approximation
+  
+  // Scenario B: Rent + ETF - savings grow with ETF returns
+  const monthlyDifference = (state.kupniCena * (1 - state.vlastniZdroje / 100) * (state.urokovaSazba / 100) / 12) - state.najemne;
+  const monthlySavings = Math.max(0, monthlyDifference);
+  const scenarioBResult = downPayment * (1 + state.etfVynos / 100) ** 30 + monthlySavings * 12 * 30 * (1 + state.etfVynos / 100) ** 15;
 
   return (
     <div
       id="vysledek"
-      className="space-y-6 rounded-2xl bg-[var(--bg-card)] p-5 shadow-[var(--shadow-card)] md:p-6"
-      style={{ border: "1px solid var(--color-border)" }}
+      className="space-y-6 rounded-[var(--radius-card)] bg-[var(--bg-card)] p-5 md:p-6"
+      style={{ 
+        border: "1px solid var(--color-border)",
+        boxShadow: "var(--shadow-card)",
+      }}
     >
       {/* Mobile: Edit settings button */}
       <div className="md:hidden">
-        <Button
-          variant="outline"
+        <button
           onClick={onEditSettings}
-          className="w-full font-uiSans text-sm"
+          className="w-full rounded-[var(--radius-pill)] px-4 py-2 font-uiSans text-sm font-medium transition-all"
+          style={{
+            background: "var(--btn-secondary-bg)",
+            border: "1px solid var(--btn-secondary-border)",
+            color: "var(--btn-secondary-text)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--btn-secondary-hover-bg)";
+            e.currentTarget.style.borderColor = "var(--btn-secondary-border-hover)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--btn-secondary-bg)";
+            e.currentTarget.style.borderColor = "var(--btn-secondary-border)";
+          }}
         >
-          Upravit nastavení
-        </Button>
+          Upravit vstupy
+        </button>
       </div>
 
-      {/* Mode tabs */}
-      <div className="space-y-2">
+      {/* Heading and Mode tabs */}
+      <div className="space-y-3">
         <h2 className="font-uiSans text-lg font-semibold text-[var(--color-primary)] md:text-xl">
           Výsledek po 30 letech
         </h2>
         <div
-          className="grid grid-cols-2 gap-2 rounded-lg p-1"
+          className="grid grid-cols-2 gap-1 rounded-[var(--radius-pill)] p-1"
           style={{ background: "var(--bg-lilac-section)" }}
         >
           <button
             onClick={() => setResultsMode("realistic")}
-            className="rounded-md px-3 py-2 font-uiSans text-sm font-medium transition-colors"
+            className="rounded-[var(--radius-pill)] px-3 py-2 font-uiSans text-sm font-medium transition-all"
             style={{
-              background: resultsMode === "realistic" ? "var(--bg-card)" : "transparent",
-              color: "var(--color-primary)",
-              boxShadow: resultsMode === "realistic" ? "var(--shadow-card)" : "none",
+              background: resultsMode === "realistic" ? "var(--btn-primary-bg)" : "transparent",
+              color: resultsMode === "realistic" ? "var(--btn-primary-text)" : "var(--color-primary)",
+              boxShadow: resultsMode === "realistic" ? "var(--btn-primary-shadow)" : "none",
+              transitionDuration: "var(--transition-duration)",
+              transitionTimingFunction: "var(--transition-easing)",
             }}
           >
             Realistický rozsah
           </button>
           <button
             onClick={() => setResultsMode("fixed")}
-            className="rounded-md px-3 py-2 font-uiSans text-sm font-medium transition-colors"
+            className="rounded-[var(--radius-pill)] px-3 py-2 font-uiSans text-sm font-medium transition-all"
             style={{
-              background: resultsMode === "fixed" ? "var(--bg-card)" : "transparent",
-              color: "var(--color-primary)",
-              boxShadow: resultsMode === "fixed" ? "var(--shadow-card)" : "none",
+              background: resultsMode === "fixed" ? "var(--btn-primary-bg)" : "transparent",
+              color: resultsMode === "fixed" ? "var(--btn-primary-text)" : "var(--color-primary)",
+              boxShadow: resultsMode === "fixed" ? "var(--btn-primary-shadow)" : "none",
+              transitionDuration: "var(--transition-duration)",
+              transitionTimingFunction: "var(--transition-easing)",
             }}
           >
             Pevný výpočet
@@ -94,7 +126,7 @@ export function ResultsPanel({
           <div className="flex items-center gap-2">
             <div
               className="h-2 w-2 rounded-full"
-              style={{ background: "var(--kp-scenario-a)" }}
+              style={{ background: "var(--scenario-a-dot)" }}
             />
             <h3 className="font-uiSans text-sm font-medium text-[var(--color-secondary)]">
               Scénář A: Byt na hypotéku
@@ -108,7 +140,7 @@ export function ResultsPanel({
           <div className="flex items-center gap-2">
             <div
               className="h-2 w-2 rounded-full"
-              style={{ background: "var(--kp-scenario-b)" }}
+              style={{ background: "var(--scenario-b-dot)" }}
             />
             <h3 className="font-uiSans text-sm font-medium text-[var(--color-secondary)]">
               Scénář B: Nájem + ETF
@@ -133,19 +165,6 @@ export function ResultsPanel({
             : "Comparison bar placeholder"}
         </p>
       </div>
-
-      {/* Additional info */}
-      {!state.selectedCity || !state.selectedApartmentSize ? (
-        <div
-          className="rounded-lg p-4"
-          style={{ background: "var(--bg-lilac-section)" }}
-        >
-          <p className="font-uiSans text-sm text-[var(--color-secondary)]">
-            Vyber město a velikost bytu pro zobrazení výsledků
-          </p>
-        </div>
-      ) : null}
     </div>
   );
 }
-
