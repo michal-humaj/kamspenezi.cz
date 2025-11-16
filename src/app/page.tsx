@@ -649,19 +649,30 @@ export default function HomePage() {
 
               <Button 
                 asChild 
-                variant="outline"
-                className="mt-6 font-uiSans bg-[var(--bg-card)] hover:bg-[var(--bg-section-alt)] border-[var(--border-subtle)] transition-all"
+                className="mt-6 font-uiSans"
                 style={{
+                  background: 'var(--surface-tint-2)',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--border-subtle)',
                   borderRadius: 'var(--radius-pill)',
                   transition: `all var(--transition-duration) var(--transition-easing)`
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--text-primary)';
+                  e.currentTarget.style.color = '#ffffff';
+                  e.currentTarget.style.borderColor = 'var(--text-primary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--surface-tint-2)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
+                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
                 }}
               >
                 <a
                   href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
-                  className="text-[var(--text-primary)]"
-                >
+          >
                   Otevřít metodiku v Google Sheets
                 </a>
               </Button>
