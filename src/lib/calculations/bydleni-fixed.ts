@@ -13,7 +13,7 @@ type InputsBydleniFixed = {
   repairFundMonthly: number;      // O11
   insuranceAnnual: number;        // O12
   propertyTaxAnnual: number;      // O13
-  maintenancePctAnnual: number;   // O14 - NOW IN CZK (renamed but keeping param name for compatibility)
+  maintenanceBaseKc: number;      // O14 - now in Kč per year, not percentage
   costInflationAnnual: number;    // O15
 
   rentGrowthAnnual: number;       // O17
@@ -89,7 +89,7 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
   const O11 = inputs.repairFundMonthly;
   const O12 = inputs.insuranceAnnual;
   const O13 = inputs.propertyTaxAnnual;
-  const O14 = inputs.maintenancePctAnnual;
+  const O14 = inputs.maintenanceBaseKc;
   const O15 = inputs.costInflationAnnual;
 
   const O17 = inputs.rentGrowthAnnual;
@@ -196,17 +196,15 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
   }
 
   // 8) Maintenance L (Náklady na údržbu)
-  // NOW IN CZK: base amount indexed by cost inflation
   // L3 = 0
-  // L4 = O14 (base CZK amount)
-  // L5..L33 = O14 * (1+O15)^(t-1)
-  const maintenanceBase = O14; // Base CZK amount
+  // L4 = O14 (base Kč per year)
+  // L5..L33 = O14 * (1+O$15)^(t-1) - inflated from base year
   for (let t = 0; t <= YEARS; t++) {
     if (t === 0) {
       maintenanceAnnual[t] = 0;
     } else {
-      // Compound from base with cost inflation
-      maintenanceAnnual[t] = maintenanceBase * Math.pow(1 + O15, t - 1);
+      // Apply inflation to base maintenance cost
+      maintenanceAnnual[t] = O14 * Math.pow(1 + O15, t - 1);
     }
   }
 

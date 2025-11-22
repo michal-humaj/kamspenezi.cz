@@ -10,7 +10,7 @@ import { ResultsPanel } from "@/components/calculator/results-panel";
 import { Button } from "@/components/ui/button";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
 import { YearlyBreakdownTable, type YearlyRow } from "@/components/calculator/yearly-breakdown-table";
-import { YearlyBreakdownAccordion } from "@/components/calculator/yearly-breakdown-accordion";
+import { YearlyBreakdownMobile } from "@/components/calculator/yearly-breakdown-mobile";
 
 // Types for calculator state
 export interface CalculatorState {
@@ -125,7 +125,7 @@ export default function BydleniKalkulackaPage() {
       repairFundMonthly: state.fondOprav,
       insuranceAnnual: state.pojisteniNemovitosti,
       propertyTaxAnnual: state.danZNemovitosti,
-      maintenancePctAnnual: state.nakladyUdrzba, // Now in CZK, not percent
+      maintenanceBaseKc: state.nakladyUdrzba,
       costInflationAnnual: state.ocekavanaInflace / 100,
       rentGrowthAnnual: state.rustNajemnehoExpected / 100,
       rentMonthly: state.najemne,
@@ -133,23 +133,21 @@ export default function BydleniKalkulackaPage() {
     });
   }, [state]);
 
-  // Prepare yearly breakdown data
-  const yearlyBreakdownData: YearlyRow[] = useMemo(() => {
-    if (!calculationResults) return [];
-
+  // Map calculation results to yearly rows for the breakdown table
+  const yearlyRows: YearlyRow[] = useMemo(() => {
     return calculationResults.years.map((year, index) => ({
       year,
-      rentPaid: calculationResults.rentAnnual[index],
-      netAdvantageVsOwnership: calculationResults.savedVsOwnership[index],
-      etfPortfolioValue: calculationResults.etfValue[index],
-      propertyValue: calculationResults.propertyValue[index],
-      mortgageBalance: calculationResults.remainingDebt[index],
-      totalPropertyCosts: calculationResults.ownershipCosts[index],
+      mortgageRemaining: calculationResults.remainingDebt[index],
       mortgagePayment: calculationResults.mortgagePaymentsAnnual[index],
       propertyTax: calculationResults.taxAnnual[index],
       repairFund: calculationResults.repairFundAnnual[index],
-      propertyInsurance: calculationResults.insuranceAnnualSeries[index],
-      maintenanceCost: calculationResults.maintenanceAnnual[index],
+      insurance: calculationResults.insuranceAnnualSeries[index],
+      maintenance: calculationResults.maintenanceAnnual[index],
+      totalPropertyCosts: calculationResults.ownershipCosts[index],
+      propertyValue: calculationResults.propertyValue[index],
+      rent: calculationResults.rentAnnual[index],
+      savedComparedToOwnership: calculationResults.savedVsOwnership[index],
+      etfPortfolioValue: calculationResults.etfValue[index],
     }));
   }, [calculationResults]);
 
@@ -174,7 +172,7 @@ export default function BydleniKalkulackaPage() {
   };
 
   return (
-    <div className="bg-[var(--bg-base)]">
+    <main className="bg-[var(--bg-base)] min-h-screen">
       <div className="mx-auto max-w-6xl space-y-8 px-4 py-[var(--section-padding-y-mobile)] md:space-y-12 md:px-6 md:py-[var(--section-padding-y-desktop)]">
         {/* Hero Header */}
         <header className="space-y-3 text-center">
@@ -267,15 +265,29 @@ export default function BydleniKalkulackaPage() {
             />
           </aside>
         </div>
-      </div>
 
-      {/* Yearly Breakdown Section - Outside main container for full width */}
-      {canViewResults && yearlyBreakdownData.length > 0 && (
-        <>
-          <YearlyBreakdownTable data={yearlyBreakdownData} />
-          <YearlyBreakdownAccordion data={yearlyBreakdownData} />
-        </>
-      )}
-    </div>
+        {/* Yearly Breakdown Section */}
+        <section className="mt-16 space-y-6">
+          <div className="px-4 text-center md:px-0">
+            <h2 className="font-displaySerif text-2xl font-semibold text-slate-900 md:text-3xl">
+              Vývoj v čase (podrobný přehled)
+            </h2>
+            <p className="mx-auto mt-2 max-w-2xl font-uiSans text-sm leading-relaxed text-slate-500 md:text-base">
+              Ukazujeme přehled po jednotlivých letech pro oba scénáře.
+            </p>
+          </div>
+
+          {/* Desktop: Table */}
+          <div className="hidden lg:block">
+            <YearlyBreakdownTable rows={yearlyRows} />
+          </div>
+
+          {/* Mobile: Accordion */}
+          <div className="block px-4 lg:hidden">
+            <YearlyBreakdownMobile rows={yearlyRows} />
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }

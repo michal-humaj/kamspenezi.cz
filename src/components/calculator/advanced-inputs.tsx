@@ -50,7 +50,7 @@ const PROPERTY_TAX_RANGE = {
 
 const MAINTENANCE_RANGE = {
   min: 0,
-  max: 100_000,
+  max: 80_000,
   step: 1_000,
 } as const;
 
@@ -172,7 +172,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           <LabeledSliderInput
             id="naklady-udrzba"
             label="Náklady na údržbu"
-            description="Roční náklady na údržbu bytu (opravy, servis, menší rekonstrukce)"
+            description="Roční náklady na údržbu bytu"
             value={state.nakladyUdrzba}
             onChange={(value) => updateState({ nakladyUdrzba: value })}
             unit="custom"
