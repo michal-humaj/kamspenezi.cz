@@ -174,7 +174,7 @@ export default function BydleniKalkulackaPage() {
   };
 
   return (
-    <main className="bg-[var(--bg-base)] min-h-screen">
+    <div className="bg-[var(--bg-base)]">
       <div className="mx-auto max-w-6xl space-y-8 px-4 py-[var(--section-padding-y-mobile)] md:space-y-12 md:px-6 md:py-[var(--section-padding-y-desktop)]">
         {/* Hero Header */}
         <header className="space-y-3 text-center">
@@ -271,11 +271,11 @@ export default function BydleniKalkulackaPage() {
 
       {/* Yearly Breakdown Section - Outside main container for full width */}
       {canViewResults && yearlyBreakdownData.length > 0 && (
-        <div className="mt-12 md:mt-16">
+        <>
           <YearlyBreakdownTable data={yearlyBreakdownData} />
           <YearlyBreakdownAccordion data={yearlyBreakdownData} />
-        </div>
+        </>
       )}
-    </main>
+    </div>
   );
 }

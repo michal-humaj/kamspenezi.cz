@@ -17,10 +17,10 @@ interface YearlyBreakdownAccordionProps {
 
 export function YearlyBreakdownAccordion({ data }: YearlyBreakdownAccordionProps) {
   return (
-    <section className="block lg:hidden w-full">
+    <section className="block md:hidden w-full mt-12">
       {/* Section Header */}
       <div className="px-4 space-y-2 mb-4">
-        <h3 className="font-displaySerif text-2xl font-bold text-[var(--color-primary)]">
+        <h3 className="font-displaySerif text-xl font-semibold tracking-tight text-[var(--color-primary)]">
           Vývoj v čase (podrobný přehled)
         </h3>
         <p className="font-uiSans text-sm text-[var(--color-secondary)]">
