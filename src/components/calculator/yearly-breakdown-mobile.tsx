@@ -17,125 +17,124 @@ interface YearlyBreakdownMobileProps {
 
 export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
   return (
-    <Accordion type="single" collapsible className="space-y-3">
-      {rows.map((row) => {
-        // Format summary for header
-        const propertyValueMil = formatMillionsCzk(row.propertyValue);
-        const etfValueMil = formatMillionsCzk(row.etfPortfolioValue);
-        
-        return (
-          <AccordionItem
-            key={row.year}
-            value={`year-${row.year}`}
-            className="rounded-2xl border border-slate-100 bg-white shadow-sm"
-          >
-            <AccordionTrigger className="px-4 py-3 hover:no-underline [&[data-state=open]_.chevron]:rotate-180 [&>svg]:hidden">
-              <div className="flex w-full items-center justify-between gap-3">
-                <span className="font-uiSans text-sm font-semibold text-slate-900">
-                  Rok {row.year}
-                </span>
-                <div className="flex items-center gap-2 text-xs text-slate-500">
-                  <span className="whitespace-nowrap">
-                    A: {propertyValueMil} mil. Kč
+    <div className="space-y-4">
+      {/* Section header */}
+      <div className="space-y-1.5">
+        <h2 className="calc-section-title text-xl">
+          Vývoj v čase (podrobný přehled)
+        </h2>
+        <p className="max-w-[560px] font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
+          Ukazujeme přehled po jednotlivých letech pro oba scénáře.
+        </p>
+      </div>
+
+      <Accordion type="single" collapsible className="space-y-2">
+        {rows.map((row) => {
+          // Format summary for header
+          const propertyValueMil = formatMillionsCzk(row.propertyValue);
+          const etfValueMil = formatMillionsCzk(row.etfPortfolioValue);
+          
+          return (
+            <AccordionItem
+              key={row.year}
+              value={`year-${row.year}`}
+              className="rounded-2xl border border-[var(--color-border)] bg-[var(--bg-card)] shadow-sm"
+            >
+              <AccordionTrigger className="px-4 py-3 hover:no-underline [&[data-state=open]_.chevron]:rotate-180 [&>svg]:hidden">
+                <div className="flex w-full items-center justify-between gap-3">
+                  <span className="font-uiSans text-base font-semibold text-[var(--color-primary)]">
+                    Rok {row.year}
                   </span>
-                  <span>·</span>
-                  <span className="whitespace-nowrap">
-                    B: {etfValueMil} mil. Kč
-                  </span>
-                  <ChevronDown className="chevron ml-1 h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200" />
+                  <div className="flex items-center gap-2 font-uiSans text-xs text-[var(--color-secondary)]">
+                    <div className="flex items-center gap-1">
+                      <div className="h-1.5 w-1.5 rounded-full bg-[var(--scenario-a-dot)]" />
+                      <span className="whitespace-nowrap tabular-nums">
+                        {propertyValueMil} mil
+                      </span>
+                    </div>
+                    <span>·</span>
+                    <div className="flex items-center gap-1">
+                      <div className="h-1.5 w-1.5 rounded-full bg-[var(--scenario-b-dot)]" />
+                      <span className="whitespace-nowrap tabular-nums">
+                        {etfValueMil} mil
+                      </span>
+                    </div>
+                    <ChevronDown className="chevron ml-1 h-4 w-4 shrink-0 text-[var(--color-secondary)] transition-transform duration-200" />
+                  </div>
                 </div>
-              </div>
-            </AccordionTrigger>
-            
-            <AccordionContent className="px-4 pb-4 pt-2">
-              {/* Scenario A */}
-              <div className="mb-4">
-                <h4 className="mb-2 font-uiSans text-xs font-semibold uppercase tracking-wide text-orange-600">
-                  Scénář A – Byt na hypotéku
-                </h4>
-                <dl className="space-y-1.5">
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Dlužná částka hypotéky:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.mortgageRemaining))} Kč
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Splátka hypotéky:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.mortgagePayment))} Kč
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Daň z nemovitosti:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.propertyTax))} Kč
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Fond oprav:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.repairFund))} Kč
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Pojištění nemovitosti:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.insurance))} Kč
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Náklady na údržbu:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.maintenance))} Kč
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Součet nákladů na nemovitost:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.totalPropertyCosts))} Kč
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-2 border-t border-slate-100 pt-1.5">
-                    <dt className="text-xs font-semibold text-slate-700">Hodnota nemovitosti:</dt>
-                    <dd className="whitespace-nowrap text-sm font-bold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.propertyValue))} Kč
-                    </dd>
-                  </div>
-                </dl>
-              </div>
+              </AccordionTrigger>
               
-              {/* Scenario B */}
-              <div className="border-t border-slate-100 pt-3">
-                <h4 className="mb-2 font-uiSans text-xs font-semibold uppercase tracking-wide text-purple-600">
-                  Scénář B – Nájem + ETF
-                </h4>
-                <dl className="space-y-1.5">
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Nájem:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.rent))} Kč
-                    </dd>
+              <AccordionContent className="px-4 pb-4 pt-2">
+                {/* Scenario A */}
+                <div className="mb-4 rounded-xl bg-[var(--scenario-a-bg)] p-3">
+                  <div className="mb-2 flex items-center gap-1.5">
+                    <div className="h-2 w-2 rounded-full bg-[var(--scenario-a-dot)]" />
+                    <h4 className="font-uiSans text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]">
+                      Scénář A – Byt
+                    </h4>
                   </div>
-                  <div className="flex justify-between gap-2">
-                    <dt className="text-xs font-medium text-slate-500">Ušetřeno oproti vlastnictví:</dt>
-                    <dd className="whitespace-nowrap text-sm font-semibold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.savedComparedToOwnership))} Kč
-                    </dd>
+                  <dl className="space-y-1.5">
+                    <div className="flex justify-between gap-2">
+                      <dt className="font-uiSans text-sm font-medium text-[var(--color-secondary)]">Dluh hypotéky:</dt>
+                      <dd className="whitespace-nowrap font-uiSans text-sm font-semibold tabular-nums text-[var(--color-primary)]">
+                        {formatCzk(Math.round(row.mortgageRemaining))}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                      <dt className="font-uiSans text-sm font-medium text-[var(--color-secondary)]">Splátka:</dt>
+                      <dd className="whitespace-nowrap font-uiSans text-sm font-semibold tabular-nums text-[var(--color-primary)]">
+                        {formatCzk(Math.round(row.mortgagePayment))}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                      <dt className="font-uiSans text-sm font-medium text-[var(--color-secondary)]">Náklady celkem:</dt>
+                      <dd className="whitespace-nowrap font-uiSans text-sm font-semibold tabular-nums text-[var(--color-primary)]">
+                        {formatCzk(Math.round(row.totalPropertyCosts))}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-2 border-t border-[var(--scenario-a-dot)]/20 pt-1.5">
+                      <dt className="font-uiSans text-sm font-semibold text-[var(--color-primary)]">Hodnota bytu:</dt>
+                      <dd className="whitespace-nowrap font-uiSans text-base font-bold tabular-nums text-[var(--color-primary)]">
+                        {formatCzk(Math.round(row.propertyValue))}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+                
+                {/* Scenario B */}
+                <div className="rounded-xl bg-[var(--scenario-b-bg)] p-3">
+                  <div className="mb-2 flex items-center gap-1.5">
+                    <div className="h-2 w-2 rounded-full bg-[var(--scenario-b-dot)]" />
+                    <h4 className="font-uiSans text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]">
+                      Scénář B – Nájem + ETF
+                    </h4>
                   </div>
-                  <div className="flex justify-between gap-2 border-t border-slate-100 pt-1.5">
-                    <dt className="text-xs font-semibold text-slate-700">Hodnota ETF portfolia:</dt>
-                    <dd className="whitespace-nowrap text-sm font-bold text-slate-900 tabular-nums">
-                      {formatCzk(Math.round(row.etfPortfolioValue))} Kč
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
+                  <dl className="space-y-1.5">
+                    <div className="flex justify-between gap-2">
+                      <dt className="font-uiSans text-sm font-medium text-[var(--color-secondary)]">Nájem:</dt>
+                      <dd className="whitespace-nowrap font-uiSans text-sm font-semibold tabular-nums text-[var(--color-primary)]">
+                        {formatCzk(Math.round(row.rent))}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                      <dt className="font-uiSans text-sm font-medium text-[var(--color-secondary)]">Ušetřeno:</dt>
+                      <dd className="whitespace-nowrap font-uiSans text-sm font-semibold tabular-nums text-[var(--color-primary)]">
+                        {formatCzk(Math.round(row.savedComparedToOwnership))}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-2 border-t border-[var(--scenario-b-dot)]/20 pt-1.5">
+                      <dt className="font-uiSans text-sm font-semibold text-[var(--color-primary)]">Hodnota ETF:</dt>
+                      <dd className="whitespace-nowrap font-uiSans text-base font-bold tabular-nums text-[var(--color-primary)]">
+                        {formatCzk(Math.round(row.etfPortfolioValue))}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
+    </div>
   );
 }
-

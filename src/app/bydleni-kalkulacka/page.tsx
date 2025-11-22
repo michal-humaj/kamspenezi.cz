@@ -267,16 +267,7 @@ export default function BydleniKalkulackaPage() {
         </div>
 
         {/* Yearly Breakdown Section */}
-        <section className="mt-16 space-y-6">
-          <div className="px-4 text-center md:px-0">
-            <h2 className="font-displaySerif text-2xl font-semibold text-slate-900 md:text-3xl">
-              Vývoj v čase (podrobný přehled)
-            </h2>
-            <p className="mx-auto mt-2 max-w-2xl font-uiSans text-sm leading-relaxed text-slate-500 md:text-base">
-              Ukazujeme přehled po jednotlivých letech pro oba scénáře.
-            </p>
-          </div>
-
+        <section className="mt-12">
           {/* Desktop: Table */}
           <div className="hidden lg:block">
             <YearlyBreakdownTable rows={yearlyRows} />
