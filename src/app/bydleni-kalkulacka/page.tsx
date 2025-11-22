@@ -9,6 +9,8 @@ import { AdvancedInputs } from "@/components/calculator/advanced-inputs";
 import { ResultsPanel } from "@/components/calculator/results-panel";
 import { Button } from "@/components/ui/button";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
+import { YearlyBreakdownTable, type YearlyRow } from "@/components/calculator/yearly-breakdown-table";
+import { YearlyBreakdownAccordion } from "@/components/calculator/yearly-breakdown-accordion";
 
 // Types for calculator state
 export interface CalculatorState {
@@ -63,7 +65,7 @@ const initialState: CalculatorState = {
   fondOprav: 300,
   pojisteniNemovitosti: 1900,
   danZNemovitosti: 2000,
-  nakladyUdrzba: 1.0,
+  nakladyUdrzba: 20000,
   ocekavanaInflace: 3.0,
   rustNajemneho: 4.0,
   etfVynosMin: 4.0,
@@ -123,13 +125,33 @@ export default function BydleniKalkulackaPage() {
       repairFundMonthly: state.fondOprav,
       insuranceAnnual: state.pojisteniNemovitosti,
       propertyTaxAnnual: state.danZNemovitosti,
-      maintenancePctAnnual: state.nakladyUdrzba / 100,
+      maintenancePctAnnual: state.nakladyUdrzba, // Now in CZK, not percent
       costInflationAnnual: state.ocekavanaInflace / 100,
       rentGrowthAnnual: state.rustNajemnehoExpected / 100,
       rentMonthly: state.najemne,
       etfReturnAnnual: state.etfVynosExpected / 100,
     });
   }, [state]);
+
+  // Prepare yearly breakdown data
+  const yearlyBreakdownData: YearlyRow[] = useMemo(() => {
+    if (!calculationResults) return [];
+
+    return calculationResults.years.map((year, index) => ({
+      year,
+      rentPaid: calculationResults.rentAnnual[index],
+      netAdvantageVsOwnership: calculationResults.savedVsOwnership[index],
+      etfPortfolioValue: calculationResults.etfValue[index],
+      propertyValue: calculationResults.propertyValue[index],
+      mortgageBalance: calculationResults.remainingDebt[index],
+      totalPropertyCosts: calculationResults.ownershipCosts[index],
+      mortgagePayment: calculationResults.mortgagePaymentsAnnual[index],
+      propertyTax: calculationResults.taxAnnual[index],
+      repairFund: calculationResults.repairFundAnnual[index],
+      propertyInsurance: calculationResults.insuranceAnnualSeries[index],
+      maintenanceCost: calculationResults.maintenanceAnnual[index],
+    }));
+  }, [calculationResults]);
 
   const canViewResults = state.selectedCity && state.selectedApartmentSize;
 
@@ -246,6 +268,14 @@ export default function BydleniKalkulackaPage() {
           </aside>
         </div>
       </div>
+
+      {/* Yearly Breakdown Section - Outside main container for full width */}
+      {canViewResults && yearlyBreakdownData.length > 0 && (
+        <div className="mt-12 md:mt-16">
+          <YearlyBreakdownTable data={yearlyBreakdownData} />
+          <YearlyBreakdownAccordion data={yearlyBreakdownData} />
+        </div>
+      )}
     </main>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Input } from "@/components/ui/input";
 
 export interface LabeledSliderInputProps {
   /** Unique ID for the input */
@@ -188,29 +187,62 @@ export function LabeledSliderInput({
           )}
         </div>
 
-        {/* Right: Input with Unit */}
-        <div className="relative flex items-center">
-          <Input
-            id={id}
-            type="text"
-            inputMode={inputMode}
-            value={displayValue}
-            onChange={handleInputChange}
-            onBlur={handleInputBlur}
-            onFocus={handleInputFocus}
-            className={`calc-input pr-[calc(3ch+28px)] text-right ${
+        {/* Right: Input with Unit - Self-contained flex container */}
+        <div className="flex items-center justify-end">
+          <div
+            className={`inline-flex items-center justify-end rounded-full border bg-white px-4 py-2.5 shadow-sm transition-all w-full sm:w-auto min-w-[140px] ${
               isAnimating ? "animate-[highlight_600ms_ease-out]" : ""
             }`}
             style={{
-              fontSize: "16px", // Must be 16px minimum to prevent iOS auto-zoom
+              borderColor: "var(--color-border)",
+              boxShadow: "0 1px 2px rgba(15, 23, 42, 0.04)",
             }}
-          />
-          <span
-            className="calc-input-unit pointer-events-none absolute right-[14px] font-uiSans text-base text-[var(--color-secondary)]"
-            aria-hidden="true"
+            onMouseEnter={(e) => {
+              if (!e.currentTarget.querySelector("input:focus")) {
+                e.currentTarget.style.borderColor = "var(--color-border-hover)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!e.currentTarget.querySelector("input:focus")) {
+                e.currentTarget.style.borderColor = "var(--color-border)";
+              }
+            }}
           >
-            {unitLabel}
-          </span>
+            <input
+              id={id}
+              type="text"
+              inputMode={inputMode}
+              value={displayValue}
+              onChange={handleInputChange}
+              onFocus={(e) => {
+                handleInputFocus(e);
+                const wrapper = e.target.closest("div");
+                if (wrapper) {
+                  wrapper.style.borderColor = "var(--color-primary)";
+                  wrapper.style.boxShadow =
+                    "0 0 0 1px rgba(15, 23, 42, 0.04), 0 8px 20px rgba(15, 23, 42, 0.06)";
+                }
+              }}
+              onBlur={(e) => {
+                handleInputBlur();
+                const wrapper = e.target.closest("div");
+                if (wrapper) {
+                  wrapper.style.borderColor = "var(--color-border)";
+                  wrapper.style.boxShadow = "0 1px 2px rgba(15, 23, 42, 0.04)";
+                }
+              }}
+              className="border-none bg-transparent font-uiSans text-right text-base text-[var(--color-primary)] outline-none tabular-nums w-auto max-w-[110px]"
+              style={{
+                fontSize: "16px", // Must be 16px minimum to prevent iOS auto-zoom
+              }}
+            />
+            <span
+              className="ml-2 whitespace-nowrap font-uiSans text-sm text-[var(--color-secondary)]"
+              aria-hidden="true"
+            >
+              {unitLabel}
+            </span>
+          </div>
         </div>
       </div>
 

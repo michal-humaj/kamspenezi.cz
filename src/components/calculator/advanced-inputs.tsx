@@ -50,8 +50,8 @@ const PROPERTY_TAX_RANGE = {
 
 const MAINTENANCE_RANGE = {
   min: 0,
-  max: 5,
-  step: 0.1,
+  max: 100_000,
+  step: 1_000,
 } as const;
 
 const INFLATION_RANGE = {
@@ -172,17 +172,17 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           <LabeledSliderInput
             id="naklady-udrzba"
             label="Náklady na údržbu"
-            description="Roční náklady na údržbu jako procento z hodnoty bytu"
+            description="Roční náklady na údržbu bytu (opravy, servis, menší rekonstrukce)"
             value={state.nakladyUdrzba}
             onChange={(value) => updateState({ nakladyUdrzba: value })}
             unit="custom"
-            customUnitLabel="% / rok"
+            customUnitLabel="Kč / rok"
             min={MAINTENANCE_RANGE.min}
             max={MAINTENANCE_RANGE.max}
             step={MAINTENANCE_RANGE.step}
-            formatter={formatPercent}
-            parser={parsePercent}
-            inputMode="decimal"
+            formatter={formatCzk}
+            parser={parseCzk}
+            inputMode="numeric"
           />
 
           {/* 7. Očekávaná inflace nákladů */}

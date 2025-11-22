@@ -140,6 +140,7 @@
     text-transform: uppercase;
   }
 
+  /* Input styles for uncertainty-inputs triple mini inputs */
   .calc-input {
     @apply w-full rounded-full bg-white text-[var(--color-primary)] font-uiSans;
     border: 1px solid var(--color-border);
