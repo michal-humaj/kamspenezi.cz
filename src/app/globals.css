@@ -81,9 +81,9 @@
     overscroll-behavior: none;
   }
 
-  html {
-    overflow-x: hidden;
-  }
+  /* html {
+    overflow-x: hidden; Removed - breaks position: sticky
+  } */
 
   body {
     @apply bg-[var(--bg-base)] text-[var(--color-primary)] font-uiSans antialiased;
