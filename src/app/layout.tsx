@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Figtree, Newsreader } from "next/font/google";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 
 import "./globals.css";
 
@@ -27,6 +28,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://kamspenezi.cz"),
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // DO NOT set maximumScale or userScalable=no - this prevents Safari zoom but also breaks accessibility
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,6 +50,7 @@ export default function RootLayout({
           color: 'var(--color-primary)',
         }}
       >
+        <GoogleAnalytics />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>

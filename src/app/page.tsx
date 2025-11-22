@@ -1,73 +1,60 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { HeroSection } from "@/components/home/hero-section";
+import { CityPresetsSection } from "@/components/home/city-presets-section";
+import { ComparisonCard } from "@/components/home/comparison-card";
+import { ScenarioCards } from "@/components/home/scenario-cards";
+import { FAQSection } from "@/components/home/faq-section";
+import { OrganizationSchema } from "@/components/seo/organization-schema";
+import { PersonSchema } from "@/components/seo/person-schema";
+import { FAQSchema } from "@/components/seo/faq-schema";
 
-const HERO_BULLETS = [
-  "Počítáme s realistickými předpoklady výnosů globálních ETF",
-  "Pracujeme s daty pro Prahu, Brno, Ostravu, Plzeň a další města",
-  <>
-    Vzorce jsou transparentní a můžeš si je projít v{" "}
-    <a
-      href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="underline underline-offset-2 transition-colors duration-180 ease-premium hover:text-kp-primary"
-    >
-      Google Sheets krok za krokem
-    </a>
-  </>,
-];
-
-const CITY_PRESETS = [
-  {
-    id: "praha-2kk-par",
-    title: "Praha – 2+kk pro mladý pár",
-    description: "Vyrovnaný rozpočet s vyšší pořizovací cenou a nižším nájmem díky sdílení nákladů.",
+// Page-specific metadata for SEO
+export const metadata: Metadata = {
+  title: "Kalkulačka bydlení: Hypotéka vs. Nájem + ETF | kamspenezi.cz",
+  description:
+    "Porovnej, jestli se ti víc vyplatí koupit byt na hypotéku, nebo pronajímat a investovat do ETF. Nezávislá kalkulačka s daty z českých měst. Zdarma, bez registrace.",
+  keywords: [
+    "kalkulačka bydlení",
+    "hypotéka vs nájem",
+    "koupit byt nebo pronajímat",
+    "investice do ETF",
+    "kalkulačka hypotéky",
+    "vlastní bydlení",
+    "nájem a investice",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
-  {
-    id: "brno-2kk-prvni",
-    title: "Brno – 2+kk první vlastní bydlení",
-    description: "Standardní měsíční rozpočet pro první hypotéku s kombinací vlastních zdrojů a podpory od rodičů.",
+  openGraph: {
+    title: "Kalkulačka bydlení: Hypotéka vs. Nájem + ETF",
+    description:
+      "Porovnej, jestli se ti víc vyplatí koupit byt na hypotéku, nebo pronajímat a investovat do ETF. Zdarma, bez registrace.",
+    type: "website",
+    locale: "cs_CZ",
+    url: "https://kamspenezi.cz",
+    siteName: "kamspenezi.cz",
   },
-  {
-    id: "ostrava-31-rodina",
-    title: "Ostrava – 3+1 pro rodinu",
-    description: "Větší dispozice s nižší pořizovací cenou, ale vyššími náklady na údržbu.",
+  twitter: {
+    card: "summary_large_image",
+    title: "Kalkulačka bydlení: Hypotéka vs. Nájem + ETF",
+    description:
+      "Porovnej, jestli se ti víc vyplatí koupit byt na hypotéku, nebo pronajímat a investovat do ETF.",
   },
-  {
-    id: "plzen-2kk-start",
-    title: "Plzeň – 2+kk startovní byt",
-    description: "Střední rozpočet s rozumným poměrem nájem vs. hypotéka.",
+  alternates: {
+    canonical: "https://kamspenezi.cz",
   },
-];
-
-const SCENARIO_LIST = [
-  {
-    id: "A" as const,
-    badge: "Byt na hypotéku",
-    label: "Scénář A – vlastní bydlení na hypotéku",
-    bullets: [
-      "Koupíš byt v Česku financovaný hypotékou s horizontem třiceti let",
-      "Platíš splátku hypotéky a všechny náklady spojené s vlastnictvím",
-      "Po třiceti letech ti zůstává byt po odečtení poplatků a případného zůstatku dluhu",
-    ],
-  },
-  {
-    id: "B" as const,
-    badge: "Nájem + ETF",
-    label: "Scénář B – nájem plus ETF",
-    bullets: [
-      "Bydlíš v nájemním bytě",
-      "Rozdíl mezi splátkou hypotéky a nájmem investuješ do globálních ETF",
-      "Počáteční vlastní zdroje, které by šly do bytu, investuješ také",
-      "Po třiceti letech ti zůstává investiční portfolio a žádná hypotéka",
-    ],
-  },
-];
+};
 
 const MYTH_LIST = [
   "Nájem se vždy nevyplatí, protože 'vyhazuješ peníze z okna'",
@@ -87,260 +74,21 @@ const CALCULATOR_LIMITS = [
   "Nezohledňuje individuální daně a legislativní změny v budoucnu",
 ];
 
-const FAQS = [
-  {
-    question: "Jak moc jsou tyhle výpočty přesné",
-    answer:
-      "Sto procent jistoty ti nedá žádný model. Pracujeme s realistickými odhady a simulací mnoha možných budoucností. Cílem není trefit přesné číslo, ale ukázat, jaký je rozdíl mezi scénáři při rozumných předpokladech.",
-  },
-  {
-    question: "Počítáte s inflací",
-    answer:
-      "Ano. Náklady na bydlení i některé další položky rostou v čase podle inflace. Ve výsledku ukazujeme hodnotu majetku v nominálních korunách, aby se ti to lépe četlo. V metodice najdeš i možnost pracovat s hodnotami očištěnými o inflaci.",
-  },
-  {
-    question: "Jaké ETF předpokládáte",
-    answer:
-      "Model předpokládá dlouhodobé investování do široce diverzifikovaných globálních akciových ETF podle tržní kapitalizace. Nekopíruje konkrétní produkt žádného poskytovatele, jde o obecný model výnosu globálního akciového trhu.",
-  },
-  {
-    question: "Zohledňujete daně",
-    answer:
-      "Zohledňujeme daně tam, kde dávají při typickém použití smysl. U investic počítáme s dlouhodobým horizontem, kde v Česku často platí daňové osvobození po splnění časového testu. U nemovitostí zohledňujeme poplatky při prodeji. Detail najdeš v metodice.",
-  },
-];
-
 export default function HomePage() {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  const handlePresetSelect = (presetId: string) => {
-    // TODO: Load preset values from Google Sheet and prefill calculator
-    console.log("Selected preset:", presetId);
-    // Navigate to calculator with preset query param
-    // window.location.href = `/bydleni-kalkulacka?preset=${presetId}`;
-  };
-
   return (
     <>
-      {/* Hero Section */}
-      <section className="bg-[var(--bg-base)] pt-6 pb-16 md:pt-10 md:pb-24">
-        <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
-            {/* Left: Copy and CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <span 
-                className="inline-flex items-center px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans"
-                style={{ 
-                  background: 'var(--bg-alt)', 
-                  borderRadius: 'var(--radius-pill)' 
-                }}
-              >
-                Online kalkulačka bydlení
-              </span>
-              
-              <h1 className="mt-5 text-[clamp(36px,5vw,52px)] leading-[1.1] tracking-tight">
-                Bydlet ve vlastním, nebo v nájmu
-              </h1>
+      {/* Structured Data for SEO */}
+      <OrganizationSchema />
+      <PersonSchema />
+      <FAQSchema />
 
-              <p className="mt-4 max-w-xl text-lg text-[#4B5563] md:text-xl font-uiSans leading-relaxed">
-                Kalkulačka porovná dvě cesty: koupit byt na hypotéku, nebo bydlet v nájmu a rozdíl v platbách investovat do ETF. Uvidíš, jaký majetek ti vyjde po třiceti letech.
-              </p>
+      {/* Hero Section - Client Component for animations */}
+      <HeroSection />
 
-              <p className="mt-3 max-w-xl text-base italic text-[#6B7280] md:text-lg font-uiSans">
-                Rozhodnutí o bydlení ti ovlivní celý život. Udělej ho na datech, ne na pocitu.
-              </p>
+      {/* City Presets Section - Client Component for animations */}
+      <CityPresetsSection />
 
-              {/* CTAs */}
-              <div className="mt-6">
-                {/* Desktop: side by side */}
-                <div className="hidden sm:flex items-center gap-6">
-                  <Link 
-                    href="/bydleni-kalkulacka"
-                    className="inline-flex items-center justify-center h-[52px] rounded-full bg-[var(--btn-primary-bg)] hover:bg-[var(--btn-primary-hover-bg)] text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
-                    style={{
-                      boxShadow: 'var(--btn-primary-shadow)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
-                    }}
-                  >
-                    Spočítat moje bydlení
-                  </Link>
-                  
-                  <button
-                    onClick={() => scrollToSection("transparentnost")}
-                    className="inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
-                    style={{
-                      borderColor: 'var(--btn-secondary-border)',
-                      color: 'var(--btn-secondary-text)'
-                    }}
-                  >
-                    Zjistit, jak výpočet funguje
-                  </button>
-                </div>
-
-                {/* Mobile: stacked with ghost secondary */}
-                <div className="flex sm:hidden flex-col">
-                  <Link 
-                    href="/bydleni-kalkulacka"
-                    className="inline-flex items-center justify-center w-full h-[52px] rounded-full bg-[var(--btn-primary-bg)] hover:bg-[var(--btn-primary-hover-bg)] text-white text-[16px] font-semibold px-6 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
-                    style={{
-                      boxShadow: 'var(--btn-primary-shadow)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
-                    }}
-                  >
-                    Spočítat moje bydlení
-                  </Link>
-                  
-                  <button
-                    onClick={() => scrollToSection("transparentnost")}
-                    className="mt-4 w-full inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
-                    style={{
-                      borderColor: 'var(--btn-secondary-border)',
-                      color: 'var(--btn-secondary-text)'
-                    }}
-                  >
-                    Zjistit, jak výpočet funguje
-                  </button>
-                </div>
-              </div>
-
-              {/* "Zdarma, bez registrace" - closer to CTAs */}
-              <p className="mt-2 text-sm text-[#6B7280] font-uiSans">
-                Zdarma, bez registrace.
-              </p>
-
-              {/* Hero bullets - with clear separation */}
-              <ul className="mt-6 space-y-2.5 text-base text-[#4B5563] font-uiSans leading-relaxed">
-                {HERO_BULLETS.map((bullet, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <span 
-                      className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
-                      style={{ background: 'var(--color-bullet)' }}
-                      aria-hidden 
-                    />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Right: Illustration placeholder */}
-            <motion.div
-              initial={{ opacity: 0, x: 20, scale: 0.95 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-              whileHover={{ scale: 1.01 }}
-              className="mt-10 lg:mt-0 lg:w-[380px] xl:w-[420px] lg:ml-auto"
-              style={{
-                transition: `transform var(--transition-duration) var(--transition-easing)`
-              }}
-            >
-              <div 
-                className="flex flex-col items-center border text-center" 
-                style={{
-                  background: 'var(--bg-card)',
-                  borderColor: 'var(--border-subtle)',
-                  borderRadius: 'var(--radius-card)',
-                  boxShadow: 'var(--shadow-card)',
-                  padding: '28px 24px'
-                }}
-              >
-                <div 
-                  className="flex h-20 w-20 items-center justify-center rounded-full"
-                  style={{ background: 'var(--bg-section-soft)' }}
-                >
-                  <svg 
-                    className="h-10 w-10" 
-                    style={{ color: 'var(--scenario-b-text)' }}
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor" 
-                    strokeWidth={1.5}
-                  >
-                    <rect x="3" y="13" width="4" height="8" rx="1" />
-                    <rect x="10" y="9" width="4" height="12" rx="1" />
-                    <rect x="17" y="5" width="4" height="16" rx="1" />
-                  </svg>
-                </div>
-                <h3 className="mt-6 text-xl font-semibold text-[var(--color-primary)] font-uiSans">
-                  Vizualizace výsledků tvého bydlení
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
-                  Později sem doplníme prémiovou ilustraci s výsledkem kalkulačky.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* City Presets Section */}
-      <section className="bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
-        <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
-            Začni podle města
-          </p>
-          <h2 className="mt-2 text-2xl md:text-3xl">
-            Začni podle svého města a velikosti bytu
-          </h2>
-          <p className="mt-2 max-w-3xl text-base text-[var(--color-secondary)] md:text-lg font-uiSans">
-            Vyber si výchozí scénář, který se ti nejvíc blíží. V kalkulačce ho pak můžeš doladit podle sebe.
-          </p>
-
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {CITY_PRESETS.map((preset, index) => (
-              <motion.div
-                key={preset.id}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
-                whileHover={{ 
-                  y: -2,
-                  transition: { duration: 0.2, ease: "easeOut" }
-                }}
-                className="flex flex-col rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
-              >
-                <h4 className="text-lg font-semibold leading-tight text-[var(--color-primary)] font-uiSans">
-                  {preset.title}
-                </h4>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
-                  {preset.description}
-                </p>
-                <button
-                  onClick={() => handlePresetSelect(preset.id)}
-                  className="mt-4 text-left text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary)] hover:underline font-uiSans"
-                  style={{
-                    transition: `color var(--transition-duration) var(--transition-easing)`
-                  }}
-                >
-                  Použít jako výchozí
-                </button>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Results Section */}
+      {/* Results Section - Mostly static, only comparison card is animated */}
       <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
@@ -379,100 +127,12 @@ export default function HomePage() {
             </ul>
           </div>
 
-          {/* Comparison card */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            whileHover={{ 
-              y: -2,
-              transition: { duration: 0.2, ease: "easeOut" }
-            }}
-            className="mx-auto mt-8 md:mt-10 max-w-5xl rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
-          >
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
-              Ukázkové srovnání
-            </p>
-            <h3 className="mt-2 text-xl font-semibold md:text-2xl font-uiSans">
-              30 let dopředu, dva scénáře
-            </h3>
-
-            <div className="mt-3 md:mt-5 grid gap-0 md:grid-cols-2 md:gap-0">
-              {/* Scenario A */}
-              <div className="flex h-full flex-col gap-3 p-4 md:p-6">
-                <span 
-                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[14px] font-uiSans"
-                  style={{
-                    background: 'var(--scenario-a-bg)',
-                    color: 'var(--scenario-a-dot)',
-                    borderRadius: 'var(--radius-pill)',
-                    padding: '2px 10px'
-                  }}
-                >
-                  <span 
-                    className="h-1.5 w-1.5 rounded-full" 
-                    style={{ background: 'var(--scenario-a-dot)' }}
-                  />
-                  Byt na hypotéku
-                </span>
-                <div className="mt-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-[#9CA3AF] font-uiSans">
-                    Medián čistého majetku
-                  </p>
-                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--color-primary)] font-displaySerif">
-                    8,4 mil. Kč
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
-                    Hodnota bytu po odečtení poplatků a zůstatku hypotéky.
-                  </p>
-                </div>
-              </div>
-
-              {/* Scenario B */}
-              <div 
-                className="flex h-full flex-col gap-3 p-4 md:p-6 border-t md:border-t-0 md:border-l border-[#EDEEF3]"
-              >
-                <span 
-                  className="inline-flex w-fit items-center gap-1.5 font-medium text-[14px] font-uiSans"
-                  style={{
-                    background: 'var(--scenario-b-bg)',
-                    color: 'var(--scenario-b-dot)',
-                    borderRadius: 'var(--radius-pill)',
-                    padding: '2px 10px'
-                  }}
-                >
-                  <span 
-                    className="h-1.5 w-1.5 rounded-full" 
-                    style={{ background: 'var(--scenario-b-dot)' }}
-                  />
-                  Nájem + ETF
-                </span>
-                <div className="mt-1">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-[#9CA3AF] font-uiSans">
-                    Medián čistého majetku
-                  </p>
-                  <p className="mt-1 text-2xl md:text-3xl font-semibold leading-none text-[var(--color-primary)] font-displaySerif">
-                    7,1 mil. Kč
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--color-secondary)] font-uiSans">
-                    Hodnota investičního portfolia z rozdílu mezi nájmem a hypotékou.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <p className="mt-5 md:mt-6 px-4 md:px-6 text-sm leading-[1.6] text-[var(--color-secondary)] font-uiSans">
-              Scénáře porovnávají stejné měsíční výdaje – rozdíl je jen v tom, kam peníze jdou.
-            </p>
-            <p className="mt-2 px-4 md:px-6 text-xs text-[#9CA3AF] font-uiSans">
-              Čísla jsou ilustrativní. Přesný výsledek uvidíš po zadání svých parametrů.
-            </p>
-          </motion.div>
+          {/* Comparison card - Client Component for animations */}
+          <ComparisonCard />
         </div>
       </section>
 
-      {/* Myth vs Reality */}
+      {/* Myth vs Reality - Static content */}
       <section className="bg-[var(--bg-lilac-section)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
@@ -522,7 +182,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Scenarios section */}
+      {/* Scenarios section - Client Component for animations */}
       <section className="bg-[var(--bg-base)] py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] font-uiSans">
@@ -535,58 +195,11 @@ export default function HomePage() {
             Stejný měsíční rozpočet. Jiný výsledek po třiceti letech.
           </p>
 
-          <div className="mt-8 md:mt-10 grid gap-6 lg:grid-cols-2">
-            {SCENARIO_LIST.map((scenario) => (
-              <motion.div
-                key={scenario.id}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                whileHover={{ 
-                  y: -2,
-                  transition: { duration: 0.2, ease: "easeOut" }
-                }}
-                className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-6 md:p-8 transition-all duration-200 ease-out hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
-              >
-                <span 
-                  className="inline-flex items-center gap-1.5 font-medium text-[14px] font-uiSans"
-                  style={{
-                    background: scenario.id === "A" ? 'var(--scenario-a-bg)' : 'var(--scenario-b-bg)',
-                    color: scenario.id === "A" ? 'var(--scenario-a-dot)' : 'var(--scenario-b-dot)',
-                    borderRadius: 'var(--radius-pill)',
-                    padding: '2px 10px'
-                  }}
-                >
-                  <span 
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{
-                      background: scenario.id === "A" ? 'var(--scenario-a-dot)' : 'var(--scenario-b-dot)'
-                    }}
-                  />
-                  {scenario.badge}
-                </span>
-                <h3 className="mt-4 text-xl font-semibold leading-tight md:text-[22px] font-uiSans">
-                  {scenario.label}
-                </h3>
-                <ul className="mt-4 space-y-2.5">
-                  {scenario.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2.5 text-base leading-relaxed text-[#4B5563] font-uiSans">
-                      <span 
-                        className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full" 
-                        style={{ background: 'var(--color-bullet)' }}
-                      />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
+          <ScenarioCards />
         </div>
       </section>
 
-      {/* Transparency section */}
+      {/* Transparency section - Static content */}
       <section id="transparentnost" className="scroll-mt-20 bg-[var(--bg-lilac-section)] pt-[var(--section-padding-y-mobile)] md:pt-[var(--section-padding-y-desktop)] pb-12 md:pb-16">
         <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
           <h2 className="text-2xl md:text-3xl">
@@ -638,8 +251,8 @@ export default function HomePage() {
 
               <a
                 href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                 style={{
                   borderColor: 'var(--btn-secondary-border)',
@@ -658,7 +271,7 @@ export default function HomePage() {
               
               <div className="mt-6 flex items-start gap-4">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full">
-            <Image
+                  <Image
                     src="/michal.jpeg"
                     alt="Michal Humaj"
                     width={64}
@@ -682,7 +295,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* What calculator doesn't solve */}
+      {/* What calculator doesn't solve - Static content */}
       <section className="bg-[var(--bg-base)] py-12 md:py-16">
         <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
           <div className="rounded-3xl bg-white border border-[#EDEEF3] shadow-[0_8px_28px_rgba(15,23,42,0.06)] p-8 md:p-10">
@@ -704,52 +317,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="bg-[var(--bg-lilac-section)] pt-12 md:pt-16 pb-[var(--section-padding-y-mobile)] md:pb-[var(--section-padding-y-desktop)]">
-        <div className="mx-auto w-full max-w-3xl px-4 lg:px-8">
-          <h2 className="text-2xl md:text-3xl">
-            Nejčastější otázky
-          </h2>
-          <p className="mt-3 text-sm text-[var(--color-secondary)] md:text-base font-uiSans">
-            Shrnujeme odpovědi na otázky, které slyšíme nejčastěji. Pokud hledáš detailnější metodiku, otevři veřejný Google Sheet.
-          </p>
-
-          <Accordion type="single" collapsible className="mt-8 space-y-3">
-            {FAQS.map((faq) => (
-              <AccordionItem
-                key={faq.question}
-                value={faq.question}
-                className="rounded-3xl bg-white border border-[var(--color-border)] p-6 md:p-8 transition-all duration-200 ease-out font-uiSans cursor-pointer"
-                style={{
-                  boxShadow: 'var(--shadow-card)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = 'var(--shadow-card-hover)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'var(--shadow-card)';
-                }}
-              >
-                <AccordionTrigger 
-                  className="text-left text-base font-medium hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0"
-                  style={{
-                    color: 'var(--color-primary)',
-                    '--tw-ring-color': 'var(--btn-focus-ring)'
-                  } as React.CSSProperties}
-                >
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent 
-                  className="text-base leading-relaxed"
-                  style={{ color: 'var(--color-secondary)' }}
-                >
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
+      {/* FAQ - Client Component for accordion interactivity */}
+      <FAQSection />
 
       {/* Footer */}
       <footer 
@@ -768,15 +337,15 @@ export default function HomePage() {
           <p className="mt-4">
             <a
               href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs text-[var(--color-primary)] underline underline-offset-4 hover:text-[var(--color-primary)] font-uiSans"
               style={{
                 transition: `color var(--transition-duration) var(--transition-easing)`
               }}
-          >
+            >
               Metodika v Google Sheets
-          </a>
+            </a>
           </p>
         </div>
       </footer>

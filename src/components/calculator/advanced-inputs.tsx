@@ -8,101 +8,64 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ChevronDown } from "lucide-react";
-import { InputWithSuffix } from "./input-with-suffix";
+import { LabeledSliderInput } from "./labeled-slider-input";
 import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
+import {
+  formatCzk,
+  parseCzk,
+  formatPercent,
+  parsePercent,
+} from "@/lib/format";
+
+// Input ranges and steps
+const PARENT_CONTRIBUTION_RANGE = {
+  min: 0,
+  max: 5_000_000,
+  step: 50_000,
+} as const;
+
+const FURNITURE_RANGE = {
+  min: 0,
+  max: 1_000_000,
+  step: 10_000,
+} as const;
+
+const REPAIR_FUND_RANGE = {
+  min: 0,
+  max: 10_000,
+  step: 100,
+} as const;
+
+const INSURANCE_RANGE = {
+  min: 0,
+  max: 50_000,
+  step: 1_000,
+} as const;
+
+const PROPERTY_TAX_RANGE = {
+  min: 0,
+  max: 20_000,
+  step: 500,
+} as const;
+
+const MAINTENANCE_RANGE = {
+  min: 0,
+  max: 5,
+  step: 0.1,
+} as const;
+
+const INFLATION_RANGE = {
+  min: 0,
+  max: 10,
+  step: 0.1,
+} as const;
 
 interface AdvancedInputsProps {
   state: CalculatorState;
   updateState: (updates: Partial<CalculatorState>) => void;
 }
 
-function formatNumber(value: number): string {
-  if (isNaN(value) || value === null || value === undefined) return "0";
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
-
-function parseNumber(value: string): number {
-  if (!value || value.trim() === "") return 0;
-  const cleanValue = value.replace(/\s/g, "").replace(/,/g, ".");
-  const parsed = Number(cleanValue);
-  return isNaN(parsed) ? 0 : parsed;
-}
-
-function formatDecimal(value: number): string {
-  if (isNaN(value) || value === null || value === undefined) return "0";
-  return value.toString().replace(".", ",");
-}
-
-function parseDecimal(value: string): number {
-  if (!value || value.trim() === "") return 0;
-  const cleanValue = value.replace(/,/g, ".");
-  const parsed = Number(cleanValue);
-  return isNaN(parsed) ? 0 : parsed;
-}
-
-function sanitizeNumericInput(value: string): string {
-  return value.replace(/[^\d\s]/g, "");
-}
-
-function sanitizeDecimalInput(value: string): string {
-  let sanitized = value.replace(/[^\d,\.]/g, "");
-  sanitized = sanitized.replace(/\./g, ",");
-  const parts = sanitized.split(",");
-  if (parts.length > 2) {
-    sanitized = parts[0] + "," + parts.slice(1).join("");
-  }
-  return sanitized;
-}
-
 export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
-  const [localValues, setLocalValues] = React.useState<Record<string, string>>({});
-  const debounceTimers = React.useRef<Record<string, NodeJS.Timeout>>({});
-  
-  const getDisplayValue = (key: string, stateValue: number, formatter: (v: number) => string) => {
-    return localValues[key] !== undefined ? localValues[key] : formatter(stateValue);
-  };
-  
-  const handleChange = React.useCallback((key: string, value: string, isDecimal: boolean, updater: (v: number) => void) => {
-    const sanitized = isDecimal ? sanitizeDecimalInput(value) : sanitizeNumericInput(value);
-    setLocalValues(prev => ({ ...prev, [key]: sanitized }));
-    
-    if (debounceTimers.current[key]) {
-      clearTimeout(debounceTimers.current[key]);
-    }
-    
-    debounceTimers.current[key] = setTimeout(() => {
-      const parser = isDecimal ? parseDecimal : parseNumber;
-      const parsed = parser(sanitized);
-      updater(parsed);
-    }, 500);
-  }, []);
-  
-  const handleBlur = (key: string, parser: (v: string) => number, updater: (v: number) => void) => {
-    if (debounceTimers.current[key]) {
-      clearTimeout(debounceTimers.current[key]);
-      delete debounceTimers.current[key];
-    }
-    
-    if (localValues[key] === undefined) {
-      return;
-    }
-    
-    const parsed = parser(localValues[key]);
-    updater(parsed);
-    setLocalValues(prev => {
-      const next = { ...prev };
-      delete next[key];
-      return next;
-    });
-  };
-  
-  React.useEffect(() => {
-    const timers = debounceTimers;
-    return () => {
-      Object.values(timers.current).forEach(timer => clearTimeout(timer));
-    };
-  }, []);
-
   return (
     <Accordion type="single" collapsible>
       <AccordionItem
@@ -117,105 +80,125 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             <ChevronDown className="chevron h-5 w-5 shrink-0 transition-transform duration-200" />
           </div>
         </AccordionTrigger>
-        <AccordionContent className="space-y-5 px-4 pb-5 pt-4 md:px-0 md:pb-0 md:pt-4">
+        <AccordionContent className="space-y-6 px-4 pb-5 pt-5 md:px-0 md:pb-0 md:pt-5">
           <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
             Vše je předvyplněné realistickými hodnotami, měnit je nemusíš.
           </p>
 
           {/* 1. Příspěvek od rodičů */}
-          <InputWithSuffix
+          <LabeledSliderInput
             id="prispevek-rodicu"
             label="Příspěvek od rodičů na koupi nemovitosti"
-            value={getDisplayValue("prispevekRodicu", state.prispevekRodicu, formatNumber)}
-            suffix="Kč"
-            helperText="Jednorázový finanční dar od rodičů (pouze při koupi bytu)"
-            type="text"
+            description="Jednorázový finanční dar od rodičů (pouze při koupi bytu)"
+            value={state.prispevekRodicu}
+            onChange={(value) => updateState({ prispevekRodicu: value })}
+            unit="kc"
+            min={PARENT_CONTRIBUTION_RANGE.min}
+            max={PARENT_CONTRIBUTION_RANGE.max}
+            step={PARENT_CONTRIBUTION_RANGE.step}
+            formatter={formatCzk}
+            parser={parseCzk}
             inputMode="numeric"
-            pattern="[0-9 ]*"
-            onChange={(value) => handleChange("prispevekRodicu", value, false, (v) => updateState({ prispevekRodicu: v }))}
-            onBlur={() => handleBlur("prispevekRodicu", parseNumber, (v) => updateState({ prispevekRodicu: v }))}
           />
 
           {/* 2. Zařízení nemovitosti */}
-          <InputWithSuffix
+          <LabeledSliderInput
             id="zarizeni"
             label="Zařízení nemovitosti"
-            value={getDisplayValue("zarizeniNemovitosti", state.zarizeniNemovitosti, formatNumber)}
-            suffix="Kč"
-            helperText="Náklady na nábytek a vybavení bytu (jednorázově)"
-            type="text"
+            description="Náklady na nábytek a vybavení bytu (jednorázově)"
+            value={state.zarizeniNemovitosti}
+            onChange={(value) => updateState({ zarizeniNemovitosti: value })}
+            unit="kc"
+            min={FURNITURE_RANGE.min}
+            max={FURNITURE_RANGE.max}
+            step={FURNITURE_RANGE.step}
+            formatter={formatCzk}
+            parser={parseCzk}
             inputMode="numeric"
-            pattern="[0-9 ]*"
-            onChange={(value) => handleChange("zarizeniNemovitosti", value, false, (v) => updateState({ zarizeniNemovitosti: v }))}
-            onBlur={() => handleBlur("zarizeniNemovitosti", parseNumber, (v) => updateState({ zarizeniNemovitosti: v }))}
           />
 
           {/* 3. Fond oprav */}
-          <InputWithSuffix
+          <LabeledSliderInput
             id="fond-oprav"
-            label="Fond oprav (Kč / měsíc)"
-            value={getDisplayValue("fondOprav", state.fondOprav, formatNumber)}
-            suffix="Kč"
-            helperText="Měsíční příspěvek do fondu oprav domu"
-            type="text"
+            label="Fond oprav"
+            description="Měsíční příspěvek do fondu oprav domu"
+            value={state.fondOprav}
+            onChange={(value) => updateState({ fondOprav: value })}
+            unit="custom"
+            customUnitLabel="Kč / měsíc"
+            min={REPAIR_FUND_RANGE.min}
+            max={REPAIR_FUND_RANGE.max}
+            step={REPAIR_FUND_RANGE.step}
+            formatter={formatCzk}
+            parser={parseCzk}
             inputMode="numeric"
-            pattern="[0-9 ]*"
-            onChange={(value) => handleChange("fondOprav", value, false, (v) => updateState({ fondOprav: v }))}
-            onBlur={() => handleBlur("fondOprav", parseNumber, (v) => updateState({ fondOprav: v }))}
           />
 
           {/* 4. Pojištění nemovitosti */}
-          <InputWithSuffix
+          <LabeledSliderInput
             id="pojisteni"
-            label="Pojištění nemovitosti (Kč / rok)"
-            value={getDisplayValue("pojisteniNemovitosti", state.pojisteniNemovitosti, formatNumber)}
-            suffix="Kč"
-            helperText="Roční náklady na pojištění bytu"
-            type="text"
+            label="Pojištění nemovitosti"
+            description="Roční náklady na pojištění bytu"
+            value={state.pojisteniNemovitosti}
+            onChange={(value) => updateState({ pojisteniNemovitosti: value })}
+            unit="custom"
+            customUnitLabel="Kč / rok"
+            min={INSURANCE_RANGE.min}
+            max={INSURANCE_RANGE.max}
+            step={INSURANCE_RANGE.step}
+            formatter={formatCzk}
+            parser={parseCzk}
             inputMode="numeric"
-            pattern="[0-9 ]*"
-            onChange={(value) => handleChange("pojisteniNemovitosti", value, false, (v) => updateState({ pojisteniNemovitosti: v }))}
-            onBlur={() => handleBlur("pojisteniNemovitosti", parseNumber, (v) => updateState({ pojisteniNemovitosti: v }))}
           />
 
           {/* 5. Daň z nemovitosti */}
-          <InputWithSuffix
+          <LabeledSliderInput
             id="dan"
-            label="Daň z nemovitosti (Kč / rok)"
-            value={getDisplayValue("danZNemovitosti", state.danZNemovitosti, formatNumber)}
-            suffix="Kč"
-            helperText="Roční daň z nemovitosti"
-            type="text"
+            label="Daň z nemovitosti"
+            description="Roční daň z nemovitosti"
+            value={state.danZNemovitosti}
+            onChange={(value) => updateState({ danZNemovitosti: value })}
+            unit="custom"
+            customUnitLabel="Kč / rok"
+            min={PROPERTY_TAX_RANGE.min}
+            max={PROPERTY_TAX_RANGE.max}
+            step={PROPERTY_TAX_RANGE.step}
+            formatter={formatCzk}
+            parser={parseCzk}
             inputMode="numeric"
-            pattern="[0-9 ]*"
-            onChange={(value) => handleChange("danZNemovitosti", value, false, (v) => updateState({ danZNemovitosti: v }))}
-            onBlur={() => handleBlur("danZNemovitosti", parseNumber, (v) => updateState({ danZNemovitosti: v }))}
           />
 
           {/* 6. Náklady na údržbu */}
-          <InputWithSuffix
+          <LabeledSliderInput
             id="naklady-udrzba"
-            label="Náklady na údržbu (% z hodnoty / rok)"
-            value={getDisplayValue("nakladyUdrzba", state.nakladyUdrzba, formatDecimal)}
-            suffix="%"
-            helperText="Roční náklady na údržbu jako procento z hodnoty bytu"
-            type="text"
+            label="Náklady na údržbu"
+            description="Roční náklady na údržbu jako procento z hodnoty bytu"
+            value={state.nakladyUdrzba}
+            onChange={(value) => updateState({ nakladyUdrzba: value })}
+            unit="custom"
+            customUnitLabel="% / rok"
+            min={MAINTENANCE_RANGE.min}
+            max={MAINTENANCE_RANGE.max}
+            step={MAINTENANCE_RANGE.step}
+            formatter={formatPercent}
+            parser={parsePercent}
             inputMode="decimal"
-            onChange={(value) => handleChange("nakladyUdrzba", value, true, (v) => updateState({ nakladyUdrzba: v }))}
-            onBlur={() => handleBlur("nakladyUdrzba", parseDecimal, (v) => updateState({ nakladyUdrzba: v }))}
           />
 
           {/* 7. Očekávaná inflace nákladů */}
-          <InputWithSuffix
+          <LabeledSliderInput
             id="inflace"
-            label="Očekávaná inflace nákladů (% p.a.)"
-            value={getDisplayValue("ocekavanaInflace", state.ocekavanaInflace, formatDecimal)}
-            suffix="%"
-            helperText="Roční růst nákladů (pojištění, údržba, atd.)"
-            type="text"
+            label="Očekávaná inflace nákladů"
+            description="Roční růst nákladů (pojištění, údržba, atd.)"
+            value={state.ocekavanaInflace}
+            onChange={(value) => updateState({ ocekavanaInflace: value })}
+            unit="percent"
+            min={INFLATION_RANGE.min}
+            max={INFLATION_RANGE.max}
+            step={INFLATION_RANGE.step}
+            formatter={formatPercent}
+            parser={parsePercent}
             inputMode="decimal"
-            onChange={(value) => handleChange("ocekavanaInflace", value, true, (v) => updateState({ ocekavanaInflace: v }))}
-            onBlur={() => handleBlur("ocekavanaInflace", parseDecimal, (v) => updateState({ ocekavanaInflace: v }))}
           />
         </AccordionContent>
       </AccordionItem>

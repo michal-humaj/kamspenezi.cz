@@ -156,7 +156,8 @@ function TripleInput({
                 setLocalMin(null);
               }}
               onFocus={handleFocus}
-              className="calc-input pr-10 text-right tabular-nums text-sm"
+              className="calc-input pr-10 text-right tabular-nums"
+              style={{ fontSize: "16px" }}
             />
             <span className="calc-input-unit text-xs">
               {unit}
@@ -181,7 +182,8 @@ function TripleInput({
                 setLocalExpected(null);
               }}
               onFocus={handleFocus}
-              className="calc-input pr-10 text-right tabular-nums text-sm"
+              className="calc-input pr-10 text-right tabular-nums"
+              style={{ fontSize: "16px" }}
             />
             <span className="calc-input-unit text-xs">
               {unit}
@@ -206,7 +208,8 @@ function TripleInput({
                 setLocalMax(null);
               }}
               onFocus={handleFocus}
-              className="calc-input pr-10 text-right tabular-nums text-sm"
+              className="calc-input pr-10 text-right tabular-nums"
+              style={{ fontSize: "16px" }}
             />
             <span className="calc-input-unit text-xs">
               {unit}

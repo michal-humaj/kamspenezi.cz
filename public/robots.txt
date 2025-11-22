@@ -1,0 +1,13 @@
+# robots.txt for kamspenezi.cz
+# Allow all crawlers to access all content
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://kamspenezi.cz/sitemap.xml
+
+# Crawl-delay for polite crawling (optional)
+# User-agent: *
+# Crawl-delay: 1
+

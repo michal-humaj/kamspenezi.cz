@@ -1,8 +1,40 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { InputWithSuffix } from "./input-with-suffix";
+import { LabeledSliderInput } from "./labeled-slider-input";
 import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
+import {
+  formatMillionsCzk,
+  parseMillionsCzk,
+  formatCzk,
+  parseCzk,
+  formatPercent,
+  parsePercent,
+} from "@/lib/format";
+
+// Input ranges and steps
+const PURCHASE_PRICE_RANGE = {
+  min: 1_000_000,
+  max: 30_000_000,
+  step: 100_000,
+} as const;
+
+const OWN_FUNDS_RANGE = {
+  min: 0,
+  max: 100,
+  step: 1,
+} as const;
+
+const INTEREST_RATE_RANGE = {
+  min: 0,
+  max: 10,
+  step: 0.1,
+} as const;
+
+const RENT_RANGE = {
+  min: 0,
+  max: 100_000,
+  step: 1_000,
+} as const;
 
 interface BasicInputsProps {
   state: CalculatorState;
@@ -10,173 +42,74 @@ interface BasicInputsProps {
   animatingFields?: Set<string>;
 }
 
-function formatNumber(value: number): string {
-  if (isNaN(value) || value === null || value === undefined) return "0";
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
-
-function parseNumber(value: string): number {
-  if (!value || value.trim() === "") return 0;
-  // Remove spaces, replace comma/dot with dot for parsing
-  const cleanValue = value.replace(/\s/g, "").replace(/,/g, ".");
-  const parsed = Number(cleanValue);
-  return isNaN(parsed) ? 0 : parsed;
-}
-
-function formatDecimal(value: number): string {
-  if (isNaN(value) || value === null || value === undefined) return "0";
-  // Use comma as decimal separator for Czech locale
-  return value.toString().replace(".", ",");
-}
-
-function parseDecimal(value: string): number {
-  if (!value || value.trim() === "") return 0;
-  // Replace comma with dot for parsing
-  const cleanValue = value.replace(/,/g, ".");
-  const parsed = Number(cleanValue);
-  return isNaN(parsed) ? 0 : parsed;
-}
-
-// Validate and sanitize numeric input (integers with spaces)
-function sanitizeNumericInput(value: string): string {
-  // Allow only digits and spaces
-  return value.replace(/[^\d\s]/g, "");
-}
-
-// Validate and sanitize decimal input (decimals with comma/dot)
-function sanitizeDecimalInput(value: string): string {
-  // Allow only digits, comma, and dot
-  // Replace dot with comma for consistency
-  let sanitized = value.replace(/[^\d,\.]/g, "");
-  // Replace dot with comma
-  sanitized = sanitized.replace(/\./g, ",");
-  // Allow only one comma
-  const parts = sanitized.split(",");
-  if (parts.length > 2) {
-    sanitized = parts[0] + "," + parts.slice(1).join("");
-  }
-  return sanitized;
-}
-
 export function BasicInputs({ state, updateState, animatingFields = new Set() }: BasicInputsProps) {
-  // Local state for input values being edited
-  const [localValues, setLocalValues] = useState<Record<string, string>>({});
-  
-  // Debounce timers
-  const debounceTimers = useRef<Record<string, NodeJS.Timeout>>({});
-  
-  // Get display value - use local if editing, otherwise formatted state
-  const getDisplayValue = (key: string, stateValue: number, formatter: (v: number) => string) => {
-    return localValues[key] !== undefined ? localValues[key] : formatter(stateValue);
-  };
-  
-  // Handle change with validation and debounced update
-  const handleChange = useCallback((key: string, value: string, isDecimal: boolean, updater: (v: number) => void) => {
-    // Sanitize input
-    const sanitized = isDecimal ? sanitizeDecimalInput(value) : sanitizeNumericInput(value);
-    
-    // Update local state with sanitized value
-    setLocalValues(prev => ({ ...prev, [key]: sanitized }));
-    
-    // Clear existing timer
-    if (debounceTimers.current[key]) {
-      clearTimeout(debounceTimers.current[key]);
-    }
-    
-    // Set new debounced update (500ms)
-    debounceTimers.current[key] = setTimeout(() => {
-      const parser = isDecimal ? parseDecimal : parseNumber;
-      const parsed = parser(sanitized);
-      updater(parsed);
-    }, 500);
-  }, []);
-  
-  // Handle blur - parse and update immediately, clear local
-  const handleBlur = (key: string, parser: (v: string) => number, updater: (v: number) => void) => {
-    // Clear any pending debounce
-    if (debounceTimers.current[key]) {
-      clearTimeout(debounceTimers.current[key]);
-      delete debounceTimers.current[key];
-    }
-    
-    // If no local value, don't update (prevents resetting to 0)
-    if (localValues[key] === undefined) {
-      return;
-    }
-    
-    const parsed = parser(localValues[key]);
-    updater(parsed);
-    
-    // Clear local state
-    setLocalValues(prev => {
-      const next = { ...prev };
-      delete next[key];
-      return next;
-    });
-  };
-  
-  // Cleanup timers on unmount
-  useEffect(() => {
-    return () => {
-      Object.values(debounceTimers.current).forEach(timer => clearTimeout(timer));
-    };
-  }, []);
-
   return (
-    <div className="space-y-5">
-      {/* 1. Kupní cena nemovitosti */}
-      <InputWithSuffix
+    <div className="space-y-6">
+      {/* 1. Kupní cena nemovitosti (in millions) */}
+      <LabeledSliderInput
         id="kupni-cena"
         label="Kupní cena nemovitosti"
-        value={getDisplayValue("kupniCena", state.kupniCena, formatNumber)}
-        suffix="Kč"
-        helperText="Celková cena bytu, který chceš koupit"
-        type="text"
-        inputMode="numeric"
-        pattern="[0-9 ]*"
-        onChange={(value) => handleChange("kupniCena", value, false, (v) => updateState({ kupniCena: v }))}
-        onBlur={() => handleBlur("kupniCena", parseNumber, (v) => updateState({ kupniCena: v }))}
+        description="Celková cena bytu, který chceš koupit"
+        value={state.kupniCena}
+        onChange={(value) => updateState({ kupniCena: value })}
+        unit="custom"
+        customUnitLabel="mil. Kč"
+        min={PURCHASE_PRICE_RANGE.min}
+        max={PURCHASE_PRICE_RANGE.max}
+        step={PURCHASE_PRICE_RANGE.step}
+        formatter={formatMillionsCzk}
+        parser={parseMillionsCzk}
+        inputMode="decimal"
         isAnimating={animatingFields.has("kupniCena")}
       />
 
       {/* 2. Vlastní zdroje */}
-      <InputWithSuffix
+      <LabeledSliderInput
         id="vlastni-zdroje"
-        label="Vlastní zdroje (%)"
-        value={getDisplayValue("vlastniZdroje", state.vlastniZdroje, formatDecimal)}
-        suffix="%"
-        helperText="Kolik procent kupní ceny máš našetřeno"
-        type="text"
+        label="Vlastní zdroje"
+        description="Kolik procent kupní ceny máš našetřeno"
+        value={state.vlastniZdroje}
+        onChange={(value) => updateState({ vlastniZdroje: value })}
+        unit="percent"
+        min={OWN_FUNDS_RANGE.min}
+        max={OWN_FUNDS_RANGE.max}
+        step={OWN_FUNDS_RANGE.step}
+        formatter={formatPercent}
+        parser={parsePercent}
         inputMode="decimal"
-        onChange={(value) => handleChange("vlastniZdroje", value, true, (v) => updateState({ vlastniZdroje: v }))}
-        onBlur={() => handleBlur("vlastniZdroje", parseDecimal, (v) => updateState({ vlastniZdroje: v }))}
       />
 
       {/* 3. Úroková sazba hypotéky */}
-      <InputWithSuffix
+      <LabeledSliderInput
         id="urokova-sazba"
-        label="Úroková sazba hypotéky (% p.a.)"
-        value={getDisplayValue("urokovaSazba", state.urokovaSazba, formatDecimal)}
-        suffix="%"
-        helperText="Roční úroková sazba hypotéky"
-        type="text"
+        label="Úroková sazba hypotéky"
+        description="Roční úroková sazba hypotéky"
+        value={state.urokovaSazba}
+        onChange={(value) => updateState({ urokovaSazba: value })}
+        unit="percent"
+        min={INTEREST_RATE_RANGE.min}
+        max={INTEREST_RATE_RANGE.max}
+        step={INTEREST_RATE_RANGE.step}
+        formatter={formatPercent}
+        parser={parsePercent}
         inputMode="decimal"
-        onChange={(value) => handleChange("urokovaSazba", value, true, (v) => updateState({ urokovaSazba: v }))}
-        onBlur={() => handleBlur("urokovaSazba", parseDecimal, (v) => updateState({ urokovaSazba: v }))}
       />
 
       {/* 4. Nájemné */}
-      <InputWithSuffix
+      <LabeledSliderInput
         id="najemne"
-        label="Nájemné (Kč / měsíc)"
-        value={getDisplayValue("najemne", state.najemne, formatNumber)}
-        suffix="Kč"
-        helperText="Měsíční nájem za podobný byt"
-        type="text"
+        label="Nájemné"
+        description="Měsíční nájem za podobný byt"
+        value={state.najemne}
+        onChange={(value) => updateState({ najemne: value })}
+        unit="custom"
+        customUnitLabel="Kč / měsíc"
+        min={RENT_RANGE.min}
+        max={RENT_RANGE.max}
+        step={RENT_RANGE.step}
+        formatter={formatCzk}
+        parser={parseCzk}
         inputMode="numeric"
-        pattern="[0-9 ]*"
-        onChange={(value) => handleChange("najemne", value, false, (v) => updateState({ najemne: v }))}
-        onBlur={() => handleBlur("najemne", parseNumber, (v) => updateState({ najemne: v }))}
         isAnimating={animatingFields.has("najemne")}
       />
     </div>
