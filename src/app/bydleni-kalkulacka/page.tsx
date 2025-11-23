@@ -9,7 +9,7 @@ import { AdvancedInputs } from "@/components/calculator/advanced-inputs";
 import { ResultsPanel } from "@/components/calculator/results-panel";
 import { Button } from "@/components/ui/button";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
-import { YearlyBreakdownTable, type YearlyRow } from "@/components/calculator/yearly-breakdown-table";
+import { YearlyOverviewTable, type YearlyRow } from "@/components/calculator/YearlyOverviewTable";
 import { YearlyBreakdownMobile } from "@/components/calculator/yearly-breakdown-mobile";
 
 // Types for calculator state
@@ -266,18 +266,16 @@ export default function BydleniKalkulackaPage() {
           </aside>
         </div>
 
-        {/* Yearly Breakdown Section */}
-        <section className="mt-12">
-          {/* Desktop: Table */}
-          <div className="hidden lg:block">
-            <YearlyBreakdownTable rows={yearlyRows} />
-          </div>
+        {/* Yearly Overview Section */}
+        {/* Desktop: Analytical table */}
+        <div className="hidden lg:block">
+          <YearlyOverviewTable rows={yearlyRows} />
+        </div>
 
-          {/* Mobile: Accordion */}
-          <div className="block px-4 lg:hidden">
-            <YearlyBreakdownMobile rows={yearlyRows} />
-          </div>
-        </section>
+        {/* Mobile: Accordion */}
+        <div className="block px-4 lg:hidden">
+          <YearlyBreakdownMobile rows={yearlyRows} />
+        </div>
       </div>
     </main>
   );

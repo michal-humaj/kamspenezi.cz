@@ -1,7 +1,7 @@
 # Design Manual — kamspenezi.cz
 
-> Last updated: November 16, 2025  
-> This document reflects the current production design system after surgical polish.  
+> Last updated: November 22, 2025  
+> This document reflects the current production design system including calculator page.  
 > All changes to brand, UI, or components must update this file first.
 
 ───────────────────────────────
@@ -741,6 +741,469 @@ Before shipping any page, verify:
 
 ✅ **Do**: Maintain 8px gap between CTAs and "Zdarma, bez registrace" (mt-2)  
 ❌ **Don't**: Let meta text drift away from CTA block
+
+───────────────────────────────
+
+## 14. Calculator Page Design System
+
+The calculator page (`/bydleni-kalkulacka`) extends the landing page design system with interactive components optimized for data entry and comparison.
+
+### 14.1 Page Structure
+
+**Layout Pattern**:
+```
+Desktop: Two-column grid
+├─ Left Column (8/12): Inputs, stacked vertically
+│  ├─ City + Apartment selection
+│  ├─ Basic inputs (Základní nastavení)
+│  ├─ Uncertainty inputs (Nejistota vývoje v čase)
+│  └─ Advanced inputs (Rozšířené předpoklady)
+│
+└─ Right Column (4/12): Results panel (sticky)
+   └─ Sticky positioning (top-24)
+
+Mobile: Single column, stacked
+├─ City + Apartment selection
+├─ All inputs
+└─ Results panel (below inputs, not sticky)
+```
+
+**Background**: Uses `--bg-base` (#F5F6F8) throughout. No lilac sections on calculator page.
+
+### 14.2 Calculator Typography
+
+**Section Titles** (`.calc-section-title`):
+```css
+font-family: var(--font-ui-sans);  /* Figtree, NOT serif */
+font-size: 18px (text-lg) → 20px (md:text-xl);
+font-weight: 600 (semibold);
+color: var(--color-primary);
+letter-spacing: -0.01em;
+```
+
+**Usage**: "Základní nastavení", "Nejistota vývoje v čase", "Rozšířené předpoklady", "Výsledek po 30 letech"
+
+**Result Values** (`.calc-result-value`):
+```css
+font-family: var(--font-display-serif);  /* Newsreader - exception for emphasis */
+font-size: 24px (mobile) → 28px (desktop);
+font-weight: 600 (semibold);
+color: var(--color-primary);
+line-height: 1.25;
+```
+
+**Usage**: Large monetary values in results panel only (e.g., "76 122 550 Kč")
+
+**Scenario Labels** (`.calc-scenario-label`):
+```css
+font-family: var(--font-ui-sans);
+font-size: 12px (text-xs);
+font-weight: 400 (regular);
+color: var(--color-secondary);
+text-transform: uppercase;
+letter-spacing: 0.02em;
+```
+
+**Usage**: "SCÉNÁŘ A – BYT NA HYPOTÉKU", "SCÉNÁŘ B – NÁJEM + ETF" above result values
+
+### 14.3 Input System
+
+**Labeled Slider Input** (Primary input pattern):
+
+**Layout**:
+```
+Desktop & Mobile:
+┌────────────────────────────────────────┐
+│ [Label]                    [Input+Unit]│
+│ [Helper text]                          │
+│ [━━━━━━━━━○━━━━━━━━━━━] (slider)      │
+└────────────────────────────────────────┘
+
+Grid: grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] (mobile)
+      grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] (desktop)
+```
+
+**Input Field Styling** (`.calc-input`):
+```css
+font-family: var(--font-ui-sans);
+font-size: 16px;  /* CRITICAL: Must be ≥16px to prevent iOS Safari zoom */
+padding: 10px 14px;
+border: 1px solid var(--color-border);
+border-radius: var(--radius-pill);  /* 999px */
+background: white;
+text-align: right;  /* Values align right, close to unit */
+font-variant-numeric: tabular-nums;  /* Monospace numbers */
+
+/* Focus state */
+border-color: var(--color-primary);
+box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04),
+            0 8px 20px rgba(15, 23, 42, 0.06);
+```
+
+**Unit Display** (`.calc-input-unit`):
+```css
+position: absolute;
+right: 16px;  /* Inside input on right */
+font-size: 14px (text-sm);
+color: var(--color-secondary);
+pointer-events: none;  /* Click-through to input */
+```
+
+**Units**: "Kč", "Kč / rok", "Kč / měsíc", "%", "% p.a.", "mil. Kč"
+
+**Label Styling**:
+```css
+font-family: var(--font-ui-sans);
+font-size: 16px (text-base);
+font-weight: 500 (medium);
+color: var(--color-primary);
+```
+
+**Helper Text** (under label):
+```css
+font-size: 14px (text-sm);
+color: var(--color-secondary);
+line-height: 1.5 (leading-relaxed);
+margin-top: 4px (mt-1);
+```
+
+**Slider Styling**:
+```css
+height: 8px (h-2);
+border-radius: var(--radius-pill);
+background: var(--bg-hover);  /* Track */
+
+/* Progress fill */
+background: linear-gradient(
+  to right,
+  var(--color-primary) 0%,
+  var(--color-primary) var(--value),
+  var(--bg-hover) var(--value)
+);
+
+/* Thumb */
+width: 16px;
+height: 16px;
+border-radius: 50%;
+background: var(--color-primary);
+border: 2px solid white;
+box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+```
+
+### 14.4 Number Formatting
+
+**Millions Format** (Purchase price only):
+- **Display**: "7,8 mil. Kč" (one decimal place, Czech locale)
+- **Internal**: Value stored in full Kč (7 800 000)
+- **Usage**: "Kupní cena nemovitosti" field and apartment size cards
+- **Formatter**: `formatMillionsCzk()` from `/lib/format.ts`
+
+**Standard Kč Format**:
+- **Display**: "24 000 Kč" (no decimals, space as thousands separator)
+- **Locale**: cs-CZ (`Intl.NumberFormat`)
+- **Usage**: All other monetary inputs and displays
+- **Formatter**: `formatCzk()`
+
+**Percentage Format**:
+- **Display**: "4,5 %" (comma as decimal, one decimal place)
+- **Locale**: cs-CZ
+- **Usage**: All percentage inputs
+- **Formatter**: `formatPercent()`
+
+**Input Sanitization**:
+- Numeric fields: Only digits and spaces allowed
+- Decimal fields: Only digits, comma, and spaces allowed
+- Automatic comma/period normalization (. → ,)
+- Debounced updates (300ms) while typing
+
+### 14.5 Collapsible Sections
+
+**Header Styling** (`.calc-collapse-header`):
+```css
+padding: 12px 16px;
+background: #F3F4F6;  /* Light grey pill */
+border-radius: var(--radius-pill);
+font-family: var(--font-ui-sans);
+font-weight: 500 (medium);
+color: var(--color-primary);
+cursor: pointer;
+
+/* Hover */
+box-shadow: var(--shadow-card);
+```
+
+**Structure**:
+```jsx
+[Title + Badge] ────────── [ChevronDown Icon]
+  ↓ (collapsed)
+[Section content hidden]
+  ↓ (expanded)
+[Section content visible, chevron rotated 180°]
+```
+
+**Usage**: 
+- "Nejistota vývoje v čase" (with "Pro pokročilé" badge)
+- "Rozšířené předpoklady"
+
+**Badge Styling** (Optional "Pro pokročilé"):
+```css
+background: rgba(15, 23, 42, 0.05);
+padding: 2px 8px;
+border-radius: 999px;
+font-size: 11px;
+color: var(--color-secondary);
+```
+
+### 14.6 Results Panel
+
+**Card Styling**:
+```css
+background: white;
+border: 1px solid var(--color-border);
+border-radius: var(--radius-card);  /* 24px */
+box-shadow: var(--shadow-card);
+padding: 24px (p-6);
+```
+
+**Desktop Behavior**:
+```css
+position: sticky;
+top: 96px (top-24);  /* Stays visible while scrolling */
+align-self: start;
+```
+
+**Mobile Behavior**:
+- NOT sticky
+- Appears below all inputs
+- Full width with horizontal padding
+
+**Toggle Buttons** (Realistický rozsah / Pevný výpočet):
+```css
+display: inline-flex;
+background: var(--toggle-bg-inactive);  /* Inactive state */
+border-radius: var(--radius-pill);
+padding: 4px;
+
+/* Active button */
+background: white;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+font-weight: 600;
+
+/* Inactive button */
+color: var(--color-secondary);
+font-weight: 400;
+```
+
+**Comparison Bar**:
+```css
+/* Bar container */
+height: 8px;
+border-radius: 999px;
+background: linear-gradient(
+  to right,
+  var(--scenario-a-dot) 0%,
+  var(--scenario-a-dot) X%,  /* Property value percentage */
+  var(--scenario-b-dot) X%,
+  var(--scenario-b-dot) 100%
+);
+```
+
+### 14.7 City and Apartment Selection
+
+**City Buttons**:
+```css
+padding: 12px 20px;
+border: 2px solid transparent;
+border-radius: var(--radius-pill);
+background: white;
+box-shadow: var(--shadow-card);
+font-size: 15px;
+font-weight: 500;
+transition: all var(--transition-duration) var(--transition-easing);
+
+/* Selected state */
+border-color: var(--selection-border);  /* Navy */
+background: var(--selection-bg);  /* Very light navy tint */
+box-shadow: var(--selection-shadow);
+```
+
+**Apartment Size Cards**:
+```css
+padding: 16px 20px;
+border: 2px solid transparent;
+border-radius: 16px (rounded-2xl);
+background: white;
+box-shadow: var(--shadow-card);
+
+/* Content */
+┌─────────────────────────┐
+│ 2+kk (large, bold)      │
+│ 7,8 mil · 24 tis / měsíc│
+│ (small, grey)           │
+└─────────────────────────┘
+
+/* Selected state */
+border-color: var(--selection-border);
+background: var(--selection-bg);
+transform: translateY(-2px);
+```
+
+**Formatting**: 
+- Purchase price: millions format ("7,8 mil")
+- Rent: thousands format ("24 tis")
+
+### 14.8 Mobile Optimization
+
+**Viewport Meta Tag** (CRITICAL):
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
+**DO NOT** set `maximum-scale=1` or `user-scalable=no`
+
+**iOS Safari Zoom Prevention**:
+- All input fields: minimum 16px font size
+- Labels: 16px or larger
+- Helper text: 14px (non-interactive, acceptable)
+- Slider not affected (not a text input)
+
+**Touch Targets**:
+- Minimum height: 44px
+- Buttons: 48-52px height
+- Adequate spacing between interactive elements
+
+### 14.9 Animation and Transitions
+
+**Input Highlight Animation** (when preset applied):
+```css
+@keyframes highlightInput {
+  0% { background-color: rgba(125, 90, 226, 0.1); }
+  100% { background-color: white; }
+}
+
+animation: highlightInput 1.5s ease-out;
+```
+
+**Number Tween** (result values):
+- Duration: 1 second
+- Easing: ease-out
+- Implemented via CSS animation on `key` change
+- Tabular nums prevent layout shift during animation
+
+**Debounced Recalculation**:
+- Delay: 300ms after last keystroke
+- Prevents excessive calculations while typing
+- Visual feedback: none (silent, seamless)
+
+### 14.10 Calculator Color Extensions
+
+In addition to landing page colors, calculator page uses:
+
+```css
+/* Hover and interaction states */
+--bg-hover: rgba(15, 23, 42, 0.02);  /* Subtle hover backgrounds */
+--bg-hover-strong: rgba(15, 23, 42, 0.04);
+--bg-highlight: rgba(15, 23, 42, 0.03);  /* Animation highlights */
+
+/* Selection states (city/apartment cards) */
+--selection-border: var(--color-primary);  /* Navy border */
+--selection-bg: rgba(15, 23, 42, 0.02);  /* Light navy tint */
+--selection-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+```
+
+### 14.11 Calculator Button Variants
+
+**"Upravit vstupy" Button** (Edit inputs):
+```css
+width: 100%;
+padding: 12px 24px;
+background: white;
+border: 1px solid var(--color-border);
+border-radius: var(--radius-pill);
+font-size: 15px;
+font-weight: 500;
+color: var(--color-primary);
+margin-bottom: 24px (mb-6);
+
+/* Hover */
+border-color: var(--color-border-hover);
+box-shadow: var(--shadow-card);
+```
+
+**"Zobrazit výsledek" Button** (Mobile CTA):
+```css
+/* Same as PrimaryButton from landing page */
+height: 52px;
+font-size: 15px;
+font-weight: 600;
+width: 100%;
+/* ... (standard primary button styling) */
+```
+
+### 14.12 Data Entry Patterns
+
+**Input Behavior Rules**:
+1. **Never reset to zero**: If user clicks in/out without typing, value remains unchanged
+2. **Right cursor position**: Cursor always starts on right side of number (near unit)
+3. **Character validation**: Only valid characters allowed (digits, comma for decimals, spaces)
+4. **Debounced updates**: Calculations update 300ms after typing stops
+5. **Blur validation**: On blur, invalid input falls back to last valid value
+6. **Slider sync**: Moving slider updates input immediately (no debounce)
+7. **Input sync**: Typing in input updates slider after validation
+
+**NaN Prevention**:
+- Parser functions return `null` for invalid input
+- Null values fall back to current valid value
+- Never allow empty or NaN state in calculator state
+
+### 14.13 Spacing in Calculator
+
+**Section Vertical Spacing**:
+```css
+/* Between major sections (City → Basic → Uncertainty → Advanced) */
+margin-top: 48px (mt-12);
+
+/* Between input groups within a section */
+space-y: 16px (space-y-4);
+
+/* Between label and input in LabeledSliderInput */
+gap-x: 16px (gap-x-4);  /* Mobile */
+gap-x: 16px (gap-x-4);  /* Desktop - same */
+
+/* Between input and slider */
+margin-top: 8px (mt-2);
+```
+
+**Card Padding**:
+```css
+/* Standard calculator cards */
+padding: 24px (p-6);
+
+/* Results panel */
+padding: 24px (p-6);
+
+/* Collapsible section content */
+padding: 24px 0 (py-6);
+```
+
+### 14.14 Calculator Typography Scale
+
+```
+Section titles:    18px → 20px (.calc-section-title)
+Input labels:      16px (base)
+Input values:      16px (MUST be ≥16px for mobile)
+Helper text:       14px (sm)
+Units:             14px (sm)
+Result labels:     12px (xs, uppercase)
+Result values:     24px → 28px (.calc-result-value, serif)
+Slider labels:     13px (between xs and sm)
+```
+
+**Font Weight Usage**:
+- Section titles: 600 (semibold)
+- Input labels: 500 (medium)
+- Input values: 400 (regular) + tabular-nums
+- Result values: 600 (semibold)
+- Helper text: 400 (regular)
 
 ───────────────────────────────
 

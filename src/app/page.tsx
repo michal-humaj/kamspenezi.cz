@@ -222,15 +222,15 @@ export default function HomePage() {
                   <span>
                     <a
                       href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-                      target="_blank"
-                      rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
                       className="underline underline-offset-2 text-[var(--color-primary)] hover:text-[var(--color-primary)] font-uiSans"
                       style={{
                         transition: `color var(--transition-duration) var(--transition-easing)`
                       }}
                     >
                       Veřejný Google Sheet se všemi vzorci a předpoklady
-                    </a>
+          </a>
                   </span>
                 </li>
                 <li className="flex items-start gap-3 text-base leading-relaxed text-[#4B5563] font-uiSans">
@@ -251,8 +251,8 @@ export default function HomePage() {
 
               <a
                 href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center justify-center h-[52px] rounded-full bg-white hover:bg-[rgba(15,23,42,0.02)] text-[16px] font-semibold px-6 transition-all duration-200 ease-out border hover:border-[var(--btn-secondary-border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--btn-focus-ring)]"
                 style={{
                   borderColor: 'var(--btn-secondary-border)',
@@ -347,7 +347,7 @@ export default function HomePage() {
               Metodika v Google Sheets
             </a>
           </p>
-        </div>
+    </div>
       </footer>
     </>
   );

@@ -8,8 +8,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ChevronDown } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LabeledSliderInput } from "./labeled-slider-input";
+import { formatPercent, parsePercent } from "@/lib/format";
 import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
 
 interface UncertaintyInputsProps {
@@ -28,70 +29,6 @@ function parseDecimal(value: string): number {
   const cleanValue = value.replace(/,/g, ".");
   const parsed = Number(cleanValue);
   return isNaN(parsed) ? 0 : parsed;
-}
-
-// Component for single input in fixed mode
-function SingleInput({
-  label,
-  unit,
-  id,
-  value,
-  onChange,
-}: {
-  label: string;
-  unit: string;
-  id: string;
-  value: number;
-  onChange: (value: number) => void;
-}) {
-  const [localValue, setLocalValue] = React.useState<string | null>(null);
-  
-  const displayValue = localValue !== null ? localValue : formatDecimal(value);
-  
-  const handleChange = (newValue: string) => {
-    setLocalValue(newValue);
-  };
-  
-  const handleBlur = () => {
-    // If no local value, don't update (prevents resetting to 0)
-    if (localValue === null) {
-      return;
-    }
-    const parsed = parseDecimal(localValue);
-    onChange(parsed);
-    setLocalValue(null);
-  };
-  
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    const input = e.target;
-    const length = input.value.length;
-    setTimeout(() => {
-      input.setSelectionRange(length, length);
-    }, 0);
-  };
-  
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={id} className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
-        {label}
-      </Label>
-      <div className="relative">
-        <Input
-          id={id}
-          type="text"
-          inputMode="decimal"
-          value={displayValue}
-          onChange={(e) => handleChange(e.target.value)}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          className="calc-input pr-16 text-right tabular-nums"
-        />
-        <span className="calc-input-unit">
-          {unit}
-        </span>
-      </div>
-    </div>
-  );
 }
 
 // Component for triple input with units (realistic mode)
@@ -132,23 +69,33 @@ function TripleInput({
     }, 0);
   };
   
+  const sanitizeDecimal = (value: string): string => {
+    let sanitized = value.replace(/[^\d,\.]/g, "");
+    sanitized = sanitized.replace(/\./g, ",");
+    const parts = sanitized.split(",");
+    if (parts.length > 2) {
+      sanitized = parts[0] + "," + parts.slice(1).join("");
+    }
+    return sanitized;
+  };
+  
   return (
     <div className="space-y-2">
-      <Label className="font-uiSans text-sm font-medium text-[var(--color-primary)]">
+      <Label className="font-uiSans text-base font-medium text-[var(--color-primary)]">
         {label}
       </Label>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <Label htmlFor={minId} className="font-uiSans text-xs font-medium text-[var(--color-secondary)]">
-            pesimisticky
+          <Label htmlFor={minId} className="mb-1 block font-uiSans text-xs font-medium text-[var(--color-secondary)]">
+            Pesimisticky
           </Label>
-          <div className="relative mt-1">
-            <Input
+          <div className="relative">
+            <input
               id={minId}
               type="text"
               inputMode="decimal"
               value={localMin !== null ? localMin : formatDecimal(minValue)}
-              onChange={(e) => setLocalMin(e.target.value)}
+              onChange={(e) => setLocalMin(sanitizeDecimal(e.target.value))}
               onBlur={() => {
                 if (localMin !== null) {
                   onMinChange(parseDecimal(localMin));
@@ -157,7 +104,6 @@ function TripleInput({
               }}
               onFocus={handleFocus}
               className="calc-input pr-10 text-right tabular-nums"
-              style={{ fontSize: "16px" }}
             />
             <span className="calc-input-unit text-xs">
               {unit}
@@ -165,16 +111,16 @@ function TripleInput({
           </div>
         </div>
         <div>
-          <Label htmlFor={expectedId} className="font-uiSans text-xs font-medium text-[var(--color-secondary)]">
-            očekávaně
+          <Label htmlFor={expectedId} className="mb-1 block font-uiSans text-xs font-medium text-[var(--color-secondary)]">
+            Očekávaně
           </Label>
-          <div className="relative mt-1">
-            <Input
+          <div className="relative">
+            <input
               id={expectedId}
               type="text"
               inputMode="decimal"
               value={localExpected !== null ? localExpected : formatDecimal(expectedValue)}
-              onChange={(e) => setLocalExpected(e.target.value)}
+              onChange={(e) => setLocalExpected(sanitizeDecimal(e.target.value))}
               onBlur={() => {
                 if (localExpected !== null) {
                   onExpectedChange(parseDecimal(localExpected));
@@ -183,7 +129,6 @@ function TripleInput({
               }}
               onFocus={handleFocus}
               className="calc-input pr-10 text-right tabular-nums"
-              style={{ fontSize: "16px" }}
             />
             <span className="calc-input-unit text-xs">
               {unit}
@@ -191,16 +136,16 @@ function TripleInput({
           </div>
         </div>
         <div>
-          <Label htmlFor={maxId} className="font-uiSans text-xs font-medium text-[var(--color-secondary)]">
-            optimisticky
+          <Label htmlFor={maxId} className="mb-1 block font-uiSans text-xs font-medium text-[var(--color-secondary)]">
+            Optimisticky
           </Label>
-          <div className="relative mt-1">
-            <Input
+          <div className="relative">
+            <input
               id={maxId}
               type="text"
               inputMode="decimal"
               value={localMax !== null ? localMax : formatDecimal(maxValue)}
-              onChange={(e) => setLocalMax(e.target.value)}
+              onChange={(e) => setLocalMax(sanitizeDecimal(e.target.value))}
               onBlur={() => {
                 if (localMax !== null) {
                   onMaxChange(parseDecimal(localMax));
@@ -209,7 +154,6 @@ function TripleInput({
               }}
               onFocus={handleFocus}
               className="calc-input pr-10 text-right tabular-nums"
-              style={{ fontSize: "16px" }}
             />
             <span className="calc-input-unit text-xs">
               {unit}
@@ -318,37 +262,65 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
             </>
           ) : (
             <>
-              {/* Fixed mode: Show only expected values */}
-              <SingleInput
-                label="Výnos ETF v čase (% p.a.)"
-                unit="%"
+              {/* Fixed mode: Show with sliders like basic inputs */}
+              <LabeledSliderInput
                 id="etf-expected"
+                label="Výnos ETF v čase"
+                description="Průměrný roční výnos ETF portfolia"
                 value={state.etfVynosExpected}
                 onChange={(v) => updateState({ etfVynosExpected: v })}
+                unit="percent"
+                min={0}
+                max={20}
+                step={0.1}
+                formatter={formatPercent}
+                parser={parsePercent}
+                inputMode="decimal"
               />
 
-              <SingleInput
-                label="Růst hodnoty nemovitosti (% p.a.)"
-                unit="%"
+              <LabeledSliderInput
                 id="rust-hodnoty-expected"
+                label="Růst hodnoty nemovitosti"
+                description="Průměrný roční růst ceny nemovitosti"
                 value={state.rustHodnotyExpected}
                 onChange={(v) => updateState({ rustHodnotyExpected: v })}
+                unit="percent"
+                min={-5}
+                max={15}
+                step={0.1}
+                formatter={formatPercent}
+                parser={parsePercent}
+                inputMode="decimal"
               />
 
-              <SingleInput
-                label="Růst nájemného (% p.a.)"
-                unit="%"
+              <LabeledSliderInput
                 id="rust-najemneho-expected"
+                label="Růst nájemného"
+                description="Průměrný roční růst nájemného"
                 value={state.rustNajemnehoExpected}
                 onChange={(v) => updateState({ rustNajemnehoExpected: v })}
+                unit="percent"
+                min={0}
+                max={10}
+                step={0.1}
+                formatter={formatPercent}
+                parser={parsePercent}
+                inputMode="decimal"
               />
 
-              <SingleInput
-                label="Úroková sazba hypotéky v budoucnu (% p.a.)"
-                unit="%"
+              <LabeledSliderInput
                 id="sazba-expected"
+                label="Úroková sazba hypotéky v budoucnu"
+                description="Očekávaná úroková sazba pro refinancování"
                 value={state.urokovaSazbaExpected}
                 onChange={(v) => updateState({ urokovaSazbaExpected: v })}
+                unit="percent"
+                min={0}
+                max={15}
+                step={0.1}
+                formatter={formatPercent}
+                parser={parsePercent}
+                inputMode="decimal"
               />
             </>
           )}
