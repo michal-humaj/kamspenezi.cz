@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { ChevronDown } from "lucide-react";
 import { formatCzk, formatMillionsCzk } from "@/lib/format";
-import type { YearlyRow } from "./yearly-breakdown-table";
+import type { YearlyRow } from "./YearlyOverviewTable";
 
 interface YearlyBreakdownMobileProps {
   rows: YearlyRow[];
