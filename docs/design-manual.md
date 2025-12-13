@@ -1,6 +1,6 @@
 # Design Manual — kamspenezi.cz
 
-> Last updated: November 22, 2025  
+> Last updated: December 7, 2025
 > This document reflects the current production design system including calculator page.  
 > All changes to brand, UI, or components must update this file first.
 
@@ -775,13 +775,25 @@ Mobile: Single column, stacked
 **Section Titles** (`.calc-section-title`):
 ```css
 font-family: var(--font-ui-sans);  /* Figtree, NOT serif */
-font-size: 18px (text-lg) → 20px (md:text-xl);
+font-size: 20px (text-xl) → 24px (md:text-2xl);
 font-weight: 600 (semibold);
 color: var(--color-primary);
 letter-spacing: -0.01em;
+margin-bottom: 24px (mb-6);
 ```
 
 **Usage**: "Základní nastavení", "Nejistota vývoje v čase", "Rozšířené předpoklady", "Výsledek po 30 letech"
+
+**Input Scenario Headers**:
+```css
+font-family: var(--font-ui-sans);
+font-size: 16px (text-base);
+font-weight: 600 (semibold);
+color: var(--color-primary);
+/* Subtitle below: text-sm (14px), text-slate-500, mt-1 */
+```
+
+**Usage**: "Scénář A: Vlastní bydlení...", "Scénář B: Nájem..." within input sections.
 
 **Result Values** (`.calc-result-value`):
 ```css
@@ -994,19 +1006,29 @@ color: var(--color-secondary);
 font-weight: 400;
 ```
 
-**Comparison Bar**:
-```css
-/* Bar container */
-height: 8px;
-border-radius: 999px;
-background: linear-gradient(
-  to right,
-  var(--scenario-a-dot) 0%,
-  var(--scenario-a-dot) X%,  /* Property value percentage */
-  var(--scenario-b-dot) X%,
-  var(--scenario-b-dot) 100%
-);
-```
+**Comparison Bar (Fixed Mode)**:
+- **Style**: Bullet chart comparison
+- **Structure**: Two rows (Scenario A vs Scenario B)
+- **Visuals**:
+  - Track: `h-2 bg-slate-100 rounded-full`
+  - Fill: Animated width `transition-all duration-1000 ease-out`
+  - Colors: `var(--scenario-a-dot)` / `var(--scenario-b-dot)`
+- **Typography**: Labels `text-xs font-medium text-slate-500`, Values `text-xs font-bold text-slate-900`
+
+**RangeBar Visualization (Realistic Mode - Scorecard Layout)**:
+- **Structure**: 3-Column Grid (P10 - Median - P90)
+- **Alignment**:
+  - P10 (Pesimisticky): Left-aligned
+  - Median (Očekávaný střed): Center-aligned, emphasized
+  - P90 (Optimisticky): Right-aligned
+- **Typography**:
+  - Median Value: `text-2xl font-displaySerif font-bold`
+  - Range Values: `text-sm font-medium tabular-nums`
+  - Labels: `text-[10px] uppercase tracking-wider text-slate-400`
+- **Visual Bar**:
+  - Placed *below* the data grid
+  - Width scales relative to the global maximum (largest P90 of both scenarios)
+  - Color matches scenario theme
 
 ### 14.7 City and Apartment Selection
 
@@ -1204,6 +1226,33 @@ Slider labels:     13px (between xs and sm)
 - Input values: 400 (regular) + tabular-nums
 - Result values: 600 (semibold)
 - Helper text: 400 (regular)
+
+### 14.15 Yearly Overview Table System
+
+**Desktop Table (Wealthsimple/Stripe Polish)**:
+- **Density**: Ultra-compact (`py-1` padding, `text-xs` font, `leading-tight`).
+- **Structure**:
+  - **Super-Headers**: "SCÉNÁŘ A..." / "SCÉNÁŘ B..." (`text-xs font-semibold uppercase tracking-normal text-slate-500`).
+  - **Column Headers**: Full descriptive names, wrapping enabled, bottom-aligned (`align-bottom`).
+  - **Sticky Column**: "Rok" column stays visible on scroll.
+- **Visual Style**:
+  - **No-Border Policy**: No internal vertical borders. Only one strong vertical divider (`border-l-2 border-slate-300`) separating Scenario A and B.
+  - **Scenario B Tint**: `bg-[#FBFBFF]` (Lilac tint) applied to entire Scenario B column group.
+  - **Typography**: Navy (`#0F172A`) for key metrics, Grey (`#6B7280`) for breakdown details.
+  - **Values**: `tabular-nums`, "—" for zero (grey), Red text for negative values.
+  - **Row Hover**: Highlights entire row across all columns (`hover:bg-slate-50`).
+  - **Final Row**: Year 30 summary uses `bg-slate-100` background for visual anchor.
+
+**Mobile List (Ledger Style)**:
+- **Container**: Single `rounded-3xl border bg-white` card. No negative margins.
+- **Collapsed Row**:
+  - Grid Layout: `grid-cols-[1fr_auto_auto_16px]` for perfect alignment.
+  - Columns: Year (Left), Scenario A Value (Fixed width, Right), Scenario B Value (Fixed width, Right), Chevron.
+- **Expanded Content**:
+  - Background: `bg-slate-50`.
+  - Blocks: Two "paper strip" blocks (`bg-white`, `shadow-sm`, `border-l-2` with scenario color).
+  - **Visual Grouping**: Dashed border (`border-t border-dashed border-slate-200`) separating expenses from final asset value.
+  - **Typography**: Labels `text-xs text-slate-500`, Values `text-sm font-medium text-slate-900`. "Náklady celkem" promoted to `font-medium`.
 
 ───────────────────────────────
 

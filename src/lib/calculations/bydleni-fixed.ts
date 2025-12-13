@@ -5,7 +5,8 @@
 type InputsBydleniFixed = {
   purchasePrice: number;          // O3
   parentsContribution: number;    // O4
-  mortgageRateAnnual: number;     // O5
+  mortgageRateAnnual: number;     // O5 (Rate 1: Years 1-5)
+  mortgageRateFuture: number;     // NEW (Rate 2: Years 6-30)
   ownFundsRatio: number;          // O6  e.g. 0.2 = 20 %
   furnishingOneOff: number;       // O7
 
@@ -41,38 +42,25 @@ type BydleniFixedResult = {
   netWorthOwnFlat: number;     // F33
 };
 
-// Helper functions to mirror Excel PMT and PV logic as used in this sheet
-// Excel: O22 = PMT(O5/12, 30*12, -O21)
-function computeMonthlyMortgagePayment(
-  mortgageAmount: number,
-  mortgageRateAnnual: number,
-  years: number
-): number {
-  const r = mortgageRateAnnual / 12.0;
-  const n = years * 12;
-  // Equivalent to Excel: PMT(r, n, -mortgageAmount)
-  // Returns positive monthly payment
-  return mortgageAmount * r / (1 - Math.pow(1 + r, -n));
+// Matches Excel =PMT(rate, nper, pv)
+// rate: monthly interest rate (annual / 12)
+// nper: number of months
+// pv: present value (loan amount, usually negative)
+function PMT(rate: number, nper: number, pv: number): number {
+  if (rate === 0) return -(pv / nper);
+  const pvif = Math.pow(1 + rate, nper);
+  return (rate * pv * pvif) / (pvif - 1);
 }
 
-// Excel: G4 = PV($O$5/12, (30-$A4)*12, -$O$22)
-function computeRemainingDebt(
-  mortgageRateAnnual: number,
-  monthlyPayment: number,
-  yearsElapsed: number,
-  totalYears: number
-): number {
-  const r = mortgageRateAnnual / 12.0;
-  const remainingYears = totalYears - yearsElapsed;
-  const n = remainingYears * 12;
-
-  if (n === 0) {
-    return 0; // at 30 years remaining debt is zero
-  }
-
-  // Equivalent to Excel PV(r, n, -monthlyPayment)
-  // positive present value of remaining annuity
-  return monthlyPayment * (1 - Math.pow(1 + r, -n)) / r;
+// Matches Excel =FV(rate, nper, pmt, pv)
+// rate: monthly interest rate
+// nper: number of months
+// pmt: monthly payment
+// pv: present value (initial balance, usually negative)
+function FV(rate: number, nper: number, pmt: number, pv: number): number {
+  if (rate === 0) return -(pv + pmt * nper);
+  const pvif = Math.pow(1 + rate, nper);
+  return -((pv * pvif) + (pmt * (pvif - 1) / rate));
 }
 
 export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedResult {
@@ -81,7 +69,8 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
   // Map inputs to shorter local variables (1:1 k Excelu)
   const O3  = inputs.purchasePrice;
   const O4  = inputs.parentsContribution;
-  const O5  = inputs.mortgageRateAnnual;
+  const O5  = inputs.mortgageRateAnnual; // Rate 1
+  const Rate2 = inputs.mortgageRateFuture; // Rate 2
   const O6  = inputs.ownFundsRatio;
   const O7  = inputs.furnishingOneOff;
 
@@ -99,10 +88,29 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
   // Derived inputs that exist in Excel
 
   // O21 = O3 * (1 - O6)  = Výše hypotéky
-  const O21 = O3 * (1 - O6);
+  const O21 = O3 * (1 - O6); // Loan Amount (positive)
 
-  // O22 = PMT(O5/12, 30*12, -O21)  = Splátka hypotéky (měsíčně)
-  const O22 = computeMonthlyMortgagePayment(O21, O5, YEARS);
+  // Two-Stage Mortgage Logic
+  // Stage 1: Years 1-5 (Months 1-60) using Rate 1
+  const r1 = O5 / 12;
+  const n1 = 30 * 12; // 360 months
+  const pv1 = -O21; // Present Value is negative Loan Amount
+  
+  // Monthly Payment for Stage 1 (matches Excel PMT)
+  // This will be negative (cash flow out), so we negate it to get positive payment magnitude
+  const pmt1 = -PMT(r1, n1, pv1);
+  
+  // Balance after 5 years (Month 60)
+  // This will be positive (remaining debt)
+  const balanceAfter5Years = FV(r1, 60, pmt1, pv1);
+
+  // Stage 2: Years 6-30 (Months 61-360) using Rate 2
+  const r2 = Rate2 / 12;
+  const n2 = 25 * 12; // 300 months remaining
+  const pv2 = -balanceAfter5Years; // New PV is negative of remaining balance
+
+  // Monthly Payment for Stage 2
+  const pmt2 = -PMT(r2, n2, pv2);
 
   // Prepare arrays indexed by "year index" t
   // t = 0 corresponds to row 3 in Excel (A3)
@@ -131,26 +139,29 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
     propertyValue[t] = O3 * Math.pow(1 + O9, years[t]);
   }
 
-  // 3) Remaining mortgage debt G (PV funkce v Excelu)
-  // G3 = $O$21
-  // G4..G33 = PV($O$5/12, (30-$A[row])*12, -$O$22)
+  // 3) Remaining mortgage debt G (FV function)
+  // 4) Mortgage payments H (Annual Sum)
   for (let t = 0; t <= YEARS; t++) {
     if (t === 0) {
       remainingDebt[t] = O21;
-    } else {
-      remainingDebt[t] = computeRemainingDebt(O5, O22, years[t], YEARS);
-    }
-  }
-
-  // 4) Mortgage payments H (roční součet)
-  // H3 = 0
-  // H4..H33 = 12 * $O$22
-  for (let t = 0; t <= YEARS; t++) {
-    if (t === 0) {
       mortgagePaymentsAnnual[t] = 0;
+    } else if (t <= 5) {
+      // Phase 1
+      // Balance at end of year t (month t*12) using Rate 1
+      remainingDebt[t] = FV(r1, t * 12, pmt1, pv1);
+      mortgagePaymentsAnnual[t] = pmt1 * 12; // Positive cost
     } else {
-      mortgagePaymentsAnnual[t] = 12 * O22;
+      // Phase 2
+      // Balance at end of year t. 
+      // We start from balanceAfter5Years at month 0 of Phase 2.
+      // Months passed in Phase 2 = (t - 5) * 12.
+      const monthsInPhase2 = (t - 5) * 12;
+      remainingDebt[t] = FV(r2, monthsInPhase2, pmt2, pv2);
+      mortgagePaymentsAnnual[t] = pmt2 * 12; // Positive cost
     }
+    
+    // Safety check for very small negative numbers (floating point errors) at end of term
+    if (remainingDebt[t] < 1) remainingDebt[t] = 0;
   }
 
   // 5) Tax I (Daň z nemovitosti)
@@ -276,4 +287,3 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
     netWorthOwnFlat,
   };
 }
-

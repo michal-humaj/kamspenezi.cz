@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
+
+import { ComparisonBar } from "./ComparisonBar";
+import { RangeBarVisualization } from "./RangeBarVisualization";
 
 interface BydleniFixedResult {
   netWorthRentPlusETF: number;
@@ -49,6 +53,8 @@ export function ResultsPanel({
   onEditSettings,
   calculationResults,
 }: ResultsPanelProps) {
+  const [isExplainerOpen, setIsExplainerOpen] = useState(false);
+
   // Both modes use the same calculation results from the fixed calculation
   let scenarioAResult = 0;
   let scenarioBResult = 0;
@@ -65,116 +71,114 @@ export function ResultsPanel({
       id="vysledek"
       className="space-y-5 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-6 md:shadow-[var(--shadow-card)]"
     >
-      {/* Heading and Mode tabs */}
-      <div className="space-y-3 md:space-y-4">
+      {/* Heading */}
+      <div className="space-y-1">
         <h2 className="calc-section-title text-xl md:text-2xl">
-          Výsledek po 30 letech
+          Čisté jmění za 30 let
         </h2>
+      </div>
+
+      {/* Mode description & Explainer & Switcher */}
+      <div className="space-y-2">
+        <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
+          Porovnání vašeho předpokládaného majetku (po odečtení dluhů) ve dvou životních situacích.
+        </p>
         
-        {/* Segmented control */}
-        <div
-          className="grid grid-cols-2 gap-0 rounded-[var(--radius-pill)] border p-[2px]"
-          style={{ 
-            background: "var(--toggle-bg-inactive)",
-            borderColor: "var(--color-border)"
-          }}
-        >
+        <div>
           <button
-            onClick={() => setResultsMode("realistic")}
-            className="rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none"
-            style={{
-              background: resultsMode === "realistic" ? "var(--btn-primary-bg)" : "transparent",
-              color: resultsMode === "realistic" ? "var(--btn-primary-text)" : "var(--color-secondary)",
-              boxShadow: resultsMode === "realistic" ? "0 1px 3px rgba(15, 23, 42, 0.1)" : "none",
-              transitionDuration: "var(--transition-duration)",
-              transitionTimingFunction: "var(--transition-easing)",
-            }}
+            onClick={() => setIsExplainerOpen(!isExplainerOpen)}
+            className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
           >
-            Realistický rozsah
+            ℹ️ Jak tento výpočet funguje?
           </button>
-          <button
-            onClick={() => setResultsMode("fixed")}
-            className="rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none"
-            style={{
-              background: resultsMode === "fixed" ? "var(--btn-primary-bg)" : "transparent",
-              color: resultsMode === "fixed" ? "var(--btn-primary-text)" : "var(--color-secondary)",
-              boxShadow: resultsMode === "fixed" ? "0 1px 3px rgba(15, 23, 42, 0.1)" : "none",
-              transitionDuration: "var(--transition-duration)",
-              transitionTimingFunction: "var(--transition-easing)",
-            }}
-          >
-            Pevný výpočet
-          </button>
+          
+          {isExplainerOpen && (
+            <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50 p-4 text-xs text-slate-600 space-y-2 leading-relaxed animate-in fade-in slide-in-from-top-1 duration-200">
+              <p>
+                <span className="font-semibold text-slate-700">Scénář A:</span> Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů.
+              </p>
+              <p>
+                <span className="font-semibold text-slate-700">Scénář B:</span> Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Compact Mode Switcher */}
+        <div className="pt-2">
+           <div className="inline-flex w-full md:w-auto bg-slate-100 p-1 rounded-lg h-9">
+             <button
+               onClick={() => setResultsMode("realistic")}
+               className={`flex-1 md:flex-none px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                 resultsMode === "realistic" 
+                   ? "bg-white text-slate-900 shadow-sm" 
+                   : "text-slate-500 hover:text-slate-700"
+               }`}
+             >
+               Realistický rozsah
+             </button>
+             <button
+               onClick={() => setResultsMode("fixed")}
+               className={`flex-1 md:flex-none px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                 resultsMode === "fixed" 
+                   ? "bg-white text-slate-900 shadow-sm" 
+                   : "text-slate-500 hover:text-slate-700"
+               }`}
+             >
+               Pevný výpočet
+             </button>
+           </div>
         </div>
       </div>
 
-      {/* Mode description */}
-      <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
-        {resultsMode === "realistic"
-          ? "Ukazujeme, jak se výsledek může lišit podle tržních podmínek"
-          : (
-            <>
-              Můžeš ověřit vzorce v našem{" "}
-              <a
-                href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?gid=1260855363#gid=1260855363"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-[var(--color-primary)] underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--color-primary-hover)]"
-              >
-                Google Sheetu
-              </a>
-            </>
-          )}
-      </p>
-
       {canViewResults ? (
         <>
-          {/* Results summary */}
-          <div className="space-y-5 md:space-y-6">
-            {/* Scenario A */}
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 mb-1">
-                <div
-                  className="h-2 w-2 shrink-0 rounded-full"
-                  style={{ background: "var(--scenario-a-dot)" }}
-                />
-                <h3 className="calc-scenario-label">
-                  Scénář A – Byt na hypotéku
-                </h3>
+          {/* Results summary - Only for fixed mode */}
+          {resultsMode === "fixed" && (
+            <div className="space-y-5 md:space-y-6">
+              {/* Scenario A */}
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <div
+                    className="h-2 w-2 shrink-0 rounded-full"
+                    style={{ background: "var(--scenario-a-dot)" }}
+                  />
+                  <h3 className="calc-scenario-label">
+                    Scénář A: Vlastní bydlení na hypotéku
+                  </h3>
+                </div>
+                <AnimatedNumber value={Math.round(scenarioAResult)} />
               </div>
-              <AnimatedNumber value={Math.round(scenarioAResult)} />
-            </div>
 
-            {/* Scenario B */}
-            <div className="space-y-1 mt-4">
-              <div className="flex items-center gap-2 mb-1">
-                <div
-                  className="h-2 w-2 shrink-0 rounded-full"
-                  style={{ background: "var(--scenario-b-dot)" }}
-                />
-                <h3 className="calc-scenario-label">
-                  Scénář B – Nájem + ETF
-                </h3>
+              {/* Scenario B */}
+              <div className="space-y-1 mt-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <div
+                    className="h-2 w-2 shrink-0 rounded-full"
+                    style={{ background: "var(--scenario-b-dot)" }}
+                  />
+                  <h3 className="calc-scenario-label">
+                    Scénář B: Bydlení v nájmu a investování
+                  </h3>
+                </div>
+                <AnimatedNumber value={Math.round(scenarioBResult)} />
               </div>
-              <AnimatedNumber value={Math.round(scenarioBResult)} />
             </div>
-          </div>
+          )}
 
-          {/* Chart placeholder */}
-          <div
-            className="flex items-center justify-center rounded-[var(--radius-card)]"
-            style={{
-              minHeight: resultsMode === "realistic" ? "300px" : "120px",
-              background: "var(--bg-lilac-section)",
-              border: "1px dashed var(--color-border)",
-            }}
-          >
-            <p className="font-uiSans text-sm text-[var(--color-secondary)]">
-              {resultsMode === "realistic"
-                ? "Box plot chart placeholder"
-                : "Comparison bar placeholder"}
-            </p>
-          </div>
+          {/* Visual Comparison */}
+          {resultsMode === "realistic" ? (
+            <div className="mt-6">
+              <RangeBarVisualization />
+            </div>
+          ) : (
+            <div className="mt-6">
+              <ComparisonBar 
+                scenarioAValue={scenarioAResult} 
+                scenarioBValue={scenarioBResult} 
+              />
+            </div>
+          )}
         </>
       ) : (
         <div

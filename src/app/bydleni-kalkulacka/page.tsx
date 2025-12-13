@@ -54,31 +54,31 @@ export interface CalculatorState {
 const initialState: CalculatorState = {
   selectedCity: "Praha",
   selectedApartmentSize: "2+kk",
-  kupniCena: 10000000,
-  vlastniZdroje: 20,
-  urokovaSazba: 4.5,
-  najemne: 18000,
-  etfVynos: 9.0,
-  prispevekRodicu: 500000,
+  kupniCena: 6000000,
+  vlastniZdroje: 10,
+  urokovaSazba: 4.7,
+  najemne: 17000,
+  etfVynos: 8.0,
+  prispevekRodicu: 0,
   zarizeniNemovitosti: 250000,
-  rustHodnotyNemovitosti: 7.0,
+  rustHodnotyNemovitosti: 6.0,
   fondOprav: 300,
   pojisteniNemovitosti: 1900,
   danZNemovitosti: 2000,
-  nakladyUdrzba: 20000,
+  nakladyUdrzba: 30000,
   ocekavanaInflace: 3.0,
   rustNajemneho: 4.0,
   etfVynosMin: 4.0,
-  etfVynosExpected: 9.0,
+  etfVynosExpected: 8.0,
   etfVynosMax: 12.0,
   rustHodnotyMin: 1.0,
-  rustHodnotyExpected: 7.0,
+  rustHodnotyExpected: 6.0,
   rustHodnotyMax: 10.0,
   rustNajemnehoMin: 1.5,
   rustNajemnehoExpected: 4.0,
   rustNajemnehoMax: 6.0,
   urokovaSazbaMin: 3.0,
-  urokovaSazbaExpected: 4.5,
+  urokovaSazbaExpected: 4.3,
   urokovaSazbaMax: 7.0,
 };
 
@@ -118,6 +118,7 @@ export default function BydleniKalkulackaPage() {
       purchasePrice: state.kupniCena,
       parentsContribution: state.prispevekRodicu,
       mortgageRateAnnual: state.urokovaSazba / 100, // Convert % to decimal
+      mortgageRateFuture: state.urokovaSazbaExpected / 100, // Convert % to decimal
       ownFundsRatio: state.vlastniZdroje / 100, // Convert % to decimal
       furnishingOneOff: state.zarizeniNemovitosti,
       // Use EXPECTED values from uncertainty section for time-based growth
@@ -145,6 +146,7 @@ export default function BydleniKalkulackaPage() {
       maintenance: calculationResults.maintenanceAnnual[index],
       totalPropertyCosts: calculationResults.ownershipCosts[index],
       propertyValue: calculationResults.propertyValue[index],
+      propertyNetWorth: calculationResults.propertyValue[index] - calculationResults.remainingDebt[index],
       rent: calculationResults.rentAnnual[index],
       savedComparedToOwnership: calculationResults.savedVsOwnership[index],
       etfPortfolioValue: calculationResults.etfValue[index],
@@ -235,7 +237,7 @@ export default function BydleniKalkulackaPage() {
           <div id="nastaveni" className="space-y-6">
             {/* Basic Inputs */}
             <section
-              className="space-y-5 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-6 md:shadow-[var(--shadow-card)]"
+              className="space-y-6 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-6 md:shadow-[var(--shadow-card)]"
             >
               <h2 className="calc-section-title">
                 Základní nastavení
@@ -273,7 +275,7 @@ export default function BydleniKalkulackaPage() {
         </div>
 
         {/* Mobile: Accordion */}
-        <div className="block px-4 lg:hidden">
+        <div className="block lg:hidden">
           <YearlyBreakdownMobile rows={yearlyRows} />
         </div>
       </div>

@@ -9,6 +9,7 @@ import {
   parseCzk,
   formatPercent,
   parsePercent,
+  formatCashShort,
 } from "@/lib/format";
 
 // Input ranges and steps
@@ -43,13 +44,41 @@ interface BasicInputsProps {
 }
 
 export function BasicInputs({ state, updateState, animatingFields = new Set() }: BasicInputsProps) {
+  // Calculations for Smart Values
+  const downPaymentCzk = state.kupniCena * (state.vlastniZdroje / 100);
+  
+  // Mortgage Payment Calculation (30 years fixed)
+  const loanAmount = state.kupniCena - downPaymentCzk;
+  const monthlyRate = (state.urokovaSazba / 100) / 12;
+  const numPayments = 30 * 12;
+  
+  let monthlyPayment = 0;
+  if (loanAmount > 0) {
+    if (monthlyRate === 0) {
+      monthlyPayment = loanAmount / numPayments;
+    } else {
+      monthlyPayment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+                       (Math.pow(1 + monthlyRate, numPayments) - 1);
+    }
+  }
+
   return (
     <div className="space-y-6">
+      {/* Header Scenario A */}
+      <div className="mb-1">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-[#C98D4E]" />
+          <span className="text-base font-semibold text-slate-900">Scénář A: Vlastní bydlení na hypotéku</span>
+        </div>
+        <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
+          Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů.
+        </p>
+      </div>
+
       {/* 1. Kupní cena nemovitosti (in millions) */}
       <LabeledSliderInput
         id="kupni-cena"
         label="Kupní cena nemovitosti"
-        description="Celková cena bytu, který chceš koupit"
         value={state.kupniCena}
         onChange={(value) => updateState({ kupniCena: value })}
         unit="custom"
@@ -67,7 +96,13 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       <LabeledSliderInput
         id="vlastni-zdroje"
         label="Vlastní zdroje"
-        description="Kolik procent kupní ceny máš našetřeno"
+        middleContent={
+          <div className="mt-1 mb-2 text-right">
+            <span className="text-xs font-medium text-slate-500 block">
+              Hotovost: {formatCashShort(downPaymentCzk)}
+            </span>
+          </div>
+        }
         value={state.vlastniZdroje}
         onChange={(value) => updateState({ vlastniZdroje: value })}
         unit="percent"
@@ -82,8 +117,14 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       {/* 3. Úroková sazba hypotéky */}
       <LabeledSliderInput
         id="urokova-sazba"
-        label="Úroková sazba hypotéky"
-        description="Roční úroková sazba hypotéky"
+        label="Úroková sazba hypotéky (roky 1-5)"
+        middleContent={
+          <div className="mt-1 mb-2 text-right">
+            <span className="text-xs font-medium text-slate-500 block">
+              Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
+            </span>
+          </div>
+        }
         value={state.urokovaSazba}
         onChange={(value) => updateState({ urokovaSazba: value })}
         unit="percent"
@@ -95,11 +136,25 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         inputMode="decimal"
       />
 
+      {/* Divider */}
+      <div className="mt-8 pt-6 mb-6 border-t border-slate-100">
+        {/* Header Scenario B */}
+        <div className="mb-1">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-[#7D5AE2]" />
+            <span className="text-base font-semibold text-slate-900">Scénář B: Bydlení v nájmu a investování</span>
+          </div>
+          <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
+            Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio.
+          </p>
+        </div>
+      </div>
+
       {/* 4. Nájemné */}
       <LabeledSliderInput
         id="najemne"
         label="Nájemné"
-        description="Měsíční nájem za podobný byt"
+        description="Za kolik byste si pronajali podobný byt dnes?"
         value={state.najemne}
         onChange={(value) => updateState({ najemne: value })}
         unit="custom"
@@ -112,6 +167,19 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         inputMode="numeric"
         isAnimating={animatingFields.has("najemne")}
       />
+
+      {/* Mobile CTA Button */}
+      <div className="md:hidden mt-8">
+        <button
+          type="button"
+          onClick={() => {
+            document.getElementById("vysledek")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="w-full rounded-full bg-[var(--color-primary)] py-3 font-uiSans text-base font-semibold text-white shadow-lg active:scale-[0.98] transition-transform"
+        >
+          Zobrazit výsledek
+        </button>
+      </div>
     </div>
   );
 }

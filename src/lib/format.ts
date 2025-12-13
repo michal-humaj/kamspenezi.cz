@@ -24,6 +24,23 @@ export function formatMillionsCzk(valueKc: number): string {
 }
 
 /**
+ * Format value in short form (e.g. "2,1 mil. Kč" or "800 tis. Kč")
+ * @param value - Value in Kč
+ * @returns Formatted string
+ */
+export function formatCashShort(value: number): string {
+  if (isNaN(value) || value === null || value === undefined) return "0 Kč";
+  
+  if (value >= 1_000_000) {
+    return `${formatMillionsCzk(value)} mil. Kč`;
+  } else if (value >= 1000) {
+    return `${Math.round(value / 1000)} tis. Kč`;
+  } else {
+    return `${value} Kč`;
+  }
+}
+
+/**
  * Parse a millions string back to Kč
  * @param input - Input string (e.g. "7,8" or "7.8")
  * @returns Value in Kč (e.g. 7_800_000), or null if invalid
@@ -128,4 +145,3 @@ export function sanitizeDecimalInput(value: string): string {
   
   return sanitized;
 }
-

@@ -247,7 +247,7 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
 
               {/* 4. Úroková sazba hypotéky v budoucnu */}
               <TripleInput
-                label="Úroková sazba hypotéky v budoucnu (% p.a.)"
+                label="Úroková sazba hypotéky (roky 6-30) (% p.a.)"
                 unit="%"
                 minId="sazba-min"
                 minValue={state.urokovaSazbaMin}
@@ -310,7 +310,7 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
 
               <LabeledSliderInput
                 id="sazba-expected"
-                label="Úroková sazba hypotéky v budoucnu"
+                label="Úroková sazba hypotéky (roky 6-30)"
                 description="Očekávaná úroková sazba pro refinancování"
                 value={state.urokovaSazbaExpected}
                 onChange={(v) => updateState({ urokovaSazbaExpected: v })}

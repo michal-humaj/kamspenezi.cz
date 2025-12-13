@@ -9,6 +9,12 @@ export interface LabeledSliderInputProps {
   label: string;
   /** Optional helper text displayed under the label */
   description?: string;
+  /** Optional extra content displayed below the description (e.g. computed value) */
+  extraLabel?: React.ReactNode;
+  /** Optional content displayed between the header row and the slider */
+  middleContent?: React.ReactNode;
+  /** Optional content displayed below the slider (e.g. mortgage payment) */
+  bottomContent?: React.ReactNode;
   /** Current numeric value (in base units: Kč or percentage points) */
   value: number;
   /** Callback when value changes */
@@ -37,6 +43,9 @@ export function LabeledSliderInput({
   id,
   label,
   description,
+  extraLabel,
+  middleContent,
+  bottomContent,
   value,
   onChange,
   unit = "kc",
@@ -52,6 +61,18 @@ export function LabeledSliderInput({
   // Local state for when user is actively editing the text input
   const [localValue, setLocalValue] = React.useState<string | null>(null);
   const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Slider optimization state
+  const [localSliderValue, setLocalSliderValue] = React.useState<number>(value);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const sliderDebounceTimer = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Sync local slider with prop when not dragging
+  React.useEffect(() => {
+    if (!isDragging) {
+      setLocalSliderValue(value);
+    }
+  }, [value, isDragging]);
 
   // Default formatters/parsers
   const defaultFormatter = React.useCallback((v: number) => {
@@ -76,8 +97,9 @@ export function LabeledSliderInput({
   const format = formatter || defaultFormatter;
   const parse = parser || defaultParser;
 
-  // Get display value - local if editing, otherwise formatted state
-  const displayValue = localValue !== null ? localValue : format(value);
+  // Get display value - local text if editing, otherwise formatted slider/prop value
+  const currentMetricValue = isDragging ? localSliderValue : value;
+  const displayValue = localValue !== null ? localValue : format(currentMetricValue);
 
   // Get unit label
   const unitLabel = customUnitLabel || (unit === "percent" ? "%" : "Kč");
@@ -118,6 +140,8 @@ export function LabeledSliderInput({
       if (parsed !== null) {
         const clamped = Math.max(min, Math.min(max, parsed));
         onChange(clamped);
+        // Also update slider local value
+        setLocalSliderValue(clamped);
       }
     }, 500);
   };
@@ -137,6 +161,7 @@ export function LabeledSliderInput({
     if (parsed !== null) {
       const clamped = Math.max(min, Math.min(max, parsed));
       onChange(clamped);
+      setLocalSliderValue(clamped);
     }
 
     setLocalValue(null);
@@ -154,16 +179,29 @@ export function LabeledSliderInput({
   // Handle slider change
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
-    onChange(newValue);
-    // Clear local text input state when slider is used
+    setLocalSliderValue(newValue);
+    
+    // Clear local text input state if slider is used
     setLocalValue(null);
+
+    // Debounce the parent update
+    if (sliderDebounceTimer.current) {
+      clearTimeout(sliderDebounceTimer.current);
+    }
+
+    sliderDebounceTimer.current = setTimeout(() => {
+      onChange(newValue);
+    }, 30); // 30ms debounce for smooth UI
   };
 
-  // Cleanup timer on unmount
+  // Cleanup timers on unmount
   React.useEffect(() => {
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
+      }
+      if (sliderDebounceTimer.current) {
+        clearTimeout(sliderDebounceTimer.current);
       }
     };
   }, []);
@@ -185,6 +223,7 @@ export function LabeledSliderInput({
               {description}
             </p>
           )}
+          {extraLabel}
         </div>
 
         {/* Right: Input with Unit - Self-contained flex container */}
@@ -246,6 +285,9 @@ export function LabeledSliderInput({
         </div>
       </div>
 
+      {/* Optional Middle Content (e.g. Mortgage Payment Pill) */}
+      {middleContent}
+
       {/* Slider Row (Full Width) */}
       <div className="relative">
         <input
@@ -253,17 +295,23 @@ export function LabeledSliderInput({
           min={min}
           max={max}
           step={step}
-          value={value}
+          value={localSliderValue}
           onChange={handleSliderChange}
+          onMouseDown={() => setIsDragging(true)}
+          onMouseUp={() => setIsDragging(false)}
+          onTouchStart={() => setIsDragging(true)}
+          onTouchEnd={() => setIsDragging(false)}
           aria-labelledby={id}
           className="slider-input w-full"
           style={{
             // @ts-ignore - CSS custom property
-            "--slider-progress": `${((value - min) / (max - min)) * 100}%`,
+            "--slider-progress": `${((localSliderValue - min) / (max - min)) * 100}%`,
           }}
         />
       </div>
+
+      {/* Optional Bottom Content */}
+      {bottomContent}
     </div>
   );
 }
-
