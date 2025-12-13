@@ -30,8 +30,8 @@ export function RangeBarVisualization() {
         {/* Semantic Header (Full Width) */}
         <div className="flex items-center mb-4">
           <div className="w-2 h-2 rounded-full bg-[#C98D4E] mr-2" />
-          <span className="text-xs font-bold tracking-wide text-slate-500 uppercase font-uiSans">
-            SCÉNÁŘ A: VLASTNÍ BYDLENÍ NA HYPOTÉKU
+          <span className="text-xs font-bold tracking-wide text-slate-500 font-uiSans">
+            Scénář A: Vlastní bydlení na hypotéku
           </span>
         </div>
 
@@ -88,8 +88,8 @@ export function RangeBarVisualization() {
         {/* Semantic Header (Full Width) */}
         <div className="flex items-center mb-4">
           <div className="w-2 h-2 rounded-full bg-[#7D5AE2] mr-2" />
-          <span className="text-xs font-bold tracking-wide text-slate-500 uppercase font-uiSans">
-            SCÉNÁŘ B: BYDLENÍ V NÁJMU A INVESTOVÁNÍ
+          <span className="text-xs font-bold tracking-wide text-slate-500 font-uiSans">
+            Scénář B: Bydlení v nájmu a investování
           </span>
         </div>
 

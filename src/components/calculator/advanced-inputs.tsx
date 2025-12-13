@@ -7,9 +7,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown } from "lucide-react";
 import { LabeledSliderInput } from "./labeled-slider-input";
-import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
+import type { CalculatorState } from "@/app/page";
 import {
   formatCzk,
   parseCzk,
@@ -66,21 +65,28 @@ interface AdvancedInputsProps {
 }
 
 export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
+  // Calculate LTV for summary
+  const ltv = 100 - state.vlastniZdroje;
+
   return (
     <Accordion type="single" collapsible>
       <AccordionItem
         value="advanced"
-        className="-mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-6 shadow-none transition-all md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-4 md:py-4 md:shadow-[var(--shadow-card)]"
+        className="border-t border-slate-200 transition-all"
       >
         <AccordionTrigger 
-          className="!p-0 hover:no-underline [&[data-state=open]_.chevron]:rotate-180 [&>svg]:hidden"
+          className="group py-4 text-left hover:no-underline"
         >
-          <div className="calc-collapse-header w-full">
-            <span className="calc-collapse-header-title">Rozšířené předpoklady</span>
-            <ChevronDown className="chevron h-5 w-5 shrink-0 transition-transform duration-200" />
+          <div className="flex flex-col gap-1">
+            <span className="font-uiSans font-semibold text-slate-900">
+              Další parametry
+            </span>
+            <span className="hidden text-sm font-normal text-slate-500 group-data-[state=closed]:block">
+              (LTV: {ltv} %, Fixace: 5 let)
+            </span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="space-y-6 px-4 pb-5 pt-5 md:px-0 md:pb-0 md:pt-5">
+        <AccordionContent className="space-y-6 pb-6 pt-6">
           <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
             Vše je předvyplněné realistickými hodnotami, měnit je nemusíš.
           </p>

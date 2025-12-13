@@ -22,10 +22,37 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "kamspenezi.cz",
+  title: "Kalkulačka bydlení: Spočítej si vlastní vs. nájem | kamspenezi.cz",
   description:
-    "Nezávislá kalkulačka, která porovnává vlastní bydlení na hypotéku s nájmem a investicemi do ETF.",
+    "Zadej kupní cenu bytu, hypotéku a nájem. Porovnej, kolik ti vyjde po 30 letech vlastní bydlení na hypotéku vs. nájem + investice do ETF. Transparentní výpočet s daty z Prahy, Brna, Ostravy a dalších měst.",
+  keywords: [
+    "kalkulačka hypotéky",
+    "spočítat hypotéku",
+    "nájem vs vlastní",
+    "kalkulačka bydlení Praha",
+    "kalkulačka ETF",
+    "investice vs hypotéka",
+    "koupit nebo pronajímat",
+  ],
   metadataBase: new URL("https://kamspenezi.cz"),
+  openGraph: {
+    title: "Kalkulačka bydlení: Spočítej si vlastní vs. nájem",
+    description:
+      "Zadej kupní cenu bytu, hypotéku a nájem. Porovnej, kolik ti vyjde po 30 letech.",
+    type: "website",
+    locale: "cs_CZ",
+    url: "https://kamspenezi.cz",
+    siteName: "kamspenezi.cz",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kalkulačka bydlení: Spočítej si vlastní vs. nájem",
+    description:
+      "Zadej kupní cenu bytu, hypotéku a nájem. Porovnej, kolik ti vyjde po 30 letech.",
+  },
+  alternates: {
+    canonical: "https://kamspenezi.cz",
+  },
 };
 
 export const viewport: Viewport = {

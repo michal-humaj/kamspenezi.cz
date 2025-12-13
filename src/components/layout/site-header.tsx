@@ -23,7 +23,7 @@ const CTA_CONFIG = [
   {
     match: (pathname: string) => pathname === "/",
     label: "Otevřít kalkulačku",
-    href: "/bydleni-kalkulacka",
+    href: "/",
   },
   {
     match: (pathname: string) => pathname.startsWith("/investice"),
@@ -33,7 +33,7 @@ const CTA_CONFIG = [
   {
     match: () => true,
     label: "Bydlení kalkulačka",
-    href: "/bydleni-kalkulacka",
+    href: "/",
   },
 ];
 
@@ -53,10 +53,7 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-8 text-body font-medium md:flex">
           {NAV_LINKS.map((item) => {
-            // Bydlení is active on both "/" and "/bydleni-kalkulacka"
-            const isActive = item.href === "/" 
-              ? pathname === "/" || pathname === "/bydleni-kalkulacka"
-              : pathname === item.href;
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
@@ -189,4 +186,3 @@ export function SiteHeader() {
     </header>
   );
 }
-

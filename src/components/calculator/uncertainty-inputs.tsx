@@ -7,11 +7,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { LabeledSliderInput } from "./labeled-slider-input";
 import { formatPercent, parsePercent } from "@/lib/format";
-import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
+import type { CalculatorState } from "@/app/page";
 
 interface UncertaintyInputsProps {
   state: CalculatorState;
@@ -170,28 +169,21 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
     <Accordion type="single" collapsible>
       <AccordionItem
         value="uncertainty"
-        className="-mx-4 rounded-none border-none bg-[var(--bg-base)] p-4 py-6 shadow-none transition-all md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-4 md:py-4 md:shadow-[var(--shadow-card)]"
+        className="border-t border-slate-200 transition-all"
       >
         <AccordionTrigger 
-          className="!p-0 hover:no-underline [&[data-state=open]_.chevron]:rotate-180 [&>svg]:hidden"
+          className="group py-4 text-left hover:no-underline"
         >
-          <div className="calc-collapse-header w-full">
-            <div className="flex items-center gap-3">
-              <span className="calc-collapse-header-title">Nejistota vývoje v čase</span>
-              <span 
-                className="rounded-[var(--radius-pill)] px-3 py-1 font-uiSans text-xs font-medium whitespace-nowrap"
-                style={{
-                  background: "var(--bg-lilac-section)",
-                  color: "var(--color-secondary)",
-                }}
-              >
-                Pro pokročilé
-              </span>
-            </div>
-            <ChevronDown className="chevron h-5 w-5 shrink-0 transition-transform duration-200" />
+          <div className="flex flex-col gap-1">
+            <span className="font-uiSans font-semibold text-slate-900">
+              Tržní předpoklady
+            </span>
+            <span className="hidden text-sm font-normal text-slate-500 group-data-[state=closed]:block">
+              (Sazba budoucna: {formatPercent(state.urokovaSazbaExpected)}, Růst trhu: {formatPercent(state.rustHodnotyExpected)})
+            </span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="space-y-5 px-4 pb-5 pt-4 md:px-0 md:pb-0 md:pt-4">
+        <AccordionContent className="space-y-5 pb-6 pt-6">
           <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
             {resultsMode === "realistic" 
               ? "Nastav pesimistické, očekávané a optimistické hodnoty pro nejistotu v budoucnosti."

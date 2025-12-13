@@ -9,7 +9,7 @@ export function CalculatorSchema() {
     "name": "Kalkulačka bydlení",
     "alternateName": "Hypotéka vs. Nájem kalkulačka",
     "description": "Porovnej, jestli se ti víc vyplatí koupit byt na hypotéku, nebo pronajímat a investovat do ETF. Transparentní kalkulačka s daty z českých měst.",
-    "url": "https://kamspenezi.cz/bydleni-kalkulacka",
+    "url": "https://kamspenezi.cz",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web Browser",
     "offers": {

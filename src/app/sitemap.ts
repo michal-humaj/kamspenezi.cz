@@ -11,12 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 1.0,
     },
-    {
-      url: `${baseUrl}/bydleni-kalkulacka`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
     // Add future pages here as they're created
     // {
     //   url: `${baseUrl}/investice`,
@@ -26,4 +20,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // },
   ];
 }
-

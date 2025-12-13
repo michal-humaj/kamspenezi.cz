@@ -138,7 +138,6 @@
   .calc-scenario-label {
     @apply text-xs font-uiSans text-[var(--color-secondary)];
     letter-spacing: 0.02em;
-    text-transform: uppercase;
   }
 
   /* Input styles for uncertainty-inputs triple mini inputs */

@@ -1,7 +1,7 @@
 "use client";
 
 import { LabeledSliderInput } from "./labeled-slider-input";
-import type { CalculatorState } from "@/app/bydleni-kalkulacka/page";
+import type { CalculatorState } from "@/app/page";
 import {
   formatMillionsCzk,
   parseMillionsCzk,
