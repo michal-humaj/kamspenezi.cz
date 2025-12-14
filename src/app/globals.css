@@ -117,6 +117,28 @@
     }
   }
 
+  /* Float Animation for 3D Objects */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  /* Helper delay classes */
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+  .delay-1000 {
+    animation-delay: 1000ms;
+  }
+
   /* Calculator-specific utility classes */
   .calc-section-title {
     @apply font-uiSans font-semibold text-[var(--color-primary)] text-xl md:text-2xl;

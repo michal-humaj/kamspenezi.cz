@@ -178,18 +178,20 @@ export default function Home() {
   return (
     <main className="bg-[var(--bg-base)] min-h-screen">
       <CalculatorSchema />
-      <div className="mx-auto max-w-6xl space-y-8 px-4 py-[var(--section-padding-y-mobile)] md:space-y-12 md:px-6 md:py-[var(--section-padding-y-desktop)]">
+      <div className="mx-auto max-w-5xl px-4 pt-16 pb-8 md:px-6 md:pt-24 md:pb-12">
         {/* Hero Header */}
-        <header className="space-y-3 text-center">
-          <h1 className="font-displaySerif text-3xl font-bold text-[var(--color-primary)] md:text-4xl lg:text-5xl">
+        <header className="text-center">
+          <h1 className="font-displaySerif text-5xl font-bold text-gray-900 md:text-6xl tracking-tight">
             Bydlet ve vlastním, nebo v nájmu?
           </h1>
-          <p className="mx-auto max-w-2xl font-uiSans text-base leading-relaxed text-[var(--color-secondary)] md:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl font-uiSans text-lg leading-relaxed text-gray-500 md:text-xl">
             Nájem nejsou vyhozené peníze. Zjistěte, zda se vám za 30 let vyplatí víc hypotéka, nebo chytré investování ušetřených peněz.
           </p>
         </header>
 
-        <HeroComparisonAnimation />
+        <div className="mt-12 mb-8 md:mt-16 md:mb-12">
+          <HeroComparisonAnimation />
+        </div>
 
         {/* City and Apartment Selection Section */}
         <section
@@ -236,7 +238,7 @@ export default function Home() {
         </section>
 
         {/* Desktop: Two-column layout / Mobile: Stacked */}
-        <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
+        <div className="mt-8 md:mt-12 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
           {/* Left Column: Inputs - UNIFIED CARD */}
           <div id="nastaveni" className="space-y-6">
             <section
@@ -280,12 +282,12 @@ export default function Home() {
 
         {/* Yearly Overview Section */}
         {/* Desktop: Analytical table */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block mt-12">
           <YearlyOverviewTable rows={yearlyRows} />
         </div>
 
         {/* Mobile: Accordion */}
-        <div className="block lg:hidden">
+        <div className="block lg:hidden mt-12">
           <YearlyBreakdownMobile rows={yearlyRows} />
         </div>
       </div>
