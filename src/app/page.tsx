@@ -189,7 +189,7 @@ export default function Home() {
           </p>
         </header>
 
-        <div className="mt-12 mb-8 md:mt-16 md:mb-12">
+        <div className="mt-12 mb-16 md:mt-16 md:mb-24">
           <HeroComparisonAnimation />
         </div>
 
