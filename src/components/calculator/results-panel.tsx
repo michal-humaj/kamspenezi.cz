@@ -37,7 +37,7 @@ function AnimatedNumber({ value }: { value: number }) {
   return (
     <span 
       key={value}
-      className="calc-result-value"
+      className="calc-result-value text-gray-900"
       style={{
         animation: "result-fade 1000ms ease-out",
       }}
@@ -71,7 +71,7 @@ function ScenarioBlock({
           className="h-2 w-2 shrink-0 rounded-full" 
           style={{ background: color }} 
         />
-        <h3 className="text-sm font-medium text-slate-700 font-uiSans">
+        <h3 className="text-sm font-medium text-gray-600 font-uiSans">
           {label}
         </h3>
         <button 
@@ -79,7 +79,7 @@ function ScenarioBlock({
             e.stopPropagation();
             setIsOpen(!isOpen);
           }}
-          className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-200/60 text-slate-500 transition-colors hover:bg-slate-300 hover:text-slate-700 focus:outline-none"
+          className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-gray-400 transition-colors hover:bg-gray-200 hover:text-gray-600 focus:outline-none"
           aria-label={`Info about ${label}`}
         >
           <Info className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -171,8 +171,8 @@ export function ResultsPanel({
                 tooltipContent="Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů."
               />
 
-              {/* Spacer - reduced from mb-6 to mb-5 */}
-              <div className="mb-5" />
+              {/* Spacer - drastically reduced to mb-3 */}
+              <div className="mb-3" />
 
               {/* Scenario B Block */}
               <ScenarioBlock 
@@ -207,12 +207,12 @@ export function ResultsPanel({
       <div className="pt-4 mt-auto">
         <button
           onClick={() => setIsMethodologyOpen(!isMethodologyOpen)}
-          className="group flex w-full items-center justify-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-slate-900 font-uiSans"
+          className="group flex w-full items-center justify-center gap-1.5 text-sm text-gray-400 transition-colors hover:text-gray-900 font-uiSans"
         >
-          <span className="underline decoration-slate-400 decoration-1 underline-offset-4 transition-colors group-hover:decoration-slate-900">
+          <span className="underline decoration-gray-300 decoration-1 underline-offset-4 transition-colors group-hover:decoration-gray-900">
             Metodika výpočtu
           </span>
-          <ChevronRight className="h-3.5 w-3.5 text-slate-400 transition-colors group-hover:text-slate-900" />
+          <ChevronRight className="h-3.5 w-3.5 text-gray-300 transition-colors group-hover:text-gray-900" />
         </button>
         
         {isMethodologyOpen && (

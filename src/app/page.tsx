@@ -6,6 +6,7 @@ import { ApartmentSizeCards } from "@/components/calculator/apartment-size-cards
 import { BasicInputs } from "@/components/calculator/basic-inputs";
 import { UncertaintyInputs } from "@/components/calculator/uncertainty-inputs";
 import { AdvancedInputs } from "@/components/calculator/advanced-inputs";
+import { HeroComparisonAnimation } from "@/components/calculator/hero-comparison-animation";
 import { ResultsPanel } from "@/components/calculator/results-panel";
 import { Button } from "@/components/ui/button";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
@@ -181,13 +182,14 @@ export default function Home() {
         {/* Hero Header */}
         <header className="space-y-3 text-center">
           <h1 className="font-displaySerif text-3xl font-bold text-[var(--color-primary)] md:text-4xl lg:text-5xl">
-            Bydlení kalkulačka
+            Bydlet ve vlastním, nebo v nájmu?
           </h1>
           <p className="mx-auto max-w-2xl font-uiSans text-base leading-relaxed text-[var(--color-secondary)] md:text-lg">
-            Porovnej, jestli se ti víc vyplatí koupit byt na hypotéku, nebo pronajímat a investovat do ETF. 
-            Stačí vybrat město a velikost bytu.
+            Nájem nejsou vyhozené peníze. Zjistěte, zda se vám za 30 let vyplatí víc hypotéka, nebo chytré investování ušetřených peněz.
           </p>
         </header>
+
+        <HeroComparisonAnimation />
 
         {/* City and Apartment Selection Section */}
         <section
@@ -235,27 +237,33 @@ export default function Home() {
 
         {/* Desktop: Two-column layout / Mobile: Stacked */}
         <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
-          {/* Left Column: Inputs */}
+          {/* Left Column: Inputs - UNIFIED CARD */}
           <div id="nastaveni" className="space-y-6">
-            {/* Basic Inputs */}
             <section
-              className="space-y-6 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-6 md:shadow-[var(--shadow-card)]"
+              className="space-y-0 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] shadow-none md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)]"
             >
-              <h2 className="calc-section-title">
-                Základní nastavení
-              </h2>
-              <BasicInputs 
-                state={state} 
-                updateState={updateState} 
-                animatingFields={animatingFields}
-              />
+              {/* Basic Inputs Header + Content */}
+              <div className="p-4 py-8 md:p-6 md:py-6 space-y-6">
+                <h2 className="calc-section-title">
+                  Základní nastavení
+                </h2>
+                <BasicInputs 
+                  state={state} 
+                  updateState={updateState} 
+                  animatingFields={animatingFields}
+                />
+              </div>
+
+              {/* Divider */}
+              <div className="border-t border-gray-100" />
+
+              {/* Unified Advanced Footer (Naked Accordions) */}
+              <div className="px-4 md:px-6 bg-[var(--bg-lilac-section)] md:bg-[var(--bg-card)]">
+                <UncertaintyInputs state={state} updateState={updateState} resultsMode={resultsMode} />
+                <div className="border-t border-gray-50 md:border-none" />
+                <AdvancedInputs state={state} updateState={updateState} />
+              </div>
             </section>
-
-            {/* Uncertainty Inputs (Advanced, Collapsed) */}
-            <UncertaintyInputs state={state} updateState={updateState} resultsMode={resultsMode} />
-
-            {/* Advanced Inputs (Collapsed) */}
-            <AdvancedInputs state={state} updateState={updateState} />
           </div>
 
           {/* Right Column: Results (Sticky on Desktop, Below on Mobile) */}

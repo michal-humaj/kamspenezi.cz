@@ -169,7 +169,7 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
     <Accordion type="single" collapsible>
       <AccordionItem
         value="uncertainty"
-        className="border-t border-slate-200 transition-all"
+        className="border-none transition-all"
       >
         <AccordionTrigger 
           className="group py-4 text-left hover:no-underline"
