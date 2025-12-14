@@ -16,7 +16,7 @@ export function HeroComparisonAnimation() {
             alt="Vlastní bydlení 3D" 
             width={300} 
             height={300}
-            className="h-full w-full object-contain drop-shadow-2xl mix-blend-multiply"
+            className="h-full w-full object-contain drop-shadow-2xl"
             priority
           />
         </div>
@@ -43,7 +43,7 @@ export function HeroComparisonAnimation() {
             alt="Investování 3D" 
             width={300} 
             height={300}
-            className="h-full w-full object-contain drop-shadow-2xl mix-blend-multiply"
+            className="h-full w-full object-contain drop-shadow-2xl"
             priority
           />
         </div>
