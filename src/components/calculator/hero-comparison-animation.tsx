@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 export function HeroComparisonAnimation() {
   return (
@@ -8,10 +9,16 @@ export function HeroComparisonAnimation() {
       
       {/* Scenario A (Left) */}
       <div className="flex flex-col items-center">
-        {/* Floating 3D Object Placeholder */}
-        <div className="h-48 w-48 rounded-3xl bg-orange-100 shadow-xl animate-float md:h-64 md:w-64 relative overflow-hidden flex items-center justify-center">
-          {/* <img src="/assets/3d-house.png" alt="House 3D" className="w-full h-full object-contain" /> */}
-          <span className="text-orange-300 font-bold opacity-30 text-xl">3D House</span>
+        {/* Floating 3D Object */}
+        <div className="relative h-48 w-48 animate-float md:h-64 md:w-64">
+          <Image 
+            src="/house.png" 
+            alt="Vlastní bydlení 3D" 
+            width={300} 
+            height={300}
+            className="h-full w-full object-contain drop-shadow-2xl"
+            priority
+          />
         </div>
         
         {/* Label */}
@@ -29,10 +36,16 @@ export function HeroComparisonAnimation() {
 
       {/* Scenario B (Right) */}
       <div className="flex flex-col items-center">
-        {/* Floating 3D Object Placeholder */}
-        <div className="h-48 w-48 rounded-3xl bg-purple-100 shadow-xl animate-float delay-1000 md:h-64 md:w-64 relative overflow-hidden flex items-center justify-center">
-          {/* <img src="/assets/3d-chart.png" alt="Investment 3D" className="w-full h-full object-contain" /> */}
-          <span className="text-purple-300 font-bold opacity-30 text-xl">3D Coins</span>
+        {/* Floating 3D Object */}
+        <div className="relative h-48 w-48 animate-float delay-1000 md:h-64 md:w-64">
+          <Image 
+            src="/chart.png" 
+            alt="Investování 3D" 
+            width={300} 
+            height={300}
+            className="h-full w-full object-contain drop-shadow-2xl"
+            priority
+          />
         </div>
         
         {/* Label */}
