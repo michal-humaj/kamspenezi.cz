@@ -37,7 +37,6 @@ function AnimatedNumber({ value }: { value: number }) {
   return (
     <span 
       key={value}
-      className="calc-result-value text-gray-900"
       style={{
         animation: "result-fade 1000ms ease-out",
       }}
@@ -54,35 +53,34 @@ function ScenarioBlock({
   color,
   percentage,
   tooltipContent,
+  assetLabel,
 }: {
   label: string;
   value: number;
   color: string;
   percentage: number;
   tooltipContent: string;
+  assetLabel: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="space-y-2">
-      {/* Header Row */}
+      {/* Header Row - Entire row is clickable */}
       <div className="flex items-center gap-2 relative">
         <div 
           className="h-2 w-2 shrink-0 rounded-full" 
           style={{ background: color }} 
         />
-        <h3 className="text-sm font-medium text-gray-600 font-uiSans">
-          {label}
-        </h3>
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsOpen(!isOpen);
-          }}
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-gray-400 transition-colors hover:bg-gray-200 hover:text-gray-600 focus:outline-none"
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-2 cursor-pointer transition-colors focus:outline-none group"
           aria-label={`Info about ${label}`}
         >
-          <Info className="w-3.5 h-3.5 stroke-[2.5]" />
+          <h3 className="font-uiSans text-base font-semibold text-[var(--color-primary)] group-hover:text-gray-700">
+            {label}
+          </h3>
+          <Info className="w-5 h-5 stroke-[2px] text-[var(--color-secondary)] group-hover:text-[var(--color-primary)] transition-colors" />
         </button>
         
         {/* Tooltip Popover */}
@@ -92,20 +90,29 @@ function ScenarioBlock({
               className="fixed inset-0 z-10" 
               onClick={() => setIsOpen(false)} 
             />
-            <div className="absolute left-0 top-full mt-2 w-64 z-20 rounded-xl border border-slate-100 bg-white p-3 shadow-lg text-xs text-slate-600 leading-relaxed animate-in fade-in zoom-in-95 duration-200">
+            <div className="absolute left-0 top-full mt-2 w-64 z-20 rounded-xl border border-slate-100 bg-white p-4 shadow-lg text-sm text-slate-700 leading-relaxed animate-in fade-in zoom-in-95 duration-200">
               {tooltipContent}
             </div>
           </>
         )}
       </div>
 
-      {/* Number */}
-      <div className="pl-0">
-        <AnimatedNumber value={Math.round(value)} />
+      {/* Big Number */}
+      <div className="pl-0 mb-1.5">
+        <div className="font-displaySerif text-3xl font-semibold leading-none text-[var(--color-primary)]">
+          <AnimatedNumber value={Math.round(value)} />
+        </div>
+      </div>
+
+      {/* Asset Source Sub-Label */}
+      <div className="pl-0 mb-3">
+        <p className="font-uiSans text-[13px] font-medium text-[var(--color-secondary)]">
+          {assetLabel}
+        </p>
       </div>
 
       {/* Visual Bar (Unified) */}
-      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100 mt-1">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
         <div
           className="h-full rounded-full transition-all duration-1000 ease-out"
           style={{ 
@@ -149,8 +156,8 @@ export function ResultsPanel({
     >
       {/* Header Section */}
       <div className="space-y-2">
-        <h2 className="calc-section-title text-xl md:text-2xl">
-          Porovnání čistého jmění za 30 let
+        <h2 className="calc-section-title text-xl text-balance md:text-2xl">
+          Porovnání čistého jmění za 30&nbsp;let
         </h2>
         <p className="font-uiSans text-sm leading-relaxed text-slate-500">
           Porovnání vašeho předpokládaného majetku (po odečtení dluhů) ve dvou životních situacích.
@@ -169,10 +176,11 @@ export function ResultsPanel({
                 color="var(--scenario-a-dot)"
                 percentage={percentageA}
                 tooltipContent="Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů."
+                assetLabel="Hodnota nemovitosti"
               />
 
-              {/* Spacer - drastically reduced to mb-3 */}
-              <div className="mb-3" />
+              {/* Spacer - 24px gap between blocks */}
+              <div className="my-6" />
 
               {/* Scenario B Block */}
               <ScenarioBlock 
@@ -181,6 +189,7 @@ export function ResultsPanel({
                 color="var(--scenario-b-dot)"
                 percentage={percentageB}
                 tooltipContent="Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio."
+                assetLabel="Hodnota investičního portfolia"
               />
             </div>
           )}
@@ -205,15 +214,15 @@ export function ResultsPanel({
 
       {/* Methodology Footer */}
       <div className="pt-4 mt-auto">
-        <button
-          onClick={() => setIsMethodologyOpen(!isMethodologyOpen)}
-          className="group flex w-full items-center justify-center gap-1.5 text-sm text-gray-400 transition-colors hover:text-gray-900 font-uiSans"
-        >
-          <span className="underline decoration-gray-300 decoration-1 underline-offset-4 transition-colors group-hover:decoration-gray-900">
-            Metodika výpočtu
-          </span>
-          <ChevronRight className="h-3.5 w-3.5 text-gray-300 transition-colors group-hover:text-gray-900" />
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={() => setIsMethodologyOpen(!isMethodologyOpen)}
+            className="group inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-4 py-1.5 font-uiSans text-xs font-medium text-[var(--color-secondary)] transition-colors hover:bg-gray-100"
+          >
+            <span>Metodika výpočtu</span>
+            <ChevronRight className="h-3 w-3 text-gray-400 transition-colors group-hover:text-gray-600" />
+          </button>
+        </div>
         
         {isMethodologyOpen && (
           <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50 p-4 text-xs text-slate-500 space-y-3 leading-relaxed animate-in fade-in slide-in-from-top-1 duration-200">

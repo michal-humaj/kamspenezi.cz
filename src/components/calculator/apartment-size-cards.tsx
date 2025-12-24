@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef, useEffect } from "react";
+
 interface ApartmentSizeCardsProps {
   selectedCity: string | null;
   selectedSize: string | null;
@@ -58,6 +60,28 @@ export function ApartmentSizeCards({
     ? APARTMENT_DATA[selectedCity] || APARTMENT_DATA.Default
     : APARTMENT_DATA.Default;
 
+  // Refs for scroll container and individual cards
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  // Scroll selected card to the left when selection changes
+  useEffect(() => {
+    if (selectedSize && cardRefs.current[selectedSize] && scrollContainerRef.current) {
+      const selectedCard = cardRefs.current[selectedSize];
+      if (selectedCard) {
+        selectedCard.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "start", // Align to the left
+        });
+      }
+    }
+  }, [selectedSize]);
+
+  const handleSelect = (size: string, kupniCena: number, najemne: number) => {
+    onSizeSelect(size, kupniCena, najemne);
+  };
+
   return (
     <div>
       {/* Desktop: Grid layout */}
@@ -68,7 +92,7 @@ export function ApartmentSizeCards({
           return (
             <button
               key={size}
-              onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
+              onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
               className="group rounded-[var(--radius-card)] p-5 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 border: isSelected
@@ -110,6 +134,7 @@ export function ApartmentSizeCards({
 
       {/* Mobile: Horizontal scrollable - cuts off at screen edges */}
       <div 
+        ref={scrollContainerRef}
         className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:hidden" 
         style={{ 
           scrollSnapType: "x mandatory",
@@ -125,7 +150,10 @@ export function ApartmentSizeCards({
           return (
             <button
               key={size}
-              onClick={() => onSizeSelect(size, data.kupniCena, data.najemne)}
+              ref={(el) => {
+                cardRefs.current[size] = el;
+              }}
+              onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
               className="min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 border: isSelected
