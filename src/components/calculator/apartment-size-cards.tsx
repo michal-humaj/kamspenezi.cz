@@ -44,11 +44,14 @@ const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne
 
 const SIZES = ["1+kk", "2+kk", "3+kk", "4+kk"];
 
-// Simplified formatting: "7,8 mil · 24 tis / měsíc"
-function formatCardText(price: number, rent: number): string {
-  const priceInMil = (price / 1000000).toFixed(1).replace(".", ",");
+// Simplified formatting with separated price and rent
+function formatCardPrice(price: number): string {
+  return (price / 1000000).toFixed(1).replace(".", ",") + " mil";
+}
+
+function formatCardRent(rent: number): string {
   const rentInTis = Math.round(rent / 1000);
-  return `${priceInMil} mil · ${rentInTis} tis / měsíc`;
+  return `${rentInTis} tis / měsíc`;
 }
 
 export function ApartmentSizeCards({
@@ -85,7 +88,7 @@ export function ApartmentSizeCards({
   return (
     <div>
       {/* Desktop: Grid layout */}
-      <div className="hidden gap-4 md:grid md:grid-cols-4">
+      <div className="hidden md:grid md:grid-cols-4 gap-4">
         {SIZES.map((size) => {
           const data = cityData[size];
           const isSelected = selectedSize === size;
@@ -98,8 +101,10 @@ export function ApartmentSizeCards({
                 border: isSelected
                   ? "2px solid var(--selection-border)"
                   : "2px solid var(--color-border)",
-                background: isSelected ? "var(--selection-bg)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--selection-shadow), var(--selection-shadow-inner)" : "var(--shadow-card)",
+                background: "#FFFFFF",
+                boxShadow: isSelected 
+                  ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
+                  : "0 8px 30px rgba(0, 0, 0, 0.04)",
                 transform: "scale(1)",
               }}
               onMouseEnter={(e) => {
@@ -111,9 +116,9 @@ export function ApartmentSizeCards({
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "var(--bg-card)";
+                  e.currentTarget.style.background = "#FFFFFF";
                   e.currentTarget.style.borderColor = "var(--color-border)";
-                  e.currentTarget.style.boxShadow = "var(--shadow-card)";
+                  e.currentTarget.style.boxShadow = "0 8px 30px rgba(0, 0, 0, 0.04)";
                 }
               }}
             >
@@ -122,9 +127,15 @@ export function ApartmentSizeCards({
                 <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                {/* Line 2: Price and rent merged */}
-                <div className="font-uiSans text-sm text-[var(--color-secondary)]">
-                  {formatCardText(data.kupniCena, data.najemne)}
+                {/* Line 2: Price (prominent) · Rent (muted) */}
+                <div className="font-uiSans text-sm">
+                  <span className="font-medium text-[var(--color-primary)]">
+                    {formatCardPrice(data.kupniCena)}
+                  </span>
+                  <span className="mx-1.5 text-gray-300">·</span>
+                  <span className="text-[var(--color-secondary)]">
+                    {formatCardRent(data.najemne)}
+                  </span>
                 </div>
               </div>
             </button>
@@ -135,11 +146,10 @@ export function ApartmentSizeCards({
       {/* Mobile: Horizontal scrollable - cuts off at screen edges */}
       <div 
         ref={scrollContainerRef}
-        className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:hidden" 
+        className="-mx-4 flex gap-4 overflow-x-auto px-6 pb-4 snap-x snap-mandatory md:hidden" 
         style={{ 
-          scrollSnapType: "x mandatory",
-          scrollPaddingLeft: "16px",
-          scrollPaddingRight: "16px",
+          scrollPaddingLeft: "24px",
+          scrollPaddingRight: "24px",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
         }}
@@ -154,14 +164,15 @@ export function ApartmentSizeCards({
                 cardRefs.current[size] = el;
               }}
               onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
-              className="min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
+              className="min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left transition-all snap-center focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 border: isSelected
                   ? "2px solid var(--selection-border)"
                   : "2px solid var(--color-border)",
-                background: isSelected ? "var(--selection-bg)" : "var(--bg-card)",
-                boxShadow: isSelected ? "var(--selection-shadow), var(--selection-shadow-inner)" : "var(--shadow-card)",
-                scrollSnapAlign: "start",
+                background: "#FFFFFF",
+                boxShadow: isSelected 
+                  ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
+                  : "0 8px 30px rgba(0, 0, 0, 0.04)",
                 transform: "scale(1)",
               }}
             >
@@ -170,9 +181,15 @@ export function ApartmentSizeCards({
                 <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                {/* Line 2: Price and rent merged */}
-                <div className="font-uiSans text-sm text-[var(--color-secondary)]">
-                  {formatCardText(data.kupniCena, data.najemne)}
+                {/* Line 2: Price (prominent) · Rent (muted) */}
+                <div className="font-uiSans text-sm">
+                  <span className="font-medium text-[var(--color-primary)]">
+                    {formatCardPrice(data.kupniCena)}
+                  </span>
+                  <span className="mx-1.5 text-gray-300">·</span>
+                  <span className="text-[var(--color-secondary)]">
+                    {formatCardRent(data.najemne)}
+                  </span>
                 </div>
               </div>
             </button>

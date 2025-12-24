@@ -22,18 +22,18 @@ const PURCHASE_PRICE_RANGE = {
 const OWN_FUNDS_RANGE = {
   min: 0,
   max: 100,
-  step: 1,
+  step: 5,
 } as const;
 
 const INTEREST_RATE_RANGE = {
-  min: 0,
-  max: 10,
+  min: 1,
+  max: 9,
   step: 0.1,
 } as const;
 
 const RENT_RANGE = {
-  min: 0,
-  max: 100_000,
+  min: 3_000,
+  max: 90_000,
   step: 1_000,
 } as const;
 
@@ -96,12 +96,10 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       <LabeledSliderInput
         id="vlastni-zdroje"
         label="Vlastní zdroje"
-        middleContent={
-          <div className="mt-1 mb-2 text-right">
-            <span className="text-xs font-medium text-slate-500 block">
-              Hotovost: {formatCashShort(downPaymentCzk)}
-            </span>
-          </div>
+        extraLabel={
+          <span className="mt-1 font-uiSans text-[13px] font-medium tabular-nums text-gray-600">
+            Hotovost: {formatCashShort(downPaymentCzk)}
+          </span>
         }
         value={state.vlastniZdroje}
         onChange={(value) => updateState({ vlastniZdroje: value })}
@@ -117,13 +115,12 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       {/* 3. Úroková sazba hypotéky */}
       <LabeledSliderInput
         id="urokova-sazba"
-        label="Úroková sazba hypotéky (roky 1-5)"
-        middleContent={
-          <div className="mt-1 mb-2 text-right">
-            <span className="text-xs font-medium text-slate-500 block">
-              Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
-            </span>
-          </div>
+        label="Úroková sazba hypotéky"
+        description="Během prvních 5 let fixace"
+        extraLabel={
+          <span className="mt-1 font-uiSans text-[13px] font-medium tabular-nums text-gray-600">
+            Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
+          </span>
         }
         value={state.urokovaSazba}
         onChange={(value) => updateState({ urokovaSazba: value })}

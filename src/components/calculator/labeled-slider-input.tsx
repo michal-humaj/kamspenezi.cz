@@ -259,7 +259,7 @@ export function LabeledSliderInput({
                 if (wrapper) {
                   wrapper.style.borderColor = "var(--color-primary)";
                   wrapper.style.boxShadow =
-                    "0 0 0 1px rgba(15, 23, 42, 0.04), 0 8px 20px rgba(15, 23, 42, 0.06)";
+                    "0 0 0 4px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.04), 0 8px 20px rgba(15, 23, 42, 0.08)";
                 }
               }}
               onBlur={(e) => {
@@ -276,7 +276,7 @@ export function LabeledSliderInput({
               }}
             />
             <span
-              className="ml-2 whitespace-nowrap font-uiSans text-sm text-[var(--color-secondary)]"
+              className="ml-3 whitespace-nowrap font-uiSans text-sm text-[var(--color-secondary)]"
               aria-hidden="true"
             >
               {unitLabel}
@@ -289,7 +289,7 @@ export function LabeledSliderInput({
       {middleContent}
 
       {/* Slider Row (Full Width) */}
-      <div className="relative">
+      <div className="relative mt-3">
         <input
           type="range"
           min={min}

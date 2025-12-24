@@ -224,10 +224,11 @@ export default function Home() {
             {canViewResults && (
               <Button
                 onClick={scrollToResults}
-                className="w-full rounded-[var(--radius-pill)] px-6 py-3 font-uiSans text-base font-semibold focus:outline-none"
+                className="w-full rounded-[var(--radius-pill)] border px-6 py-3 font-uiSans text-base font-medium transition-all duration-75 hover:bg-gray-50 active:scale-[0.98] active:bg-gray-100 focus:outline-none"
                 style={{
-                  background: "var(--color-primary)",
-                  color: "#FFFFFF",
+                  background: "#FFFFFF",
+                  color: "var(--color-primary)",
+                  borderColor: "var(--color-border)",
                   boxShadow: "var(--shadow-card)",
                 }}
               >
@@ -246,7 +247,7 @@ export default function Home() {
             >
               {/* Basic Inputs Header + Content */}
               <div className="p-4 py-8 md:p-6 md:py-6 space-y-6">
-                <h2 className="calc-section-title">
+                <h2 className="font-uiSans text-xl font-semibold text-[var(--color-primary)] md:text-2xl">
                   Základní nastavení
                 </h2>
                 <BasicInputs 

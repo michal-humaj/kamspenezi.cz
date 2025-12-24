@@ -60,21 +60,21 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
               onClick={() => onCitySelect(city.name)}
               className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
-                background: isSelected ? "var(--color-primary)" : "var(--bg-card)",
+                background: isSelected ? "var(--color-primary)" : "#FFFFFF",
                 color: isSelected ? "var(--color-on-primary)" : "var(--color-primary)",
-                border: `1px solid ${isSelected ? "var(--color-primary)" : "var(--color-border)"}`,
-                boxShadow: isSelected ? "var(--shadow-card)" : "none",
+                border: `1px solid ${isSelected ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
+                boxShadow: isSelected ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" : "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "var(--bg-hover-strong)";
-                  e.currentTarget.style.borderColor = "var(--color-border-hover)";
+                  e.currentTarget.style.background = "rgb(249, 250, 251)";
+                  e.currentTarget.style.borderColor = "rgb(209, 213, 219)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.background = "var(--bg-card)";
-                  e.currentTarget.style.borderColor = "var(--color-border)";
+                  e.currentTarget.style.background = "#FFFFFF";
+                  e.currentTarget.style.borderColor = "rgb(229, 231, 235)";
                 }
               }}
             >
@@ -88,21 +88,21 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
           onClick={() => setShowAllCities(!showAllCities)}
           className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0 inline-flex items-center gap-1.5"
           style={{
-            background: showSelectedInMoreCities ? "var(--color-primary)" : "var(--bg-card)",
+            background: showSelectedInMoreCities ? "var(--color-primary)" : "#FFFFFF",
             color: showSelectedInMoreCities ? "var(--color-on-primary)" : "var(--color-primary)",
-            border: `1px solid ${showSelectedInMoreCities ? "var(--color-primary)" : "var(--color-border)"}`,
-            boxShadow: showSelectedInMoreCities ? "var(--shadow-card)" : "none",
+            border: `1px solid ${showSelectedInMoreCities ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
+            boxShadow: showSelectedInMoreCities ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" : "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
           }}
           onMouseEnter={(e) => {
             if (!showSelectedInMoreCities) {
-              e.currentTarget.style.background = "var(--bg-hover-strong)";
-              e.currentTarget.style.borderColor = "var(--color-border-hover)";
+              e.currentTarget.style.background = "rgb(249, 250, 251)";
+              e.currentTarget.style.borderColor = "rgb(209, 213, 219)";
             }
           }}
           onMouseLeave={(e) => {
             if (!showSelectedInMoreCities) {
-              e.currentTarget.style.background = "var(--bg-card)";
-              e.currentTarget.style.borderColor = "var(--color-border)";
+              e.currentTarget.style.background = "#FFFFFF";
+              e.currentTarget.style.borderColor = "rgb(229, 231, 235)";
             }
           }}
         >
@@ -134,7 +134,12 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             onChange={(e) => setSearchQuery(e.target.value)}
             className="font-uiSans"
           />
-          <div className="max-h-64 space-y-1 overflow-y-auto">
+          <div className="max-h-64 space-y-1 overflow-y-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            <style jsx>{`
+              div::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
             {filteredCities.map((city) => {
               const isSelected = selectedCity === city.name;
               return (
@@ -145,7 +150,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                     setShowAllCities(false);
                     setSearchQuery("");
                   }}
-                  className="block w-full rounded-md px-3 py-2 text-left font-uiSans text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
+                  className="block w-full rounded-md px-4 py-3.5 text-left font-uiSans text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0 active:bg-gray-50"
                   style={{
                     background: isSelected ? "var(--bg-lilac-section)" : "transparent",
                     color: "var(--color-primary)",
@@ -161,10 +166,10 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                     }
                   }}
                 >
-                  <div className="flex items-baseline justify-between">
-                    <span className="font-medium">{city.name}</span>
-                    <span className="text-xs text-[var(--color-secondary)]">
-                      od {(city.medianPrice / 1000000).toFixed(1)} mil. Kč
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-medium text-[var(--color-primary)]">{city.name}</span>
+                    <span className="text-xs text-[var(--color-secondary)] tabular-nums">
+                      {(city.medianPrice / 1000000).toFixed(1)} mil. Kč
                     </span>
                   </div>
                 </button>

@@ -78,7 +78,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           className="group py-4 text-left hover:no-underline"
         >
           <div className="flex flex-col gap-1">
-            <span className="font-uiSans font-semibold text-slate-900">
+            <span className="font-uiSans text-xl font-semibold text-slate-900 md:text-2xl">
               Další parametry
             </span>
             <span className="hidden text-sm font-normal text-slate-500 group-data-[state=closed]:block">
