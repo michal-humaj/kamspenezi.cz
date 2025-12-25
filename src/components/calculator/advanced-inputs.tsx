@@ -72,21 +72,21 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
     <Accordion type="single" collapsible>
       <AccordionItem
         value="advanced"
-        className="border-none transition-all"
+        className="border-t border-gray-100 pt-6 mt-4 transition-all"
       >
         <AccordionTrigger 
-          className="group py-4 text-left hover:no-underline"
+          className="group flex items-center justify-between py-3 hover:no-underline transition-colors outline-none focus:outline-none focus:text-[var(--color-primary)]"
         >
           <div className="flex flex-col gap-1">
-            <span className="font-uiSans text-xl font-semibold text-slate-900 md:text-2xl">
+            <span className="text-lg font-semibold text-kp-text-main group-hover:text-[var(--color-primary)]">
               Další parametry
             </span>
-            <span className="hidden text-sm font-normal text-slate-500 group-data-[state=closed]:block">
+            <span className="text-sm text-gray-500 font-normal mt-0.5 group-data-[state=closed]:block group-data-[state=open]:hidden">
               (LTV: {ltv} %, Fixace: 5 let)
             </span>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="space-y-6 pb-6 pt-6">
+        <AccordionContent className="space-y-6 pb-6 pt-4">
           <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
             Vše je předvyplněné realistickými hodnotami, měnit je nemusíš.
           </p>

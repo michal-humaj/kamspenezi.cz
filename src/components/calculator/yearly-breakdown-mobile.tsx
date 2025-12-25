@@ -40,7 +40,7 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
     <div className="space-y-4">
       {/* Section header */}
       <div className="space-y-1.5">
-        <h2 className="calc-section-title text-xl">
+        <h2 className="section-title">
           Vývoj v čase (podrobný přehled)
         </h2>
         <p className="max-w-[560px] font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">

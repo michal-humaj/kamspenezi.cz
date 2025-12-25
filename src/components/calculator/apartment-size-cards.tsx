@@ -44,14 +44,21 @@ const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne
 
 const SIZES = ["1+kk", "2+kk", "3+kk", "4+kk"];
 
-// Simplified formatting with separated price and rent
+// Area data for each apartment size
+const APARTMENT_AREAS: Record<string, string> = {
+  "1+kk": "32 m²",
+  "2+kk": "54 m²",
+  "3+kk": "76 m²",
+  "4+kk": "98 m²",
+};
+
+// Simplified formatting with separated price and area
 function formatCardPrice(price: number): string {
   return (price / 1000000).toFixed(1).replace(".", ",") + " mil";
 }
 
-function formatCardRent(rent: number): string {
-  const rentInTis = Math.round(rent / 1000);
-  return `${rentInTis} tis / měsíc`;
+function formatCardArea(size: string): string {
+  return APARTMENT_AREAS[size] || "—";
 }
 
 export function ApartmentSizeCards({
@@ -96,29 +103,24 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
-              className="group rounded-[var(--radius-card)] p-5 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
+              className={`group rounded-[var(--radius-card)] p-5 text-left bg-white transition-all duration-200 ease-out focus:outline-none border-2 ${
+                isSelected 
+                  ? "border-[#0F172A] relative z-10" 
+                  : "border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md hover:-translate-y-0.5"
+              }`}
               style={{
-                border: isSelected
-                  ? "2px solid var(--selection-border)"
-                  : "2px solid var(--color-border)",
-                background: "#FFFFFF",
                 boxShadow: isSelected 
-                  ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
-                  : "0 8px 30px rgba(0, 0, 0, 0.04)",
-                transform: "scale(1)",
+                  ? "0 12px 24px -6px rgba(15, 23, 42, 0.15)" 
+                  : undefined,
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "var(--bg-hover)";
-                  e.currentTarget.style.borderColor = "var(--color-border-hover)";
-                  e.currentTarget.style.boxShadow = "var(--shadow-card-hover)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "#FFFFFF";
-                  e.currentTarget.style.borderColor = "var(--color-border)";
-                  e.currentTarget.style.boxShadow = "0 8px 30px rgba(0, 0, 0, 0.04)";
                 }
               }}
             >
@@ -127,14 +129,14 @@ export function ApartmentSizeCards({
                 <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                {/* Line 2: Price (prominent) · Rent (muted) */}
+                {/* Line 2: Price (prominent) · Area (muted) */}
                 <div className="font-uiSans text-sm">
-                  <span className="font-medium text-[var(--color-primary)]">
+                  <span className="font-medium text-kp-text-main">
                     {formatCardPrice(data.kupniCena)}
                   </span>
                   <span className="mx-1.5 text-gray-300">·</span>
-                  <span className="text-[var(--color-secondary)]">
-                    {formatCardRent(data.najemne)}
+                  <span className="font-normal text-kp-text-muted">
+                    {formatCardArea(size)}
                   </span>
                 </div>
               </div>
@@ -146,10 +148,11 @@ export function ApartmentSizeCards({
       {/* Mobile: Horizontal scrollable - cuts off at screen edges */}
       <div 
         ref={scrollContainerRef}
-        className="-mx-4 flex gap-4 overflow-x-auto px-6 pb-4 snap-x snap-mandatory md:hidden" 
+        className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-0 md:hidden" 
         style={{ 
-          scrollPaddingLeft: "24px",
-          scrollPaddingRight: "24px",
+          scrollSnapType: "x mandatory",
+          scrollPaddingLeft: "16px",
+          scrollPaddingRight: "16px",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
         }}
@@ -164,16 +167,16 @@ export function ApartmentSizeCards({
                 cardRefs.current[size] = el;
               }}
               onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
-              className="min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left transition-all snap-center focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
+              className={`min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left bg-white transition-all duration-200 ease-out focus:outline-none border-2 ${
+                isSelected 
+                  ? "border-[#0F172A] relative z-10" 
+                  : "border-gray-200 shadow-sm"
+              }`}
               style={{
-                border: isSelected
-                  ? "2px solid var(--selection-border)"
-                  : "2px solid var(--color-border)",
-                background: "#FFFFFF",
                 boxShadow: isSelected 
-                  ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" 
-                  : "0 8px 30px rgba(0, 0, 0, 0.04)",
-                transform: "scale(1)",
+                  ? "0 12px 24px -6px rgba(15, 23, 42, 0.15)" 
+                  : undefined,
+                scrollSnapAlign: "start",
               }}
             >
               <div className="space-y-2">
@@ -181,14 +184,14 @@ export function ApartmentSizeCards({
                 <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
-                {/* Line 2: Price (prominent) · Rent (muted) */}
+                {/* Line 2: Price (prominent) · Area (muted) */}
                 <div className="font-uiSans text-sm">
-                  <span className="font-medium text-[var(--color-primary)]">
+                  <span className="font-medium text-kp-text-main">
                     {formatCardPrice(data.kupniCena)}
                   </span>
                   <span className="mx-1.5 text-gray-300">·</span>
-                  <span className="text-[var(--color-secondary)]">
-                    {formatCardRent(data.najemne)}
+                  <span className="font-normal text-kp-text-muted">
+                    {formatCardArea(size)}
                   </span>
                 </div>
               </div>

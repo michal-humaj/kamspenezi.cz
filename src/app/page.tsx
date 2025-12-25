@@ -195,10 +195,10 @@ export default function Home() {
 
         {/* City and Apartment Selection Section */}
         <section
-          className="space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
+          className="space-y-6 md:space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
         >
           <div className="space-y-2 px-4 md:px-0">
-            <h2 className="calc-section-title">
+            <h2 className="section-title">
               Začni městem a velikostí bytu
             </h2>
             <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)] md:text-base">
@@ -213,28 +213,30 @@ export default function Home() {
             />
           </div>
 
-          <ApartmentSizeCards
-            selectedCity={state.selectedCity}
-            selectedSize={state.selectedApartmentSize}
-            onSizeSelect={handleApartmentSelect}
-          />
+          <div className="space-y-4">
+            <ApartmentSizeCards
+              selectedCity={state.selectedCity}
+              selectedSize={state.selectedApartmentSize}
+              onSizeSelect={handleApartmentSelect}
+            />
 
-          {/* Mobile: Show results button after selection */}
-          <div className="px-4 md:hidden">
-            {canViewResults && (
-              <Button
-                onClick={scrollToResults}
-                className="w-full rounded-[var(--radius-pill)] border px-6 py-3 font-uiSans text-base font-medium transition-all duration-75 hover:bg-gray-50 active:scale-[0.98] active:bg-gray-100 focus:outline-none"
-                style={{
-                  background: "#FFFFFF",
-                  color: "var(--color-primary)",
-                  borderColor: "var(--color-border)",
-                  boxShadow: "var(--shadow-card)",
-                }}
-              >
-                Zobrazit výsledek
-              </Button>
-            )}
+            {/* Mobile: Show results button after selection */}
+            <div className="px-4 md:hidden">
+              {canViewResults && (
+                <Button
+                  onClick={scrollToResults}
+                  className="w-full rounded-[var(--radius-pill)] border px-6 py-3 font-uiSans text-base font-medium transition-all duration-75 hover:bg-gray-50 active:scale-[0.98] active:bg-gray-100 focus:outline-none"
+                  style={{
+                    background: "#FFFFFF",
+                    color: "var(--color-primary)",
+                    borderColor: "var(--color-border)",
+                    boxShadow: "var(--shadow-card)",
+                  }}
+                >
+                  Zobrazit výsledek
+                </Button>
+              )}
+            </div>
           </div>
         </section>
 
@@ -243,11 +245,11 @@ export default function Home() {
           {/* Left Column: Inputs - UNIFIED CARD */}
           <div id="nastaveni" className="space-y-6">
             <section
-              className="space-y-0 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] shadow-none md:mx-0 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)]"
+              className="space-y-0 -mx-4 mb-0 rounded-none rounded-b-none border-none bg-[var(--bg-lilac-section)] shadow-none md:mb-0 md:mx-0 md:rounded-[var(--radius-card)] md:rounded-b-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)] md:overflow-hidden"
             >
               {/* Basic Inputs Header + Content */}
               <div className="p-4 py-8 md:p-6 md:py-6 space-y-6">
-                <h2 className="font-uiSans text-xl font-semibold text-[var(--color-primary)] md:text-2xl">
+                <h2 className="section-title mb-0">
                   Základní nastavení
                 </h2>
                 <BasicInputs 
@@ -256,9 +258,6 @@ export default function Home() {
                   animatingFields={animatingFields}
                 />
               </div>
-
-              {/* Divider */}
-              <div className="border-t border-gray-100" />
 
               {/* Unified Advanced Footer (Naked Accordions) */}
               <div className="px-4 md:px-6 bg-[var(--bg-lilac-section)] md:bg-[var(--bg-card)]">
@@ -270,7 +269,7 @@ export default function Home() {
           </div>
 
           {/* Right Column: Results (Sticky on Desktop, Below on Mobile) */}
-          <aside className="mt-12 md:mt-0 md:sticky md:top-24 md:self-start">
+          <aside className="mt-0 md:mt-0 md:sticky md:top-24 md:self-start">
             <ResultsPanel
               state={state}
               resultsMode={resultsMode}

@@ -145,6 +145,13 @@
     letter-spacing: -0.01em;
   }
 
+  /* Standard section title with spacing */
+  .section-title {
+    @apply font-uiSans font-semibold text-[var(--color-primary)] text-xl md:text-2xl;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px; /* Standard spacing */
+  }
+
   .calc-result-value {
     @apply font-displaySerif font-semibold text-[var(--color-primary)];
     font-size: 1.5rem;      /* 24px on mobile */
@@ -181,7 +188,7 @@
 
   .calc-input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.25),
+    box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.15),
                 0 8px 20px rgba(15, 23, 42, 0.08);
     background-color: #ffffff;
   }
@@ -224,6 +231,37 @@
     @apply font-uiSans font-medium text-[var(--color-primary)];
   }
 
+  /* Settings Drawer Pattern */
+  .settings-drawer {
+    @apply w-full flex items-center justify-between px-5 py-4 transition-all duration-200;
+    background-color: #F8FAFC; /* Slightly darker than page, lighter than input */
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); /* 12px */
+    cursor: pointer;
+  }
+
+  .settings-drawer:hover {
+    background-color: #F1F5F9; /* Darker gray on hover */
+    border-color: var(--color-border-hover);
+  }
+  
+  .settings-drawer[data-state='open'] {
+    background-color: #F1F5F9;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+  }
+
+  .settings-drawer-content {
+    @apply px-5 pb-6 pt-2;
+    background-color: #F8FAFC;
+    border: 1px solid var(--color-border);
+    border-top: none;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+    margin-bottom: 16px; /* Space between drawers */
+  }
+
   /* Slider Input Styling */
   .slider-input {
     -webkit-appearance: none;
@@ -238,7 +276,7 @@
   /* Webkit (Chrome, Safari) Track */
   .slider-input::-webkit-slider-runnable-track {
     width: 100%;
-    height: 8px; /* Increased from 6px to 8px for softer groove look */
+    height: 6px; /* Reduced to 6px for subtle guide rail feel */
     border-radius: 999px;
     background: linear-gradient(to right, 
       var(--color-primary) 0%, 
@@ -258,7 +296,7 @@
     appearance: none;
     width: 28px;
     height: 28px;
-    margin-top: -10px; /* (8px track - 28px thumb) / 2 = -10px */
+    margin-top: -11px; /* (6px track - 28px thumb) / 2 = -11px */
     border-radius: 50%;
     background: var(--color-primary);
     cursor: grab;
@@ -281,7 +319,7 @@
   /* Firefox Track */
   .slider-input::-moz-range-track {
     width: 100%;
-    height: 8px; /* Increased from 6px to 8px for softer groove look */
+    height: 6px; /* Reduced to 6px for subtle guide rail feel */
     border-radius: 999px;
     background: linear-gradient(to right, 
       var(--color-primary) 0%, 

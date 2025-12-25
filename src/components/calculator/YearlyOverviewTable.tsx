@@ -46,7 +46,7 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
             {/* Header Section */}
             <div className="p-6 border-b border-slate-100 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between bg-white">
           <div>
-            <h2 className="font-uiSans text-lg font-semibold text-[#0F172A] md:text-xl">
+            <h2 className="section-title mb-0">
               Vývoj v čase (podrobný přehled)
             </h2>
             <p className="mt-1 max-w-[560px] font-uiSans text-sm leading-relaxed text-[#6B7280]">

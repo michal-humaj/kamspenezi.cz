@@ -1,5 +1,6 @@
 "use client";
 
+import { formatLargeCurrency, formatCzk } from "@/lib/format";
 import { useState } from "react";
 import { Info, ChevronRight } from "lucide-react";
 import type { CalculatorState } from "@/app/page";
@@ -32,16 +33,21 @@ interface ResultsPanelProps {
   calculationResults: BydleniFixedResult | null;
 }
 
-// Animated number component
+// Animated number component with abbreviated format
 function AnimatedNumber({ value }: { value: number }) {
+  const roundedValue = Math.round(value);
+  const displayValue = formatLargeCurrency(roundedValue);
+  const fullValue = formatCzk(roundedValue);
+  
   return (
     <span 
-      key={value}
+      key={roundedValue}
+      title={`Přesná hodnota: ${fullValue} Kč`}
       style={{
         animation: "result-fade 1000ms ease-out",
       }}
     >
-      {value.toLocaleString("cs-CZ")} Kč
+      {displayValue}
     </span>
   );
 }
@@ -77,10 +83,10 @@ function ScenarioBlock({
           className="flex items-center gap-2 cursor-pointer transition-colors focus:outline-none group"
           aria-label={`Info about ${label}`}
         >
-          <h3 className="font-uiSans text-base font-semibold text-[var(--color-primary)] group-hover:text-gray-700">
+          <h3 className="font-uiSans text-base font-medium text-gray-700 group-hover:text-gray-900">
             {label}
           </h3>
-          <Info className="w-5 h-5 stroke-[2px] text-[var(--color-secondary)] group-hover:text-[var(--color-primary)] transition-colors" />
+          <Info className="w-5 h-5 stroke-[2px] text-gray-700 group-hover:text-[var(--color-primary)] transition-colors translate-y-[1px]" />
         </button>
         
         {/* Tooltip Popover */}
@@ -99,13 +105,13 @@ function ScenarioBlock({
 
       {/* Big Number */}
       <div className="pl-0 mb-1.5">
-        <div className="font-displaySerif text-3xl font-semibold leading-none text-[var(--color-primary)]">
+        <div className="font-displaySerif text-3xl md:text-4xl font-semibold leading-none text-[var(--color-primary)]">
           <AnimatedNumber value={Math.round(value)} />
         </div>
       </div>
 
       {/* Asset Source Sub-Label */}
-      <div className="pl-0 mb-3">
+      <div className="pl-0 mb-2">
         <p className="font-uiSans text-[13px] font-medium text-[var(--color-secondary)]">
           {assetLabel}
         </p>
@@ -152,15 +158,15 @@ export function ResultsPanel({
   return (
     <div
       id="vysledek"
-      className="space-y-6 -mx-4 rounded-none border-none bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:space-y-8 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-8 md:shadow-[var(--shadow-card)]"
+      className="space-y-6 -mx-4 rounded-none border-t border-gray-100 bg-[var(--bg-lilac-section)] p-4 py-8 shadow-none md:mx-0 md:space-y-8 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:py-8 md:shadow-[var(--shadow-card)]"
     >
       {/* Header Section */}
       <div className="space-y-2">
-        <h2 className="calc-section-title text-xl text-balance md:text-2xl">
+        <h2 className="section-title text-balance">
           Porovnání čistého jmění za 30&nbsp;let
         </h2>
         <p className="font-uiSans text-sm leading-relaxed text-slate-500">
-          Porovnání vašeho předpokládaného majetku (po odečtení dluhů) ve dvou životních situacích.
+          Porovnání vašeho předpokládaného majetku po 30 letech ve dvou životních situacích.
         </p>
       </div>
 
@@ -213,11 +219,11 @@ export function ResultsPanel({
       )}
 
       {/* Methodology Footer */}
-      <div className="pt-4 mt-auto">
+      <div className="pt-8 mt-auto">
         <div className="flex justify-center">
           <button
             onClick={() => setIsMethodologyOpen(!isMethodologyOpen)}
-            className="group inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-4 py-1.5 font-uiSans text-xs font-medium text-[var(--color-secondary)] transition-colors hover:bg-gray-100"
+            className="group inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-4 py-1.5 font-uiSans text-xs font-medium text-[var(--color-secondary)] transition-all hover:bg-gray-100 active:scale-[0.97] active:bg-gray-200 focus:outline-none"
           >
             <span>Metodika výpočtu</span>
             <ChevronRight className="h-3 w-3 text-gray-400 transition-colors group-hover:text-gray-600" />

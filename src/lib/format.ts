@@ -117,6 +117,21 @@ export function parsePercent(input: string): number | null {
 }
 
 /**
+ * Format large currency values with abbreviation for display
+ * @param value - Value in Kč
+ * @returns Formatted string (e.g. "60,3 mil. Kč" or "450 000 Kč")
+ */
+export function formatLargeCurrency(value: number): string {
+  if (isNaN(value) || value === null || value === undefined) return "0 Kč";
+  
+  if (value >= 1_000_000) {
+    return `${formatMillionsCzk(value)} mil. Kč`;
+  } else {
+    return `${formatCzk(value)} Kč`;
+  }
+}
+
+/**
  * Sanitize numeric input (integers only, allows spaces)
  * @param value - Raw input string
  * @returns Sanitized string with only digits and spaces

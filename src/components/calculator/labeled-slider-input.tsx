@@ -229,7 +229,7 @@ export function LabeledSliderInput({
         {/* Right: Input with Unit - Self-contained flex container */}
         <div className="flex items-center justify-end">
           <div
-            className={`inline-flex items-center justify-end rounded-full border bg-white px-4 py-2.5 shadow-sm transition-all w-full sm:w-auto min-w-[140px] ${
+            className={`inline-flex items-center justify-end rounded-full border bg-white px-4 py-2.5 shadow-sm transition-all w-full md:w-[160px] ${
               isAnimating ? "animate-[highlight_600ms_ease-out]" : ""
             }`}
             style={{

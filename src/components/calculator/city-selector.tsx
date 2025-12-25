@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface CitySelectorProps {
@@ -63,18 +63,22 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                 background: isSelected ? "var(--color-primary)" : "#FFFFFF",
                 color: isSelected ? "var(--color-on-primary)" : "var(--color-primary)",
                 border: `1px solid ${isSelected ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
-                boxShadow: isSelected ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" : "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
+                boxShadow: isSelected 
+                  ? "0 8px 20px -4px rgba(15, 23, 42, 0.1)" 
+                  : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "rgb(249, 250, 251)";
                   e.currentTarget.style.borderColor = "rgb(209, 213, 219)";
+                  e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "#FFFFFF";
                   e.currentTarget.style.borderColor = "rgb(229, 231, 235)";
+                  e.currentTarget.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.05)";
                 }
               }}
             >
@@ -91,18 +95,22 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             background: showSelectedInMoreCities ? "var(--color-primary)" : "#FFFFFF",
             color: showSelectedInMoreCities ? "var(--color-on-primary)" : "var(--color-primary)",
             border: `1px solid ${showSelectedInMoreCities ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
-            boxShadow: showSelectedInMoreCities ? "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" : "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
+            boxShadow: showSelectedInMoreCities 
+              ? "0 8px 20px -4px rgba(15, 23, 42, 0.1)" 
+              : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
           }}
           onMouseEnter={(e) => {
             if (!showSelectedInMoreCities) {
               e.currentTarget.style.background = "rgb(249, 250, 251)";
               e.currentTarget.style.borderColor = "rgb(209, 213, 219)";
+              e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
             }
           }}
           onMouseLeave={(e) => {
             if (!showSelectedInMoreCities) {
               e.currentTarget.style.background = "#FFFFFF";
               e.currentTarget.style.borderColor = "rgb(229, 231, 235)";
+              e.currentTarget.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.05)";
             }
           }}
         >
@@ -120,26 +128,32 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
       {/* Expandable city list */}
       {showAllCities && (
         <div
-          className="space-y-3 rounded-[var(--radius-card)] p-4"
+          className="relative z-50 space-y-3 rounded-[var(--radius-card)] p-4 shadow-2xl"
           style={{
             border: "1px solid var(--color-border)",
             background: "var(--bg-card)",
-            boxShadow: "var(--shadow-card)",
           }}
         >
-          <Input
-            type="text"
-            placeholder="Hledat město..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="font-uiSans"
-          />
-          <div className="max-h-64 space-y-1 overflow-y-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-            <style jsx>{`
-              div::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Hledat město..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 font-uiSans text-base border-gray-200"
+              style={{
+                fontSize: "16px", // Force 16px to prevent iOS zoom
+              }}
+            />
+          </div>
+          <div 
+            className="max-h-64 space-y-1 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
             {filteredCities.map((city) => {
               const isSelected = selectedCity === city.name;
               return (
@@ -153,7 +167,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                   className="block w-full rounded-md px-4 py-3.5 text-left font-uiSans text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0 active:bg-gray-50"
                   style={{
                     background: isSelected ? "var(--bg-lilac-section)" : "transparent",
-                    color: "var(--color-primary)",
+                    color: isSelected ? "var(--color-primary)" : "var(--color-text-main)",
                   }}
                   onMouseEnter={(e) => {
                     if (!isSelected) {
@@ -166,9 +180,9 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                     }
                   }}
                 >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-medium text-[var(--color-primary)]">{city.name}</span>
-                    <span className="text-xs text-[var(--color-secondary)] tabular-nums">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-kp-text-main font-medium">{city.name}</span>
+                    <span className="text-xs tabular-nums text-kp-text-muted">
                       {(city.medianPrice / 1000000).toFixed(1)} mil. Kč
                     </span>
                   </div>
