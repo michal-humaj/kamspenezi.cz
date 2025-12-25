@@ -65,37 +65,31 @@ interface AdvancedInputsProps {
 }
 
 export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
-  // Calculate LTV for summary
-  const ltv = 100 - state.vlastniZdroje;
-
   return (
     <Accordion type="single" collapsible>
       <AccordionItem
         value="advanced"
-        className="border-t border-gray-100 pt-6 mt-4 transition-all"
+        className="border-t border-gray-100 pt-6 mt-6 lg:mt-4 transition-all"
       >
         <AccordionTrigger 
           className="group flex items-center justify-between py-3 hover:no-underline transition-colors outline-none focus:outline-none focus:text-[var(--color-primary)]"
         >
           <div className="flex flex-col gap-1">
             <span className="text-lg font-semibold text-kp-text-main group-hover:text-[var(--color-primary)]">
-              Další parametry
+              Poplatky a náklady
             </span>
-            <span className="text-sm text-gray-500 font-normal mt-0.5 group-data-[state=closed]:block group-data-[state=open]:hidden">
-              (LTV: {ltv} %, Fixace: 5 let)
+            <span className="text-sm text-gray-500 font-normal mt-0.5">
+              Předvyplněno realistickými hodnotami. Upravte jen pokud víte lépe.
             </span>
           </div>
         </AccordionTrigger>
         <AccordionContent className="space-y-6 pb-6 pt-4">
-          <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
-            Vše je předvyplněné realistickými hodnotami, měnit je nemusíš.
-          </p>
 
           {/* 1. Příspěvek od rodičů */}
           <LabeledSliderInput
             id="prispevek-rodicu"
-            label="Příspěvek od rodičů na koupi nemovitosti"
-            description="Jednorázový finanční dar od rodičů (pouze při koupi bytu)"
+            label="Příspěvek od rodičů"
+            description="Jednorázový dar (pouze při koupi)"
             value={state.prispevekRodicu}
             onChange={(value) => updateState({ prispevekRodicu: value })}
             unit="kc"
@@ -107,11 +101,11 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             inputMode="numeric"
           />
 
-          {/* 2. Zařízení nemovitosti */}
+          {/* 2. Vybavení bytu */}
           <LabeledSliderInput
             id="zarizeni"
-            label="Zařízení nemovitosti"
-            description="Náklady na nábytek a vybavení bytu (jednorázově)"
+            label="Vybavení bytu"
+            description="Jednorázové náklady na zařízení"
             value={state.zarizeniNemovitosti}
             onChange={(value) => updateState({ zarizeniNemovitosti: value })}
             unit="kc"
@@ -127,7 +121,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           <LabeledSliderInput
             id="fond-oprav"
             label="Fond oprav"
-            description="Měsíční příspěvek do fondu oprav domu"
+            description="Měsíčně"
             value={state.fondOprav}
             onChange={(value) => updateState({ fondOprav: value })}
             unit="custom"
@@ -140,11 +134,11 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             inputMode="numeric"
           />
 
-          {/* 4. Pojištění nemovitosti */}
+          {/* 4. Pojištění bytu */}
           <LabeledSliderInput
             id="pojisteni"
-            label="Pojištění nemovitosti"
-            description="Roční náklady na pojištění bytu"
+            label="Pojištění bytu"
+            description="Ročně"
             value={state.pojisteniNemovitosti}
             onChange={(value) => updateState({ pojisteniNemovitosti: value })}
             unit="custom"
@@ -161,7 +155,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           <LabeledSliderInput
             id="dan"
             label="Daň z nemovitosti"
-            description="Roční daň z nemovitosti"
+            description="Ročně"
             value={state.danZNemovitosti}
             onChange={(value) => updateState({ danZNemovitosti: value })}
             unit="custom"
@@ -178,7 +172,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           <LabeledSliderInput
             id="naklady-udrzba"
             label="Náklady na údržbu"
-            description="Roční náklady na údržbu bytu"
+            description="Ročně"
             value={state.nakladyUdrzba}
             onChange={(value) => updateState({ nakladyUdrzba: value })}
             unit="custom"
@@ -191,11 +185,11 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             inputMode="numeric"
           />
 
-          {/* 7. Očekávaná inflace nákladů */}
+          {/* 7. Růst nákladů */}
           <LabeledSliderInput
             id="inflace"
-            label="Očekávaná inflace nákladů"
-            description="Roční růst nákladů (pojištění, údržba, atd.)"
+            label="Růst nákladů (ročně)"
+            description="Údržba, pojištění, fond oprav…"
             value={state.ocekavanaInflace}
             onChange={(value) => updateState({ ocekavanaInflace: value })}
             unit="percent"

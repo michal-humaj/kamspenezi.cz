@@ -21,11 +21,6 @@ const NAV_LINKS = [
 
 const CTA_CONFIG = [
   {
-    match: (pathname: string) => pathname === "/",
-    label: "Otevřít kalkulačku",
-    href: "/",
-  },
-  {
     match: (pathname: string) => pathname.startsWith("/investice"),
     label: "Investice kalkulačka",
     href: "/investice-kalkulacka",
@@ -48,7 +43,7 @@ export function SiteHeader() {
         background: 'var(--bg-base)'
       }}
     >
-      <div className="container flex h-14 items-center justify-between md:h-16">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 flex h-14 items-center justify-between md:h-16">
         <Logo />
 
         <nav className="hidden items-center gap-8 text-body font-medium md:flex">
@@ -80,12 +75,6 @@ export function SiteHeader() {
             );
           })}
         </nav>
-
-        <div className="hidden md:flex">
-          <Button asChild>
-            <Link href={cta.href}>{cta.label}</Link>
-          </Button>
-        </div>
 
         <div className="md:hidden">
           <Sheet>

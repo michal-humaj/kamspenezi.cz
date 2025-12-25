@@ -78,11 +78,14 @@ export function ApartmentSizeCards({
   useEffect(() => {
     if (selectedSize && cardRefs.current[selectedSize] && scrollContainerRef.current) {
       const selectedCard = cardRefs.current[selectedSize];
-      if (selectedCard) {
-        selectedCard.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "start", // Align to the left
+      const container = scrollContainerRef.current;
+      
+      if (selectedCard && container) {
+        // scroll-padding-left on container handles the 16px offset
+        // Just scroll to align card with the snap point
+        container.scrollTo({
+          left: selectedCard.offsetLeft,
+          behavior: "smooth"
         });
       }
     }
@@ -148,7 +151,7 @@ export function ApartmentSizeCards({
       {/* Mobile: Horizontal scrollable - cuts off at screen edges */}
       <div 
         ref={scrollContainerRef}
-        className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-0 md:hidden" 
+        className="flex gap-3 overflow-x-auto pl-4 pr-4 pb-0 md:hidden" 
         style={{ 
           scrollSnapType: "x mandatory",
           scrollPaddingLeft: "16px",

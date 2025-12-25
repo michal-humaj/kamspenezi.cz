@@ -373,6 +373,70 @@
     }
   }
 
+  /* Accordion animations */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+      opacity: 1;
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }
+
+  .animate-accordion-down {
+    animation: accordion-down 200ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .animate-accordion-up {
+    animation: accordion-up 150ms cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  /* Card highlight animation for scroll-to */
+  @keyframes card-highlight {
+    0% {
+      box-shadow: 0 20px 60px -15px rgba(0,0,0,0.08);
+    }
+    30% {
+      box-shadow: 0 20px 60px -15px rgba(0,0,0,0.08), 0 0 0 3px rgba(15, 23, 42, 0.12);
+    }
+    100% {
+      box-shadow: 0 20px 60px -15px rgba(0,0,0,0.08);
+    }
+  }
+
+  .card-highlight-animation {
+    animation: card-highlight 800ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-accordion-down,
+    .animate-accordion-up {
+      animation-duration: 1ms !important;
+    }
+    
+    .card-highlight-animation {
+      animation: none !important;
+    }
+    
+    * {
+      scroll-behavior: auto !important;
+    }
+  }
+
   /* Logo Wordmark - Premium Wealthsimple-style */
   .nav-logo {
     margin-right: auto !important;

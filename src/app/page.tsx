@@ -175,114 +175,196 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-[var(--bg-base)] min-h-screen">
+    <main className="bg-[#F5F6F8] min-h-screen overflow-x-hidden">
       <CalculatorSchema />
-      <div className="mx-auto max-w-5xl px-4 pt-16 pb-8 md:px-6 md:pt-24 md:pb-12">
-        {/* Hero Header */}
-        <header className="text-center mb-12 md:mb-16">
-          <h1 className="font-displaySerif text-5xl font-bold text-gray-900 md:text-6xl tracking-tight">
-            Bydlet ve vlastním, nebo v nájmu?
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl font-uiSans text-lg leading-relaxed text-gray-500 md:text-xl">
-            Nájem nejsou vyhozené peníze. Zjistěte, zda se vám za 30 let vyplatí víc hypotéka, nebo chytré investování ušetřených peněz.
-          </p>
-        </header>
-
-        {/* City and Apartment Selection Section */}
-        <section
-          className="space-y-6 md:space-y-6 md:rounded-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:p-6 md:shadow-[var(--shadow-card)]"
-        >
-          <div className="space-y-2 px-4 md:px-0">
-            <h2 className="section-title">
-              Začni městem a velikostí bytu
-            </h2>
-            <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)] md:text-base">
-              Stačí vybrat město a typ bytu. Ceny doplníme za tebe podle dat z českých měst.
-            </p>
-          </div>
-
-          <div className="px-4 md:px-0">
-            <CitySelector
-              selectedCity={state.selectedCity}
-              onCitySelect={handleCitySelect}
-            />
-          </div>
-
-          <div className="space-y-4">
-            <ApartmentSizeCards
-              selectedCity={state.selectedCity}
-              selectedSize={state.selectedApartmentSize}
-              onSizeSelect={handleApartmentSelect}
-            />
-
-            {/* Mobile: Show results button after selection */}
-            <div className="px-4 md:hidden">
-              {canViewResults && (
-                <Button
-                  onClick={scrollToResults}
-                  className="w-full rounded-[var(--radius-pill)] border px-6 py-3 font-uiSans text-base font-medium transition-all duration-75 hover:bg-gray-50 active:scale-[0.98] active:bg-gray-100 focus:outline-none"
-                  style={{
-                    background: "#FFFFFF",
-                    color: "var(--color-primary)",
-                    borderColor: "var(--color-border)",
-                    boxShadow: "var(--shadow-card)",
+      
+      {/* Hero Section */}
+      <section className="bg-[#F5F6F8] pt-12 pb-8 md:pt-20 lg:pt-16 lg:pb-8">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="flex flex-col md:grid md:grid-cols-2 md:gap-12 md:items-start">
+            {/* Left Column: Text */}
+            <div className="text-left md:pt-4">
+              <p className="font-uiSans text-xs md:text-sm font-medium uppercase tracking-wider text-slate-400 mb-3 md:mb-4">
+                Kalkulačka: vlastní vs nájem
+              </p>
+              <h1 className="font-displaySerif text-4xl font-bold text-slate-900 md:text-6xl tracking-tight">
+                Bydlet ve vlastním, nebo v nájmu?
+              </h1>
+              <p className="mt-6 max-w-2xl font-uiSans text-lg leading-relaxed text-slate-600 md:text-xl">
+                Porovnáme, co je finančně výhodnější v horizontu 30 let. Dva scénáře.
+              </p>
+              <ul className="mt-4 max-w-2xl font-uiSans text-base leading-relaxed text-slate-600 space-y-1.5">
+                <li className="flex items-start gap-2.5">
+                  <span className="h-2 w-2 rounded-full shrink-0 mt-[7px]" style={{ background: 'var(--scenario-a-dot)' }} />
+                  Scénář A: Vlastní bydlení na hypotéku
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="h-2 w-2 rounded-full shrink-0 mt-[7px]" style={{ background: 'var(--scenario-b-dot)' }} />
+                  Scénář B: Bydlení v nájmu a investování
+                </li>
+              </ul>
+              {/* Desktop micro-CTA */}
+              <p className="hidden md:block mt-6 font-uiSans text-sm text-slate-500">
+                Začněte výběrem města a velikosti bytu níže.{' '}
+                <button 
+                  onClick={() => {
+                    const target = document.getElementById('zacni-mestem');
+                    const card = document.getElementById('city-card');
+                    if (target) {
+                      // Check for reduced motion preference
+                      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                      
+                      target.scrollIntoView({ 
+                        behavior: prefersReducedMotion ? 'auto' : 'smooth', 
+                        block: 'start' 
+                      });
+                      
+                      // Add highlight animation to card after scroll starts
+                      if (card && !prefersReducedMotion) {
+                        setTimeout(() => {
+                          card.classList.add('card-highlight-animation');
+                          setTimeout(() => {
+                            card.classList.remove('card-highlight-animation');
+                          }, 800);
+                        }, 250);
+                      }
+                    }
                   }}
+                  className="text-[var(--color-primary)] hover:underline font-medium active:opacity-70 transition-opacity duration-100 motion-reduce:transition-none"
                 >
-                  Zobrazit výsledek
-                </Button>
-              )}
+                  Vybrat město →
+                </button>
+              </p>
+            </div>
+
+            {/* Right Column: The Window (Hero Visual) */}
+            <div className="mt-8 md:mt-0">
+              <div 
+                className="bg-stone-700 rounded-[24px] md:rounded-[32px] shadow-2xl w-full aspect-[16/9] md:aspect-[4/3] md:rotate-1"
+                aria-hidden="true"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== BAND B: Inputs Workbench (Lilac on mobile) ===== */}
+      <div className="bg-[#F4F5FB] md:bg-[#F5F6F8]">
+        {/* City and Apartment Selection Section */}
+        <section id="zacni-mestem" className="py-8 lg:pt-0 lg:pb-8 overflow-x-hidden md:overflow-visible scroll-mt-20">
+          <div className="mx-auto max-w-7xl px-0 md:px-6">
+            <div id="city-card" className="md:rounded-[24px] md:bg-white md:p-8 md:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)]">
+              <div className="space-y-2 px-4 md:px-0">
+                <h2 className="section-title">
+                  Začni městem a velikostí bytu
+                </h2>
+                <p className="font-uiSans text-sm leading-relaxed text-slate-600 md:text-base">
+                  Stačí vybrat město a typ bytu. Ceny doplníme za tebe podle dat z českých měst.
+                </p>
+              </div>
+
+              <div className="mt-6 md:mt-4 px-4 md:px-0">
+                <CitySelector
+                  selectedCity={state.selectedCity}
+                  onCitySelect={handleCitySelect}
+                />
+              </div>
+
+              <div className="mt-6 md:mt-4">
+                <ApartmentSizeCards
+                  selectedCity={state.selectedCity}
+                  selectedSize={state.selectedApartmentSize}
+                  onSizeSelect={handleApartmentSelect}
+                />
+              </div>
+
+              {/* Mobile: Show results button after selection */}
+              <div className="mt-4 px-4 md:hidden">
+                  {canViewResults && (
+                    <Button
+                      onClick={scrollToResults}
+                      className="w-full rounded-[var(--radius-pill)] border px-6 py-3 font-uiSans text-base font-medium transition-all duration-75 hover:bg-gray-50 active:scale-[0.98] active:bg-gray-100 focus:outline-none shadow-sm"
+                      style={{
+                        background: "#FFFFFF",
+                        color: "var(--color-primary)",
+                        borderColor: "var(--color-border)",
+                      }}
+                    >
+                      Zobrazit výsledek
+                    </Button>
+                  )}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Desktop: Two-column layout / Mobile: Stacked */}
-        <div className="mt-8 md:mt-12 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
-          {/* Left Column: Inputs - UNIFIED CARD */}
-          <div id="nastaveni" className="space-y-6">
-            <section
-              className="space-y-0 -mx-4 mb-0 rounded-none rounded-b-none border-none bg-white shadow-none md:mb-0 md:mx-0 md:rounded-[var(--radius-card)] md:rounded-b-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)] md:overflow-hidden"
-            >
-              {/* Basic Inputs Header + Content */}
-              <div className="p-4 py-8 md:p-6 md:py-6 space-y-6">
-                <h2 className="section-title mb-0">
-                  Základní nastavení
-                </h2>
-                <BasicInputs 
-                  state={state} 
-                  updateState={updateState} 
-                  animatingFields={animatingFields}
-                />
-              </div>
+        {/* Inputs Section (Byt, který zvažujete + Accordions) */}
+        <div className="mx-auto max-w-7xl px-4 pt-0 pb-8 md:px-6 lg:pt-8 lg:pb-8">
+          {/* Desktop: Two-column layout / Mobile: Stacked */}
+          <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
+            {/* Left Column: Inputs - UNIFIED CARD */}
+            <div id="nastaveni" className="space-y-6">
+              <section
+                className="space-y-0 mb-0 rounded-none border-none shadow-none md:mb-0 md:mx-0 md:rounded-[24px] md:border-0 md:bg-white md:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)] md:overflow-hidden"
+              >
+                {/* Basic Inputs Header + Content */}
+                <div className="px-0 py-8 md:p-8 space-y-6">
+                  <h2 className="section-title mb-0">
+                    Byt, který zvažujete
+                  </h2>
+                  <BasicInputs 
+                    state={state} 
+                    updateState={updateState} 
+                    animatingFields={animatingFields}
+                  />
+                </div>
 
-              {/* Unified Advanced Footer (Naked Accordions) */}
-              <div className="px-4 pb-8 md:px-6 bg-white md:bg-[var(--bg-card)]">
-                <UncertaintyInputs state={state} updateState={updateState} resultsMode={resultsMode} />
-                <AdvancedInputs state={state} updateState={updateState} />
-              </div>
-            </section>
+                {/* Unified Advanced Footer (Naked Accordions) */}
+                <div className="px-0 pb-8 md:px-8 md:pb-8 md:bg-white">
+                  <UncertaintyInputs state={state} updateState={updateState} resultsMode={resultsMode} />
+                  <AdvancedInputs state={state} updateState={updateState} />
+                </div>
+              </section>
+            </div>
+
+            {/* Right Column: Results - Desktop only in grid */}
+            <aside id="vysledek-desktop" className="hidden md:block md:sticky md:top-24 md:self-start">
+              <ResultsPanel
+                state={state}
+                resultsMode={resultsMode}
+                setResultsMode={setResultsMode}
+                onEditSettings={scrollToInputs}
+                calculationResults={calculationResults}
+              />
+            </aside>
           </div>
+        </div>
+      </div>
 
-          {/* Right Column: Results (Sticky on Desktop, Below on Mobile) */}
-          <aside className="mt-0 md:mt-0 md:sticky md:top-24 md:self-start">
-            <ResultsPanel
-              state={state}
-              resultsMode={resultsMode}
-              setResultsMode={setResultsMode}
-              onEditSettings={scrollToInputs}
-              calculationResults={calculationResults}
-            />
-          </aside>
+      {/* ===== BAND C: Results (Off-white on mobile) ===== */}
+      <div className="bg-[#F5F6F8]">
+        {/* Mobile Results */}
+        <div id="vysledek" className="md:hidden">
+          <ResultsPanel
+            state={state}
+            resultsMode={resultsMode}
+            setResultsMode={setResultsMode}
+            onEditSettings={scrollToInputs}
+            calculationResults={calculationResults}
+          />
         </div>
 
         {/* Yearly Overview Section */}
-        {/* Desktop: Analytical table */}
-        <div className="hidden lg:block mt-12">
-          <YearlyOverviewTable rows={yearlyRows} />
-        </div>
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          {/* Desktop: Analytical table */}
+          <div className="hidden lg:block lg:pt-8 lg:pb-12">
+            <YearlyOverviewTable rows={yearlyRows} />
+          </div>
 
-        {/* Mobile: Accordion */}
-        <div className="block lg:hidden mt-12">
-          <YearlyBreakdownMobile rows={yearlyRows} />
+          {/* Mobile: Accordion */}
+          <div className="block lg:hidden py-8">
+            <YearlyBreakdownMobile rows={yearlyRows} />
+          </div>
         </div>
       </div>
     </main>

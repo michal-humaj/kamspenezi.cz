@@ -169,26 +169,21 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
     <Accordion type="single" collapsible>
       <AccordionItem
         value="uncertainty"
-        className="border-t border-gray-100 pt-6 mt-8 transition-all"
+        className="border-t border-gray-100 pt-6 mt-6 lg:mt-4 transition-all"
       >
         <AccordionTrigger 
           className="group flex items-center justify-between py-3 hover:no-underline transition-colors outline-none focus:outline-none focus:text-[var(--color-primary)]"
         >
           <div className="flex flex-col gap-1">
             <span className="text-lg font-semibold text-kp-text-main group-hover:text-[var(--color-primary)]">
-              Tržní předpoklady
+              Klíčové tržní předpoklady
             </span>
-            <span className="text-sm text-gray-500 font-normal mt-0.5 group-data-[state=closed]:block group-data-[state=open]:hidden">
-              (Sazba budoucna: {formatPercent(state.urokovaSazbaExpected)}, Růst trhu: {formatPercent(state.rustHodnotyExpected)})
+            <span className="text-sm text-gray-500 font-normal mt-0.5">
+              Největší vliv na výsledek. Předvyplněno podle dat.
             </span>
           </div>
         </AccordionTrigger>
         <AccordionContent className="space-y-5 pb-6 pt-4">
-          <p className="font-uiSans text-sm leading-relaxed text-[var(--color-secondary)]">
-            {resultsMode === "realistic" 
-              ? "Nastav pesimistické, očekávané a optimistické hodnoty pro nejistotu v budoucnosti."
-              : "Nastav očekávané hodnoty pro vývoj v čase."}
-          </p>
 
           {resultsMode === "realistic" ? (
             <>
@@ -256,24 +251,9 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
             <>
               {/* Fixed mode: Show with sliders like basic inputs */}
               <LabeledSliderInput
-                id="etf-expected"
-                label="Výnos ETF v čase"
-                description="Průměrný roční výnos ETF portfolia"
-                value={state.etfVynosExpected}
-                onChange={(v) => updateState({ etfVynosExpected: v })}
-                unit="percent"
-                min={0}
-                max={20}
-                step={0.1}
-                formatter={formatPercent}
-                parser={parsePercent}
-                inputMode="decimal"
-              />
-
-              <LabeledSliderInput
                 id="rust-hodnoty-expected"
-                label="Růst hodnoty nemovitosti"
-                description="Průměrný roční růst ceny nemovitosti"
+                label="Zhodnocení nemovitosti (ročně)"
+                description="Očekávaný roční růst ceny nemovitosti"
                 value={state.rustHodnotyExpected}
                 onChange={(v) => updateState({ rustHodnotyExpected: v })}
                 unit="percent"
@@ -286,14 +266,14 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
               />
 
               <LabeledSliderInput
-                id="rust-najemneho-expected"
-                label="Růst nájemného"
-                description="Průměrný roční růst nájemného"
-                value={state.rustNajemnehoExpected}
-                onChange={(v) => updateState({ rustNajemnehoExpected: v })}
+                id="etf-expected"
+                label="Výnos ETF (ročně)"
+                description="Očekávaný roční výnos investičního portfolia"
+                value={state.etfVynosExpected}
+                onChange={(v) => updateState({ etfVynosExpected: v })}
                 unit="percent"
                 min={0}
-                max={10}
+                max={20}
                 step={0.1}
                 formatter={formatPercent}
                 parser={parsePercent}
@@ -302,13 +282,28 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
 
               <LabeledSliderInput
                 id="sazba-expected"
-                label="Úroková sazba hypotéky (roky 6-30)"
-                description="Očekávaná úroková sazba pro refinancování"
+                label="Budoucí sazba hypotéky (od roku 6)"
+                description="Očekávaná úroková sazba po skončení fixace"
                 value={state.urokovaSazbaExpected}
                 onChange={(v) => updateState({ urokovaSazbaExpected: v })}
                 unit="percent"
                 min={0}
                 max={15}
+                step={0.1}
+                formatter={formatPercent}
+                parser={parsePercent}
+                inputMode="decimal"
+              />
+
+              <LabeledSliderInput
+                id="rust-najemneho-expected"
+                label="Růst nájemného (ročně)"
+                description="Očekávaný roční růst nájemného"
+                value={state.rustNajemnehoExpected}
+                onChange={(v) => updateState({ rustNajemnehoExpected: v })}
+                unit="percent"
+                min={0}
+                max={10}
                 step={0.1}
                 formatter={formatPercent}
                 parser={parsePercent}

@@ -41,7 +41,7 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <ChevronDownIcon className="pointer-events-none size-5 shrink-0 translate-y-0.5 text-text-muted transition-transform duration-200" />
+        <ChevronDownIcon className="pointer-events-none size-5 shrink-0 translate-y-0.5 text-text-muted transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] motion-reduce:transition-none" />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
@@ -55,7 +55,7 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden text-body-sm text-text-muted font-uiSans data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className="overflow-hidden text-body-sm text-text-muted font-uiSans data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down motion-reduce:animate-none"
       {...props}
     >
       <div className={cn("pb-6 pt-1", className)}>{children}</div>
