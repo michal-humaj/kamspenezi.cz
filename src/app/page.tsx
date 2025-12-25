@@ -6,7 +6,6 @@ import { ApartmentSizeCards } from "@/components/calculator/apartment-size-cards
 import { BasicInputs } from "@/components/calculator/basic-inputs";
 import { UncertaintyInputs } from "@/components/calculator/uncertainty-inputs";
 import { AdvancedInputs } from "@/components/calculator/advanced-inputs";
-import { HeroComparisonAnimation } from "@/components/calculator/hero-comparison-animation";
 import { ResultsPanel } from "@/components/calculator/results-panel";
 import { Button } from "@/components/ui/button";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
@@ -180,7 +179,7 @@ export default function Home() {
       <CalculatorSchema />
       <div className="mx-auto max-w-5xl px-4 pt-16 pb-8 md:px-6 md:pt-24 md:pb-12">
         {/* Hero Header */}
-        <header className="text-center">
+        <header className="text-center mb-12 md:mb-16">
           <h1 className="font-displaySerif text-5xl font-bold text-gray-900 md:text-6xl tracking-tight">
             Bydlet ve vlastním, nebo v nájmu?
           </h1>
@@ -188,10 +187,6 @@ export default function Home() {
             Nájem nejsou vyhozené peníze. Zjistěte, zda se vám za 30 let vyplatí víc hypotéka, nebo chytré investování ušetřených peněz.
           </p>
         </header>
-
-        <div className="mt-12 mb-16 md:mt-16 md:mb-24">
-          <HeroComparisonAnimation />
-        </div>
 
         {/* City and Apartment Selection Section */}
         <section
@@ -245,7 +240,7 @@ export default function Home() {
           {/* Left Column: Inputs - UNIFIED CARD */}
           <div id="nastaveni" className="space-y-6">
             <section
-              className="space-y-0 -mx-4 mb-0 rounded-none rounded-b-none border-none bg-[var(--bg-lilac-section)] shadow-none md:mb-0 md:mx-0 md:rounded-[var(--radius-card)] md:rounded-b-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)] md:overflow-hidden"
+              className="space-y-0 -mx-4 mb-0 rounded-none rounded-b-none border-none bg-white shadow-none md:mb-0 md:mx-0 md:rounded-[var(--radius-card)] md:rounded-b-[var(--radius-card)] md:border md:border-[var(--color-border)] md:bg-[var(--bg-card)] md:shadow-[var(--shadow-card)] md:overflow-hidden"
             >
               {/* Basic Inputs Header + Content */}
               <div className="p-4 py-8 md:p-6 md:py-6 space-y-6">
@@ -260,9 +255,8 @@ export default function Home() {
               </div>
 
               {/* Unified Advanced Footer (Naked Accordions) */}
-              <div className="px-4 md:px-6 bg-[var(--bg-lilac-section)] md:bg-[var(--bg-card)]">
+              <div className="px-4 pb-8 md:px-6 bg-white md:bg-[var(--bg-card)]">
                 <UncertaintyInputs state={state} updateState={updateState} resultsMode={resultsMode} />
-                <div className="border-t border-gray-50 md:border-none" />
                 <AdvancedInputs state={state} updateState={updateState} />
               </div>
             </section>

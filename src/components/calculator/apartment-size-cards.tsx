@@ -167,7 +167,7 @@ export function ApartmentSizeCards({
                 cardRefs.current[size] = el;
               }}
               onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
-              className={`min-w-[230px] shrink-0 rounded-[18px] px-4 py-3.5 text-left bg-white transition-all duration-200 ease-out focus:outline-none border-2 ${
+              className={`min-w-[140px] shrink-0 rounded-[18px] p-3 md:p-5 text-left bg-white transition-all duration-200 ease-out focus:outline-none border-2 ${
                 isSelected 
                   ? "border-[#0F172A] relative z-10" 
                   : "border-gray-200 shadow-sm"
@@ -179,17 +179,17 @@ export function ApartmentSizeCards({
                 scrollSnapAlign: "start",
               }}
             >
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {/* Line 1: Apartment size */}
-                <div className="font-uiSans text-2xl font-bold text-[var(--color-primary)]">
+                <div className="font-uiSans text-xl font-bold text-[var(--color-primary)]">
                   {size}
                 </div>
                 {/* Line 2: Price (prominent) · Area (muted) */}
-                <div className="font-uiSans text-sm">
+                <div className="font-uiSans text-xs">
                   <span className="font-medium text-kp-text-main">
                     {formatCardPrice(data.kupniCena)}
                   </span>
-                  <span className="mx-1.5 text-gray-300">·</span>
+                  <span className="mx-1 text-gray-300">·</span>
                   <span className="font-normal text-kp-text-muted">
                     {formatCardArea(size)}
                   </span>
