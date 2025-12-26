@@ -213,12 +213,13 @@ export default function Home() {
               {/* Mobile-only Hero Image - Full Bleed Panoramic Band (no shadow, no radius) */}
               <div className="mt-6 mb-0 md:hidden -mx-4 w-[calc(100%+2rem)]">
                 <Image 
-                  src="/image.png"
+                  src="/hero-couch-mobile.webp"
                   alt="Kalkulačka bydlení - porovnání vlastního bydlení a nájmu"
                   width={800}
-                  height={176}
+                  height={437}
                   className="w-full h-44 object-cover object-[center_30%]"
-                  unoptimized
+                  sizes="100vw"
+                  quality={85}
                 />
               </div>
             </div>
@@ -226,13 +227,14 @@ export default function Home() {
             {/* Right Column: The Window (Hero Visual) - Hidden on Mobile */}
             <div className="hidden md:block md:mt-0 overflow-hidden rounded-[32px]">
               <Image 
-                src="/image.png"
+                src="/hero-couch.webp"
                 alt="Kalkulačka bydlení - porovnání vlastního bydlení a nájmu"
-                width={600}
-                height={450}
+                width={1600}
+                height={873}
                 className="shadow-[0_25px_80px_-20px_rgba(0,0,0,0.15)] w-full aspect-[4/3] object-cover scale-105 rotate-[1.5deg]"
                 priority
-                unoptimized
+                sizes="(min-width: 768px) 50vw, 100vw"
+                quality={85}
               />
             </div>
           </div>
