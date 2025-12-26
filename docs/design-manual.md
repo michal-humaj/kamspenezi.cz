@@ -1,8 +1,10 @@
 # Design Manual — kamspenezi.cz
 
-> Last updated: December 7, 2025
+> Last updated: December 26, 2025
 > This document reflects the current production design system including calculator page.  
 > All changes to brand, UI, or components must update this file first.
+> 
+> **Recent Updates**: Monte Carlo "Realistic Mode" UI documented (Section 14.6.1)
 
 ───────────────────────────────
 
@@ -36,9 +38,10 @@
 **Serif (Newsreader)** — Use ONLY for:
 - H1 on landing pages
 - H2, H3 section headings (e.g., "Začni podle svého města", "Jak vypadá výsledek", "Transparentní výpočet")
-- Large monetary values in result cards (exception for emphasis)
+- Large monetary values in **Fixed Mode** result cards only (exception for emphasis)
 
-**Sans (Figtree)** — Use for EVERYTHING else:
+**Sans (Figtree)** — Use for EVERYTHING else, INCLUDING:
+- **Monte Carlo / Realistic Mode** result values (Sans-Serif for modern data visualization feel)
 - All card titles (city preset cards, scenario cards, author card)
 - Scenario labels ("Scénář A – vlastní bydlení na hypotéku")
 - FAQ questions and answers
@@ -974,7 +977,7 @@ background: white;
 border: 1px solid var(--color-border);
 border-radius: var(--radius-card);  /* 24px */
 box-shadow: var(--shadow-card);
-padding: 24px (p-6);
+padding: 24px (p-6) desktop, 16px (p-4) mobile;
 ```
 
 **Desktop Behavior**:
@@ -988,22 +991,31 @@ align-self: start;
 - NOT sticky
 - Appears below all inputs
 - Full width with horizontal padding
+- Simplified border styling: `border-t border-gray-100` only
 
-**Toggle Buttons** (Realistický rozsah / Pevný výpočet):
+**Header Row**:
+- **Layout**: Flex row, `items-center`, `justify-between`, `gap-4`
+- **Title**: `text-xl font-bold text-slate-900`
+- **Spacing**: `mb-4` below header row
+
+**Toggle Buttons** (Realistický / Fixní):
 ```css
-display: inline-flex;
-background: var(--toggle-bg-inactive);  /* Inactive state */
-border-radius: var(--radius-pill);
-padding: 4px;
+container: inline-flex rounded-lg bg-slate-100 p-0.5 h-9 items-center;
+
+/* Individual buttons */
+padding: px-3 py-1.5;
+border-radius: rounded-md;
+font-size: text-[13px];
+font-weight: font-medium;
 
 /* Active button */
 background: white;
-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-font-weight: 600;
+color: text-slate-900;
+box-shadow: shadow-sm;
 
 /* Inactive button */
-color: var(--color-secondary);
-font-weight: 400;
+color: text-slate-500;
+hover: text-slate-700;
 ```
 
 **Comparison Bar (Fixed Mode)**:
@@ -1013,22 +1025,98 @@ font-weight: 400;
   - Track: `h-2 bg-slate-100 rounded-full`
   - Fill: Animated width `transition-all duration-1000 ease-out`
   - Colors: `var(--scenario-a-dot)` / `var(--scenario-b-dot)`
-- **Typography**: Labels `text-xs font-medium text-slate-500`, Values `text-xs font-bold text-slate-900`
+- **Typography**: 
+  - Scenario labels: `text-base font-medium text-gray-700`
+  - Result values: `font-displaySerif text-3xl md:text-4xl font-semibold` (SERIF)
+  - Asset labels: `text-[13px] font-medium text-slate-500`
 
-**RangeBar Visualization (Realistic Mode - Scorecard Layout)**:
-- **Structure**: 3-Column Grid (P10 - Median - P90)
-- **Alignment**:
-  - P10 (Pesimisticky): Left-aligned
-  - Median (Očekávaný střed): Center-aligned, emphasized
-  - P90 (Optimisticky): Right-aligned
-- **Typography**:
-  - Median Value: `text-2xl font-displaySerif font-bold`
-  - Range Values: `text-sm font-medium tabular-nums`
-  - Labels: `text-[10px] uppercase tracking-wider text-slate-400`
-- **Visual Bar**:
-  - Placed *below* the data grid
-  - Width scales relative to the global maximum (largest P90 of both scenarios)
-  - Color matches scenario theme
+### 14.6.1 Monte Carlo Results (Realistic Mode)
+
+**Structure** (Top to Bottom):
+1. Advisor Insight Box (Verdict)
+2. Data Section (Swimlane Blocks)
+3. Methodology Button
+
+**Advisor Insight Box**:
+```css
+container: rounded-xl p-4 mb-6;
+background: dynamic based on winner;
+  - If A wins: #FEF7F0 (light terracotta)
+  - If B wins: #F5F3FF (light purple)
+```
+
+- **Verdict Sentence**: 
+  - Style: `text-base font-semibold text-slate-900 mb-2 text-center leading-snug`
+  - Content: "V {X} % případů vychází lépe {WinnerName}"
+
+- **Probability Bar**:
+  - Style: `h-2.5 rounded-full overflow-hidden flex`
+  - Segments: Two divs with scenario colors, widths = percentages
+
+- **Probability Labels**:
+  - Style: `text-xs font-semibold tabular-nums`
+  - Color: Match scenario colors (A: `#C98D4E`, B: `#7D5AE2`)
+  - Layout: `flex justify-between mt-2`
+
+- **Context Line**:
+  - Style: `text-[10px] text-slate-400 mt-2 text-center uppercase tracking-wide`
+  - Content: "Na základě 10 000 simulací trhu"
+
+**Swimlane Block (Per Scenario)**:
+```
+┌─────────────────────────────────────────┐
+│ ● Scénář A: Vlastní bydlení na hypotéku │ ← Scenario Label
+├─────────────────────────────────────────┤
+│            45 mil. Kč                   │ ← Median (HERO)
+│        OČEKÁVANÝ VÝSLEDEK               │ ← Median Label
+├─────────────────────────────────────────┤
+│    [████████████|███████]               │ ← Range Bar
+├─────────────────────────────────────────┤
+│ 28 mil.                      62 mil.    │ ← Min/Max Values
+│ PESIMISTICKÝ               OPTIMISTICKÝ │ ← Min/Max Labels
+└─────────────────────────────────────────┘
+```
+
+- **Scenario Label Row**:
+  - Layout: `flex items-center gap-1.5 mb-3`
+  - Dot: `h-2 w-2 rounded-full` with scenario color
+  - Text: `text-sm font-semibold text-slate-700`
+
+- **Median Number** (CRITICAL: Sans-Serif, not Serif!):
+  - Style: `font-uiSans text-3xl font-semibold tabular-nums text-slate-900`
+  - Layout: Centered, `text-center mb-2`
+  - Format: "{value} mil. Kč"
+
+- **Median Label**:
+  - Style: `text-[10px] font-medium text-slate-400 uppercase tracking-wide`
+  - Content: "Očekávaný výsledek"
+  - Layout: `mt-1`, centered
+
+- **Range Bar (Floating Chart)**:
+  - Container: `relative h-4 w-full`
+  - Bar: Rounded-full, positioned absolutely using percentages
+  - **NO grey track** - bar floats on whitespace
+  - Median marker: `w-0.5 bg-white rounded-full` with subtle shadow
+  - Global scaling: All bars scaled to `globalMax = max(scenarioA.p90, scenarioB.p90) * 1.1`
+
+- **Min/Max Values**:
+  - Style: `text-xs text-slate-500 tabular-nums`
+  - Layout: `flex justify-between mt-1.5`
+  - Format: "{value} mil."
+
+- **Min/Max Labels**:
+  - Style: `text-[10px] md:text-xs font-medium text-slate-400 uppercase tracking-wide`
+  - Content: "Pesimistický" / "Optimistický"
+  - Layout: `mt-0.5`, left/right aligned
+
+**Scenario Divider**:
+- Style: `border-b border-dashed border-slate-200 my-5`
+
+**Methodology Button**:
+- Style: `rounded-lg bg-slate-50 px-4 py-2 text-sm font-medium text-slate-500`
+- Hover: `hover:bg-slate-100`
+- Layout: Centered, `mt-6`
+- Content: "Metodika a vysvětlení pojmů" with ChevronRight icon
 
 ### 14.7 City and Apartment Selection
 
@@ -1216,15 +1304,26 @@ Input values:      16px (MUST be ≥16px for mobile)
 Helper text:       14px (sm)
 Units:             14px (sm)
 Result labels:     12px (xs, uppercase)
-Result values:     24px → 28px (.calc-result-value, serif)
 Slider labels:     13px (between xs and sm)
+
+FIXED MODE:
+Result values:     24px → 28px (serif, font-displaySerif)
+
+MONTE CARLO MODE:
+Median values:     30px (text-3xl, SANS-SERIF, font-uiSans)
+Range values:      12px (text-xs, sans-serif)
+Micro-labels:      10px (text-[10px], uppercase)
+Verdict text:      16px (text-base, semibold)
+Context text:      10px (text-[10px], uppercase)
 ```
 
 **Font Weight Usage**:
 - Section titles: 600 (semibold)
 - Input labels: 500 (medium)
 - Input values: 400 (regular) + tabular-nums
-- Result values: 600 (semibold)
+- Fixed mode result values: 600 (semibold)
+- Monte Carlo median values: 600 (semibold)
+- Monte Carlo range values: 400 (regular)
 - Helper text: 400 (regular)
 
 ### 14.15 Yearly Overview Table System

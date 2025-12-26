@@ -188,8 +188,8 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           {/* 7. Růst nákladů */}
           <LabeledSliderInput
             id="inflace"
-            label="Růst nákladů (ročně)"
-            description="Údržba, pojištění, fond oprav…"
+            label="Inflace nákladů (ročně)"
+            description="Údržba, pojištění, fond oprav"
             value={state.ocekavanaInflace}
             onChange={(value) => updateState({ ocekavanaInflace: value })}
             unit="percent"

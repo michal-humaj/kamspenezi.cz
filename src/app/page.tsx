@@ -184,57 +184,48 @@ export default function Home() {
           <div className="flex flex-col md:grid md:grid-cols-2 md:gap-12 md:items-start">
             {/* Left Column: Text */}
             <div className="text-left md:pt-4">
-              <p className="font-uiSans text-xs md:text-sm font-medium uppercase tracking-wider text-slate-400 mb-3 md:mb-4">
-                Kalkulačka: vlastní vs nájem
-              </p>
-              <h1 className="font-displaySerif text-4xl font-bold text-slate-900 md:text-6xl tracking-tight">
+              {/* Versus Pills - Above H1 */}
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 md:mb-5">
+                {/* Pill A: Buy */}
+                <span className="inline-flex items-center rounded-full bg-[#F7EAD9] px-3 py-1 text-sm font-semibold text-[#C98D4E]">
+                  <span className="hidden min-[380px]:inline">Scénář A: </span>Koupě
+                </span>
+                
+                {/* Separator */}
+                <span className="text-sm italic text-gray-400">vs</span>
+                
+                {/* Pill B: Rent */}
+                <span className="inline-flex items-center rounded-full bg-[#EAE7FF] px-3 py-1 text-sm font-semibold text-[#7D5AE2]">
+                  <span className="hidden min-[380px]:inline">Scénář B: </span>Nájem<span className="hidden sm:inline"> + ETF</span>
+                </span>
+              </div>
+
+              <h1 className="font-displaySerif text-4xl font-bold text-[#0F172A] md:text-6xl tracking-tight">
                 Bydlet ve vlastním, nebo v nájmu?
               </h1>
               <p className="mt-6 max-w-2xl font-uiSans text-lg leading-relaxed text-slate-600 md:text-xl">
-                Porovnáme, co je finančně výhodnější v horizontu 30 let. Dva scénáře.
+                Porovnáme, co je finančně výhodnější v horizontu 30 let. Spočítejte si, jaký majetek ti vyjde po třiceti letech.
               </p>
-              <ul className="mt-4 max-w-2xl font-uiSans text-base leading-relaxed text-slate-600 space-y-1.5">
-                <li className="flex items-start gap-2.5">
-                  <span className="h-2 w-2 rounded-full shrink-0 mt-[7px]" style={{ background: 'var(--scenario-a-dot)' }} />
-                  Scénář A: Vlastní bydlení na hypotéku
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="h-2 w-2 rounded-full shrink-0 mt-[7px]" style={{ background: 'var(--scenario-b-dot)' }} />
-                  Scénář B: Bydlení v nájmu a investování
-                </li>
-              </ul>
-              {/* Desktop micro-CTA */}
-              <p className="hidden md:block mt-6 font-uiSans text-sm text-slate-500">
-                Začněte výběrem města a velikosti bytu níže.{' '}
-                <button 
-                  onClick={() => {
-                    const target = document.getElementById('zacni-mestem');
-                    const card = document.getElementById('city-card');
-                    if (target) {
-                      // Check for reduced motion preference
-                      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                      
-                      target.scrollIntoView({ 
-                        behavior: prefersReducedMotion ? 'auto' : 'smooth', 
-                        block: 'start' 
-                      });
-                      
-                      // Add highlight animation to card after scroll starts
-                      if (card && !prefersReducedMotion) {
-                        setTimeout(() => {
-                          card.classList.add('card-highlight-animation');
-                          setTimeout(() => {
-                            card.classList.remove('card-highlight-animation');
-                          }, 800);
-                        }, 250);
-                      }
-                    }
-                  }}
-                  className="text-[var(--color-primary)] hover:underline font-medium active:opacity-70 transition-opacity duration-100 motion-reduce:transition-none"
+              
+              <p className="mt-3 max-w-xl text-sm text-slate-500 font-uiSans">
+                Zdarma, bez registrace.
+              </p>
+
+              {/* Hand-drawn Arrow Bridge - Desktop Only */}
+              <div className="hidden md:flex items-center gap-3 mt-8 text-slate-500">
+                <svg 
+                  width="40" 
+                  height="40" 
+                  viewBox="0 0 65 60" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  className="text-slate-400 rotate-12"
                 >
-                  Vybrat město →
-                </button>
-              </p>
+                  <path d="M10 10 C 20 40, 40 50, 50 50" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M35 55 L 50 50 L 55 35" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                <span className="text-base font-medium">Začněte výběrem města</span>
+              </div>
             </div>
 
             {/* Right Column: The Window (Hero Visual) */}
