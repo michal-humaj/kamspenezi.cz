@@ -207,7 +207,7 @@ export function LabeledSliderInput({
   }, []);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {/* Label and Input Row */}
       <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:gap-4">
         {/* Left: Label */}
@@ -289,7 +289,7 @@ export function LabeledSliderInput({
       {middleContent}
 
       {/* Slider Row (Full Width) */}
-      <div className="relative mt-3">
+      <div className="relative mt-1">
         <input
           type="range"
           min={min}

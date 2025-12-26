@@ -27,10 +27,10 @@
   --color-bullet: #9CA3AF;      /* Generic bullets */
 
   /* Scenario Colors */
-  --scenario-a-bg: #F7EAD9;     /* Soft terracotta background */
-  --scenario-a-dot: #C98D4E;    /* Terracotta dot */
-  --scenario-b-bg: #EAE7FF;     /* Soft lilac background */
-  --scenario-b-dot: #7D5AE2;    /* Purple dot */
+  --scenario-a-bg: #FFF7ED;     /* Light warm beige/orange */
+  --scenario-a-dot: #C2410C;    /* Architectural copper/terracotta */
+  --scenario-b-bg: #E3EBE6;     /* Soft sage/mint background */
+  --scenario-b-dot: #2F5C45;    /* Forest green dot */
 
   /* Selection/Active States (Navy/Primary) */
   --selection-border: var(--color-primary); /* Navy border for selected items */
@@ -147,7 +147,7 @@
 
   /* Standard section title with spacing */
   .section-title {
-    @apply font-uiSans font-semibold text-[var(--color-primary)] text-xl md:text-2xl;
+    @apply font-uiSans font-bold text-slate-900 text-xl md:text-2xl;
     letter-spacing: -0.01em;
     margin-bottom: 24px; /* Standard spacing */
   }

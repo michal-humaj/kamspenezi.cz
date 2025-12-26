@@ -80,10 +80,9 @@ export function SiteHeader() {
           <Sheet>
             <SheetTrigger asChild>
               <button
-                className="inline-flex items-center justify-center border p-2 font-uiSans"
+                className="inline-flex items-center justify-center border border-slate-200/70 p-2 font-uiSans"
                 style={{
                   borderRadius: 'var(--radius-pill)',
-                  borderColor: 'var(--border-subtle)',
                   color: 'var(--color-primary)'
                 }}
                 aria-label="Otevřít navigaci"

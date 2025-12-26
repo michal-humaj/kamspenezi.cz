@@ -106,25 +106,15 @@ export function ApartmentSizeCards({
             <button
               key={size}
               onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
-              className={`group rounded-[var(--radius-card)] p-5 text-left bg-white transition-all duration-200 ease-out focus:outline-none border-2 ${
+              className={`group rounded-[var(--radius-card)] p-5 text-left transition-all duration-200 ease-out focus:outline-none border-2 ${
                 isSelected 
-                  ? "border-[#0F172A] relative z-10" 
-                  : "border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md hover:-translate-y-0.5"
+                  ? "border-[#0F172A] relative z-10 bg-white" 
+                  : "border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md hover:-translate-y-0.5 bg-white hover:bg-gray-50"
               }`}
               style={{
                 boxShadow: isSelected 
                   ? "0 12px 24px -6px rgba(15, 23, 42, 0.15)" 
                   : undefined,
-              }}
-              onMouseEnter={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.background = "var(--bg-hover)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.background = "#FFFFFF";
-                }
               }}
             >
               <div className="space-y-2">
@@ -170,10 +160,10 @@ export function ApartmentSizeCards({
                 cardRefs.current[size] = el;
               }}
               onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
-              className={`min-w-[140px] shrink-0 rounded-[18px] p-3 md:p-5 text-left bg-white transition-all duration-200 ease-out focus:outline-none border-2 ${
+              className={`min-w-[140px] shrink-0 rounded-[18px] p-3 md:p-5 text-left transition-all duration-200 ease-out focus:outline-none border-2 ${
                 isSelected 
-                  ? "border-[#0F172A] relative z-10" 
-                  : "border-gray-200 shadow-sm"
+                  ? "border-[#0F172A] relative z-10 bg-white" 
+                  : "border-gray-200 shadow-sm bg-white"
               }`}
               style={{
                 boxShadow: isSelected 

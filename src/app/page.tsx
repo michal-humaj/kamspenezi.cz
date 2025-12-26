@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { CitySelector } from "@/components/calculator/city-selector";
 import { ApartmentSizeCards } from "@/components/calculator/apartment-size-cards";
 import { BasicInputs } from "@/components/calculator/basic-inputs";
@@ -51,10 +52,10 @@ export interface CalculatorState {
   urokovaSazbaMax: number;
 }
 
-// Initial state with Praha + 2+kk preselected
+// Initial state with Praha preselected, apartment size requires user selection
 const initialState: CalculatorState = {
   selectedCity: "Praha",
-  selectedApartmentSize: "2+kk",
+  selectedApartmentSize: null,
   kupniCena: 6000000,
   vlastniZdroje: 10,
   urokovaSazba: 4.7,
@@ -179,64 +180,62 @@ export default function Home() {
       <CalculatorSchema />
       
       {/* Hero Section */}
-      <section className="bg-[#F5F6F8] pt-12 pb-8 md:pt-20 lg:pt-16 lg:pb-8">
+      <section className="bg-[#F5F6F8] pt-10 pb-2 md:pt-16 lg:pt-12 lg:pb-0">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="flex flex-col md:grid md:grid-cols-2 md:gap-12 md:items-start">
             {/* Left Column: Text */}
-            <div className="text-left md:pt-4">
+            <div className="text-left md:pt-10">
               {/* 1. Eyebrow Label */}
-              <p className="text-xs font-bold tracking-widest text-slate-900 uppercase mb-3">
+              <p className="text-xs font-semibold tracking-widest text-slate-700 uppercase mb-2">
                 Online kalkulačka
               </p>
 
               {/* 2. H1 Headline */}
-              <h1 className="font-displaySerif text-4xl font-bold text-[#0F172A] md:text-6xl tracking-tight">
+              <h1 className="font-displaySerif text-4xl font-bold text-[#0F172A] md:text-6xl tracking-tight leading-[1.05] md:leading-[1.1]">
                 Bydlet ve vlastním, nebo v nájmu?
               </h1>
 
               {/* 3. Subtitle */}
-              <p className="mt-6 font-uiSans text-lg leading-relaxed text-slate-600">
-                Spočítejte si, co je finančně výhodnější v horizontu 30 let.
+              <p className="mt-4 font-uiSans text-base leading-relaxed text-slate-700 md:text-lg">
+                 Spočítejte si, co je finančně výhodnější v horizontu 30 let. Porovnáme hypotéku oproti nájmu, kde ušetřené peníze investujete do akcií.
               </p>
 
-              {/* 4. Versus Pills - Below Subtitle */}
-              <div className="flex flex-col items-start mt-6 md:flex-row md:items-center md:gap-3">
+              {/* 4. Scenario Pills - Below Subtitle (Stacked on mobile for readability) */}
+              <div className="flex flex-col items-start gap-2 mt-4 md:flex-row md:items-center md:gap-5">
                 {/* Pill A: Own */}
-                <span className="inline-flex items-center rounded-full bg-[#F7EAD9] px-3 py-1.5 text-sm font-semibold text-[#C98D4E]">
+                <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1.5 text-sm font-semibold text-orange-800">
                   Scénář A: Vlastní bydlení
                 </span>
                 
-                {/* Separator - Centered relative to pills on mobile */}
-                <span className="block text-sm italic text-slate-400 my-1 ml-24 md:my-0 md:ml-0">vs</span>
-                
-                {/* Pill B: Rent */}
-                <span className="inline-flex items-center rounded-full bg-[#EAE7FF] px-3 py-1.5 text-sm font-semibold text-[#7D5AE2]">
+                {/* Pill B: Rent - Forest Green */}
+                <span className="inline-flex items-center rounded-full bg-[#E3EBE6] px-3 py-1.5 text-sm font-semibold text-[#2F5C45]">
                   Scénář B: Nájem a investice
                 </span>
               </div>
 
-              {/* 5. Visual Bridge (Arrow) - Desktop Only */}
-              <div className="hidden md:flex items-center gap-3 mt-8 text-slate-500">
-                <svg 
-                  width="40" 
-                  height="40" 
-                  viewBox="0 0 65 60" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  className="text-slate-400 rotate-12"
-                >
-                  <path d="M10 10 C 20 40, 40 50, 50 50" strokeWidth="2" strokeLinecap="round"/>
-                  <path d="M35 55 L 50 50 L 55 35" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-                <span className="text-base font-medium">Začněte výběrem města</span>
+              {/* Mobile-only Hero Image - Below Pills (Panoramic crop, scaled to hide watermark) */}
+              <div className="mt-5 md:hidden overflow-hidden rounded-[20px]">
+                <Image 
+                  src="/image.png"
+                  alt="Kalkulačka bydlení - porovnání vlastního bydlení a nájmu"
+                  width={400}
+                  height={180}
+                  className="shadow-lg w-full h-[180px] object-cover object-[50%_30%] scale-110"
+                  unoptimized
+                />
               </div>
             </div>
 
             {/* Right Column: The Window (Hero Visual) - Hidden on Mobile */}
-            <div className="hidden md:block md:mt-0">
-              <div 
-                className="bg-stone-700 rounded-[32px] shadow-2xl w-full aspect-[4/3] rotate-1"
-                aria-hidden="true"
+            <div className="hidden md:block md:mt-0 overflow-hidden rounded-[32px]">
+              <Image 
+                src="/image.png"
+                alt="Kalkulačka bydlení - porovnání vlastního bydlení a nájmu"
+                width={600}
+                height={450}
+                className="shadow-[0_25px_80px_-20px_rgba(0,0,0,0.15)] w-full aspect-[4/3] object-cover scale-105 rotate-[1.5deg]"
+                priority
+                unoptimized
               />
             </div>
           </div>
@@ -246,26 +245,21 @@ export default function Home() {
       {/* ===== BAND B: Inputs Workbench (Lilac on mobile) ===== */}
       <div className="bg-[#F4F5FB] md:bg-[#F5F6F8]">
         {/* City and Apartment Selection Section */}
-        <section id="zacni-mestem" className="py-8 lg:pt-0 lg:pb-8 overflow-x-hidden md:overflow-visible scroll-mt-20">
-          <div className="mx-auto max-w-7xl px-0 md:px-6">
-            <div id="city-card" className="md:rounded-[24px] md:bg-white md:p-8 md:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)]">
-              <div className="space-y-2 px-4 md:px-0">
-                <h2 className="section-title">
-                  Začni městem a velikostí bytu
-                </h2>
-                <p className="font-uiSans text-sm leading-relaxed text-slate-600 md:text-base">
-                  Stačí vybrat město a typ bytu. Ceny doplníme za tebe podle dat z českých měst.
-                </p>
-              </div>
+        <section id="zacni-mestem" className="pt-8 pb-8 md:-mt-6 lg:-mt-12 md:pt-4 lg:pt-0 lg:pb-0 overflow-visible scroll-mt-20">
+          <div className="mx-auto max-w-7xl px-4 md:px-6">
+            <div id="city-card">
+              <h2 className="section-title mb-3 md:mb-0">
+                Začni městem a velikostí bytu
+              </h2>
 
-              <div className="mt-6 md:mt-4 px-4 md:px-0">
+              <div className="mt-3 md:mt-4">
                 <CitySelector
                   selectedCity={state.selectedCity}
                   onCitySelect={handleCitySelect}
                 />
               </div>
 
-              <div className="mt-6 md:mt-4">
+              <div className="mt-4 md:mt-4 -mx-4 md:mx-0">
                 <ApartmentSizeCards
                   selectedCity={state.selectedCity}
                   selectedSize={state.selectedApartmentSize}
@@ -273,45 +267,39 @@ export default function Home() {
                 />
               </div>
 
-              {/* Mobile: Show results button after selection */}
-              <div className="mt-4 px-4 md:hidden">
-                  {canViewResults && (
-                    <Button
-                      onClick={scrollToResults}
-                      className="w-full rounded-[var(--radius-pill)] border px-6 py-3 font-uiSans text-base font-medium transition-all duration-75 hover:bg-gray-50 active:scale-[0.98] active:bg-gray-100 focus:outline-none shadow-sm"
-                      style={{
-                        background: "#FFFFFF",
-                        color: "var(--color-primary)",
-                        borderColor: "var(--color-border)",
-                      }}
-                    >
-                      Zobrazit výsledek
-                    </Button>
-                  )}
+              {/* Mobile: Show results button - Primary CTA (Neutral Black) */}
+              <div className="mt-6 pb-4 md:hidden">
+                <Button
+                  onClick={scrollToResults}
+                  disabled={!canViewResults}
+                  className={`w-full rounded-full px-6 py-4 font-uiSans text-base font-bold transition-all duration-150 focus:outline-none ${
+                    canViewResults 
+                      ? "bg-gray-900 text-white shadow-xl hover:shadow-2xl hover:bg-gray-800 active:scale-[0.98]" 
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  }`}
+                >
+                  {canViewResults ? "Zobrazit výsledek →" : "Vyber město a velikost bytu"}
+                </Button>
               </div>
 
-              {/* Mobile-only Hero Image - Below City Selection */}
-              <div className="mt-6 px-4 md:hidden">
-                <div 
-                  className="bg-stone-700 rounded-[24px] shadow-xl w-full h-48 aspect-video"
-                  aria-hidden="true"
-                />
-              </div>
             </div>
           </div>
         </section>
 
+        {/* Spacer between Quick Selection and Detailed Inputs */}
+        <div className="h-0 md:h-8 lg:h-10" />
+
         {/* Inputs Section (Byt, který zvažujete + Accordions) */}
-        <div className="mx-auto max-w-7xl px-4 pt-0 pb-8 md:px-6 lg:pt-8 lg:pb-8">
+        <div className="mx-auto max-w-7xl px-4 pt-0 pb-8 md:px-6 lg:pt-4 lg:pb-8">
           {/* Desktop: Two-column layout / Mobile: Stacked */}
           <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
             {/* Left Column: Inputs - UNIFIED CARD */}
             <div id="nastaveni" className="space-y-6">
               <section
-                className="space-y-0 mb-0 rounded-none border-none shadow-none md:mb-0 md:mx-0 md:rounded-[24px] md:border-0 md:bg-white md:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)] md:overflow-hidden"
+                className="space-y-0 mb-0 rounded-none border-none shadow-none md:mb-0 md:mx-0 md:rounded-[24px] md:border-0 md:bg-white md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)] md:overflow-hidden"
               >
                 {/* Basic Inputs Header + Content */}
-                <div className="px-0 py-8 md:p-8 space-y-6">
+                <div className="px-0 py-4 md:p-8 space-y-6">
                   <h2 className="section-title mb-0">
                     Byt, který zvažujete
                   </h2>
@@ -330,8 +318,8 @@ export default function Home() {
               </section>
             </div>
 
-            {/* Right Column: Results - Desktop only in grid */}
-            <aside id="vysledek-desktop" className="hidden md:block md:sticky md:top-24 md:self-start">
+            {/* Right Column: Results - Desktop only in grid (Sticky) */}
+            <aside id="vysledek-desktop" className="hidden md:block md:sticky md:top-6 md:self-start md:max-h-[calc(100vh-48px)] md:overflow-y-auto">
               <ResultsPanel
                 state={state}
                 resultsMode={resultsMode}

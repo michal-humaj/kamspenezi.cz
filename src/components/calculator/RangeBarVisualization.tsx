@@ -9,7 +9,7 @@ export function RangeBarVisualization() {
     p10: 72000000,
     median: 79928678,
     p90: 85000000,
-    color: "#C98D4E",
+    color: "#C2410C", // Architectural Copper
   };
 
   // Scenario B Data
@@ -17,7 +17,7 @@ export function RangeBarVisualization() {
     p10: 15000000,
     median: 22144799,
     p90: 45000000,
-    color: "#7D5AE2",
+    color: "#2F5C45", // Forest Green
   };
 
   // 1. Calculate the Scale (Global Max Optimistic)
@@ -29,7 +29,7 @@ export function RangeBarVisualization() {
       <div>
         {/* Semantic Header (Full Width) */}
         <div className="flex items-center mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#C98D4E] mr-2" />
+          <div className="w-2 h-2 rounded-full bg-orange-700 mr-2" />
           <span className="text-xs font-bold tracking-wide text-slate-500 font-uiSans">
             Scénář A: Vlastní bydlení na hypotéku
           </span>
@@ -87,7 +87,7 @@ export function RangeBarVisualization() {
       <div>
         {/* Semantic Header (Full Width) */}
         <div className="flex items-center mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#7D5AE2] mr-2" />
+          <div className="w-2 h-2 rounded-full bg-[#2F5C45] mr-2" />
           <span className="text-xs font-bold tracking-wide text-slate-500 font-uiSans">
             Scénář B: Bydlení v nájmu a investování
           </span>

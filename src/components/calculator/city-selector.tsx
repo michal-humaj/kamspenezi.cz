@@ -58,27 +58,30 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             <button
               key={city.name}
               onClick={() => onCitySelect(city.name)}
-              className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
+              className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-3 font-uiSans text-sm font-medium transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 background: isSelected ? "var(--color-primary)" : "#FFFFFF",
                 color: isSelected ? "var(--color-on-primary)" : "var(--color-primary)",
-                border: `1px solid ${isSelected ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
+                border: `1.5px solid ${isSelected ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
                 boxShadow: isSelected 
-                  ? "0 8px 20px -4px rgba(15, 23, 42, 0.1)" 
-                  : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                  ? "0 12px 24px -6px rgba(15, 23, 42, 0.15)" 
+                  : "0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)",
+                transform: "translateY(0)",
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "rgb(249, 250, 251)";
                   e.currentTarget.style.borderColor = "rgb(209, 213, 219)";
-                  e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
+                  e.currentTarget.style.boxShadow = "0 8px 16px -4px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
                   e.currentTarget.style.background = "#FFFFFF";
                   e.currentTarget.style.borderColor = "rgb(229, 231, 235)";
-                  e.currentTarget.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.05)";
+                  e.currentTarget.style.boxShadow = "0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)";
+                  e.currentTarget.style.transform = "translateY(0)";
                 }
               }}
             >
@@ -90,27 +93,30 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
         {/* "Více měst" dropdown button - shows selected city if not popular */}
         <button
           onClick={() => setShowAllCities(!showAllCities)}
-          className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-2.5 font-uiSans text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0 inline-flex items-center gap-1.5"
+          className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-3 font-uiSans text-sm font-medium transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0 inline-flex items-center gap-1.5"
           style={{
             background: showSelectedInMoreCities ? "var(--color-primary)" : "#FFFFFF",
             color: showSelectedInMoreCities ? "var(--color-on-primary)" : "var(--color-primary)",
-            border: `1px solid ${showSelectedInMoreCities ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
+            border: `1.5px solid ${showSelectedInMoreCities ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
             boxShadow: showSelectedInMoreCities 
-              ? "0 8px 20px -4px rgba(15, 23, 42, 0.1)" 
-              : "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+              ? "0 12px 24px -6px rgba(15, 23, 42, 0.15)" 
+              : "0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)",
+            transform: "translateY(0)",
           }}
           onMouseEnter={(e) => {
             if (!showSelectedInMoreCities) {
               e.currentTarget.style.background = "rgb(249, 250, 251)";
               e.currentTarget.style.borderColor = "rgb(209, 213, 219)";
-              e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)";
+              e.currentTarget.style.boxShadow = "0 8px 16px -4px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
+              e.currentTarget.style.transform = "translateY(-2px)";
             }
           }}
           onMouseLeave={(e) => {
             if (!showSelectedInMoreCities) {
               e.currentTarget.style.background = "#FFFFFF";
               e.currentTarget.style.borderColor = "rgb(229, 231, 235)";
-              e.currentTarget.style.boxShadow = "0 1px 2px 0 rgba(0, 0, 0, 0.05)";
+              e.currentTarget.style.boxShadow = "0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)";
+              e.currentTarget.style.transform = "translateY(0)";
             }
           }}
         >

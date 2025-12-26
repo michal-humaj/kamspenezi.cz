@@ -67,7 +67,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       {/* Header Scenario A */}
       <div className="mb-1">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-[#C98D4E]" />
+          <div className="w-2 h-2 rounded-full bg-orange-700" />
           <span className="text-base font-semibold text-slate-900">Scénář A: Vlastní bydlení na hypotéku</span>
         </div>
         <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
@@ -138,7 +138,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         {/* Header Scenario B */}
         <div className="mb-1">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#7D5AE2]" />
+            <div className="w-2 h-2 rounded-full bg-[#2F5C45]" />
             <span className="text-base font-semibold text-slate-900">Scénář B: Bydlení v nájmu a investování</span>
           </div>
           <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
@@ -166,15 +166,15 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       />
 
       {/* Mobile CTA Button */}
-      <div className="md:hidden mt-8">
+      <div className="md:hidden mt-8 pb-2">
         <button
           type="button"
           onClick={() => {
             document.getElementById("vysledek")?.scrollIntoView({ behavior: "smooth" });
           }}
-          className="w-full rounded-full bg-[var(--color-primary)] py-3 font-uiSans text-base font-semibold text-white shadow-lg active:scale-[0.98] transition-transform"
+          className="w-full rounded-full bg-gray-900 hover:bg-gray-800 py-4 font-uiSans text-base font-bold text-white shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all"
         >
-          Zobrazit výsledek
+          Zobrazit výsledek →
         </button>
       </div>
     </div>

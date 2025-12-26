@@ -61,8 +61,8 @@ function formatMillions(value: number): string {
 
 // Scenario colors
 const COLORS = {
-  A: "#C98D4E",
-  B: "#7D5AE2",
+  A: "#C2410C", // Architectural Copper/Terracotta
+  B: "#2F5C45", // Forest Green
 };
 
 
@@ -193,40 +193,37 @@ function MonteCarloResults() {
 
   return (
     <div>
-      {/* Advisor Insight Box */}
-      <div 
-        className="rounded-xl p-4 mb-8"
-        style={{ 
-          backgroundColor: winnerIsA ? "#FEF7F0" : "#F5F3FF",
-        }}
-      >
+      {/* Advisor Insight Section (No background - sits on white card) */}
+      <div className="mb-8">
         {/* The Verdict Sentence */}
-        <p className="font-uiSans text-base font-semibold text-slate-900 mb-2 text-center leading-snug">
+        <p className="font-uiSans text-base font-bold text-gray-900 mb-3 text-center leading-snug">
           V {winnerProb} % případů vychází lépe {winnerName}
         </p>
 
-        {/* The Probability Bar */}
-        <div className="h-2.5 rounded-full overflow-hidden flex">
-          <div 
-            className="h-full"
-            style={{ width: `${probA}%`, backgroundColor: COLORS.A }} 
-          />
-          <div 
-            className="h-full"
-            style={{ width: `${probB}%`, backgroundColor: COLORS.B }} 
-          />
+        {/* The Probability Bar with Grey Track */}
+        <div className="h-3 rounded-full overflow-hidden bg-gray-100">
+          <div className="h-full flex">
+            <div 
+              className="h-full rounded-l-full"
+              style={{ width: `${probA}%`, backgroundColor: COLORS.A }} 
+            />
+            <div 
+              className="h-full rounded-r-full"
+              style={{ width: `${probB}%`, backgroundColor: COLORS.B }} 
+            />
+          </div>
         </div>
 
         {/* Labels with percentages */}
         <div className="flex justify-between mt-2">
           <span 
-            className="font-uiSans text-xs font-semibold tabular-nums"
+            className="font-uiSans text-xs font-bold tabular-nums"
             style={{ color: COLORS.A }}
           >
             A: {probA} %
           </span>
           <span 
-            className="font-uiSans text-xs font-semibold tabular-nums"
+            className="font-uiSans text-xs font-bold tabular-nums"
             style={{ color: COLORS.B }}
           >
             B: {probB} %
@@ -234,7 +231,7 @@ function MonteCarloResults() {
         </div>
 
         {/* Context */}
-        <p className="font-uiSans text-[10px] text-stone-600 mt-2 text-center uppercase tracking-wide">
+        <p className="font-uiSans text-[11px] text-slate-500 mt-2 text-center uppercase tracking-wide">
           Na základě {data.simulations.toLocaleString("cs-CZ")} simulací trhu
         </p>
       </div>
@@ -357,10 +354,10 @@ export function ResultsPanel({
   const canViewResults = state.selectedCity && state.selectedApartmentSize;
 
   return (
-    <div className="rounded-none border-t border-gray-100 md:border-0 px-4 py-6 shadow-none md:mx-0 md:rounded-[24px] md:bg-white md:p-8 md:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)]">
+    <div className="rounded-none border-t border-gray-100 md:border-0 px-4 py-6 shadow-none md:mx-0 md:rounded-[24px] md:bg-white md:p-8 md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)]">
       {/* Header Row: Title + Toggle */}
       <div className="flex items-center justify-between gap-4 mb-4">
-        <h2 className="font-uiSans text-xl md:text-2xl font-semibold text-[var(--color-primary)] tracking-tight">
+        <h2 className="section-title mb-0">
           Čisté jmění za 30 let
         </h2>
         {canViewResults && (
