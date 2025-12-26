@@ -8,7 +8,6 @@ import { BasicInputs } from "@/components/calculator/basic-inputs";
 import { UncertaintyInputs } from "@/components/calculator/uncertainty-inputs";
 import { AdvancedInputs } from "@/components/calculator/advanced-inputs";
 import { ResultsPanel } from "@/components/calculator/results-panel";
-import { Button } from "@/components/ui/button";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
 import { YearlyOverviewTable, type YearlyRow } from "@/components/calculator/YearlyOverviewTable";
 import { YearlyBreakdownMobile } from "@/components/calculator/yearly-breakdown-mobile";
@@ -155,8 +154,6 @@ export default function Home() {
     }));
   }, [calculationResults]);
 
-  const canViewResults = state.selectedCity && state.selectedApartmentSize;
-
   const scrollToResults = () => {
     const element = document.getElementById("vysledek");
     if (element) {
@@ -213,14 +210,14 @@ export default function Home() {
                 </span>
               </div>
 
-              {/* Mobile-only Hero Image - Below Pills (Panoramic crop, scaled to hide watermark) */}
-              <div className="mt-5 md:hidden overflow-hidden rounded-[20px]">
+              {/* Mobile-only Hero Image - Full Bleed Panoramic Band (no shadow, no radius) */}
+              <div className="mt-6 mb-0 md:hidden -mx-4 w-[calc(100%+2rem)]">
                 <Image 
                   src="/image.png"
                   alt="Kalkulačka bydlení - porovnání vlastního bydlení a nájmu"
-                  width={400}
-                  height={180}
-                  className="shadow-lg w-full h-[180px] object-cover object-[50%_30%] scale-110"
+                  width={800}
+                  height={176}
+                  className="w-full h-44 object-cover object-[center_30%]"
                   unoptimized
                 />
               </div>
@@ -245,7 +242,7 @@ export default function Home() {
       {/* ===== BAND B: Inputs Workbench (Lilac on mobile) ===== */}
       <div className="bg-[#F4F5FB] md:bg-[#F5F6F8]">
         {/* City and Apartment Selection Section */}
-        <section id="zacni-mestem" className="pt-8 pb-8 md:-mt-6 lg:-mt-12 md:pt-4 lg:pt-0 lg:pb-0 overflow-visible scroll-mt-20">
+        <section id="zacni-mestem" className="pt-5 pb-8 md:-mt-6 lg:-mt-12 md:pt-4 lg:pt-0 lg:pb-0 overflow-visible scroll-mt-20">
           <div className="mx-auto max-w-7xl px-4 md:px-6">
             <div id="city-card">
               <h2 className="section-title mb-3 md:mb-0">
@@ -267,19 +264,14 @@ export default function Home() {
                 />
               </div>
 
-              {/* Mobile: Show results button - Primary CTA (Neutral Black) */}
+              {/* Mobile: Show results button - Primary CTA (Neutral Black, Chunky) */}
               <div className="mt-6 pb-4 md:hidden">
-                <Button
+                <button
                   onClick={scrollToResults}
-                  disabled={!canViewResults}
-                  className={`w-full rounded-full px-6 py-4 font-uiSans text-base font-bold transition-all duration-150 focus:outline-none ${
-                    canViewResults 
-                      ? "bg-gray-900 text-white shadow-xl hover:shadow-2xl hover:bg-gray-800 active:scale-[0.98]" 
-                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  }`}
+                  className="w-full rounded-full bg-gray-900 hover:bg-gray-800 py-4 font-uiSans text-base font-bold text-white shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all"
                 >
-                  {canViewResults ? "Zobrazit výsledek →" : "Vyber město a velikost bytu"}
-                </Button>
+                  Zobrazit výsledek →
+                </button>
               </div>
 
             </div>
