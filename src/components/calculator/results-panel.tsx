@@ -102,24 +102,28 @@ function SwimlaneBlock({
       </div>
 
       {/* Data Block */}
-      <div>
-        {/* Big Median Number + Label */}
+      <div className="mt-2">
+        {/* Top-Label Layout: Label -> Number -> Bar */}
         <div className="text-center">
-          <span 
-            className="font-uiSans text-2xl font-bold tabular-nums"
-            style={{ color: color }}
-          >
-            {formatMillions(median)} mil. Kč
-          </span>
-          <div className="my-0.5">
-            <span className="font-uiSans text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+          {/* 1. Label (Top) */}
+          <div className="mb-0">
+            <span className="font-uiSans text-[10px] font-medium text-slate-400 uppercase tracking-wide">
               Očekávaný výsledek
+            </span>
+          </div>
+          {/* 2. Big Number */}
+          <div className="mb-1">
+            <span 
+              className="font-uiSans text-2xl font-bold tabular-nums"
+              style={{ color: color }}
+            >
+              {formatMillions(median)} mil. Kč
             </span>
           </div>
         </div>
 
-        {/* Chart Bar */}
-        <div className="mt-0.5 relative h-4 w-full">
+        {/* 3. Chart Bar */}
+        <div className="relative h-4 w-full">
           <div
             className="absolute top-0 h-full rounded-full"
             style={{
@@ -230,7 +234,7 @@ function MonteCarloResults() {
         </div>
 
         {/* Context */}
-        <p className="font-uiSans text-[10px] text-slate-500 mt-2 text-center uppercase tracking-wide">
+        <p className="font-uiSans text-[10px] text-stone-600 mt-2 text-center uppercase tracking-wide">
           Na základě {data.simulations.toLocaleString("cs-CZ")} simulací trhu
         </p>
       </div>

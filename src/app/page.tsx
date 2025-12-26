@@ -184,34 +184,38 @@ export default function Home() {
           <div className="flex flex-col md:grid md:grid-cols-2 md:gap-12 md:items-start">
             {/* Left Column: Text */}
             <div className="text-left md:pt-4">
-              {/* Versus Pills - Above H1 */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 md:mb-5">
-                {/* Pill A: Buy */}
-                <span className="inline-flex items-center rounded-full bg-[#F7EAD9] px-3 py-1 text-sm font-semibold text-[#C98D4E]">
-                  <span className="hidden min-[380px]:inline">Scénář A: </span>Koupě
-                </span>
-                
-                {/* Separator */}
-                <span className="text-sm italic text-gray-400">vs</span>
-                
-                {/* Pill B: Rent */}
-                <span className="inline-flex items-center rounded-full bg-[#EAE7FF] px-3 py-1 text-sm font-semibold text-[#7D5AE2]">
-                  <span className="hidden min-[380px]:inline">Scénář B: </span>Nájem<span className="hidden sm:inline"> + ETF</span>
-                </span>
-              </div>
+              {/* 1. Eyebrow Label */}
+              <p className="text-xs font-bold tracking-widest text-slate-900 uppercase mb-3">
+                Online kalkulačka
+              </p>
 
+              {/* 2. H1 Headline */}
               <h1 className="font-displaySerif text-4xl font-bold text-[#0F172A] md:text-6xl tracking-tight">
                 Bydlet ve vlastním, nebo v nájmu?
               </h1>
-              <p className="mt-6 max-w-2xl font-uiSans text-lg leading-relaxed text-slate-600 md:text-xl">
-                Porovnáme, co je finančně výhodnější v horizontu 30 let. Spočítejte si, jaký majetek ti vyjde po třiceti letech.
-              </p>
-              
-              <p className="mt-3 max-w-xl text-sm text-slate-500 font-uiSans">
-                Zdarma, bez registrace.
+
+              {/* 3. Subtitle */}
+              <p className="mt-6 font-uiSans text-lg leading-relaxed text-slate-600">
+                Spočítejte si, co je finančně výhodnější v horizontu 30 let.
               </p>
 
-              {/* Hand-drawn Arrow Bridge - Desktop Only */}
+              {/* 4. Versus Pills - Below Subtitle */}
+              <div className="flex flex-col items-start mt-6 md:flex-row md:items-center md:gap-3">
+                {/* Pill A: Own */}
+                <span className="inline-flex items-center rounded-full bg-[#F7EAD9] px-3 py-1.5 text-sm font-semibold text-[#C98D4E]">
+                  Scénář A: Vlastní bydlení
+                </span>
+                
+                {/* Separator - Centered relative to pills on mobile */}
+                <span className="block text-sm italic text-slate-400 my-1 ml-24 md:my-0 md:ml-0">vs</span>
+                
+                {/* Pill B: Rent */}
+                <span className="inline-flex items-center rounded-full bg-[#EAE7FF] px-3 py-1.5 text-sm font-semibold text-[#7D5AE2]">
+                  Scénář B: Nájem a investice
+                </span>
+              </div>
+
+              {/* 5. Visual Bridge (Arrow) - Desktop Only */}
               <div className="hidden md:flex items-center gap-3 mt-8 text-slate-500">
                 <svg 
                   width="40" 
@@ -228,10 +232,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Column: The Window (Hero Visual) */}
-            <div className="mt-8 md:mt-0">
+            {/* Right Column: The Window (Hero Visual) - Hidden on Mobile */}
+            <div className="hidden md:block md:mt-0">
               <div 
-                className="bg-stone-700 rounded-[24px] md:rounded-[32px] shadow-2xl w-full aspect-[16/9] md:aspect-[4/3] md:rotate-1"
+                className="bg-stone-700 rounded-[32px] shadow-2xl w-full aspect-[4/3] rotate-1"
                 aria-hidden="true"
               />
             </div>
@@ -284,6 +288,14 @@ export default function Home() {
                       Zobrazit výsledek
                     </Button>
                   )}
+              </div>
+
+              {/* Mobile-only Hero Image - Below City Selection */}
+              <div className="mt-6 px-4 md:hidden">
+                <div 
+                  className="bg-stone-700 rounded-[24px] shadow-xl w-full h-48 aspect-video"
+                  aria-hidden="true"
+                />
               </div>
             </div>
           </div>
