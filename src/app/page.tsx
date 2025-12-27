@@ -11,7 +11,7 @@ import { ResultsPanel } from "@/components/calculator/results-panel";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
 import { YearlyOverviewTable, type YearlyRow } from "@/components/calculator/YearlyOverviewTable";
 import { YearlyBreakdownMobile } from "@/components/calculator/yearly-breakdown-mobile";
-import { CalculatorSchema } from "@/components/seo/calculator-schema";
+import { FAQSection } from "@/components/home/faq-section";
 import { calculatorDefaults } from "@/data/calculator-defaults";
 import type { ApartmentSize } from "@/data/calculator-defaults.types";
 
@@ -215,8 +215,6 @@ export default function Home() {
 
   return (
     <main className="bg-[#F5F6F8] min-h-screen">
-      <CalculatorSchema />
-      
       {/* Hero Section */}
       <section className="bg-[#F5F6F8] pt-10 pb-2 md:pt-16 lg:pt-12 lg:pb-0">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -391,6 +389,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* FAQ Section */}
+      <FAQSection />
     </main>
   );
 }

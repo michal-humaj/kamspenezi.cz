@@ -4,6 +4,10 @@ import { Figtree, Newsreader } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { OrganizationSchema } from "@/components/seo/organization-schema";
+import { PersonSchema } from "@/components/seo/person-schema";
+import { FAQSchema } from "@/components/seo/faq-schema";
+import { CalculatorSchema } from "@/components/seo/calculator-schema";
 
 import "./globals.css";
 
@@ -48,12 +52,21 @@ export const metadata: Metadata = {
     locale: "cs_CZ",
     url: "https://kamspenezi.cz",
     siteName: "kamspenezi.cz",
+    images: [
+      {
+        url: "/hero-couch.webp",
+        width: 1600,
+        height: 873,
+        alt: "Kalkulačka bydlení - porovnání vlastního bydlení a nájmu",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Kalkulačka bydlení: Spočítej si vlastní vs. nájem",
     description:
       "Zadej kupní cenu bytu, hypotéku a nájem. Porovnej, kolik ti vyjde po 30 letech.",
+    images: ["/hero-couch.webp"],
   },
   alternates: {
     canonical: "https://kamspenezi.cz",
@@ -83,6 +96,11 @@ export default function RootLayout({
         }}
       >
         <GoogleAnalytics />
+        {/* Structured Data Schemas for SEO */}
+        <OrganizationSchema />
+        <PersonSchema />
+        <FAQSchema />
+        <CalculatorSchema />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>

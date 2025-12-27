@@ -24,7 +24,7 @@ export function CalculatorSchema() {
       "Data pro všech 13 českých krajských měst",
       "Zdarma bez registrace",
     ],
-    "screenshot": "https://kamspenezi.cz/og-calculator.png",
+    "screenshot": "https://kamspenezi.cz/hero-couch.webp",
     "author": {
       "@type": "Person",
       "name": "Michal Humaj",

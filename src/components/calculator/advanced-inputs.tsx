@@ -188,9 +188,9 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             description="Malování, podlahy, koupelna, kuchyň, drobné opravy. Ročně."
             tooltip={
               <div className="space-y-2">
-                <p><strong>Co zahrnuje:</strong> Interiérové náklady vlastníka – malování, obnova podlah, koupelny, kuchyně a drobné opravy (sifony, baterie, elektro).</p>
-                <p><strong>Co nezahrnuje:</strong> Společné části domu (střecha, fasáda, výtah) – ty jsou ve fondu oprav.</p>
-                <p className="text-emerald-700 font-medium">💡 Nový byt nebo po rekonstrukci? Snižte hodnotu na cca 30–35 % výchozí hodnoty. U menších bytů to odpovídá přibližně 5–6 tis. Kč/rok, u větších 7–9 tis. Kč/rok.</p>
+                <p><strong>Co zahrnuje:</strong> Interiérové náklady vlastníka – malování, obnova podlah, koupelny, kuchyně a drobné opravy.</p>
+                <p><strong>Co nezahrnuje:</strong> Společné části domu (střecha, fasáda, výtah) – ty jsou ve fondu oprav. Spotřebiče a nábytek (ty musí kupovat i nájemník).</p>
+                <p className="text-emerald-700 font-medium">💡 Nový byt nebo po rekonstrukci? Snižte na 30–35 % výchozí hodnoty: menší byty ~4–5 tis. Kč/rok, větší ~6–9 tis. Kč/rok.</p>
               </div>
             }
             value={state.nakladyUdrzba}

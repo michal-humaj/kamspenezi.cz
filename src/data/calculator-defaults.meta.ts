@@ -115,6 +115,22 @@ export const calculatorDefaultsMeta = {
       methodology: "AI estimate; replace with audited sources",
       coverage: "all",
     },
+    "goldman-sachs-global-outlook-2024": {
+      name: "Goldman Sachs Global Stock Outlook",
+      url: "https://www.goldmansachs.com/insights/articles/global-stocks-are-forecast-to-return-7-point-7-percent-annually-in-coming-decade",
+      retrievedAt: "2025-12-27",
+      methodology: "10-year forward equity return forecast based on nominal GDP growth, corporate profitability, and shareholder distributions.",
+      coverage: "Global equities (MSCI AC World)",
+      notes: "Forecasts 7.7% annual return for global stocks (USD). Historical since 1985: 9.3%, since 2000: 7.7%. S&P 500 only forecast is ~3% due to high US valuations.",
+    },
+    "vanguard-cma-2024": {
+      name: "Vanguard Capital Market Assumptions 2024",
+      url: "https://investor.vanguard.com/investor-resources-education/news/vanguard-economic-market-outlook-2024-global-summary",
+      retrievedAt: "2025-12-27",
+      methodology: "10-year expected returns from Vanguard Capital Markets Model (VCMM).",
+      coverage: "Global equities by region",
+      notes: "US equities: 4.2-6.2%, Developed ex-US: 7.0-9.0%, Emerging markets: 6.6-8.6%. Non-US expected to outperform due to lower valuations.",
+    },
     "svj-predseda-2025": {
       name: "SVJ PŘEDSEDA - Kolik se má platit do fondu oprav",
       url: "https://svjpredseda.cz/kolik-se-ma-platit-fondu-oprav/",
@@ -200,6 +216,14 @@ export const calculatorDefaultsMeta = {
       methodology: "Official Czech National Bank macroeconomic forecast. Published November 6, 2025, based on data to October 24, 2025. Includes inflation, GDP, 3M PRIBOR, and CZK/EUR projections.",
       coverage: "National (Czech Republic), 2025-2027 horizon",
       notes: "Key forecasts: Inflation 2.5%/2.2%/2.5% (2025/2026/2027), 3M PRIBOR 3.5%/3.5%/3.8% (2025/2026/2027). REPO rate stable at 3.5%.",
+    },
+    "csu-mzdy-kraje-q3-2025": {
+      name: "ČSÚ - Průměrné mzdy v krajích Q3 2025",
+      url: "https://www.kurzy.cz/mzda/prumerne-mzdy-regiony-podrobne/",
+      retrievedAt: "2025-12-27",
+      methodology: "Regional average wages from Czech Statistical Office (ČSÚ) Strukturální mzdová statistika. Data for Q3 2025 via Kurzy.cz aggregator. Used to derive regional cost coefficients for labor-intensive services (renovation, maintenance).",
+      coverage: "14 Czech regions (kraje)",
+      notes: "Key wages: ČR average 48,936 Kč, Praha 62,022 Kč (+27%), Karlovarský 41,597 Kč (-15%). Used hybrid formula: regionalCoef = 0.4 (material) + 0.6 × (city_wage/national_wage) to adjust maintenance costs. Praha coef=1.16, others 0.91-0.99.",
     },
   } as Record<string, SourceMeta>,
 
@@ -449,12 +473,12 @@ export const calculatorDefaultsMeta = {
     },
     nakladyUdrzba: {
       quality: "DERIVED" as DataQuality,
-      sourceIds: ["cenikyremesel-2025-12"],
-      methodology: "Annual interior maintenance cost using fixed+variable lifecycle model: nakladyUdrzba = baseFixed(layout) + ratePerM2 × m². Variable components (per m² floor): Painting (93 Kč/m² wall × 2.6 paintAreaFactor ÷ 7 yrs = 34.5 Kč/m²/yr) + Flooring (660 Kč/m² ÷ 17 yrs = 38.8 Kč/m²/yr) = 73 Kč/m²/yr. Fixed components (per layout): Bathroom (18k Kč/m² × size ÷ 22 yrs) + Kitchen (85-200k Kč ÷ 18 yrs) + Minor repairs (2.5k Kč/yr).",
+      sourceIds: ["cenikyremesel-2025-12", "csu-mzdy-kraje-q3-2025"],
+      methodology: "Annual interior maintenance cost using fixed+variable lifecycle model with regional wage adjustment: nakladyUdrzba = (baseFixed(layout) + 73 × m²) × regionalCoef, rounded to nearest 1000 Kč. Variable: Painting (34.5 Kč/m²/yr) + Flooring (38.8 Kč/m²/yr) = 73 Kč/m²/yr. Fixed: Bathroom + Kitchen + Minor repairs. Regional coefficient = 0.4 (material, no diff) + 0.6 × (city_wage / national_wage). Praha=1.16, others=0.91-0.99.",
       retrievedAt: "2025-12-27",
       derivedFrom: ["squareMeters"],
-      formula: "baseFixed(layout) + 73 × squareMeters; baseFixed: 1+kk=10k, 2+kk=13k, 3+kk=16k, 4+kk=22k Kč/year",
-      notes: "Annual CZK. Interior-only owner costs (malování, podlahy, koupelna, kuchyň, drobné opravy). Excludes SVJ/společné části (fond oprav). Labor prices from CeníkyŘemesel.cz (Dec 2025), material costs from market research. Bathroom sizes: 1+kk=4m², 2+kk=5m², 3+kk=6m², 4+kk=10m² (1.5 bathrooms). Kitchen costs: 1+kk=85k, 2+kk=120k, 3+kk=150k, 4+kk=200k Kč. City coefficient = 1.0 (no defensible regional data). Pro nový/zrekonstruovaný byt snižte na ~30-35% defaultu.",
+      formula: "(baseFixed(layout) + 73 × m²) × regionalCoef; baseFixed: 1+kk=10k, 2+kk=13k, 3+kk=16k, 4+kk=22k Kč/year",
+      notes: "Annual CZK. Interior-only owner costs: malování, podlahy, koupelna, kuchyň, drobné opravy. EXCLUDES spotřebiče (ty musí kupovat i nájemník). Excludes nábytek and SVJ/společné části. Regional coefficients from ČSÚ Q3 2025 wages (Praha +16%, Karlovarský kraj -9%). Pro nový/zrekonstruovaný byt (do 10 let od rekonstrukce) snižte na 30-35% defaultu.",
     },
     zarizeniNemovitosti: {
       quality: "DERIVED" as DataQuality,
@@ -467,6 +491,15 @@ export const calculatorDefaultsMeta = {
     // =========================================================================
     // Global Rate Parameters
     // =========================================================================
+    vynosInvestice: {
+      quality: "VERIFIED" as DataQuality,
+      sourceIds: ["goldman-sachs-global-outlook-2024", "vanguard-cma-2024"],
+      methodology: "Expected nominal annual return for globally diversified equity portfolio over 30-year horizon. Triangulated from: (1) Goldman Sachs global stocks forecast 7.7% (10yr), (2) Vanguard developed ex-US 7-9%, (3) MSCI World since 2000: 7.7%, (4) Historical MSCI World since 1985: 9.3%. For 30yr horizon, 7% balances current valuations vs. long-term mean reversion.",
+      retrievedAt: "2025-12-27",
+      derivedFrom: ["historical-returns", "institutional-forecasts"],
+      formula: "Weighted consideration: GS global 7.7% + Vanguard non-US midpoint 8% + valuation drag → 7.0%",
+      notes: "Annual percentage rate (%), nominal (before inflation). Represents global diversified equity portfolio (MSCI World / All-Country World style). NOT just US stocks (S&P 500 forecast is only 3-5% due to high valuations). For conservative planning, user can lower to 6%. For optimistic scenario, 8%.",
+    },
     urokovaSazbaHypoteky: {
       quality: "VERIFIED" as DataQuality,
       sourceIds: ["hypoindex-2025-12"],

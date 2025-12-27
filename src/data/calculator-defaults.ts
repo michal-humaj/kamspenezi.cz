@@ -65,10 +65,10 @@ type DefaultsMeta = {
 // =============================================================================
 
 export const calculatorDefaults: CalculatorDefaults = {
-  lastUpdated: "2025-01-15",
+  lastUpdated: "2025-12-27",
   
   global: {
-    vynosInvestice: 8.0,                  // PLACEHOLDER - historical S&P 500 average
+    vynosInvestice: 7.0,                  // VERIFIED - GS/Vanguard 10yr forecast + 30yr horizon
     urokovaSazbaHypoteky: 4.9,            // VERIFIED - Swiss Life Hypoindex Dec 2025
     urokovaSazbaHypotekyFuture: 4.5,      // DERIVED - ČNB PRIBOR forecast + equilibrium
     ocekavanaInflace: 2.5,                // VERIFIED - ČNB Inflation Forecast Autumn 2025
@@ -88,7 +88,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,     // DERIVED - IKEA baseline
           danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 14000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -98,7 +98,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -108,7 +108,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 1700,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 26000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 15500000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -118,7 +118,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 3200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 2200,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 30000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 35000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -136,7 +136,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 6300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -146,7 +146,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 17000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 8800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -156,7 +156,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 22000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -166,7 +166,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 29000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -184,7 +184,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -194,7 +194,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 4400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -204,7 +204,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 5900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -214,7 +214,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -232,7 +232,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -242,7 +242,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 17000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -252,7 +252,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 7800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -262,7 +262,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 29000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -280,7 +280,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 600,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -290,7 +290,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 6500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -300,7 +300,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -310,7 +310,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 27000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -328,7 +328,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 700,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -338,7 +338,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 1000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 6600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -348,7 +348,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -358,7 +358,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 1900,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -376,7 +376,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -386,7 +386,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -396,7 +396,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 7600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -406,7 +406,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 3100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -424,7 +424,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 900,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 600,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 11000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -434,7 +434,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,     // DERIVED - IKEA baseline
           danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -444,7 +444,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 7300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -454,7 +454,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 27000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -472,7 +472,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -482,7 +482,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -492,7 +492,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -502,7 +502,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 3000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -520,7 +520,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 500,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 11000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 2300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -530,7 +530,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -540,7 +540,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2300,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -550,7 +550,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2800,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1900,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 27000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -568,7 +568,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 900,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 600,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 11000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -578,7 +578,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1800,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1200,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -588,7 +588,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1700,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 5700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -598,7 +598,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 3400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2300,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -616,7 +616,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 800,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -626,7 +626,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 5300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -636,7 +636,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 6900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -646,7 +646,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },
@@ -664,7 +664,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 900,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,           // DERIVED - baseFixed(1+kk) + 73×m²
+          nakladyUdrzba: 13000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "2+kk": {
           kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -674,7 +674,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
           danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,           // DERIVED - baseFixed(2+kk) + 73×m²
+          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "3+kk": {
           kupniCena: 5600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -684,7 +684,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
           danZNemovitosti: 2300,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,           // DERIVED - baseFixed(3+kk) + 73×m²
+          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
         "4+kk": {
           kupniCena: 7200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -694,7 +694,7 @@ export const calculatorDefaults: CalculatorDefaults = {
           zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
           danZNemovitosti: 3000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,           // DERIVED - baseFixed(4+kk) + 73×m²
+          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
         },
       },
     },

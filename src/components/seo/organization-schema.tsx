@@ -8,7 +8,7 @@ export function OrganizationSchema() {
     "@type": "Organization",
     "name": "kamspenezi.cz",
     "url": "https://kamspenezi.cz",
-    "logo": "https://kamspenezi.cz/logo.png",
+    "logo": "https://kamspenezi.cz/logo-mark.svg",
     "description": "Nezávislá kalkulačka pro lidi v Česku, kteří chtějí dělat informovaná rozhodnutí o bydlení a investicích.",
     "founder": {
       "@type": "Person",
