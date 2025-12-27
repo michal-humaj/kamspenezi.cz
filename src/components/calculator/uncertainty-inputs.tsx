@@ -42,7 +42,7 @@ export function UncertaintyInputs({ state, updateState }: UncertaintyInputsProps
             value={state.rustHodnotyExpected}
             onChange={(v) => updateState({ rustHodnotyExpected: v })}
             unit="percent"
-            min={-5}
+            min={0}
             max={15}
             step={0.1}
             formatter={formatPercent}
@@ -58,7 +58,7 @@ export function UncertaintyInputs({ state, updateState }: UncertaintyInputsProps
             onChange={(v) => updateState({ vynosInvesticeExpected: v })}
             unit="percent"
             min={0}
-            max={20}
+            max={15}
             step={0.1}
             formatter={formatPercent}
             parser={parsePercent}
@@ -72,8 +72,8 @@ export function UncertaintyInputs({ state, updateState }: UncertaintyInputsProps
             value={state.urokovaSazbaHypotekyExpected}
             onChange={(v) => updateState({ urokovaSazbaHypotekyExpected: v })}
             unit="percent"
-            min={0}
-            max={15}
+            min={1}
+            max={9}
             step={0.1}
             formatter={formatPercent}
             parser={parsePercent}
