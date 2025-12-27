@@ -34,6 +34,11 @@ export const metadata: Metadata = {
     "investice vs hypotéka",
     "koupit nebo pronajímat",
   ],
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   metadataBase: new URL("https://kamspenezi.cz"),
   openGraph: {
     title: "Kalkulačka bydlení: Spočítej si vlastní vs. nájem",
