@@ -24,8 +24,6 @@ interface BydleniFixedResult {
 
 interface ResultsPanelProps {
   state: CalculatorState;
-  resultsMode: "realistic" | "fixed";
-  setResultsMode: (mode: "realistic" | "fixed") => void;
   onEditSettings: () => void;
   calculationResults: BydleniFixedResult | null;
 }
@@ -330,15 +328,11 @@ function ScenarioBlock({
 export function ResultsPanel({
   state,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  resultsMode,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setResultsMode,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onEditSettings,
   calculationResults,
 }: ResultsPanelProps) {
   const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
-  const [calcMode, setCalcMode] = useState<CalculationMode>("monteCarlo");
+  const [calcMode, setCalcMode] = useState<CalculationMode>("fixed");
 
   let scenarioAResult = 0;
   let scenarioBResult = 0;

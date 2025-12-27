@@ -38,19 +38,11 @@ export interface CalculatorState {
   ocekavanaInflace: number;
   rustNajemneho: number;
   
-  // Monte Carlo uncertainty parameters
-  vynosInvesticeMin: number;
+  // Key market assumptions (used by both Fixed and Monte Carlo modes)
   vynosInvesticeExpected: number;
-  vynosInvesticeMax: number;
-  rustHodnotyMin: number;
   rustHodnotyExpected: number;
-  rustHodnotyMax: number;
-  rustNajemnehoMin: number;
   rustNajemnehoExpected: number;
-  rustNajemnehoMax: number;
-  urokovaSazbaHypotekyMin: number;
   urokovaSazbaHypotekyExpected: number;
-  urokovaSazbaHypotekyMax: number;
 }
 
 // Use typed config
@@ -79,24 +71,15 @@ const initialState: CalculatorState = {
   nakladyUdrzba: praha2kkDefaults.nakladyUdrzba,
   ocekavanaInflace: config.global.ocekavanaInflace,
   rustNajemneho: prahaDefaults.rustNajemneho,
-  // Monte Carlo uncertainty parameters
-  vynosInvesticeMin: config.global.vynosInvestice - 4.0,
+  // Key market assumptions
   vynosInvesticeExpected: config.global.vynosInvestice,
-  vynosInvesticeMax: config.global.vynosInvestice + 4.0,
-  rustHodnotyMin: prahaDefaults.rustHodnotyNemovitosti - 5.0,
   rustHodnotyExpected: prahaDefaults.rustHodnotyNemovitosti,
-  rustHodnotyMax: prahaDefaults.rustHodnotyNemovitosti + 4.0,
-  rustNajemnehoMin: prahaDefaults.rustNajemneho - 2.5,
   rustNajemnehoExpected: prahaDefaults.rustNajemneho,
-  rustNajemnehoMax: prahaDefaults.rustNajemneho + 2.0,
-  urokovaSazbaHypotekyMin: config.global.urokovaSazbaHypotekyFuture - 1.3,
   urokovaSazbaHypotekyExpected: config.global.urokovaSazbaHypotekyFuture,
-  urokovaSazbaHypotekyMax: config.global.urokovaSazbaHypotekyFuture + 2.7,
 };
 
 export default function Home() {
   const [state, setState] = useState<CalculatorState>(initialState);
-  const [resultsMode, setResultsMode] = useState<"realistic" | "fixed">("fixed");
   const [animatingFields, setAnimatingFields] = useState<Set<string>>(new Set());
 
   const handleCitySelect = (city: string) => {
@@ -112,13 +95,9 @@ export default function Home() {
         selectedCity: city,
         rustNajemneho: cityDefaults.rustNajemneho,
         rustHodnotyNemovitosti: cityDefaults.rustHodnotyNemovitosti,
-        // Update uncertainty ranges based on city
-        rustHodnotyMin: cityDefaults.rustHodnotyNemovitosti - 5.0,
+        // Update market assumptions based on city
         rustHodnotyExpected: cityDefaults.rustHodnotyNemovitosti,
-        rustHodnotyMax: cityDefaults.rustHodnotyNemovitosti + 4.0,
-        rustNajemnehoMin: cityDefaults.rustNajemneho - 2.5,
         rustNajemnehoExpected: cityDefaults.rustNajemneho,
-        rustNajemnehoMax: cityDefaults.rustNajemneho + 2.0,
       };
 
       // If apartment size is already selected, also update apartment-specific values
@@ -235,7 +214,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-[#F5F6F8] min-h-screen overflow-x-hidden">
+    <main className="bg-[#F5F6F8] min-h-screen">
       <CalculatorSchema />
       
       {/* Hero Section */}
@@ -348,7 +327,7 @@ export default function Home() {
         {/* Inputs Section (Byt, který zvažujete + Accordions) */}
         <div className="mx-auto max-w-7xl px-4 pt-0 pb-8 md:px-6 lg:pt-4 lg:pb-8">
           {/* Desktop: Two-column layout / Mobile: Stacked */}
-          <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8 md:items-start">
+          <div className="md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] md:gap-8">
             {/* Left Column: Inputs - UNIFIED CARD */}
             <div id="nastaveni" className="space-y-6">
               <section
@@ -368,22 +347,22 @@ export default function Home() {
 
                 {/* Unified Advanced Footer (Naked Accordions) */}
                 <div className="px-0 pb-8 md:px-8 md:pb-8 md:bg-white">
-                  <UncertaintyInputs state={state} updateState={updateState} resultsMode={resultsMode} />
+                  <UncertaintyInputs state={state} updateState={updateState} />
                   <AdvancedInputs state={state} updateState={updateState} />
                 </div>
               </section>
             </div>
 
             {/* Right Column: Results - Desktop only in grid (Sticky) */}
-            <aside id="vysledek-desktop" className="hidden md:block md:sticky md:top-6 md:self-start md:max-h-[calc(100vh-48px)] md:overflow-y-auto">
-              <ResultsPanel
-                state={state}
-                resultsMode={resultsMode}
-                setResultsMode={setResultsMode}
-                onEditSettings={scrollToInputs}
-                calculationResults={calculationResults}
-              />
-            </aside>
+            <div id="vysledek-desktop" className="hidden md:block">
+              <div className="sticky top-6">
+                <ResultsPanel
+                  state={state}
+                  onEditSettings={scrollToInputs}
+                  calculationResults={calculationResults}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -394,8 +373,6 @@ export default function Home() {
         <div id="vysledek" className="md:hidden">
           <ResultsPanel
             state={state}
-            resultsMode={resultsMode}
-            setResultsMode={setResultsMode}
             onEditSettings={scrollToInputs}
             calculationResults={calculationResults}
           />

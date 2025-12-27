@@ -81,9 +81,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 6.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 5200000,             // PLACEHOLDER
-          najemne: 18000,                 // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 5500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 34,               // VERIFIED - Sreality median, N=420
           fondOprav: 300,                 // PLACEHOLDER
           zarizeniNemovitosti: 250000,    // PLACEHOLDER
           danZNemovitosti: 2000,          // PLACEHOLDER
@@ -91,9 +91,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 7800000,             // PLACEHOLDER
-          najemne: 24000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 54,               // VERIFIED - Sreality median, N=481
           fondOprav: 450,                 // PLACEHOLDER
           zarizeniNemovitosti: 350000,    // PLACEHOLDER
           danZNemovitosti: 3000,          // PLACEHOLDER
@@ -101,9 +101,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 40000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 10500000,            // PLACEHOLDER
-          najemne: 32000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 36500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 83,               // VERIFIED - Sreality median, N=486
           fondOprav: 600,                 // PLACEHOLDER
           zarizeniNemovitosti: 450000,    // PLACEHOLDER
           danZNemovitosti: 4000,          // PLACEHOLDER
@@ -111,9 +111,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 50000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 13200000,            // PLACEHOLDER
-          najemne: 42000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 15500000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 46500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 112,              // VERIFIED - Sreality median, N=407
           fondOprav: 750,                 // PLACEHOLDER
           zarizeniNemovitosti: 550000,    // PLACEHOLDER
           danZNemovitosti: 5000,          // PLACEHOLDER
@@ -129,9 +129,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 5.5,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 3200000,             // PLACEHOLDER
-          najemne: 12000,                 // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 14500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 35,               // VERIFIED - Sreality median, N=233
           fondOprav: 250,                 // PLACEHOLDER
           zarizeniNemovitosti: 200000,    // PLACEHOLDER
           danZNemovitosti: 1500,          // PLACEHOLDER
@@ -139,9 +139,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 25000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 4800000,             // PLACEHOLDER
-          najemne: 16000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 6300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 53,               // VERIFIED - Sreality median, N=479
           fondOprav: 380,                 // PLACEHOLDER
           zarizeniNemovitosti: 280000,    // PLACEHOLDER
           danZNemovitosti: 2200,          // PLACEHOLDER
@@ -149,9 +149,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 32000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 6400000,             // PLACEHOLDER
-          najemne: 21000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 8800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 28500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 79,               // VERIFIED - Sreality median, N=395
           fondOprav: 500,                 // PLACEHOLDER
           zarizeniNemovitosti: 360000,    // PLACEHOLDER
           danZNemovitosti: 3000,          // PLACEHOLDER
@@ -159,9 +159,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 40000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 8000000,             // PLACEHOLDER
-          najemne: 27000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 37000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 107,              // VERIFIED - Sreality median, N=179
           fondOprav: 650,                 // PLACEHOLDER
           zarizeniNemovitosti: 450000,    // PLACEHOLDER
           danZNemovitosti: 3800,          // PLACEHOLDER
@@ -177,9 +177,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 1900000,             // PLACEHOLDER
-          najemne: 8000,                  // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 2200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 8500,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 33,               // VERIFIED - Sreality median, N=80
           fondOprav: 200,                 // PLACEHOLDER
           zarizeniNemovitosti: 150000,    // PLACEHOLDER
           danZNemovitosti: 1000,          // PLACEHOLDER
@@ -187,9 +187,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 20000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 2900000,             // PLACEHOLDER
-          najemne: 11000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 13000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 54,               // VERIFIED - Sreality median, N=126
           fondOprav: 300,                 // PLACEHOLDER
           zarizeniNemovitosti: 220000,    // PLACEHOLDER
           danZNemovitosti: 1500,          // PLACEHOLDER
@@ -197,9 +197,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 26000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 3800000,             // PLACEHOLDER
-          najemne: 14000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 4400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 17500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 76,               // VERIFIED - Sreality median, N=152
           fondOprav: 400,                 // PLACEHOLDER
           zarizeniNemovitosti: 280000,    // PLACEHOLDER
           danZNemovitosti: 2000,          // PLACEHOLDER
@@ -207,9 +207,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 32000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 4800000,             // PLACEHOLDER
-          najemne: 18000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 5900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 103,              // VERIFIED - Sreality median, N=59
           fondOprav: 500,                 // PLACEHOLDER
           zarizeniNemovitosti: 350000,    // PLACEHOLDER
           danZNemovitosti: 2500,          // PLACEHOLDER
@@ -225,9 +225,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2600000,             // PLACEHOLDER
-          najemne: 10000,                 // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 35,               // VERIFIED - Sreality median, N=44
           fondOprav: 230,                 // PLACEHOLDER
           zarizeniNemovitosti: 180000,    // PLACEHOLDER
           danZNemovitosti: 1300,          // PLACEHOLDER
@@ -235,9 +235,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 22000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 3900000,             // PLACEHOLDER
-          najemne: 13000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 56,               // VERIFIED - Sreality median, N=136
           fondOprav: 350,                 // PLACEHOLDER
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
           danZNemovitosti: 1900,          // PLACEHOLDER
@@ -245,9 +245,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 5200000,             // PLACEHOLDER
-          najemne: 17000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 22000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 78,               // VERIFIED - Sreality median, N=156
           fondOprav: 460,                 // PLACEHOLDER
           zarizeniNemovitosti: 330000,    // PLACEHOLDER
           danZNemovitosti: 2600,          // PLACEHOLDER
@@ -255,9 +255,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 36000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 6500000,             // PLACEHOLDER
-          najemne: 22000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 7800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 27500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 103,              // VERIFIED - Sreality median, N=43
           fondOprav: 580,                 // PLACEHOLDER
           zarizeniNemovitosti: 420000,    // PLACEHOLDER
           danZNemovitosti: 3200,          // PLACEHOLDER
@@ -273,9 +273,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2800000,             // PLACEHOLDER
-          najemne: 11000,                 // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 37,               // VERIFIED - Sreality median, N=81
           fondOprav: 240,                 // PLACEHOLDER
           zarizeniNemovitosti: 180000,    // PLACEHOLDER
           danZNemovitosti: 1400,          // PLACEHOLDER
@@ -283,9 +283,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 23000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 4200000,             // PLACEHOLDER
-          najemne: 14000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 56,               // VERIFIED - Sreality median, N=157
           fondOprav: 360,                 // PLACEHOLDER
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
           danZNemovitosti: 2000,          // PLACEHOLDER
@@ -293,9 +293,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 5600000,             // PLACEHOLDER
-          najemne: 18000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 6500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 22000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 81,               // VERIFIED - Sreality median, N=190
           fondOprav: 480,                 // PLACEHOLDER
           zarizeniNemovitosti: 340000,    // PLACEHOLDER
           danZNemovitosti: 2800,          // PLACEHOLDER
@@ -303,9 +303,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 38000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 7000000,             // PLACEHOLDER
-          najemne: 23000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 100,              // VERIFIED - Sreality median, N=75
           fondOprav: 600,                 // PLACEHOLDER
           zarizeniNemovitosti: 430000,    // PLACEHOLDER
           danZNemovitosti: 3500,          // PLACEHOLDER
@@ -321,9 +321,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2900000,             // PLACEHOLDER
-          najemne: 11000,                 // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 35,               // VERIFIED - Sreality median, N=45
           fondOprav: 240,                 // PLACEHOLDER
           zarizeniNemovitosti: 180000,    // PLACEHOLDER
           danZNemovitosti: 1400,          // PLACEHOLDER
@@ -331,9 +331,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 23000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 4400000,             // PLACEHOLDER
-          najemne: 14500,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 52,               // VERIFIED - Sreality median, N=159
           fondOprav: 370,                 // PLACEHOLDER
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
           danZNemovitosti: 2100,          // PLACEHOLDER
@@ -341,9 +341,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 31000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 5800000,             // PLACEHOLDER
-          najemne: 19000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 6600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 23000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 79,               // VERIFIED - Sreality median, N=141
           fondOprav: 490,                 // PLACEHOLDER
           zarizeniNemovitosti: 350000,    // PLACEHOLDER
           danZNemovitosti: 2900,          // PLACEHOLDER
@@ -351,9 +351,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 39000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 7300000,             // PLACEHOLDER
-          najemne: 24000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 27000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 97,               // VERIFIED - Sreality median, N=40
           fondOprav: 620,                 // PLACEHOLDER
           zarizeniNemovitosti: 440000,    // PLACEHOLDER
           danZNemovitosti: 3600,          // PLACEHOLDER
@@ -369,9 +369,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2400000,             // PLACEHOLDER
-          najemne: 9500,                  // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 36,               // VERIFIED - Sreality median, N=85
           fondOprav: 220,                 // PLACEHOLDER
           zarizeniNemovitosti: 170000,    // PLACEHOLDER
           danZNemovitosti: 1200,          // PLACEHOLDER
@@ -379,9 +379,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 21000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 3600000,             // PLACEHOLDER
-          najemne: 12500,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 53,               // VERIFIED - Sreality median, N=145
           fondOprav: 330,                 // PLACEHOLDER
           zarizeniNemovitosti: 240000,    // PLACEHOLDER
           danZNemovitosti: 1800,          // PLACEHOLDER
@@ -389,9 +389,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 28000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 4800000,             // PLACEHOLDER
-          najemne: 16000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 23000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 82,               // VERIFIED - Sreality median, N=131
           fondOprav: 440,                 // PLACEHOLDER
           zarizeniNemovitosti: 320000,    // PLACEHOLDER
           danZNemovitosti: 2400,          // PLACEHOLDER
@@ -399,9 +399,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 35000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 6000000,             // PLACEHOLDER
-          najemne: 20000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 7600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 28000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 105,              // VERIFIED - Sreality median, N=37
           fondOprav: 560,                 // PLACEHOLDER
           zarizeniNemovitosti: 400000,    // PLACEHOLDER
           danZNemovitosti: 3000,          // PLACEHOLDER
@@ -417,9 +417,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2500000,             // PLACEHOLDER
-          najemne: 10000,                 // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 2700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 10000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 31,               // VERIFIED - Sreality median, N=72
           fondOprav: 230,                 // PLACEHOLDER
           zarizeniNemovitosti: 170000,    // PLACEHOLDER
           danZNemovitosti: 1300,          // PLACEHOLDER
@@ -427,9 +427,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 22000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 3800000,             // PLACEHOLDER
-          najemne: 13000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 53,               // VERIFIED - Sreality median, N=139
           fondOprav: 340,                 // PLACEHOLDER
           zarizeniNemovitosti: 250000,    // PLACEHOLDER
           danZNemovitosti: 1900,          // PLACEHOLDER
@@ -437,9 +437,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 29000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 5000000,             // PLACEHOLDER
-          najemne: 17000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 80,               // VERIFIED - Sreality median, N=143
           fondOprav: 460,                 // PLACEHOLDER
           zarizeniNemovitosti: 330000,    // PLACEHOLDER
           danZNemovitosti: 2500,          // PLACEHOLDER
@@ -447,9 +447,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 36000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 6300000,             // PLACEHOLDER
-          najemne: 21000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 7300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 26000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 98,               // VERIFIED - Sreality median, N=51
           fondOprav: 580,                 // PLACEHOLDER
           zarizeniNemovitosti: 410000,    // PLACEHOLDER
           danZNemovitosti: 3100,          // PLACEHOLDER
@@ -465,9 +465,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2600000,             // PLACEHOLDER
-          najemne: 10000,                 // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 36,               // VERIFIED - Sreality median, N=15
           fondOprav: 230,                 // PLACEHOLDER
           zarizeniNemovitosti: 175000,    // PLACEHOLDER
           danZNemovitosti: 1300,          // PLACEHOLDER
@@ -475,9 +475,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 22000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 3900000,             // PLACEHOLDER
-          najemne: 13500,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 16500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 54,               // VERIFIED - Sreality median, N=65
           fondOprav: 350,                 // PLACEHOLDER
           zarizeniNemovitosti: 255000,    // PLACEHOLDER
           danZNemovitosti: 1950,          // PLACEHOLDER
@@ -485,9 +485,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 29000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 5200000,             // PLACEHOLDER
-          najemne: 17500,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 21000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 75,               // VERIFIED - Sreality median, N=86
           fondOprav: 470,                 // PLACEHOLDER
           zarizeniNemovitosti: 335000,    // PLACEHOLDER
           danZNemovitosti: 2600,          // PLACEHOLDER
@@ -495,9 +495,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 37000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 6500000,             // PLACEHOLDER
-          najemne: 22000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 27500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 102,              // VERIFIED - Sreality median, N=22
           fondOprav: 590,                 // PLACEHOLDER
           zarizeniNemovitosti: 420000,    // PLACEHOLDER
           danZNemovitosti: 3250,          // PLACEHOLDER
@@ -513,9 +513,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 3.5,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 1600000,             // PLACEHOLDER
-          najemne: 7000,                  // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 1400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 6500,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 27,               // VERIFIED - Sreality median, N=38
           fondOprav: 180,                 // PLACEHOLDER
           zarizeniNemovitosti: 140000,    // PLACEHOLDER
           danZNemovitosti: 900,           // PLACEHOLDER
@@ -523,9 +523,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 18000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 2400000,             // PLACEHOLDER
-          najemne: 9500,                  // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 2300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 10500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 48,               // VERIFIED - Sreality median, N=120
           fondOprav: 270,                 // PLACEHOLDER
           zarizeniNemovitosti: 200000,    // PLACEHOLDER
           danZNemovitosti: 1300,          // PLACEHOLDER
@@ -533,9 +533,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 24000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 3200000,             // PLACEHOLDER
-          najemne: 12000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 76,               // VERIFIED - Sreality median, N=81
           fondOprav: 360,                 // PLACEHOLDER
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
           danZNemovitosti: 1700,          // PLACEHOLDER
@@ -543,9 +543,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 4000000,             // PLACEHOLDER
-          najemne: 15000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 18500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 94,               // VERIFIED - Sreality median, N=16
           fondOprav: 450,                 // PLACEHOLDER
           zarizeniNemovitosti: 320000,    // PLACEHOLDER
           danZNemovitosti: 2100,          // PLACEHOLDER
@@ -561,9 +561,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2200000,             // PLACEHOLDER
-          najemne: 9000,                  // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 1700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 8000,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 29,               // VERIFIED - Sreality median, N=39
           fondOprav: 210,                 // PLACEHOLDER
           zarizeniNemovitosti: 160000,    // PLACEHOLDER
           danZNemovitosti: 1100,          // PLACEHOLDER
@@ -571,9 +571,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 20000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 3300000,             // PLACEHOLDER
-          najemne: 12000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 60,               // VERIFIED - Sreality median, N=133
           fondOprav: 320,                 // PLACEHOLDER
           zarizeniNemovitosti: 230000,    // PLACEHOLDER
           danZNemovitosti: 1650,          // PLACEHOLDER
@@ -581,9 +581,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 27000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 4400000,             // PLACEHOLDER
-          najemne: 15500,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 87,               // VERIFIED - Sreality median, N=107
           fondOprav: 420,                 // PLACEHOLDER
           zarizeniNemovitosti: 300000,    // PLACEHOLDER
           danZNemovitosti: 2200,          // PLACEHOLDER
@@ -591,9 +591,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 34000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 5500000,             // PLACEHOLDER
-          najemne: 19500,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 5700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 113,              // VERIFIED - Sreality median, N=30
           fondOprav: 530,                 // PLACEHOLDER
           zarizeniNemovitosti: 380000,    // PLACEHOLDER
           danZNemovitosti: 2750,          // PLACEHOLDER
@@ -609,9 +609,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2100000,             // PLACEHOLDER
-          najemne: 8500,                  // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 3000000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 39,               // VERIFIED - Sreality median, N=19
           fondOprav: 200,                 // PLACEHOLDER
           zarizeniNemovitosti: 155000,    // PLACEHOLDER
           danZNemovitosti: 1050,          // PLACEHOLDER
@@ -619,9 +619,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 19000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 3200000,             // PLACEHOLDER
-          najemne: 11500,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 57,               // VERIFIED - Sreality median, N=51
           fondOprav: 310,                 // PLACEHOLDER
           zarizeniNemovitosti: 225000,    // PLACEHOLDER
           danZNemovitosti: 1600,          // PLACEHOLDER
@@ -629,9 +629,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 26000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 4200000,             // PLACEHOLDER
-          najemne: 15000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 5300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 80,               // VERIFIED - Sreality median, N=74
           fondOprav: 410,                 // PLACEHOLDER
           zarizeniNemovitosti: 295000,    // PLACEHOLDER
           danZNemovitosti: 2100,          // PLACEHOLDER
@@ -639,9 +639,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 33000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 5300000,             // PLACEHOLDER
-          najemne: 19000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 6900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 26000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 106,              // VERIFIED - Sreality median, N=18
           fondOprav: 520,                 // PLACEHOLDER
           zarizeniNemovitosti: 370000,    // PLACEHOLDER
           danZNemovitosti: 2650,          // PLACEHOLDER
@@ -657,9 +657,9 @@ export const calculatorDefaults: CalculatorDefaults = {
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
         "1+kk": {
-          kupniCena: 2300000,             // PLACEHOLDER
-          najemne: 9000,                  // PLACEHOLDER
-          squareMeters: 32,               // PLACEHOLDER
+          kupniCena: 3800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 46,               // VERIFIED - Sreality median, N=25
           fondOprav: 210,                 // PLACEHOLDER
           zarizeniNemovitosti: 165000,    // PLACEHOLDER
           danZNemovitosti: 1150,          // PLACEHOLDER
@@ -667,9 +667,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 20000,           // PLACEHOLDER
         },
         "2+kk": {
-          kupniCena: 3500000,             // PLACEHOLDER
-          najemne: 12000,                 // PLACEHOLDER
-          squareMeters: 54,               // PLACEHOLDER
+          kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 54,               // VERIFIED - Sreality median, N=60
           fondOprav: 330,                 // PLACEHOLDER
           zarizeniNemovitosti: 240000,    // PLACEHOLDER
           danZNemovitosti: 1750,          // PLACEHOLDER
@@ -677,9 +677,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 27000,           // PLACEHOLDER
         },
         "3+kk": {
-          kupniCena: 4600000,             // PLACEHOLDER
-          najemne: 16000,                 // PLACEHOLDER
-          squareMeters: 76,               // PLACEHOLDER
+          kupniCena: 5600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 77,               // VERIFIED - Sreality median, N=65
           fondOprav: 440,                 // PLACEHOLDER
           zarizeniNemovitosti: 315000,    // PLACEHOLDER
           danZNemovitosti: 2300,          // PLACEHOLDER
@@ -687,9 +687,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           nakladyUdrzba: 34000,           // PLACEHOLDER
         },
         "4+kk": {
-          kupniCena: 5800000,             // PLACEHOLDER
-          najemne: 20000,                 // PLACEHOLDER
-          squareMeters: 98,               // PLACEHOLDER
+          kupniCena: 7200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
+          najemne: 28000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
+          squareMeters: 102,              // VERIFIED - Sreality median, N=37
           fondOprav: 550,                 // PLACEHOLDER
           zarizeniNemovitosti: 395000,    // PLACEHOLDER
           danZNemovitosti: 2900,          // PLACEHOLDER
