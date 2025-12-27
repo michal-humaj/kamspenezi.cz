@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { calculatorDefaults } from "@/data/calculator-defaults";
@@ -27,6 +27,17 @@ function getDisplayName(slug: string): string {
 export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) {
   const [showAllCities, setShowAllCities] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Focus search input when dropdown opens
+  useEffect(() => {
+    if (showAllCities && searchInputRef.current) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 50);
+    }
+  }, [showAllCities]);
 
   // Filter cities by display name (for search)
   const filteredCityEntries = ALL_CITY_ENTRIES.filter(([, cityData]) =>
@@ -133,6 +144,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input
+              ref={searchInputRef}
               type="text"
               placeholder="Hledat město..."
               value={searchQuery}

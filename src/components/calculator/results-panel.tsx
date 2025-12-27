@@ -353,6 +353,15 @@ export function ResultsPanel({
   const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
   const [calcMode, setCalcMode] = useState<CalculationMode>("fixed");
 
+  // Check for zeroVol URL parameter (for QA testing)
+  const [zeroVol] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("zeroVol") === "true";
+    }
+    return false;
+  });
+
   // Register debug function on mount
   useEffect(() => {
     registerDebugMonteCarlo();
@@ -375,9 +384,9 @@ export function ResultsPanel({
     if (calcMode !== "monteCarlo") return null;
     if (!state.selectedCity || !state.selectedApartmentSize) return null;
     
-    // Run with default options (10k iterations, seed 12345)
-    return runMonteCarlo(mcInputs, { iterations: 10000 });
-  }, [calcMode, mcInputs, state.selectedCity, state.selectedApartmentSize]);
+    // Run with options - zeroVol from URL parameter for QA testing
+    return runMonteCarlo(mcInputs, { iterations: 10000, zeroVol });
+  }, [calcMode, mcInputs, state.selectedCity, state.selectedApartmentSize, zeroVol]);
 
   let scenarioAResult = 0;
   let scenarioBResult = 0;
