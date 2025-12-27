@@ -4,6 +4,8 @@
  * This file contains all default parameters for the rent vs. buy calculator.
  * Update this file when refreshing data from real sources.
  * 
+ * IMPORTANT: City keys are ASCII slugs (URL-safe). Use displayName for UI.
+ * 
  * Data Status Legend:
  * - "// PLACEHOLDER" = AI-generated estimate, needs real data
  * - "// VERIFIED: [source]" = Confirmed with real data source
@@ -22,7 +24,8 @@ export const calculatorDefaults: CalculatorDefaults = {
   },
   
   cities: {
-    "Praha": {
+    "praha": {
+      displayName: "Praha",
       rustNajemneho: 4.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 6.0,        // PLACEHOLDER
       apartments: {
@@ -69,7 +72,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Brno": {
+    "brno": {
+      displayName: "Brno",
       rustNajemneho: 3.5,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 5.5,        // PLACEHOLDER
       apartments: {
@@ -116,7 +120,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Ostrava": {
+    "ostrava": {
+      displayName: "Ostrava",
       rustNajemneho: 3.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
@@ -163,7 +168,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Plzeň": {
+    "plzen": {
+      displayName: "Plzeň",
       rustNajemneho: 3.5,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
       apartments: {
@@ -210,7 +216,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "České Budějovice": {
+    "ceske-budejovice": {
+      displayName: "České Budějovice",
       rustNajemneho: 3.5,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
       apartments: {
@@ -257,7 +264,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Hradec Králové": {
+    "hradec-kralove": {
+      displayName: "Hradec Králové",
       rustNajemneho: 3.5,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
       apartments: {
@@ -304,7 +312,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Liberec": {
+    "liberec": {
+      displayName: "Liberec",
       rustNajemneho: 3.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
       apartments: {
@@ -351,7 +360,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Olomouc": {
+    "olomouc": {
+      displayName: "Olomouc",
       rustNajemneho: 3.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
       apartments: {
@@ -398,7 +408,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Pardubice": {
+    "pardubice": {
+      displayName: "Pardubice",
       rustNajemneho: 3.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
       apartments: {
@@ -445,7 +456,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Ústí nad Labem": {
+    "usti-nad-labem": {
+      displayName: "Ústí nad Labem",
       rustNajemneho: 2.5,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 3.5,        // PLACEHOLDER
       apartments: {
@@ -492,7 +504,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Karlovy Vary": {
+    "karlovy-vary": {
+      displayName: "Karlovy Vary",
       rustNajemneho: 3.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
@@ -539,7 +552,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Jihlava": {
+    "jihlava": {
+      displayName: "Jihlava",
       rustNajemneho: 3.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
@@ -586,7 +600,8 @@ export const calculatorDefaults: CalculatorDefaults = {
       },
     },
     
-    "Zlín": {
+    "zlin": {
+      displayName: "Zlín",
       rustNajemneho: 3.0,                 // PLACEHOLDER
       rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
       apartments: {
@@ -635,6 +650,17 @@ export const calculatorDefaults: CalculatorDefaults = {
   },
 };
 
+// Helper to get city slug from display name
+export function getCitySlug(displayName: string): string | undefined {
+  return Object.entries(calculatorDefaults.cities).find(
+    ([, city]) => city.displayName === displayName
+  )?.[0];
+}
+
+// Helper to get display name from slug
+export function getCityDisplayName(slug: string): string | undefined {
+  return calculatorDefaults.cities[slug]?.displayName;
+}
+
 // Re-export for convenience
 export default calculatorDefaults;
-

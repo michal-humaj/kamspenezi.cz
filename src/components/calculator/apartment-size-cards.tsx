@@ -31,10 +31,10 @@ export function ApartmentSizeCards({
   selectedSize,
   onSizeSelect,
 }: ApartmentSizeCardsProps) {
-  // Get city data from config, fallback to Praha if city not found
+  // Get city data from config, fallback to Praha if city not found (using slug)
   const cityData = selectedCity && config.cities[selectedCity] 
     ? config.cities[selectedCity] 
-    : config.cities["Praha"];
+    : config.cities["praha"];
 
   // Refs for scroll container and individual cards
   const scrollContainerRef = useRef<HTMLDivElement>(null);

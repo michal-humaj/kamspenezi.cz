@@ -6,41 +6,48 @@ import { Input } from "@/components/ui/input";
 import { calculatorDefaults } from "@/data/calculator-defaults";
 
 interface CitySelectorProps {
-  selectedCity: string | null;
-  onCitySelect: (city: string) => void;
+  selectedCity: string | null; // This is now a slug (e.g., "praha", "ceske-budejovice")
+  onCitySelect: (citySlug: string) => void;
 }
 
 // Use typed config
 const config = calculatorDefaults;
 
-// Get all cities from config
-const ALL_CITIES = Object.keys(config.cities);
+// Get all city entries from config: [slug, cityData]
+const ALL_CITY_ENTRIES = Object.entries(config.cities);
 
-// Popular cities shown as main chips
-const POPULAR_CITIES = ["Praha", "Brno", "Ostrava", "Plzeň"];
+// Popular cities shown as main chips (using slugs)
+const POPULAR_CITY_SLUGS = ["praha", "brno", "ostrava", "plzen"];
+
+// Helper to get display name from slug
+function getDisplayName(slug: string): string {
+  return config.cities[slug]?.displayName ?? slug;
+}
 
 export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) {
   const [showAllCities, setShowAllCities] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredCities = ALL_CITIES.filter((city) =>
-    city.toLowerCase().includes(searchQuery.toLowerCase())
+  // Filter cities by display name (for search)
+  const filteredCityEntries = ALL_CITY_ENTRIES.filter(([, cityData]) =>
+    cityData.displayName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Check if selected city is one of the popular cities
-  const isPopularCity = POPULAR_CITIES.includes(selectedCity || "");
+  const isPopularCity = POPULAR_CITY_SLUGS.includes(selectedCity || "");
   const showSelectedInMoreCities = selectedCity && !isPopularCity;
 
   return (
     <div className="space-y-4">
       {/* Popular city chips */}
       <div className="flex flex-wrap gap-2">
-        {POPULAR_CITIES.map((city) => {
-          const isSelected = selectedCity === city;
+        {POPULAR_CITY_SLUGS.map((slug) => {
+          const displayName = getDisplayName(slug);
+          const isSelected = selectedCity === slug;
           return (
             <button
-              key={city}
-              onClick={() => onCitySelect(city)}
+              key={slug}
+              onClick={() => onCitySelect(slug)}
               className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-3 font-uiSans text-sm font-medium transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 background: isSelected ? "var(--color-primary)" : "#FFFFFF",
@@ -68,7 +75,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                 }
               }}
             >
-              {city}
+              {displayName}
             </button>
           );
         })}
@@ -103,7 +110,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             }
           }}
         >
-          <span>{showSelectedInMoreCities ? selectedCity : "Více měst"}</span>
+          <span>{showSelectedInMoreCities ? getDisplayName(selectedCity) : "Více měst"}</span>
           <ChevronDown
             className="h-4 w-4"
             style={{
@@ -143,13 +150,13 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
               msOverflowStyle: "none",
             }}
           >
-            {filteredCities.map((city) => {
-              const isSelected = selectedCity === city;
+            {filteredCityEntries.map(([slug, cityData]) => {
+              const isSelected = selectedCity === slug;
               return (
                 <button
-                  key={city}
+                  key={slug}
                   onClick={() => {
-                    onCitySelect(city);
+                    onCitySelect(slug);
                     setShowAllCities(false);
                     setSearchQuery("");
                   }}
@@ -169,7 +176,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                     }
                   }}
                 >
-                  <span className="text-kp-text-main font-medium">{city}</span>
+                  <span className="text-kp-text-main font-medium">{cityData.displayName}</span>
                 </button>
               );
             })}

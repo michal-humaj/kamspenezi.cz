@@ -56,13 +56,13 @@ export interface CalculatorState {
 // Use typed config
 const config = calculatorDefaults;
 
-// Get Praha defaults for initial state
-const prahaDefaults = config.cities["Praha"];
+// Get Praha defaults for initial state (using slug)
+const prahaDefaults = config.cities["praha"];
 const praha2kkDefaults = prahaDefaults.apartments["2+kk"];
 
-// Initial state with Praha preselected, apartment size requires user selection
+// Initial state with Praha preselected (using slug), apartment size requires user selection
 const initialState: CalculatorState = {
-  selectedCity: "Praha",
+  selectedCity: "praha",
   selectedApartmentSize: null,
   // Use 2+kk defaults as initial values (user will select actual apartment)
   kupniCena: praha2kkDefaults.kupniCena,
