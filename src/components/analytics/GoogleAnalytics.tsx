@@ -20,6 +20,20 @@ function AnalyticsTracker() {
   return null;
 }
 
+// Initialize gtag before loading the script
+function initializeGtag() {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(...args: unknown[]) {
+    window.dataLayer.push(args);
+  };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID, {
+    page_path: window.location.pathname,
+    anonymize_ip: true,
+    cookie_flags: 'SameSite=None;Secure'
+  });
+}
+
 export function GoogleAnalytics() {
   // Don't render GA scripts for internal users or if no measurement ID
   if (!GA_MEASUREMENT_ID || (typeof window !== 'undefined' && isInternalUser())) {
@@ -29,12 +43,8 @@ export function GoogleAnalytics() {
   return (
     <>
       <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
+        id="gtag-init"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
@@ -46,6 +56,17 @@ export function GoogleAnalytics() {
               cookie_flags: 'SameSite=None;Secure'
             });
           `,
+        }}
+      />
+      <Script
+        id="gtag-script"
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        onReady={() => {
+          // Ensure gtag is available after script loads
+          if (typeof window.gtag === 'undefined') {
+            initializeGtag();
+          }
         }}
       />
       <Suspense fallback={null}>
