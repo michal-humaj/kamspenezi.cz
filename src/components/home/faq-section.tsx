@@ -14,9 +14,9 @@ const FAQS = [
       "Ano. Náklady na bydlení i některé další položky rostou v čase podle inflace. Ve výsledku ukazujeme hodnotu majetku v nominálních korunách, aby se ti to lépe četlo. V metodice najdeš i možnost pracovat s hodnotami očištěnými o inflaci.",
   },
   {
-    question: "Jaké ETF předpokládáte",
+    question: "Jaké investice předpokládáte",
     answer:
-      "Model předpokládá dlouhodobé investování do široce diverzifikovaných globálních akciových ETF podle tržní kapitalizace. Nekopíruje konkrétní produkt žádného poskytovatele, jde o obecný model výnosu globálního akciového trhu.",
+      "Model předpokládá dlouhodobé investování do široce diverzifikovaných globálních akciových fondů podle tržní kapitalizace. Nekopíruje konkrétní produkt žádného poskytovatele, jde o obecný model výnosu globálního akciového trhu.",
   },
   {
     question: "Zohledňujete daně",

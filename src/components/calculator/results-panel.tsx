@@ -6,12 +6,12 @@ import { Info, ChevronRight } from "lucide-react";
 import type { CalculatorState } from "@/app/page";
 
 interface BydleniFixedResult {
-  netWorthRentPlusETF: number;
+  netWorthRentPlusInvestice: number;
   netWorthOwnFlat: number;
   years: number[];
   rentAnnual: number[];
   savedVsOwnership: number[];
-  etfValue: number[];
+  investiceValue: number[];
   ownershipCosts: number[];
   propertyValue: number[];
   remainingDebt: number[];
@@ -344,7 +344,7 @@ export function ResultsPanel({
 
   if (calculationResults) {
     scenarioAResult = calculationResults.netWorthOwnFlat;
-    scenarioBResult = calculationResults.netWorthRentPlusETF;
+    scenarioBResult = calculationResults.netWorthRentPlusInvestice;
   }
 
   const maxValue = Math.max(scenarioAResult, scenarioBResult) || 1;

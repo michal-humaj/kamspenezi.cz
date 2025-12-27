@@ -15,11 +15,11 @@ const SCENARIO_LIST = [
   },
   {
     id: "B" as const,
-    badge: "Nájem + ETF",
-    label: "Scénář B – nájem plus ETF",
+    badge: "Nájem + investice",
+    label: "Scénář B – nájem plus investice",
     bullets: [
       "Bydlíš v nájemním bytě",
-      "Rozdíl mezi splátkou hypotéky a nájmem investuješ do globálních ETF",
+      "Rozdíl mezi splátkou hypotéky a nájmem investuješ do globálních akciových fondů",
       "Počáteční vlastní zdroje, které by šly do bytu, investuješ také",
       "Po třiceti letech ti zůstává investiční portfolio a žádná hypotéka",
     ],

@@ -18,7 +18,7 @@ export function PersonSchema() {
     "knowsAbout": [
       "Personal Finance",
       "Real Estate Investment",
-      "ETF Investing",
+      "Investment Strategy",
       "Product Management"
     ]
   };

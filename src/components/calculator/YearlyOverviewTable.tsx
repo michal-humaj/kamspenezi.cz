@@ -16,7 +16,7 @@ export type YearlyRow = {
   propertyNetWorth: number; // Hodnota bytu minus dluh
   rent: number;
   savedComparedToOwnership: number;
-  etfPortfolioValue: number;
+  portfolioValue: number; // Hodnota investičního portfolia
 };
 
 interface YearlyOverviewTableProps {
@@ -132,10 +132,10 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                   Nájemné
                 </th>
                 <th className="bg-[#FBFBFF] px-4 py-3 text-right align-bottom text-xs font-normal tracking-normal text-[#6B7280] whitespace-normal">
-                  Ušetřeno do ETF
+                  Ušetřeno k investici
                 </th>
                 <th className="bg-[#FBFBFF] px-4 py-3 text-right align-bottom text-xs font-semibold tracking-normal text-[#0F172A] whitespace-normal">
-                  Hodnota ETF portfolia
+                  Hodnota portfolia
                 </th>
               </tr>
             </thead>
@@ -196,7 +196,7 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                       {formatValue(Math.round(row.savedComparedToOwnership))}
                     </td>
                     <td className={`px-4 py-1 text-right text-[12px] leading-tight font-bold text-[#0F172A] ${cellBgB}`}>
-                      {formatValue(Math.round(row.etfPortfolioValue))}
+                      {formatValue(Math.round(row.portfolioValue))}
                     </td>
                   </tr>
                 );

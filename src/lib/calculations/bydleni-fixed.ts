@@ -19,7 +19,7 @@ type InputsBydleniFixed = {
 
   rentGrowthAnnual: number;       // O17
   rentMonthly: number;            // O18
-  etfReturnAnnual: number;        // O19
+  investiceReturnAnnual: number;  // O19
 };
 
 type BydleniFixedResult = {
@@ -27,7 +27,7 @@ type BydleniFixedResult = {
   years: number[];        // A3..A33
   rentAnnual: number[];   // B3..B33
   savedVsOwnership: number[]; // C3..C33
-  etfValue: number[];     // D3..D33
+  investiceValue: number[];     // D3..D33 (hodnota investičního portfolia)
   ownershipCosts: number[];   // E3..E33
   propertyValue: number[];    // F3..F33
   remainingDebt: number[];    // G3..G33
@@ -38,7 +38,7 @@ type BydleniFixedResult = {
   maintenanceAnnual: number[]; // L3..L33
 
   // key outputs (match Excel)
-  netWorthRentPlusETF: number; // D33
+  netWorthRentPlusInvestice: number; // D33
   netWorthOwnFlat: number;     // F33
 };
 
@@ -83,7 +83,7 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
 
   const O17 = inputs.rentGrowthAnnual;
   const O18 = inputs.rentMonthly;
-  const O19 = inputs.etfReturnAnnual;
+  const O19 = inputs.investiceReturnAnnual;
 
   // Derived inputs that exist in Excel
 
@@ -117,7 +117,7 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
   const years: number[] = new Array(YEARS + 1);
   const rentAnnual: number[] = new Array(YEARS + 1);          // B
   const savedVsOwnership: number[] = new Array(YEARS + 1);    // C
-  const etfValue: number[] = new Array(YEARS + 1);            // D
+  const investiceValue: number[] = new Array(YEARS + 1);      // D
   const ownershipCosts: number[] = new Array(YEARS + 1);      // E
   const propertyValue: number[] = new Array(YEARS + 1);       // F
   const remainingDebt: number[] = new Array(YEARS + 1);       // G
@@ -255,26 +255,26 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
     savedVsOwnership[t] = ownershipCosts[t] - rentAnnual[t];
   }
 
-  // 12) ETF D (hodnota ETF portfolia)
+  // 12) Investice D (hodnota investičního portfolia)
   // D3 = C3
   // D4..D33 = D[row-1] * (1+O$19) + C[row]
   for (let t = 0; t <= YEARS; t++) {
     if (t === 0) {
-      etfValue[t] = savedVsOwnership[0];
+      investiceValue[t] = savedVsOwnership[0];
     } else {
-      etfValue[t] = etfValue[t - 1] * (1 + O19) + savedVsOwnership[t];
+      investiceValue[t] = investiceValue[t - 1] * (1 + O19) + savedVsOwnership[t];
     }
   }
 
   // Výsledky jako v Excelu
-  const netWorthRentPlusETF = etfValue[YEARS];    // D33
+  const netWorthRentPlusInvestice = investiceValue[YEARS];    // D33
   const netWorthOwnFlat = propertyValue[YEARS];   // F33
 
   return {
     years,
     rentAnnual,
     savedVsOwnership,
-    etfValue,
+    investiceValue,
     ownershipCosts,
     propertyValue,
     remainingDebt,
@@ -283,7 +283,7 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
     repairFundAnnual,
     insuranceAnnualSeries,
     maintenanceAnnual,
-    netWorthRentPlusETF,
+    netWorthRentPlusInvestice,
     netWorthOwnFlat,
   };
 }

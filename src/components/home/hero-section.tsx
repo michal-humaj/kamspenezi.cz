@@ -42,7 +42,7 @@ export function HeroSection() {
               
               {/* Pill B: Rent */}
               <span className="inline-flex items-center rounded-full bg-[#E3EBE6] px-3 py-1 text-sm font-semibold text-[#2F5C45]">
-                <span className="hidden min-[380px]:inline">Scénář B: </span>Nájem<span className="hidden sm:inline"> + ETF</span>
+                <span className="hidden min-[380px]:inline">Scénář B: </span>Nájem<span className="hidden sm:inline"> + investice</span>
               </span>
             </div>
             
@@ -51,7 +51,7 @@ export function HeroSection() {
             </h1>
 
             <p className="mt-4 max-w-xl text-lg text-[#4B5563] md:text-xl font-uiSans leading-relaxed">
-              Kalkulačka porovná dvě cesty: koupit byt na hypotéku, nebo bydlet v nájmu a rozdíl v platbách investovat do ETF. Uvidíš, jaký majetek ti vyjde po třiceti letech.
+              Kalkulačka porovná dvě cesty: koupit byt na hypotéku, nebo bydlet v nájmu a rozdíl v platbách investovat. Uvidíš, jaký majetek ti vyjde po třiceti letech.
             </p>
 
             <p className="mt-3 max-w-xl text-base italic text-[#6B7280] md:text-lg font-uiSans">

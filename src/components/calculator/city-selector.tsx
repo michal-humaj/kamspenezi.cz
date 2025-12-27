@@ -3,49 +3,32 @@
 import { useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { calculatorDefaults } from "@/data/calculator-defaults";
 
 interface CitySelectorProps {
   selectedCity: string | null;
   onCitySelect: (city: string) => void;
 }
 
-const POPULAR_CITIES = [
-  { name: "Praha", medianPrice: 8500000 },
-  { name: "Brno", medianPrice: 5200000 },
-  { name: "Ostrava", medianPrice: 3100000 },
-  { name: "Plzeň", medianPrice: 4200000 },
-];
+// Use typed config
+const config = calculatorDefaults;
 
-const ALL_CITIES = [
-  ...POPULAR_CITIES,
-  { name: "Liberec", medianPrice: 3500000 },
-  { name: "Olomouc", medianPrice: 3300000 },
-  { name: "České Budějovice", medianPrice: 3600000 },
-  { name: "Hradec Králové", medianPrice: 3800000 },
-  { name: "Pardubice", medianPrice: 3400000 },
-  { name: "Zlín", medianPrice: 3000000 },
-  { name: "Havířov", medianPrice: 2400000 },
-  { name: "Kladno", medianPrice: 3700000 },
-  { name: "Most", medianPrice: 1800000 },
-  { name: "Opava", medianPrice: 2600000 },
-  { name: "Frýdek-Místek", medianPrice: 2800000 },
-  { name: "Karlovy Vary", medianPrice: 2900000 },
-  { name: "Jihlava", medianPrice: 3200000 },
-  { name: "Teplice", medianPrice: 2100000 },
-  { name: "Děčín", medianPrice: 2300000 },
-  { name: "Karviná", medianPrice: 1700000 },
-];
+// Get all cities from config
+const ALL_CITIES = Object.keys(config.cities);
+
+// Popular cities shown as main chips
+const POPULAR_CITIES = ["Praha", "Brno", "Ostrava", "Plzeň"];
 
 export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) {
   const [showAllCities, setShowAllCities] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCities = ALL_CITIES.filter((city) =>
-    city.name.toLowerCase().includes(searchQuery.toLowerCase())
+    city.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Check if selected city is one of the popular cities
-  const isPopularCity = POPULAR_CITIES.some((city) => city.name === selectedCity);
+  const isPopularCity = POPULAR_CITIES.includes(selectedCity || "");
   const showSelectedInMoreCities = selectedCity && !isPopularCity;
 
   return (
@@ -53,11 +36,11 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
       {/* Popular city chips */}
       <div className="flex flex-wrap gap-2">
         {POPULAR_CITIES.map((city) => {
-          const isSelected = selectedCity === city.name;
+          const isSelected = selectedCity === city;
           return (
             <button
-              key={city.name}
-              onClick={() => onCitySelect(city.name)}
+              key={city}
+              onClick={() => onCitySelect(city)}
               className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-3 font-uiSans text-sm font-medium transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
               style={{
                 background: isSelected ? "var(--color-primary)" : "#FFFFFF",
@@ -85,7 +68,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                 }
               }}
             >
-              {city.name}
+              {city}
             </button>
           );
         })}
@@ -161,12 +144,12 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
             }}
           >
             {filteredCities.map((city) => {
-              const isSelected = selectedCity === city.name;
+              const isSelected = selectedCity === city;
               return (
                 <button
-                  key={city.name}
+                  key={city}
                   onClick={() => {
-                    onCitySelect(city.name);
+                    onCitySelect(city);
                     setShowAllCities(false);
                     setSearchQuery("");
                   }}
@@ -186,12 +169,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
                     }
                   }}
                 >
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-kp-text-main font-medium">{city.name}</span>
-                    <span className="text-xs tabular-nums text-kp-text-muted">
-                      {(city.medianPrice / 1000000).toFixed(1)} mil. Kč
-                    </span>
-                  </div>
+                  <span className="text-kp-text-main font-medium">{city}</span>
                 </button>
               );
             })}

@@ -187,19 +187,19 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
 
           {resultsMode === "realistic" ? (
             <>
-              {/* 1. ETF výnos */}
+              {/* 1. Výnos investic */}
               <TripleInput
-                label="Výnos ETF v čase (% p.a.)"
+                label="Výnos investic v čase (% p.a.)"
                 unit="%"
-                minId="etf-min"
-                minValue={state.etfVynosMin}
-                expectedId="etf-expected"
-                expectedValue={state.etfVynosExpected}
-                maxId="etf-max"
-                maxValue={state.etfVynosMax}
-                onMinChange={(v) => updateState({ etfVynosMin: v })}
-                onExpectedChange={(v) => updateState({ etfVynosExpected: v })}
-                onMaxChange={(v) => updateState({ etfVynosMax: v })}
+                minId="investice-min"
+                minValue={state.vynosInvesticeMin}
+                expectedId="investice-expected"
+                expectedValue={state.vynosInvesticeExpected}
+                maxId="investice-max"
+                maxValue={state.vynosInvesticeMax}
+                onMinChange={(v) => updateState({ vynosInvesticeMin: v })}
+                onExpectedChange={(v) => updateState({ vynosInvesticeExpected: v })}
+                onMaxChange={(v) => updateState({ vynosInvesticeMax: v })}
               />
 
               {/* 2. Růst hodnoty nemovitosti */}
@@ -237,14 +237,14 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
                 label="Úroková sazba hypotéky (roky 6-30) (% p.a.)"
                 unit="%"
                 minId="sazba-min"
-                minValue={state.urokovaSazbaMin}
+                minValue={state.urokovaSazbaHypotekyMin}
                 expectedId="sazba-expected"
-                expectedValue={state.urokovaSazbaExpected}
+                expectedValue={state.urokovaSazbaHypotekyExpected}
                 maxId="sazba-max"
-                maxValue={state.urokovaSazbaMax}
-                onMinChange={(v) => updateState({ urokovaSazbaMin: v })}
-                onExpectedChange={(v) => updateState({ urokovaSazbaExpected: v })}
-                onMaxChange={(v) => updateState({ urokovaSazbaMax: v })}
+                maxValue={state.urokovaSazbaHypotekyMax}
+                onMinChange={(v) => updateState({ urokovaSazbaHypotekyMin: v })}
+                onExpectedChange={(v) => updateState({ urokovaSazbaHypotekyExpected: v })}
+                onMaxChange={(v) => updateState({ urokovaSazbaHypotekyMax: v })}
               />
             </>
           ) : (
@@ -266,11 +266,11 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
               />
 
               <LabeledSliderInput
-                id="etf-expected"
-                label="Výnos ETF (ročně)"
+                id="investice-expected"
+                label="Výnos investic (ročně)"
                 description="Očekávaný roční výnos investičního portfolia"
-                value={state.etfVynosExpected}
-                onChange={(v) => updateState({ etfVynosExpected: v })}
+                value={state.vynosInvesticeExpected}
+                onChange={(v) => updateState({ vynosInvesticeExpected: v })}
                 unit="percent"
                 min={0}
                 max={20}
@@ -284,8 +284,8 @@ export function UncertaintyInputs({ state, updateState, resultsMode }: Uncertain
                 id="sazba-expected"
                 label="Budoucí sazba hypotéky (od roku 6)"
                 description="Očekávaná úroková sazba po skončení fixace"
-                value={state.urokovaSazbaExpected}
-                onChange={(v) => updateState({ urokovaSazbaExpected: v })}
+                value={state.urokovaSazbaHypotekyExpected}
+                onChange={(v) => updateState({ urokovaSazbaHypotekyExpected: v })}
                 unit="percent"
                 min={0}
                 max={15}

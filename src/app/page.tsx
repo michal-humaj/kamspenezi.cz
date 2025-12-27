@@ -12,6 +12,8 @@ import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
 import { YearlyOverviewTable, type YearlyRow } from "@/components/calculator/YearlyOverviewTable";
 import { YearlyBreakdownMobile } from "@/components/calculator/yearly-breakdown-mobile";
 import { CalculatorSchema } from "@/components/seo/calculator-schema";
+import { calculatorDefaults } from "@/data/calculator-defaults";
+import type { ApartmentSize } from "@/data/calculator-defaults.types";
 
 // Types for calculator state
 export interface CalculatorState {
@@ -21,9 +23,9 @@ export interface CalculatorState {
   // Basic inputs
   kupniCena: number;
   vlastniZdroje: number;
-  urokovaSazba: number;
+  urokovaSazbaHypoteky: number;
   najemne: number;
-  etfVynos: number;
+  vynosInvestice: number;
   
   // Advanced inputs
   prispevekRodicu: number;
@@ -37,50 +39,59 @@ export interface CalculatorState {
   rustNajemneho: number;
   
   // Monte Carlo uncertainty parameters
-  etfVynosMin: number;
-  etfVynosExpected: number;
-  etfVynosMax: number;
+  vynosInvesticeMin: number;
+  vynosInvesticeExpected: number;
+  vynosInvesticeMax: number;
   rustHodnotyMin: number;
   rustHodnotyExpected: number;
   rustHodnotyMax: number;
   rustNajemnehoMin: number;
   rustNajemnehoExpected: number;
   rustNajemnehoMax: number;
-  urokovaSazbaMin: number;
-  urokovaSazbaExpected: number;
-  urokovaSazbaMax: number;
+  urokovaSazbaHypotekyMin: number;
+  urokovaSazbaHypotekyExpected: number;
+  urokovaSazbaHypotekyMax: number;
 }
+
+// Use typed config
+const config = calculatorDefaults;
+
+// Get Praha defaults for initial state
+const prahaDefaults = config.cities["Praha"];
+const praha2kkDefaults = prahaDefaults.apartments["2+kk"];
 
 // Initial state with Praha preselected, apartment size requires user selection
 const initialState: CalculatorState = {
   selectedCity: "Praha",
   selectedApartmentSize: null,
-  kupniCena: 6000000,
+  // Use 2+kk defaults as initial values (user will select actual apartment)
+  kupniCena: praha2kkDefaults.kupniCena,
   vlastniZdroje: 10,
-  urokovaSazba: 4.7,
-  najemne: 17000,
-  etfVynos: 8.0,
+  urokovaSazbaHypoteky: config.global.urokovaSazbaHypoteky,
+  najemne: praha2kkDefaults.najemne,
+  vynosInvestice: config.global.vynosInvestice,
   prispevekRodicu: 0,
-  zarizeniNemovitosti: 250000,
-  rustHodnotyNemovitosti: 6.0,
-  fondOprav: 300,
-  pojisteniNemovitosti: 1900,
-  danZNemovitosti: 2000,
-  nakladyUdrzba: 30000,
-  ocekavanaInflace: 3.0,
-  rustNajemneho: 4.0,
-  etfVynosMin: 4.0,
-  etfVynosExpected: 8.0,
-  etfVynosMax: 12.0,
-  rustHodnotyMin: 1.0,
-  rustHodnotyExpected: 6.0,
-  rustHodnotyMax: 10.0,
-  rustNajemnehoMin: 1.5,
-  rustNajemnehoExpected: 4.0,
-  rustNajemnehoMax: 6.0,
-  urokovaSazbaMin: 3.0,
-  urokovaSazbaExpected: 4.3,
-  urokovaSazbaMax: 7.0,
+  zarizeniNemovitosti: praha2kkDefaults.zarizeniNemovitosti,
+  rustHodnotyNemovitosti: prahaDefaults.rustHodnotyNemovitosti,
+  fondOprav: praha2kkDefaults.fondOprav,
+  pojisteniNemovitosti: praha2kkDefaults.pojisteniNemovitosti,
+  danZNemovitosti: praha2kkDefaults.danZNemovitosti,
+  nakladyUdrzba: praha2kkDefaults.nakladyUdrzba,
+  ocekavanaInflace: config.global.ocekavanaInflace,
+  rustNajemneho: prahaDefaults.rustNajemneho,
+  // Monte Carlo uncertainty parameters
+  vynosInvesticeMin: config.global.vynosInvestice - 4.0,
+  vynosInvesticeExpected: config.global.vynosInvestice,
+  vynosInvesticeMax: config.global.vynosInvestice + 4.0,
+  rustHodnotyMin: prahaDefaults.rustHodnotyNemovitosti - 5.0,
+  rustHodnotyExpected: prahaDefaults.rustHodnotyNemovitosti,
+  rustHodnotyMax: prahaDefaults.rustHodnotyNemovitosti + 4.0,
+  rustNajemnehoMin: prahaDefaults.rustNajemneho - 2.5,
+  rustNajemnehoExpected: prahaDefaults.rustNajemneho,
+  rustNajemnehoMax: prahaDefaults.rustNajemneho + 2.0,
+  urokovaSazbaHypotekyMin: config.global.urokovaSazbaHypotekyFuture - 1.3,
+  urokovaSazbaHypotekyExpected: config.global.urokovaSazbaHypotekyFuture,
+  urokovaSazbaHypotekyMax: config.global.urokovaSazbaHypotekyFuture + 2.7,
 };
 
 export default function Home() {
@@ -89,18 +100,69 @@ export default function Home() {
   const [animatingFields, setAnimatingFields] = useState<Set<string>>(new Set());
 
   const handleCitySelect = (city: string) => {
-    setState((prev) => ({ ...prev, selectedCity: city }));
+    const cityDefaults = config.cities[city];
+    if (!cityDefaults) {
+      setState((prev) => ({ ...prev, selectedCity: city }));
+      return;
+    }
+
+    // Apply per-city parameters
+    setState((prev) => {
+      const updates: Partial<CalculatorState> = {
+        selectedCity: city,
+        rustNajemneho: cityDefaults.rustNajemneho,
+        rustHodnotyNemovitosti: cityDefaults.rustHodnotyNemovitosti,
+        // Update uncertainty ranges based on city
+        rustHodnotyMin: cityDefaults.rustHodnotyNemovitosti - 5.0,
+        rustHodnotyExpected: cityDefaults.rustHodnotyNemovitosti,
+        rustHodnotyMax: cityDefaults.rustHodnotyNemovitosti + 4.0,
+        rustNajemnehoMin: cityDefaults.rustNajemneho - 2.5,
+        rustNajemnehoExpected: cityDefaults.rustNajemneho,
+        rustNajemnehoMax: cityDefaults.rustNajemneho + 2.0,
+      };
+
+      // If apartment size is already selected, also update apartment-specific values
+      if (prev.selectedApartmentSize) {
+        const apartmentDefaults = cityDefaults.apartments[prev.selectedApartmentSize as ApartmentSize];
+        if (apartmentDefaults) {
+          Object.assign(updates, {
+            kupniCena: apartmentDefaults.kupniCena,
+            najemne: apartmentDefaults.najemne,
+            fondOprav: apartmentDefaults.fondOprav,
+            zarizeniNemovitosti: apartmentDefaults.zarizeniNemovitosti,
+            danZNemovitosti: apartmentDefaults.danZNemovitosti,
+            pojisteniNemovitosti: apartmentDefaults.pojisteniNemovitosti,
+            nakladyUdrzba: apartmentDefaults.nakladyUdrzba,
+          });
+        }
+      }
+
+      return { ...prev, ...updates };
+    });
   };
 
-  const handleApartmentSelect = (size: string, kupniCena: number, najemne: number) => {
+  const handleApartmentSelect = (size: string) => {
+    const cityDefaults = state.selectedCity ? config.cities[state.selectedCity] : null;
+    const apartmentDefaults = cityDefaults?.apartments[size as ApartmentSize];
+
+    if (!apartmentDefaults) {
+      setState((prev) => ({ ...prev, selectedApartmentSize: size }));
+      return;
+    }
+
     // Mark fields as animating
-    setAnimatingFields(new Set(["kupniCena", "najemne"]));
+    setAnimatingFields(new Set(["kupniCena", "najemne", "fondOprav", "zarizeniNemovitosti", "danZNemovitosti", "pojisteniNemovitosti", "nakladyUdrzba"]));
     
     setState((prev) => ({
       ...prev,
       selectedApartmentSize: size,
-      kupniCena,
-      najemne,
+      kupniCena: apartmentDefaults.kupniCena,
+      najemne: apartmentDefaults.najemne,
+      fondOprav: apartmentDefaults.fondOprav,
+      zarizeniNemovitosti: apartmentDefaults.zarizeniNemovitosti,
+      danZNemovitosti: apartmentDefaults.danZNemovitosti,
+      pojisteniNemovitosti: apartmentDefaults.pojisteniNemovitosti,
+      nakladyUdrzba: apartmentDefaults.nakladyUdrzba,
     }));
 
     // Clear animation state after 400ms
@@ -118,8 +180,8 @@ export default function Home() {
     return calculateBydleniFixed({
       purchasePrice: state.kupniCena,
       parentsContribution: state.prispevekRodicu,
-      mortgageRateAnnual: state.urokovaSazba / 100, // Convert % to decimal
-      mortgageRateFuture: state.urokovaSazbaExpected / 100, // Convert % to decimal
+      mortgageRateAnnual: state.urokovaSazbaHypoteky / 100, // Convert % to decimal
+      mortgageRateFuture: state.urokovaSazbaHypotekyExpected / 100, // Convert % to decimal
       ownFundsRatio: state.vlastniZdroje / 100, // Convert % to decimal
       furnishingOneOff: state.zarizeniNemovitosti,
       // Use EXPECTED values from uncertainty section for time-based growth
@@ -131,7 +193,7 @@ export default function Home() {
       costInflationAnnual: state.ocekavanaInflace / 100,
       rentGrowthAnnual: state.rustNajemnehoExpected / 100,
       rentMonthly: state.najemne,
-      etfReturnAnnual: state.etfVynosExpected / 100,
+      investiceReturnAnnual: state.vynosInvesticeExpected / 100,
     });
   }, [state]);
 
@@ -150,7 +212,7 @@ export default function Home() {
       propertyNetWorth: calculationResults.propertyValue[index] - calculationResults.remainingDebt[index],
       rent: calculationResults.rentAnnual[index],
       savedComparedToOwnership: calculationResults.savedVsOwnership[index],
-      etfPortfolioValue: calculationResults.etfValue[index],
+      portfolioValue: calculationResults.investiceValue[index],
     }));
   }, [calculationResults]);
 

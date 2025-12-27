@@ -1,64 +1,29 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { calculatorDefaults } from "@/data/calculator-defaults";
+import type { ApartmentSize } from "@/data/calculator-defaults.types";
+import { APARTMENT_SIZES } from "@/data/calculator-defaults.types";
 
 interface ApartmentSizeCardsProps {
   selectedCity: string | null;
   selectedSize: string | null;
-  onSizeSelect: (size: string, kupniCena: number, najemne: number) => void;
+  onSizeSelect: (size: string) => void;
 }
 
-// Mock apartment data by city and size
-const APARTMENT_DATA: Record<string, Record<string, { kupniCena: number; najemne: number }>> = {
-  Praha: {
-    "1+kk": { kupniCena: 5200000, najemne: 18000 },
-    "2+kk": { kupniCena: 7800000, najemne: 24000 },
-    "3+kk": { kupniCena: 10500000, najemne: 32000 },
-    "4+kk": { kupniCena: 13200000, najemne: 42000 },
-  },
-  Brno: {
-    "1+kk": { kupniCena: 3200000, najemne: 12000 },
-    "2+kk": { kupniCena: 4800000, najemne: 16000 },
-    "3+kk": { kupniCena: 6400000, najemne: 21000 },
-    "4+kk": { kupniCena: 8000000, najemne: 27000 },
-  },
-  Ostrava: {
-    "1+kk": { kupniCena: 1900000, najemne: 8000 },
-    "2+kk": { kupniCena: 2900000, najemne: 11000 },
-    "3+kk": { kupniCena: 3800000, najemne: 14000 },
-    "4+kk": { kupniCena: 4800000, najemne: 18000 },
-  },
-  Plzeň: {
-    "1+kk": { kupniCena: 2600000, najemne: 10000 },
-    "2+kk": { kupniCena: 3900000, najemne: 13000 },
-    "3+kk": { kupniCena: 5200000, najemne: 17000 },
-    "4+kk": { kupniCena: 6500000, najemne: 22000 },
-  },
-  Default: {
-    "1+kk": { kupniCena: 2500000, najemne: 9000 },
-    "2+kk": { kupniCena: 3800000, najemne: 12000 },
-    "3+kk": { kupniCena: 5000000, najemne: 16000 },
-    "4+kk": { kupniCena: 6300000, najemne: 20000 },
-  },
-};
+// Use typed config
+const config = calculatorDefaults;
 
-const SIZES = ["1+kk", "2+kk", "3+kk", "4+kk"];
-
-// Area data for each apartment size
-const APARTMENT_AREAS: Record<string, string> = {
-  "1+kk": "32 m²",
-  "2+kk": "54 m²",
-  "3+kk": "76 m²",
-  "4+kk": "98 m²",
-};
+// Get apartment sizes from types
+const SIZES: ApartmentSize[] = ["1+kk", "2+kk", "3+kk", "4+kk"];
 
 // Simplified formatting with separated price and area
 function formatCardPrice(price: number): string {
   return (price / 1000000).toFixed(1).replace(".", ",") + " mil";
 }
 
-function formatCardArea(size: string): string {
-  return APARTMENT_AREAS[size] || "—";
+function formatCardArea(squareMeters: number): string {
+  return `${squareMeters} m²`;
 }
 
 export function ApartmentSizeCards({
@@ -66,9 +31,10 @@ export function ApartmentSizeCards({
   selectedSize,
   onSizeSelect,
 }: ApartmentSizeCardsProps) {
-  const cityData = selectedCity
-    ? APARTMENT_DATA[selectedCity] || APARTMENT_DATA.Default
-    : APARTMENT_DATA.Default;
+  // Get city data from config, fallback to Praha if city not found
+  const cityData = selectedCity && config.cities[selectedCity] 
+    ? config.cities[selectedCity] 
+    : config.cities["Praha"];
 
   // Refs for scroll container and individual cards
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -91,8 +57,8 @@ export function ApartmentSizeCards({
     }
   }, [selectedSize]);
 
-  const handleSelect = (size: string, kupniCena: number, najemne: number) => {
-    onSizeSelect(size, kupniCena, najemne);
+  const handleSelect = (size: string) => {
+    onSizeSelect(size);
   };
 
   return (
@@ -100,12 +66,12 @@ export function ApartmentSizeCards({
       {/* Desktop: Grid layout */}
       <div className="hidden md:grid md:grid-cols-4 gap-4">
         {SIZES.map((size) => {
-          const data = cityData[size];
+          const data = cityData.apartments[size];
           const isSelected = selectedSize === size;
           return (
             <button
               key={size}
-              onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
+              onClick={() => handleSelect(size)}
               className={`group rounded-[var(--radius-card)] p-5 text-left transition-all duration-200 ease-out focus:outline-none border-2 ${
                 isSelected 
                   ? "border-[#0F172A] relative z-10 bg-white" 
@@ -129,7 +95,7 @@ export function ApartmentSizeCards({
                   </span>
                   <span className="mx-1.5 text-gray-300">·</span>
                   <span className="font-normal text-kp-text-muted">
-                    {formatCardArea(size)}
+                    {formatCardArea(data.squareMeters)}
                   </span>
                 </div>
               </div>
@@ -151,7 +117,7 @@ export function ApartmentSizeCards({
         }}
       >
         {SIZES.map((size) => {
-          const data = cityData[size];
+          const data = cityData.apartments[size];
           const isSelected = selectedSize === size;
           return (
             <button
@@ -159,7 +125,7 @@ export function ApartmentSizeCards({
               ref={(el) => {
                 cardRefs.current[size] = el;
               }}
-              onClick={() => handleSelect(size, data.kupniCena, data.najemne)}
+              onClick={() => handleSelect(size)}
               className={`min-w-[140px] shrink-0 rounded-[18px] p-3 md:p-5 text-left transition-all duration-200 ease-out focus:outline-none border-2 ${
                 isSelected 
                   ? "border-[#0F172A] relative z-10 bg-white" 
@@ -184,7 +150,7 @@ export function ApartmentSizeCards({
                   </span>
                   <span className="mx-1 text-gray-300">·</span>
                   <span className="font-normal text-kp-text-muted">
-                    {formatCardArea(size)}
+                    {formatCardArea(data.squareMeters)}
                   </span>
                 </div>
               </div>

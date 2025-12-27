@@ -70,7 +70,7 @@ export function ComparisonCard() {
               className="h-1.5 w-1.5 rounded-full" 
               style={{ background: 'var(--scenario-b-dot)' }}
             />
-            Nájem + ETF
+            Nájem + investice
           </span>
           <div className="mt-1">
             <p className="text-[11px] font-medium uppercase tracking-wide text-[#9CA3AF] font-uiSans">

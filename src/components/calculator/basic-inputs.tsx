@@ -49,7 +49,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
   
   // Mortgage Payment Calculation (30 years fixed)
   const loanAmount = state.kupniCena - downPaymentCzk;
-  const monthlyRate = (state.urokovaSazba / 100) / 12;
+  const monthlyRate = (state.urokovaSazbaHypoteky / 100) / 12;
   const numPayments = 30 * 12;
   
   let monthlyPayment = 0;
@@ -122,8 +122,8 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
             Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
           </span>
         }
-        value={state.urokovaSazba}
-        onChange={(value) => updateState({ urokovaSazba: value })}
+        value={state.urokovaSazbaHypoteky}
+        onChange={(value) => updateState({ urokovaSazbaHypoteky: value })}
         unit="percent"
         min={INTEREST_RATE_RANGE.min}
         max={INTEREST_RATE_RANGE.max}

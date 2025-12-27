@@ -24,13 +24,13 @@ const newsreader = Newsreader({
 export const metadata: Metadata = {
   title: "Kalkulačka bydlení: Spočítej si vlastní vs. nájem | kamspenezi.cz",
   description:
-    "Zadej kupní cenu bytu, hypotéku a nájem. Porovnej, kolik ti vyjde po 30 letech vlastní bydlení na hypotéku vs. nájem + investice do ETF. Transparentní výpočet s daty z Prahy, Brna, Ostravy a dalších měst.",
+    "Zadej kupní cenu bytu, hypotéku a nájem. Porovnej, kolik ti vyjde po 30 letech vlastní bydlení na hypotéku vs. nájem + investice. Transparentní výpočet s daty z českých krajských měst.",
   keywords: [
     "kalkulačka hypotéky",
     "spočítat hypotéku",
     "nájem vs vlastní",
     "kalkulačka bydlení Praha",
-    "kalkulačka ETF",
+    "kalkulačka investic",
     "investice vs hypotéka",
     "koupit nebo pronajímat",
   ],

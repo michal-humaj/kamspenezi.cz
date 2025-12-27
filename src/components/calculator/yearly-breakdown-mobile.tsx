@@ -54,7 +54,7 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
           {rows.map((row) => {
             // Format summary for header
             const propertyNetWorthMil = formatMillionsCzk(row.propertyNetWorth);
-            const etfValueMil = formatMillionsCzk(row.etfPortfolioValue);
+            const portfolioValueMil = formatMillionsCzk(row.portfolioValue);
             
             return (
               <AccordionItem
@@ -79,7 +79,7 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
                     {/* Col 3: Scenario B Value - Fixed Width */}
                     <div className="flex w-[75px] items-center justify-end gap-1.5 font-uiSans text-sm tabular-nums text-slate-700">
                       <LilacDot />
-                      {etfValueMil} mil
+                      {portfolioValueMil} mil
                     </div>
 
                     {/* Col 4: Chevron */}
@@ -142,11 +142,11 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
                       <dt className="pl-2 text-xs text-slate-500">Nájemné</dt>
                       <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.rent))}</dd>
 
-                      <dt className="pl-2 text-xs text-slate-500">Ušetřeno do ETF</dt>
+                      <dt className="pl-2 text-xs text-slate-500">Ušetřeno k investici</dt>
                       <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.savedComparedToOwnership))}</dd>
 
                       <dt className="pl-2 text-xs font-medium text-slate-900 mt-2 pt-3 border-t border-dashed border-slate-200">Hodnota portfolia</dt>
-                      <dd className="pr-2 text-right text-sm font-bold text-slate-900 tabular-nums mt-2 pt-3 border-t border-dashed border-slate-200">{formatValue(Math.round(row.etfPortfolioValue))}</dd>
+                      <dd className="pr-2 text-right text-sm font-bold text-slate-900 tabular-nums mt-2 pt-3 border-t border-dashed border-slate-200">{formatValue(Math.round(row.portfolioValue))}</dd>
                     </dl>
                   </div>
                 </AccordionContent>
