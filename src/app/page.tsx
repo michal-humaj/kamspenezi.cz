@@ -267,7 +267,7 @@ export default function Home() {
                 </span>
                 
                 {/* Pill B: Rent - Forest Green */}
-                <span className="inline-flex items-center rounded-full bg-[#E3EBE6] px-3 py-1.5 text-sm font-semibold text-[#2F5C45]">
+                <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
                   Scénář B: Nájem a investice
                 </span>
               </div>

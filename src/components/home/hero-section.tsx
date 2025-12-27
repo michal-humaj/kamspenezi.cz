@@ -41,7 +41,7 @@ export function HeroSection() {
               <span className="text-sm italic text-gray-400">vs</span>
               
               {/* Pill B: Rent */}
-              <span className="inline-flex items-center rounded-full bg-[#E3EBE6] px-3 py-1 text-sm font-semibold text-[#2F5C45]">
+              <span className="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
                 <span className="hidden min-[380px]:inline">Scénář B: </span>Nájem<span className="hidden sm:inline"> + investice</span>
               </span>
             </div>
@@ -85,7 +85,7 @@ export function HeroSection() {
               className="flex flex-col items-center border text-center" 
               style={{
                 background: 'var(--bg-card)',
-                borderColor: 'var(--border-subtle)',
+                borderColor: 'var(--color-border)',
                 borderRadius: 'var(--radius-card)',
                 boxShadow: 'var(--shadow-card)',
                 padding: '28px 24px'
@@ -93,11 +93,11 @@ export function HeroSection() {
             >
               <div 
                 className="flex h-20 w-20 items-center justify-center rounded-full"
-                style={{ background: 'var(--bg-section-soft)' }}
+                style={{ background: 'var(--scenario-b-bg)' }}
               >
                 <svg 
                   className="h-10 w-10" 
-                  style={{ color: 'var(--scenario-b-text)' }}
+                  style={{ color: 'var(--scenario-b-dot)' }}
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor" 

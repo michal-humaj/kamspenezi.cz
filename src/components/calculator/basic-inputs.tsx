@@ -138,7 +138,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         {/* Header Scenario B */}
         <div className="mb-1">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#2F5C45]" />
+            <div className="w-2 h-2 rounded-full" style={{ background: 'var(--scenario-b-dot)' }} />
             <span className="text-base font-semibold text-slate-900">Scénář B: Bydlení v nájmu a investování</span>
           </div>
           <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">

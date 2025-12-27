@@ -1,10 +1,13 @@
 # Design Manual — kamspenezi.cz
 
-> Last updated: December 26, 2025
+> Last updated: December 27, 2025
 > This document reflects the current production design system including calculator page.  
 > All changes to brand, UI, or components must update this file first.
 > 
-> **Recent Updates**: Monte Carlo "Realistic Mode" UI documented (Section 14.6.1)
+> **Recent Updates**: 
+> - Scenario colors updated: A = Copper/Terracotta (#C2410C), B = Forest Green (#2F5C45)
+> - Purple palette removed entirely in favor of Sage Green for Scenario B
+> - "ETF" terminology replaced with "investice" throughout
 
 ───────────────────────────────
 
@@ -72,9 +75,12 @@
 ### 3.1 Surface Colors
 
 ```css
---bg-base: #F9FAFB;            /* Base light background */
---bg-lilac-section: #F4F5FB;   /* Soft analytic lilac sections */
+--bg-base: #F5F6F8;            /* Base light background - slightly darker for contrast */
+--bg-lilac-section: #F4F5FB;   /* Soft analytic sections */
 --bg-card: #ffffff;            /* Card surface - pure white */
+--bg-hover: rgba(15, 23, 42, 0.02);       /* Subtle hover background */
+--bg-hover-strong: rgba(15, 23, 42, 0.04); /* Stronger hover background */
+--bg-highlight: rgba(15, 23, 42, 0.03);   /* Subtle highlight for animations */
 ```
 
 **Usage**:
@@ -118,16 +124,24 @@
 ### 3.4 Scenario Colors (ONLY for pills and accents)
 
 ```css
---scenario-a-bg: #F7EAD9;       /* Soft terracotta background */
---scenario-a-dot: #C98D4E;      /* Terracotta dot */
---scenario-b-bg: #EAE7FF;       /* Soft lilac background */
---scenario-b-dot: #7D5AE2;      /* Purple dot */
+/* Scenario A: Own Housing / Mortgage - Warm Copper tones */
+--scenario-a-bg: #FFF7ED;       /* Light warm beige/orange background */
+--scenario-a-dot: #C2410C;      /* Architectural copper/terracotta */
+
+/* Scenario B: Rent + Invest - Cool Forest Green tones */
+--scenario-b-bg: #E3EBE6;       /* Soft sage/mint background */
+--scenario-b-dot: #2F5C45;      /* Deep forest green */
 ```
+
+**Color Philosophy**: Warm vs Cool contrast
+- **Scenario A** = Warm (Copper/Terracotta) - represents stability, ownership, home
+- **Scenario B** = Cool (Forest Green) - represents growth, wealth, the brand aesthetic
 
 **Strict Rules**:
 - Use ONLY in: Scenario pills/badges, dots inside pills, chart series colors
 - NEVER use in: Section backgrounds, generic bullets, large background areas
-- Always pair with explicit labels ("Byt na hypotéku", "Nájem + ETF")
+- Always pair with explicit labels ("Byt na hypotéku", "Nájem a investování")
+- **Purple is deprecated** - do NOT use lilac/purple for scenario colors
 
 ───────────────────────────────
 
@@ -164,7 +178,7 @@ Font weight: 600 (semibold)
 --btn-primary-text: #ffffff;
 --btn-primary-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
 --btn-primary-shadow-hover: 0 6px 20px rgba(15, 23, 42, 0.22);
---btn-focus-ring: #7D5AE2;  /* Lilac */
+--btn-focus-ring: #9F7AEA;  /* Lilac focus ring - neutral, works with all colors */
 ```
 
 **States**:
@@ -283,18 +297,18 @@ Border radius: var(--radius-pill)
 
 **Colors**:
 ```css
-/* Scenario A (Property/Own) */
-background: var(--scenario-a-bg)
-color: var(--scenario-a-dot)
+/* Scenario A (Property/Own) - Warm Copper */
+background: var(--scenario-a-bg)   /* #FFF7ED - light warm beige */
+color: var(--scenario-a-dot)       /* #C2410C - architectural copper */
 dot: var(--scenario-a-dot)
 
-/* Scenario B (Rent/ETF) */
-background: var(--scenario-b-bg)
-color: var(--scenario-b-dot)
+/* Scenario B (Rent + Invest) - Cool Forest Green */
+background: var(--scenario-b-bg)   /* #E3EBE6 - soft sage/mint */
+color: var(--scenario-b-dot)       /* #2F5C45 - forest green */
 dot: var(--scenario-b-dot)
 ```
 
-**Usage**: Results card, scenario explanation cards. Always accompanied by clear labels.
+**Usage**: Results card, scenario explanation cards. Always accompanied by clear labels ("Nájem a investování", not "ETF").
 
 ───────────────────────────────
 
@@ -524,23 +538,34 @@ theme: {
   --font-display-serif: "Newsreader", "Times New Roman", serif;
 
   /* Section Backgrounds */
-  --bg-base: #F9FAFB;
-  --bg-lilac-section: #F4F5FB;
-  --bg-card: #ffffff;
+  --bg-base: #F5F6F8;           /* Base light background - slightly darker for contrast */
+  --bg-lilac-section: #F4F5FB;  /* Soft analytic sections */
+  --bg-card: #FFFFFF;           /* Pure white for all cards */
+  --bg-hover: rgba(15, 23, 42, 0.02);       /* Subtle hover background */
+  --bg-hover-strong: rgba(15, 23, 42, 0.04); /* Stronger hover background */
+  --bg-highlight: rgba(15, 23, 42, 0.03);   /* Subtle highlight for animations */
 
   /* Text Colors */
-  --color-primary: #0F172A;
-  --color-primary-hover: #1A2433;
-  --color-secondary: #6B7280;
-  --color-border: #EDEEF3;
-  --color-border-hover: #D8DBE5;
-  --color-bullet: #9CA3AF;
+  --color-primary: #0F172A;     /* Main navy/ink */
+  --color-primary-hover: #1A2433; /* Primary navy hover (8% lighter) */
+  --color-secondary: #6B7280;   /* Secondary text */
+  --color-on-primary: #FFFFFF;  /* Text on primary color */
+  --color-border: #EDEEF3;      /* Card borders */
+  --color-border-hover: #D8DBE5; /* Border hover state */
+  --color-bullet: #9CA3AF;      /* Generic bullets */
 
-  /* Scenario Colors */
-  --scenario-a-bg: #F7EAD9;
-  --scenario-a-dot: #C98D4E;
-  --scenario-b-bg: #EAE7FF;
-  --scenario-b-dot: #7D5AE2;
+  /* Scenario Colors - Warm vs Cool contrast */
+  --scenario-a-bg: #FFF7ED;     /* Light warm beige/orange */
+  --scenario-a-dot: #C2410C;    /* Architectural copper/terracotta */
+  --scenario-b-bg: #E3EBE6;     /* Soft sage/mint background */
+  --scenario-b-dot: #2F5C45;    /* Forest green */
+
+  /* Selection/Active States (Navy/Primary) */
+  --selection-border: var(--color-primary);
+  --selection-bg: rgba(15, 23, 42, 0.02);
+  --selection-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+  --selection-shadow-inner: inset 0 1px 4px rgba(15, 23, 42, 0.04);
+  --toggle-bg-inactive: rgba(244, 245, 251, 0.5);
 
   /* Button System */
   --btn-primary-bg: #0F172A;
@@ -555,13 +580,14 @@ theme: {
   --btn-secondary-hover-bg: rgba(15, 23, 42, 0.02);
   --btn-secondary-text: #0F172A;
   
-  --btn-focus-ring: #7D5AE2;
+  --btn-focus-ring: #9F7AEA;    /* Lilac focus ring */
 
   /* Card System */
   --shadow-card: 0 8px 28px rgba(15, 23, 42, 0.06);
+  --shadow-card-soft: 0 8px 24px rgba(15, 23, 42, 0.05);
   --shadow-card-hover: 0 12px 32px rgba(15, 23, 42, 0.10);
-  --radius-card: 24px;
-  --radius-pill: 999px;
+  --radius-card: 24px;          /* All cards */
+  --radius-pill: 999px;         /* Buttons and pills */
 
   /* Section Spacing */
   --section-padding-y-desktop: 96px;
@@ -819,7 +845,7 @@ text-transform: uppercase;
 letter-spacing: 0.02em;
 ```
 
-**Usage**: "SCÉNÁŘ A – BYT NA HYPOTÉKU", "SCÉNÁŘ B – NÁJEM + ETF" above result values
+**Usage**: "SCÉNÁŘ A – BYT NA HYPOTÉKU", "SCÉNÁŘ B – NÁJEM A INVESTOVÁNÍ" above result values
 
 ### 14.3 Input System
 
@@ -1040,9 +1066,8 @@ hover: text-slate-700;
 **Advisor Insight Box**:
 ```css
 container: rounded-xl p-4 mb-6;
-background: dynamic based on winner;
-  - If A wins: #FEF7F0 (light terracotta)
-  - If B wins: #F5F3FF (light purple)
+background: none (sits on white card background);
+/* Dynamic backgrounds removed - clean white design */
 ```
 
 - **Verdict Sentence**: 
@@ -1054,8 +1079,8 @@ background: dynamic based on winner;
   - Segments: Two divs with scenario colors, widths = percentages
 
 - **Probability Labels**:
-  - Style: `text-xs font-semibold tabular-nums`
-  - Color: Match scenario colors (A: `#C98D4E`, B: `#7D5AE2`)
+  - Style: `text-xs font-bold tabular-nums`
+  - Color: Match scenario colors (A: `#C2410C`, B: `#2F5C45`)
   - Layout: `flex justify-between mt-2`
 
 - **Context Line**:
@@ -1336,7 +1361,7 @@ Context text:      10px (text-[10px], uppercase)
   - **Sticky Column**: "Rok" column stays visible on scroll.
 - **Visual Style**:
   - **No-Border Policy**: No internal vertical borders. Only one strong vertical divider (`border-l-2 border-slate-300`) separating Scenario A and B.
-  - **Scenario B Tint**: `bg-[#FBFBFF]` (Lilac tint) applied to entire Scenario B column group.
+  - **Scenario B Tint**: `bg-[#FBFBFF]` (Very subtle neutral tint) applied to entire Scenario B column group.
   - **Typography**: Navy (`#0F172A`) for key metrics, Grey (`#6B7280`) for breakdown details.
   - **Values**: `tabular-nums`, "—" for zero (grey), Red text for negative values.
   - **Row Hover**: Highlights entire row across all columns (`hover:bg-slate-50`).

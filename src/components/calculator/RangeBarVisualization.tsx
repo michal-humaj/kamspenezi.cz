@@ -4,12 +4,18 @@ import * as React from "react";
 import { formatMillionsCzk } from "@/lib/format";
 
 export function RangeBarVisualization() {
+  // Scenario colors from CSS variables
+  const SCENARIO_COLORS = {
+    A: "var(--scenario-a-dot)", // Architectural Copper (#C2410C)
+    B: "var(--scenario-b-dot)", // Forest Green (#2F5C45)
+  };
+
   // Scenario A Data
   const scenarioA = {
     p10: 72000000,
     median: 79928678,
     p90: 85000000,
-    color: "#C2410C", // Architectural Copper
+    color: SCENARIO_COLORS.A,
   };
 
   // Scenario B Data
@@ -17,7 +23,7 @@ export function RangeBarVisualization() {
     p10: 15000000,
     median: 22144799,
     p90: 45000000,
-    color: "#2F5C45", // Forest Green
+    color: SCENARIO_COLORS.B,
   };
 
   // 1. Calculate the Scale (Global Max Optimistic)
@@ -29,7 +35,7 @@ export function RangeBarVisualization() {
       <div>
         {/* Semantic Header (Full Width) */}
         <div className="flex items-center mb-4">
-          <div className="w-2 h-2 rounded-full bg-orange-700 mr-2" />
+          <div className="w-2 h-2 rounded-full mr-2" style={{ background: 'var(--scenario-a-dot)' }} />
           <span className="text-xs font-bold tracking-wide text-slate-500 font-uiSans">
             Scénář A: Vlastní bydlení na hypotéku
           </span>
@@ -87,7 +93,7 @@ export function RangeBarVisualization() {
       <div>
         {/* Semantic Header (Full Width) */}
         <div className="flex items-center mb-4">
-          <div className="w-2 h-2 rounded-full bg-[#2F5C45] mr-2" />
+          <div className="w-2 h-2 rounded-full mr-2" style={{ background: 'var(--scenario-b-dot)' }} />
           <span className="text-xs font-bold tracking-wide text-slate-500 font-uiSans">
             Scénář B: Bydlení v nájmu a investování
           </span>

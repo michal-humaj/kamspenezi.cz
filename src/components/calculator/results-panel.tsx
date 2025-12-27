@@ -59,10 +59,11 @@ function formatMillions(value: number): string {
   }).format(millions);
 }
 
-// Scenario colors
+// Scenario colors - use CSS custom properties for consistency
+// These are defined in globals.css as --scenario-a-dot and --scenario-b-dot
 const COLORS = {
-  A: "#C2410C", // Architectural Copper/Terracotta
-  B: "#2F5C45", // Forest Green
+  A: "var(--scenario-a-dot)", // Architectural Copper/Terracotta (#C2410C)
+  B: "var(--scenario-b-dot)", // Forest Green (#2F5C45)
 };
 
 

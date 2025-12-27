@@ -1,17 +1,68 @@
 /**
- * Calculator Default Values
+ * Calculator Default Values & Audit Metadata
  * 
- * This file contains all default parameters for the rent vs. buy calculator.
- * Update this file when refreshing data from real sources.
+ * This file contains two main exports:
+ * 
+ * 1. `calculatorDefaults` - Runtime default values for the rent vs. buy calculator.
+ *    Update numeric values here when refreshing data from real sources.
+ * 
+ * 2. `calculatorDefaultsMeta` - Audit metadata tracking data quality, sources, and
+ *    per-field mapping. Use this to document where each value came from and when
+ *    it was last verified.
  * 
  * IMPORTANT: City keys are ASCII slugs (URL-safe). Use displayName for UI.
  * 
- * Data Status Legend:
- * - "// PLACEHOLDER" = AI-generated estimate, needs real data
- * - "// VERIFIED: [source]" = Confirmed with real data source
+ * Data Quality Legend (in calculatorDefaultsMeta.fields):
+ * - "PLACEHOLDER" = AI-generated estimate, needs real data
+ * - "VERIFIED" = Confirmed with audited source (see sourceIds)
+ * - "DERIVED" = Calculated from other fields (see derivedFrom + formula)
+ * 
+ * Legacy inline comments (// PLACEHOLDER, // VERIFIED) are kept for quick reference
+ * but calculatorDefaultsMeta is the authoritative audit trail.
  */
 
 import type { CalculatorDefaults } from "./calculator-defaults.types";
+
+// =============================================================================
+// Audit Metadata Types
+// =============================================================================
+
+type DataQuality = "PLACEHOLDER" | "VERIFIED" | "DERIVED";
+
+type SourceMeta = {
+  id: string;
+  name: string;
+  url?: string;
+  retrievedAt: string; // ISO date
+  methodology?: string; // e.g., median, mean, listings vs realized, filters, period
+  sampleSize?: string; // string because sometimes "N=1200 listings"
+  coverage?: string;   // e.g., "Praha+Brno", "all krajská města"
+  notes?: string;
+};
+
+type FieldMeta = {
+  quality: DataQuality;
+  sourceIds?: string[];     // references to SourceMeta.id
+  retrievedAt?: string;     // optional override when field updated separately
+  methodology?: string;     // optional override
+  sampleSize?: string;      // optional override
+  derivedFrom?: string[];   // list of field paths used to derive this value
+  formula?: string;         // e.g., "kupniCena = cenaZaM2 * squareMeters"
+  notes?: string;
+};
+
+type DefaultsMeta = {
+  dataset: {
+    lastUpdated: string;  // should mirror calculatorDefaults.lastUpdated
+    maintainerNotes?: string;
+  };
+  sources: Record<string, SourceMeta>;
+  fields: Record<string, FieldMeta>; // keys are dot-paths into calculatorDefaults
+};
+
+// =============================================================================
+// Runtime Default Values
+// =============================================================================
 
 export const calculatorDefaults: CalculatorDefaults = {
   lastUpdated: "2025-01-15",
@@ -649,6 +700,61 @@ export const calculatorDefaults: CalculatorDefaults = {
     },
   },
 };
+
+// =============================================================================
+// Audit Metadata
+// =============================================================================
+
+export const calculatorDefaultsMeta: DefaultsMeta = {
+  dataset: {
+    lastUpdated: calculatorDefaults.lastUpdated,
+    maintainerNotes: "Add/refresh sources per parameter; keep calculatorDefaults values stable and audit via fields mapping."
+  },
+  sources: {
+    placeholder: {
+      id: "placeholder",
+      name: "Placeholder (needs research)",
+      retrievedAt: calculatorDefaults.lastUpdated,
+      methodology: "AI estimate; replace with audited sources",
+      coverage: "all"
+    }
+  },
+  fields: {
+    // Global parameters
+    "global.vynosInvestice": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+    "global.urokovaSazbaHypoteky": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+    "global.urokovaSazbaHypotekyFuture": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+    "global.ocekavanaInflace": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+
+    // City-level parameters (Praha as example pattern)
+    "cities.praha.rustNajemneho": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+    "cities.praha.rustHodnotyNemovitosti": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+
+    // Apartment-level parameters (Praha 1+kk as example pattern)
+    "cities.praha.apartments.1+kk.squareMeters": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+    "cities.praha.apartments.1+kk.kupniCena": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+    "cities.praha.apartments.1+kk.najemne": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
+    "cities.praha.apartments.1+kk.fondOprav": { 
+      quality: "PLACEHOLDER", 
+      sourceIds: ["placeholder"], 
+      notes: "Defined as total CZK/month paid by owner to SVJ (can include admin + building insurance depending on SVJ accounting)." 
+    },
+    "cities.praha.apartments.1+kk.pojisteniNemovitosti": { 
+      quality: "PLACEHOLDER", 
+      sourceIds: ["placeholder"], 
+      notes: "Owner-paid: domácnost + odpovědnost (not SVJ building insurance)." 
+    },
+    "cities.praha.apartments.1+kk.nakladyUdrzba": { 
+      quality: "PLACEHOLDER", 
+      sourceIds: ["placeholder"], 
+      notes: "Annual interior-only maintenance/capex (floors, kitchen, bathroom, painting). Excludes building envelope/elevator (SVJ)." 
+    }
+  }
+};
+
+// =============================================================================
+// Helper Functions
+// =============================================================================
 
 // Helper to get city slug from display name
 export function getCitySlug(displayName: string): string | undefined {
