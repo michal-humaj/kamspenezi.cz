@@ -121,7 +121,20 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           <LabeledSliderInput
             id="fond-oprav"
             label="Fond oprav"
-            description="Měsíčně"
+            description="Měsíčně (bez služeb)"
+            tooltip={
+              <div className="space-y-2">
+                <p className="font-medium">Příspěvek do SVJ dle stavu domu:</p>
+                <ul className="space-y-1 text-xs">
+                  <li><span className="font-medium">Novostavba (0–5 let):</span> 10–20 Kč/m²</li>
+                  <li><span className="font-medium">Středně starý (5–20 let):</span> 20–30 Kč/m²</li>
+                  <li><span className="font-medium">Starší dům (20+ let):</span> 30–45 Kč/m²</li>
+                </ul>
+                <p className="text-xs text-gray-500 pt-1 border-t border-gray-100">
+                  Výchozí hodnota počítá s 22 Kč/m² (typický starší byt). Nezahrnuje služby jako voda, teplo, odpad.
+                </p>
+              </div>
+            }
             value={state.fondOprav}
             onChange={(value) => updateState({ fondOprav: value })}
             unit="custom"

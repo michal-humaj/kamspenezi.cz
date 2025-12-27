@@ -1,9 +1,15 @@
 "use client";
 
 import { formatLargeCurrency, formatCzk } from "@/lib/format";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Info, ChevronRight } from "lucide-react";
 import type { CalculatorState } from "@/app/page";
+import { 
+  runMonteCarlo, 
+  registerDebugMonteCarlo,
+  type MonteCarloResult,
+  type MonteCarloInputs,
+} from "@/lib/calculations/monte-carlo-engine";
 
 interface BydleniFixedResult {
   netWorthRentPlusInvestice: number;
@@ -29,15 +35,6 @@ interface ResultsPanelProps {
 }
 
 type CalculationMode = "monteCarlo" | "fixed";
-
-// Dummy Monte Carlo data
-const DUMMY_MONTE_CARLO = {
-  simulations: 10000,
-  horizonYears: 30,
-  winProbA: 0.62,
-  scenarioA: { p10: 28e6, median: 45e6, p90: 62e6 },
-  scenarioB: { p10: 26e6, median: 36e6, p90: 55e6 },
-};
 
 // Format millions - no trailing ,0 for integers
 function formatMillions(value: number): string {
@@ -177,13 +174,12 @@ function SwimlaneBlock({
   );
 }
 
-// Monte Carlo Results
-function MonteCarloResults() {
-  const data = DUMMY_MONTE_CARLO;
-  const probA = Math.round(data.winProbA * 100);
+// Monte Carlo Results Component
+function MonteCarloResults({ data }: { data: MonteCarloResult }) {
+  const probA = Math.round(data.winRateA * 100);
   const probB = 100 - probA;
 
-  const winnerIsA = data.winProbA >= 0.5;
+  const winnerIsA = data.winRateA >= 0.5;
   const winnerProb = winnerIsA ? probA : probB;
   const winnerName = winnerIsA ? "Vlastní bydlení" : "Nájem a investování";
 
@@ -231,7 +227,7 @@ function MonteCarloResults() {
 
         {/* Context */}
         <p className="font-uiSans text-[11px] text-slate-500 mt-2 text-center uppercase tracking-wide">
-          Na základě {data.simulations.toLocaleString("cs-CZ")} simulací trhu
+          Na základě {data.iterations.toLocaleString("cs-CZ")} simulací trhu
         </p>
       </div>
 
@@ -242,7 +238,7 @@ function MonteCarloResults() {
           label="Scénář A: Vlastní bydlení na hypotéku"
           color={COLORS.A}
           p10={data.scenarioA.p10}
-          median={data.scenarioA.median}
+          median={data.scenarioA.p50}
           p90={data.scenarioA.p90}
           globalMax={globalMax}
         />
@@ -255,7 +251,7 @@ function MonteCarloResults() {
           label="Scénář B: Bydlení v nájmu a investování"
           color={COLORS.B}
           p10={data.scenarioB.p10}
-          median={data.scenarioB.median}
+          median={data.scenarioB.p50}
           p90={data.scenarioB.p90}
           globalMax={globalMax}
         />
@@ -325,6 +321,29 @@ function ScenarioBlock({
   );
 }
 
+/**
+ * Convert CalculatorState to MonteCarloInputs
+ */
+function stateToMonteCarloInputs(state: CalculatorState): MonteCarloInputs {
+  return {
+    purchasePrice: state.kupniCena,
+    parentsContribution: state.prispevekRodicu,
+    ownFundsRatio: state.vlastniZdroje / 100,
+    furnishingOneOff: state.zarizeniNemovitosti,
+    repairFundMonthly: state.fondOprav,
+    insuranceAnnual: state.pojisteniNemovitosti,
+    propertyTaxAnnual: state.danZNemovitosti,
+    maintenanceBaseKc: state.nakladyUdrzba,
+    costInflationAnnual: state.ocekavanaInflace / 100,
+    rentMonthly: state.najemne,
+    mortgageRateInitial: state.urokovaSazbaHypoteky / 100,
+    investiceReturnExpected: state.vynosInvesticeExpected / 100,
+    propertyGrowthExpected: state.rustHodnotyExpected / 100,
+    rentGrowthExpected: state.rustNajemnehoExpected / 100,
+    mortgageRateFutureExpected: state.urokovaSazbaHypotekyExpected / 100,
+  };
+}
+
 export function ResultsPanel({
   state,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -333,6 +352,32 @@ export function ResultsPanel({
 }: ResultsPanelProps) {
   const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
   const [calcMode, setCalcMode] = useState<CalculationMode>("fixed");
+
+  // Register debug function on mount
+  useEffect(() => {
+    registerDebugMonteCarlo();
+  }, []);
+
+  // Convert state to Monte Carlo inputs
+  const mcInputs = useMemo(() => {
+    return stateToMonteCarloInputs(state);
+  }, [state]);
+
+  // Store inputs on window for debug access
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window._mcInputs = mcInputs;
+    }
+  }, [mcInputs]);
+
+  // Run Monte Carlo simulation when in monteCarlo mode
+  const monteCarloResults = useMemo(() => {
+    if (calcMode !== "monteCarlo") return null;
+    if (!state.selectedCity || !state.selectedApartmentSize) return null;
+    
+    // Run with default options (10k iterations, seed 12345)
+    return runMonteCarlo(mcInputs, { iterations: 10000 });
+  }, [calcMode, mcInputs, state.selectedCity, state.selectedApartmentSize]);
 
   let scenarioAResult = 0;
   let scenarioBResult = 0;
@@ -383,7 +428,9 @@ export function ResultsPanel({
 
       {canViewResults ? (
         <div>
-          {calcMode === "monteCarlo" && <MonteCarloResults />}
+          {calcMode === "monteCarlo" && monteCarloResults && (
+            <MonteCarloResults data={monteCarloResults} />
+          )}
           {calcMode === "fixed" && (
             <div className="flex flex-col">
               <ScenarioBlock 

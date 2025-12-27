@@ -84,9 +84,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 5500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 34,               // VERIFIED - Sreality median, N=420
-          fondOprav: 300,                 // PLACEHOLDER
+          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 250000,    // PLACEHOLDER
-          danZNemovitosti: 2000,          // PLACEHOLDER
+          danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 1900,     // PLACEHOLDER
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
@@ -94,9 +94,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 54,               // VERIFIED - Sreality median, N=481
-          fondOprav: 450,                 // PLACEHOLDER
+          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 350000,    // PLACEHOLDER
-          danZNemovitosti: 3000,          // PLACEHOLDER
+          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 2500,     // PLACEHOLDER
           nakladyUdrzba: 40000,           // PLACEHOLDER
         },
@@ -104,9 +104,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 36500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 83,               // VERIFIED - Sreality median, N=486
-          fondOprav: 600,                 // PLACEHOLDER
+          fondOprav: 1850,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 450000,    // PLACEHOLDER
-          danZNemovitosti: 4000,          // PLACEHOLDER
+          danZNemovitosti: 2400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 3200,     // PLACEHOLDER
           nakladyUdrzba: 50000,           // PLACEHOLDER
         },
@@ -114,9 +114,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 15500000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 46500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 112,              // VERIFIED - Sreality median, N=407
-          fondOprav: 750,                 // PLACEHOLDER
+          fondOprav: 2450,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 550000,    // PLACEHOLDER
-          danZNemovitosti: 5000,          // PLACEHOLDER
+          danZNemovitosti: 3200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
           pojisteniNemovitosti: 4000,     // PLACEHOLDER
           nakladyUdrzba: 60000,           // PLACEHOLDER
         },
@@ -132,9 +132,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 14500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 35,               // VERIFIED - Sreality median, N=233
-          fondOprav: 250,                 // PLACEHOLDER
+          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 200000,    // PLACEHOLDER
-          danZNemovitosti: 1500,          // PLACEHOLDER
+          danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1500,     // PLACEHOLDER
           nakladyUdrzba: 25000,           // PLACEHOLDER
         },
@@ -142,9 +142,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 53,               // VERIFIED - Sreality median, N=479
-          fondOprav: 380,                 // PLACEHOLDER
+          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 280000,    // PLACEHOLDER
-          danZNemovitosti: 2200,          // PLACEHOLDER
+          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2000,     // PLACEHOLDER
           nakladyUdrzba: 32000,           // PLACEHOLDER
         },
@@ -152,9 +152,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 8800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 28500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 79,               // VERIFIED - Sreality median, N=395
-          fondOprav: 500,                 // PLACEHOLDER
+          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 360000,    // PLACEHOLDER
-          danZNemovitosti: 3000,          // PLACEHOLDER
+          danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2600,     // PLACEHOLDER
           nakladyUdrzba: 40000,           // PLACEHOLDER
         },
@@ -162,9 +162,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 37000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 107,              // VERIFIED - Sreality median, N=179
-          fondOprav: 650,                 // PLACEHOLDER
+          fondOprav: 2350,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 450000,    // PLACEHOLDER
-          danZNemovitosti: 3800,          // PLACEHOLDER
+          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 3200,     // PLACEHOLDER
           nakladyUdrzba: 48000,           // PLACEHOLDER
         },
@@ -180,9 +180,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 2200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 8500,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 33,               // VERIFIED - Sreality median, N=80
-          fondOprav: 200,                 // PLACEHOLDER
+          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 150000,    // PLACEHOLDER
-          danZNemovitosti: 1000,          // PLACEHOLDER
+          danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1200,     // PLACEHOLDER
           nakladyUdrzba: 20000,           // PLACEHOLDER
         },
@@ -190,9 +190,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 13000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 54,               // VERIFIED - Sreality median, N=126
-          fondOprav: 300,                 // PLACEHOLDER
+          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 220000,    // PLACEHOLDER
-          danZNemovitosti: 1500,          // PLACEHOLDER
+          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1600,     // PLACEHOLDER
           nakladyUdrzba: 26000,           // PLACEHOLDER
         },
@@ -200,9 +200,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 17500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 76,               // VERIFIED - Sreality median, N=152
-          fondOprav: 400,                 // PLACEHOLDER
+          fondOprav: 1650,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 280000,    // PLACEHOLDER
-          danZNemovitosti: 2000,          // PLACEHOLDER
+          danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2000,     // PLACEHOLDER
           nakladyUdrzba: 32000,           // PLACEHOLDER
         },
@@ -210,9 +210,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 5900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 103,              // VERIFIED - Sreality median, N=59
-          fondOprav: 500,                 // PLACEHOLDER
+          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 350000,    // PLACEHOLDER
-          danZNemovitosti: 2500,          // PLACEHOLDER
+          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2500,     // PLACEHOLDER
           nakladyUdrzba: 38000,           // PLACEHOLDER
         },
@@ -228,9 +228,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 35,               // VERIFIED - Sreality median, N=44
-          fondOprav: 230,                 // PLACEHOLDER
+          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 180000,    // PLACEHOLDER
-          danZNemovitosti: 1300,          // PLACEHOLDER
+          danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1400,     // PLACEHOLDER
           nakladyUdrzba: 22000,           // PLACEHOLDER
         },
@@ -238,9 +238,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 56,               // VERIFIED - Sreality median, N=136
-          fondOprav: 350,                 // PLACEHOLDER
+          fondOprav: 1250,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
-          danZNemovitosti: 1900,          // PLACEHOLDER
+          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1800,     // PLACEHOLDER
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
@@ -248,9 +248,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 22000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 78,               // VERIFIED - Sreality median, N=156
-          fondOprav: 460,                 // PLACEHOLDER
+          fondOprav: 1700,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 330000,    // PLACEHOLDER
-          danZNemovitosti: 2600,          // PLACEHOLDER
+          danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2300,     // PLACEHOLDER
           nakladyUdrzba: 36000,           // PLACEHOLDER
         },
@@ -258,9 +258,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 7800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 27500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 103,              // VERIFIED - Sreality median, N=43
-          fondOprav: 580,                 // PLACEHOLDER
+          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 420000,    // PLACEHOLDER
-          danZNemovitosti: 3200,          // PLACEHOLDER
+          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2900,     // PLACEHOLDER
           nakladyUdrzba: 44000,           // PLACEHOLDER
         },
@@ -276,9 +276,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 37,               // VERIFIED - Sreality median, N=81
-          fondOprav: 240,                 // PLACEHOLDER
+          fondOprav: 800,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 180000,    // PLACEHOLDER
-          danZNemovitosti: 1400,          // PLACEHOLDER
+          danZNemovitosti: 600,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1500,     // PLACEHOLDER
           nakladyUdrzba: 23000,           // PLACEHOLDER
         },
@@ -286,9 +286,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 56,               // VERIFIED - Sreality median, N=157
-          fondOprav: 360,                 // PLACEHOLDER
+          fondOprav: 1250,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
-          danZNemovitosti: 2000,          // PLACEHOLDER
+          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 1900,     // PLACEHOLDER
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
@@ -296,9 +296,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 22000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 81,               // VERIFIED - Sreality median, N=190
-          fondOprav: 480,                 // PLACEHOLDER
+          fondOprav: 1800,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 340000,    // PLACEHOLDER
-          danZNemovitosti: 2800,          // PLACEHOLDER
+          danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 2500,     // PLACEHOLDER
           nakladyUdrzba: 38000,           // PLACEHOLDER
         },
@@ -306,9 +306,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 100,              // VERIFIED - Sreality median, N=75
-          fondOprav: 600,                 // PLACEHOLDER
+          fondOprav: 2200,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 430000,    // PLACEHOLDER
-          danZNemovitosti: 3500,          // PLACEHOLDER
+          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
           pojisteniNemovitosti: 3100,     // PLACEHOLDER
           nakladyUdrzba: 46000,           // PLACEHOLDER
         },
@@ -324,9 +324,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 35,               // VERIFIED - Sreality median, N=45
-          fondOprav: 240,                 // PLACEHOLDER
+          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 180000,    // PLACEHOLDER
-          danZNemovitosti: 1400,          // PLACEHOLDER
+          danZNemovitosti: 700,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 1500,     // PLACEHOLDER
           nakladyUdrzba: 23000,           // PLACEHOLDER
         },
@@ -334,9 +334,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 52,               // VERIFIED - Sreality median, N=159
-          fondOprav: 370,                 // PLACEHOLDER
+          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
-          danZNemovitosti: 2100,          // PLACEHOLDER
+          danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 2000,     // PLACEHOLDER
           nakladyUdrzba: 31000,           // PLACEHOLDER
         },
@@ -344,9 +344,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 23000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 79,               // VERIFIED - Sreality median, N=141
-          fondOprav: 490,                 // PLACEHOLDER
+          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 350000,    // PLACEHOLDER
-          danZNemovitosti: 2900,          // PLACEHOLDER
+          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 2600,     // PLACEHOLDER
           nakladyUdrzba: 39000,           // PLACEHOLDER
         },
@@ -354,9 +354,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 27000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 97,               // VERIFIED - Sreality median, N=40
-          fondOprav: 620,                 // PLACEHOLDER
+          fondOprav: 2150,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 440000,    // PLACEHOLDER
-          danZNemovitosti: 3600,          // PLACEHOLDER
+          danZNemovitosti: 1900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
           pojisteniNemovitosti: 3200,     // PLACEHOLDER
           nakladyUdrzba: 47000,           // PLACEHOLDER
         },
@@ -372,9 +372,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 36,               // VERIFIED - Sreality median, N=85
-          fondOprav: 220,                 // PLACEHOLDER
+          fondOprav: 800,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 170000,    // PLACEHOLDER
-          danZNemovitosti: 1200,          // PLACEHOLDER
+          danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1300,     // PLACEHOLDER
           nakladyUdrzba: 21000,           // PLACEHOLDER
         },
@@ -382,9 +382,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 53,               // VERIFIED - Sreality median, N=145
-          fondOprav: 330,                 // PLACEHOLDER
+          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 240000,    // PLACEHOLDER
-          danZNemovitosti: 1800,          // PLACEHOLDER
+          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1700,     // PLACEHOLDER
           nakladyUdrzba: 28000,           // PLACEHOLDER
         },
@@ -392,9 +392,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 23000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 82,               // VERIFIED - Sreality median, N=131
-          fondOprav: 440,                 // PLACEHOLDER
+          fondOprav: 1800,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 320000,    // PLACEHOLDER
-          danZNemovitosti: 2400,          // PLACEHOLDER
+          danZNemovitosti: 2500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2200,     // PLACEHOLDER
           nakladyUdrzba: 35000,           // PLACEHOLDER
         },
@@ -402,9 +402,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 7600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 28000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 105,              // VERIFIED - Sreality median, N=37
-          fondOprav: 560,                 // PLACEHOLDER
+          fondOprav: 2300,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 400000,    // PLACEHOLDER
-          danZNemovitosti: 3000,          // PLACEHOLDER
+          danZNemovitosti: 3100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2700,     // PLACEHOLDER
           nakladyUdrzba: 42000,           // PLACEHOLDER
         },
@@ -420,9 +420,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 2700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 10000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 31,               // VERIFIED - Sreality median, N=72
-          fondOprav: 230,                 // PLACEHOLDER
+          fondOprav: 700,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 170000,    // PLACEHOLDER
-          danZNemovitosti: 1300,          // PLACEHOLDER
+          danZNemovitosti: 900,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1400,     // PLACEHOLDER
           nakladyUdrzba: 22000,           // PLACEHOLDER
         },
@@ -430,9 +430,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 53,               // VERIFIED - Sreality median, N=139
-          fondOprav: 340,                 // PLACEHOLDER
+          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 250000,    // PLACEHOLDER
-          danZNemovitosti: 1900,          // PLACEHOLDER
+          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1800,     // PLACEHOLDER
           nakladyUdrzba: 29000,           // PLACEHOLDER
         },
@@ -440,9 +440,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 80,               // VERIFIED - Sreality median, N=143
-          fondOprav: 460,                 // PLACEHOLDER
+          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 330000,    // PLACEHOLDER
-          danZNemovitosti: 2500,          // PLACEHOLDER
+          danZNemovitosti: 2400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2300,     // PLACEHOLDER
           nakladyUdrzba: 36000,           // PLACEHOLDER
         },
@@ -450,9 +450,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 7300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 26000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 98,               // VERIFIED - Sreality median, N=51
-          fondOprav: 580,                 // PLACEHOLDER
+          fondOprav: 2150,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 410000,    // PLACEHOLDER
-          danZNemovitosti: 3100,          // PLACEHOLDER
+          danZNemovitosti: 2900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2900,     // PLACEHOLDER
           nakladyUdrzba: 44000,           // PLACEHOLDER
         },
@@ -468,9 +468,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 36,               // VERIFIED - Sreality median, N=15
-          fondOprav: 230,                 // PLACEHOLDER
+          fondOprav: 800,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 175000,    // PLACEHOLDER
-          danZNemovitosti: 1300,          // PLACEHOLDER
+          danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1400,     // PLACEHOLDER
           nakladyUdrzba: 22000,           // PLACEHOLDER
         },
@@ -478,9 +478,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 16500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 54,               // VERIFIED - Sreality median, N=65
-          fondOprav: 350,                 // PLACEHOLDER
+          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 255000,    // PLACEHOLDER
-          danZNemovitosti: 1950,          // PLACEHOLDER
+          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1850,     // PLACEHOLDER
           nakladyUdrzba: 29000,           // PLACEHOLDER
         },
@@ -488,9 +488,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 21000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 75,               // VERIFIED - Sreality median, N=86
-          fondOprav: 470,                 // PLACEHOLDER
+          fondOprav: 1650,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 335000,    // PLACEHOLDER
-          danZNemovitosti: 2600,          // PLACEHOLDER
+          danZNemovitosti: 2200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2350,     // PLACEHOLDER
           nakladyUdrzba: 37000,           // PLACEHOLDER
         },
@@ -498,9 +498,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 27500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 102,              // VERIFIED - Sreality median, N=22
-          fondOprav: 590,                 // PLACEHOLDER
+          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 420000,    // PLACEHOLDER
-          danZNemovitosti: 3250,          // PLACEHOLDER
+          danZNemovitosti: 3000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2950,     // PLACEHOLDER
           nakladyUdrzba: 45000,           // PLACEHOLDER
         },
@@ -516,9 +516,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 1400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 6500,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 27,               // VERIFIED - Sreality median, N=38
-          fondOprav: 180,                 // PLACEHOLDER
+          fondOprav: 600,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 140000,    // PLACEHOLDER
-          danZNemovitosti: 900,           // PLACEHOLDER
+          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1100,     // PLACEHOLDER
           nakladyUdrzba: 18000,           // PLACEHOLDER
         },
@@ -526,9 +526,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 2300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 10500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 48,               // VERIFIED - Sreality median, N=120
-          fondOprav: 270,                 // PLACEHOLDER
+          fondOprav: 1050,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 200000,    // PLACEHOLDER
-          danZNemovitosti: 1300,          // PLACEHOLDER
+          danZNemovitosti: 1400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1400,     // PLACEHOLDER
           nakladyUdrzba: 24000,           // PLACEHOLDER
         },
@@ -536,9 +536,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 76,               // VERIFIED - Sreality median, N=81
-          fondOprav: 360,                 // PLACEHOLDER
+          fondOprav: 1650,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 260000,    // PLACEHOLDER
-          danZNemovitosti: 1700,          // PLACEHOLDER
+          danZNemovitosti: 2300,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1800,     // PLACEHOLDER
           nakladyUdrzba: 30000,           // PLACEHOLDER
         },
@@ -546,9 +546,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 18500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 94,               // VERIFIED - Sreality median, N=16
-          fondOprav: 450,                 // PLACEHOLDER
+          fondOprav: 2050,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 320000,    // PLACEHOLDER
-          danZNemovitosti: 2100,          // PLACEHOLDER
+          danZNemovitosti: 2800,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2200,     // PLACEHOLDER
           nakladyUdrzba: 36000,           // PLACEHOLDER
         },
@@ -564,9 +564,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 1700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 8000,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 29,               // VERIFIED - Sreality median, N=39
-          fondOprav: 210,                 // PLACEHOLDER
+          fondOprav: 650,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 160000,    // PLACEHOLDER
-          danZNemovitosti: 1100,          // PLACEHOLDER
+          danZNemovitosti: 900,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1300,     // PLACEHOLDER
           nakladyUdrzba: 20000,           // PLACEHOLDER
         },
@@ -574,9 +574,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 60,               // VERIFIED - Sreality median, N=133
-          fondOprav: 320,                 // PLACEHOLDER
+          fondOprav: 1300,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 230000,    // PLACEHOLDER
-          danZNemovitosti: 1650,          // PLACEHOLDER
+          danZNemovitosti: 1800,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1650,     // PLACEHOLDER
           nakladyUdrzba: 27000,           // PLACEHOLDER
         },
@@ -584,9 +584,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 87,               // VERIFIED - Sreality median, N=107
-          fondOprav: 420,                 // PLACEHOLDER
+          fondOprav: 1900,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 300000,    // PLACEHOLDER
-          danZNemovitosti: 2200,          // PLACEHOLDER
+          danZNemovitosti: 2600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2100,     // PLACEHOLDER
           nakladyUdrzba: 34000,           // PLACEHOLDER
         },
@@ -594,9 +594,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 5700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 113,              // VERIFIED - Sreality median, N=30
-          fondOprav: 530,                 // PLACEHOLDER
+          fondOprav: 2500,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 380000,    // PLACEHOLDER
-          danZNemovitosti: 2750,          // PLACEHOLDER
+          danZNemovitosti: 3400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2600,     // PLACEHOLDER
           nakladyUdrzba: 41000,           // PLACEHOLDER
         },
@@ -612,9 +612,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3000000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 39,               // VERIFIED - Sreality median, N=19
-          fondOprav: 200,                 // PLACEHOLDER
+          fondOprav: 850,                 // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 155000,    // PLACEHOLDER
-          danZNemovitosti: 1050,          // PLACEHOLDER
+          danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 1250,     // PLACEHOLDER
           nakladyUdrzba: 19000,           // PLACEHOLDER
         },
@@ -622,9 +622,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 57,               // VERIFIED - Sreality median, N=51
-          fondOprav: 310,                 // PLACEHOLDER
+          fondOprav: 1250,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 225000,    // PLACEHOLDER
-          danZNemovitosti: 1600,          // PLACEHOLDER
+          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 1600,     // PLACEHOLDER
           nakladyUdrzba: 26000,           // PLACEHOLDER
         },
@@ -632,9 +632,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 5300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 80,               // VERIFIED - Sreality median, N=74
-          fondOprav: 410,                 // PLACEHOLDER
+          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 295000,    // PLACEHOLDER
-          danZNemovitosti: 2100,          // PLACEHOLDER
+          danZNemovitosti: 2200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 2050,     // PLACEHOLDER
           nakladyUdrzba: 33000,           // PLACEHOLDER
         },
@@ -642,9 +642,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 6900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 26000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 106,              // VERIFIED - Sreality median, N=18
-          fondOprav: 520,                 // PLACEHOLDER
+          fondOprav: 2350,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 370000,    // PLACEHOLDER
-          danZNemovitosti: 2650,          // PLACEHOLDER
+          danZNemovitosti: 2900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
           pojisteniNemovitosti: 2550,     // PLACEHOLDER
           nakladyUdrzba: 40000,           // PLACEHOLDER
         },
@@ -660,9 +660,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 3800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 46,               // VERIFIED - Sreality median, N=25
-          fondOprav: 210,                 // PLACEHOLDER
+          fondOprav: 1000,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 165000,    // PLACEHOLDER
-          danZNemovitosti: 1150,          // PLACEHOLDER
+          danZNemovitosti: 1400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1300,     // PLACEHOLDER
           nakladyUdrzba: 20000,           // PLACEHOLDER
         },
@@ -670,9 +670,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 54,               // VERIFIED - Sreality median, N=60
-          fondOprav: 330,                 // PLACEHOLDER
+          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 240000,    // PLACEHOLDER
-          danZNemovitosti: 1750,          // PLACEHOLDER
+          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 1700,     // PLACEHOLDER
           nakladyUdrzba: 27000,           // PLACEHOLDER
         },
@@ -680,9 +680,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 5600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 77,               // VERIFIED - Sreality median, N=65
-          fondOprav: 440,                 // PLACEHOLDER
+          fondOprav: 1700,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 315000,    // PLACEHOLDER
-          danZNemovitosti: 2300,          // PLACEHOLDER
+          danZNemovitosti: 2300,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2150,     // PLACEHOLDER
           nakladyUdrzba: 34000,           // PLACEHOLDER
         },
@@ -690,9 +690,9 @@ export const calculatorDefaults: CalculatorDefaults = {
           kupniCena: 7200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
           najemne: 28000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
           squareMeters: 102,              // VERIFIED - Sreality median, N=37
-          fondOprav: 550,                 // PLACEHOLDER
+          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
           zarizeniNemovitosti: 395000,    // PLACEHOLDER
-          danZNemovitosti: 2900,          // PLACEHOLDER
+          danZNemovitosti: 3000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
           pojisteniNemovitosti: 2700,     // PLACEHOLDER
           nakladyUdrzba: 42000,           // PLACEHOLDER
         },

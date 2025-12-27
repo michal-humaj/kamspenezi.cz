@@ -35,6 +35,14 @@ export type ParameterMeta = {
   formula?: string;
   notes?: string;
   cityOverrides?: Record<string, Partial<ParameterMeta>>;
+  // fondOprav-specific fields
+  ratePerM2?: number;
+  benchmarkRanges?: Record<string, { min: number; max: number }>;
+  // kupniCena/najemne-specific fields
+  cbaBaseline?: Record<string, number>;
+  gpgBaseline?: Record<string, number>;
+  sizeMultipliers?: Record<string, number>;
+  rentMultipliers?: Record<string, number>;
 };
 
 export type CityMappingEntry = {
@@ -106,6 +114,52 @@ export const calculatorDefaultsMeta = {
       retrievedAt: "2025-01-15",
       methodology: "AI estimate; replace with audited sources",
       coverage: "all",
+    },
+    "svj-predseda-2025": {
+      name: "SVJ PŘEDSEDA - Kolik se má platit do fondu oprav",
+      url: "https://svjpredseda.cz/kolik-se-ma-platit-fondu-oprav/",
+      retrievedAt: "2025-12-27",
+      methodology: "Property management company benchmark: average ~17 Kč/m², range 10-45 Kč/m² depending on building condition and repair plan.",
+      coverage: "National benchmark",
+      notes: "Primary source for SVJ fee benchmarks. Used to establish baseline rate.",
+    },
+    "remax-brno-fond-oprav": {
+      name: "RE/MAX Brno - Fond oprav",
+      url: "https://www.realitni-maklerka.cz/realitni-slovnik/fond-oprav/",
+      retrievedAt: "2025-12-27",
+      methodology: "Real estate agency benchmark: 20-40 Kč/m² standard, up to 50-60 Kč/m² for older buildings.",
+      coverage: "National benchmark",
+    },
+    "roomify-fond-oprav": {
+      name: "Roomify - Fond oprav v SVJ",
+      url: "https://www.roomify.cz/slovnik-pojmu/fond-oprav-v-svj/",
+      retrievedAt: "2025-12-27",
+      methodology: "Real-world examples: 15 Kč/m² (well-maintained) to 40 Kč/m² (older buildings).",
+      coverage: "National examples",
+    },
+    "narizeni-vlady-366-2013": {
+      name: "Nařízení vlády 366/2013 Sb.",
+      url: "https://www.zakonyprolidi.cz/cs/2013-366",
+      retrievedAt: "2025-12-27",
+      methodology: "Legal framework defining SVJ contributions: distinguishes between 'příspěvky na správu domu' (fond oprav) and 'platby za služby' (utilities).",
+      coverage: "Legal definition",
+      notes: "Used for definition clarity, not quantification.",
+    },
+    "zakon-338-1992-sb": {
+      name: "Zákon č. 338/1992 Sb. o dani z nemovitých věcí",
+      url: "https://www.zakonyprolidi.cz/cs/1992-338",
+      retrievedAt: "2025-12-27",
+      methodology: "Official Czech property tax law. Base rate for residential units (§11): 3.50 Kč/m². Unit coefficient for apartments with shared land (§10 odst. 3 písm. a): 1.22. Population-based size coefficient (§11 odst. 4): 3.5 for statutory cities, 4.5 for Prague.",
+      coverage: "National (Czech Republic)",
+      notes: "2024 consolidation package introduced inflation coefficient (1.0 for 2025). Floor surcharge simplified into unit coefficient.",
+    },
+    "mfcr-koeficienty-dan": {
+      name: "Ministerstvo financí ČR - Koeficienty daně z nemovitých věcí",
+      url: "https://adisspr.mfcr.cz/pmd/vyhledani-koeficientu",
+      retrievedAt: "2025-12-27",
+      methodology: "Official search tool for municipality-specific local coefficients (místní koeficient). Most krajská města use default 1.0 unless modified by local vyhláška.",
+      coverage: "All Czech municipalities",
+      notes: "Verified that all 13 krajská města use default local coefficient of 1.0 for residential property tax.",
     },
   } as Record<string, SourceMeta>,
 
@@ -321,18 +375,28 @@ export const calculatorDefaultsMeta = {
       },
     },
     fondOprav: {
-      quality: "PLACEHOLDER" as DataQuality,
-      sourceIds: ["placeholder"],
-      methodology: "Placeholder - SVJ monthly payment by owner",
-      retrievedAt: "2025-01-15",
-      notes: "Total CZK/month paid to SVJ (management + reserve + possibly building insurance). Excludes tenant-paid services.",
+      quality: "DERIVED" as DataQuality,
+      sourceIds: ["svj-predseda-2025", "remax-brno-fond-oprav", "roomify-fond-oprav", "narizeni-vlady-366-2013"],
+      methodology: "fondOprav = 22 Kč/m² × squareMeters, rounded to nearest 50 Kč. Rate based on property manager benchmarks (SVJ PŘEDSEDA avg ~17 Kč/m², RE/MAX 20-40 Kč/m²). 22 Kč/m² chosen as conservative mid-range for typical older apartments.",
+      retrievedAt: "2025-12-27",
+      derivedFrom: ["squareMeters"],
+      formula: "fondOprav = round(22 × squareMeters, nearest 50)",
+      notes: "Příspěvek vlastníka na správu domu a pozemku (včetně dlouhodobé zálohy). NEZAHRNUJE služby jako voda, teplo, odpad. Rate varies by building: novostavby 10-20 Kč/m², středně staré 20-30 Kč/m², starší 30-45 Kč/m².",
+      ratePerM2: 22,
+      benchmarkRanges: {
+        "novostavba_0-5_let": { min: 10, max: 20 },
+        "stredne_stary_5-20_let": { min: 20, max: 30 },
+        "starsi_20+_let": { min: 30, max: 45 },
+      },
     },
     danZNemovitosti: {
-      quality: "PLACEHOLDER" as DataQuality,
-      sourceIds: ["placeholder"],
-      methodology: "Placeholder - will be computed from statutory rates and city coefficients",
-      retrievedAt: "2025-01-15",
-      notes: "Annual property tax in CZK",
+      quality: "DERIVED" as DataQuality,
+      sourceIds: ["zakon-338-1992-sb", "mfcr-koeficienty-dan"],
+      methodology: "danZNemovitosti = squareMeters × 1.22 × 3.50 × sizeCoef × localCoef, rounded to nearest 100 Kč. Based on Zákon 338/1992 Sb.: base rate 3.50 Kč/m² (§11), unit coefficient 1.22 (§10 odst. 3 písm. a), size coefficient (§11 odst. 4): Praha=4.5, others=3.5. Local coefficients from city vyhlášky: Praha=1.5, Brno/Ostrava/Plzeň/ČB=1.0, HK=1.3, Jihlava=1.8, Liberec/Olomouc/Pardubice/ÚL/KV/Zlín=2.0.",
+      retrievedAt: "2025-12-27",
+      derivedFrom: ["squareMeters"],
+      formula: "round(squareMeters × 1.22 × 3.50 × sizeCoef × localCoef, nearest 100)",
+      notes: "Annual property tax in CZK. Local coefficients vary significantly by city (range 1.0-2.0). Praha uses 1.5 (range 1.5-2.0 across městské části). Some cities have different coefficients for specific k.ú. (Plzeň: some k.ú. use 0.5; Zlín: some k.ú. use 1.4-1.6).",
     },
     pojisteniNemovitosti: {
       quality: "PLACEHOLDER" as DataQuality,

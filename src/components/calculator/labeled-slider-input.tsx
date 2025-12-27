@@ -9,6 +9,8 @@ export interface LabeledSliderInputProps {
   label: string;
   /** Optional helper text displayed under the label */
   description?: string;
+  /** Optional tooltip content shown in info icon popover */
+  tooltip?: React.ReactNode;
   /** Optional extra content displayed below the description (e.g. computed value) */
   extraLabel?: React.ReactNode;
   /** Optional content displayed between the header row and the slider */
@@ -43,6 +45,7 @@ export function LabeledSliderInput({
   id,
   label,
   description,
+  tooltip,
   extraLabel,
   middleContent,
   bottomContent,
@@ -58,14 +61,15 @@ export function LabeledSliderInput({
   inputMode = "numeric",
   isAnimating = false,
 }: LabeledSliderInputProps) {
+  // Tooltip state
+  const [showTooltip, setShowTooltip] = React.useState(false);
   // Local state for when user is actively editing the text input
   const [localValue, setLocalValue] = React.useState<string | null>(null);
   const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
 
-  // Slider optimization state
+  // Slider optimization state - defer calculation until drag ends
   const [localSliderValue, setLocalSliderValue] = React.useState<number>(value);
   const [isDragging, setIsDragging] = React.useState(false);
-  const sliderDebounceTimer = React.useRef<NodeJS.Timeout | null>(null);
 
   // Sync local slider with prop when not dragging
   React.useEffect(() => {
@@ -176,32 +180,29 @@ export function LabeledSliderInput({
     }, 0);
   };
 
-  // Handle slider change
+  // Handle slider change - only update local state during drag
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
     setLocalSliderValue(newValue);
     
     // Clear local text input state if slider is used
     setLocalValue(null);
-
-    // Debounce the parent update
-    if (sliderDebounceTimer.current) {
-      clearTimeout(sliderDebounceTimer.current);
-    }
-
-    sliderDebounceTimer.current = setTimeout(() => {
-      onChange(newValue);
-    }, 30); // 30ms debounce for smooth UI
+    
+    // Don't call onChange during drag - wait for release
   };
 
-  // Cleanup timers on unmount
+  // Handle slider drag end - emit final value
+  const handleSliderDragEnd = () => {
+    setIsDragging(false);
+    // Emit the final value to trigger calculation
+    onChange(localSliderValue);
+  };
+
+  // Cleanup timer on unmount
   React.useEffect(() => {
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
-      }
-      if (sliderDebounceTimer.current) {
-        clearTimeout(sliderDebounceTimer.current);
       }
     };
   }, []);
@@ -212,12 +213,37 @@ export function LabeledSliderInput({
       <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:gap-4">
         {/* Left: Label */}
         <div className="flex flex-col justify-center">
-          <label
-            htmlFor={id}
-            className="font-uiSans text-base font-medium leading-tight text-[var(--color-primary)] md:text-base"
-          >
-            {label}
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label
+              htmlFor={id}
+              className="font-uiSans text-base font-medium leading-tight text-[var(--color-primary)] md:text-base"
+            >
+              {label}
+            </label>
+            {tooltip && (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowTooltip(!showTooltip)}
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
+                  className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[10px] font-semibold text-gray-600 hover:bg-gray-300 transition-colors"
+                  aria-label="Více informací"
+                >
+                  i
+                </button>
+                {showTooltip && (
+                  <div 
+                    className="absolute left-0 top-full z-50 mt-2 w-72 rounded-lg border border-gray-200 bg-white p-3 shadow-lg text-sm text-gray-700 leading-relaxed"
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                  >
+                    {tooltip}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           {description && (
             <p className="mt-1 font-uiSans text-sm leading-snug text-[var(--color-secondary)]">
               {description}
@@ -298,9 +324,9 @@ export function LabeledSliderInput({
           value={localSliderValue}
           onChange={handleSliderChange}
           onMouseDown={() => setIsDragging(true)}
-          onMouseUp={() => setIsDragging(false)}
+          onMouseUp={handleSliderDragEnd}
           onTouchStart={() => setIsDragging(true)}
-          onTouchEnd={() => setIsDragging(false)}
+          onTouchEnd={handleSliderDragEnd}
           aria-labelledby={id}
           className="slider-input w-full"
           style={{
