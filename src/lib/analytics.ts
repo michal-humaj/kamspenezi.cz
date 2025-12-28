@@ -98,3 +98,22 @@ export const trackCalculatorEvent = (action: string, label?: string) => {
   });
 };
 
+/**
+ * Track trust page interactions
+ */
+export type TrustPageAction =
+  | 'open_calculator_from_trust'
+  | 'copy_share_link'
+  | 'open_google_sheet'
+  | 'start_crisp_chat'
+  | 'view_sources_table'
+  | 'click_contact_email';
+
+export const trackTrustPageEvent = (action: TrustPageAction, label?: string) => {
+  event({
+    action,
+    category: 'TrustPages',
+    label,
+  });
+};
+

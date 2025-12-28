@@ -4,6 +4,7 @@ import { Figtree, Newsreader } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { CrispChat } from "@/components/chat/CrispChat";
 import { OrganizationSchema } from "@/components/seo/organization-schema";
 import { PersonSchema } from "@/components/seo/person-schema";
 import { FAQSchema } from "@/components/seo/faq-schema";
@@ -96,6 +97,7 @@ export default function RootLayout({
         }}
       >
         <GoogleAnalytics />
+        <CrispChat />
         {/* Structured Data Schemas for SEO */}
         <OrganizationSchema />
         <PersonSchema />

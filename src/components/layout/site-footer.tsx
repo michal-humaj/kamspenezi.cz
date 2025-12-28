@@ -2,9 +2,10 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 
 const FOOTER_LINKS = [
+  { href: "/jak-to-funguje", label: "Jak to funguje" },
+  { href: "/metodika-a-zdroje", label: "Metodika a zdroje" },
   { href: "/o-projektu", label: "O projektu" },
-  { href: "mailto:ahoj@kamspenezi.cz", label: "Kontakt" },
-  { href: "/podminky", label: "Podmínky" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 
 export function SiteFooter() {

@@ -22,7 +22,7 @@ export function OrganizationSchema() {
     ],
     "contactPoint": {
       "@type": "ContactPoint",
-      "email": "ahoj@kamspenezi.cz",
+      "email": "michal.humaj@gmail.com",
       "contactType": "Customer Service"
     }
   };

@@ -2,6 +2,7 @@
 
 import { formatCzk } from "@/lib/format";
 import { Download } from "lucide-react";
+import { trackCalculatorEvent } from "@/lib/analytics";
 
 export type YearlyRow = {
   year: number;
@@ -60,7 +61,10 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
             type="button"
             className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 font-uiSans text-[13px] font-medium text-[#0F172A] shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0F172A] focus-visible:ring-offset-2"
             onClick={() => {
-              console.log("Export table to CSV/Excel - not implemented yet");
+              // Track interest in this feature
+              trackCalculatorEvent("export_table_clicked", "yearly_overview");
+              // TODO: Implement CSV/Excel export
+              alert("Export bude brzy dostupný! Děkujeme za váš zájem.");
             }}
           >
             <Download className="h-3.5 w-3.5 text-slate-500" />

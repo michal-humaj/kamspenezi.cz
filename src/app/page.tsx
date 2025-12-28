@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { CitySelector } from "@/components/calculator/city-selector";
 import { ApartmentSizeCards } from "@/components/calculator/apartment-size-cards";
@@ -8,17 +8,25 @@ import { BasicInputs } from "@/components/calculator/basic-inputs";
 import { UncertaintyInputs } from "@/components/calculator/uncertainty-inputs";
 import { AdvancedInputs } from "@/components/calculator/advanced-inputs";
 import { ResultsPanel } from "@/components/calculator/results-panel";
+import { ShareButton } from "@/components/calculator/ShareButton";
 import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
 import { YearlyOverviewTable, type YearlyRow } from "@/components/calculator/YearlyOverviewTable";
 import { YearlyBreakdownMobile } from "@/components/calculator/yearly-breakdown-mobile";
 import { FAQSection } from "@/components/home/faq-section";
 import { calculatorDefaults } from "@/data/calculator-defaults";
+import { useUrlState } from "@/hooks/useUrlState";
 import type { ApartmentSize } from "@/data/calculator-defaults.types";
+
+// Calculation mode type
+export type CalculationMode = "monteCarlo" | "fixed";
 
 // Types for calculator state
 export interface CalculatorState {
   selectedCity: string | null;
   selectedApartmentSize: string | null;
+  
+  // Calculation mode
+  calcMode: CalculationMode;
   
   // Basic inputs
   kupniCena: number;
@@ -56,6 +64,8 @@ const praha2kkDefaults = prahaDefaults.apartments["2+kk"];
 const initialState: CalculatorState = {
   selectedCity: "praha",
   selectedApartmentSize: null,
+  // Default calculation mode
+  calcMode: "fixed",
   // Use 2+kk defaults as initial values (user will select actual apartment)
   kupniCena: praha2kkDefaults.kupniCena,
   vlastniZdroje: 10,
@@ -150,9 +160,12 @@ export default function Home() {
     }, 400);
   };
 
-  const updateState = (updates: Partial<CalculatorState>) => {
+  const updateState = useCallback((updates: Partial<CalculatorState>) => {
     setState((prev) => ({ ...prev, ...updates }));
-  };
+  }, []);
+
+  // URL state sync for shareable links
+  const { copyShareUrl } = useUrlState(state, initialState, updateState);
 
   // Calculate results - both modes use the same calculation
   const calculationResults = useMemo(() => {
@@ -358,6 +371,8 @@ export default function Home() {
                   state={state}
                   onEditSettings={scrollToInputs}
                   calculationResults={calculationResults}
+                  copyShareUrl={copyShareUrl}
+                  onModeChange={(mode) => updateState({ calcMode: mode })}
                 />
               </div>
             </div>
@@ -373,6 +388,8 @@ export default function Home() {
             state={state}
             onEditSettings={scrollToInputs}
             calculationResults={calculationResults}
+            copyShareUrl={copyShareUrl}
+            onModeChange={(mode) => updateState({ calcMode: mode })}
           />
         </div>
 

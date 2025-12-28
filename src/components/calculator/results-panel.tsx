@@ -4,6 +4,7 @@ import { formatLargeCurrency, formatCzk } from "@/lib/format";
 import { useState, useMemo, useEffect } from "react";
 import { Info, ChevronRight } from "lucide-react";
 import type { CalculatorState } from "@/app/page";
+import { ShareButton } from "./ShareButton";
 import { 
   runMonteCarlo, 
   registerDebugMonteCarlo,
@@ -28,13 +29,15 @@ interface BydleniFixedResult {
   maintenanceAnnual: number[];
 }
 
+import type { CalculationMode } from "@/app/page";
+
 interface ResultsPanelProps {
   state: CalculatorState;
   onEditSettings: () => void;
   calculationResults: BydleniFixedResult | null;
+  copyShareUrl?: () => Promise<boolean>;
+  onModeChange?: (mode: CalculationMode) => void;
 }
-
-type CalculationMode = "monteCarlo" | "fixed";
 
 // Format millions - no trailing ,0 for integers
 function formatMillions(value: number): string {
@@ -349,9 +352,16 @@ export function ResultsPanel({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onEditSettings,
   calculationResults,
+  copyShareUrl,
+  onModeChange,
 }: ResultsPanelProps) {
   const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
-  const [calcMode, setCalcMode] = useState<CalculationMode>("fixed");
+  
+  // Use calcMode from state (synced to URL), with callback to update
+  const calcMode = state.calcMode;
+  const setCalcMode = (mode: CalculationMode) => {
+    onModeChange?.(mode);
+  };
 
   // Check for zeroVol URL parameter (for QA testing)
   const [zeroVol] = useState(() => {
@@ -488,6 +498,13 @@ export function ResultsPanel({
           </div>
         )}
       </div>
+
+      {/* Share Button */}
+      {canViewResults && copyShareUrl && (
+        <div className="mt-4 flex justify-center">
+          <ShareButton onCopy={copyShareUrl} variant="small" />
+        </div>
+      )}
     </div>
   );
 }

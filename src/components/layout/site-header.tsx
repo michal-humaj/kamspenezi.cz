@@ -16,7 +16,8 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: "/", label: "Bydlení" },
   { href: "/investice", label: "Investice" },
-  { href: "/o-projektu", label: "O projektu" },
+  { href: "/jak-to-funguje", label: "Jak to funguje" },
+  { href: "/metodika-a-zdroje", label: "Metodika" },
 ];
 
 const CTA_CONFIG = [
@@ -135,6 +136,26 @@ export function SiteHeader() {
                 </div>
                 <div className="h-px" style={{ background: 'var(--border-subtle)' }} />
                 <div className="flex flex-col gap-3 text-body font-medium text-[var(--color-primary)] font-uiSans">
+                  <Link 
+                    href="/jak-to-funguje"
+                    className={cn(
+                      pathname === "/jak-to-funguje" && "border-l-[3px] pl-3"
+                    )}
+                    style={pathname === "/jak-to-funguje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
+                    aria-current={pathname === "/jak-to-funguje" ? "page" : undefined}
+                  >
+                    Jak to funguje
+                  </Link>
+                  <Link 
+                    href="/metodika-a-zdroje"
+                    className={cn(
+                      pathname === "/metodika-a-zdroje" && "border-l-[3px] pl-3"
+                    )}
+                    style={pathname === "/metodika-a-zdroje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
+                    aria-current={pathname === "/metodika-a-zdroje" ? "page" : undefined}
+                  >
+                    Metodika a zdroje
+                  </Link>
                   <Link 
                     href="/o-projektu"
                     className={cn(
