@@ -8,10 +8,17 @@ declare global {
   interface Window {
     $crisp: unknown[];
     CRISP_WEBSITE_ID: string;
+    CRISP_RUNTIME_CONFIG: {
+      color_theme?: string;
+      locale?: string;
+    };
   }
 }
 
 const CRISP_WEBSITE_ID = process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID;
+
+// Brand color from design manual: Forest Green (Scenario B - growth/wealth)
+const CRISP_BRAND_COLOR = "#2F5C45";
 
 /**
  * Crisp.chat integration component
@@ -26,6 +33,9 @@ const CRISP_WEBSITE_ID = process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID;
  * - Mobile responsive chat bubble
  * - Offline messages
  * - Chat history persistence
+ * 
+ * Brand customization:
+ * - Uses Forest Green (#2F5C45) to match design manual
  */
 export function CrispChat() {
   useEffect(() => {
@@ -34,6 +44,12 @@ export function CrispChat() {
       console.warn("Crisp: NEXT_PUBLIC_CRISP_WEBSITE_ID not set");
       return;
     }
+
+    // Set runtime config BEFORE loading script (sets brand color)
+    window.CRISP_RUNTIME_CONFIG = {
+      color_theme: CRISP_BRAND_COLOR,
+      locale: "cs",
+    };
 
     // Initialize Crisp
     window.$crisp = [];
@@ -45,9 +61,13 @@ export function CrispChat() {
     script.async = true;
     document.head.appendChild(script);
 
-    // Track when chat is opened
+    // Track when chat is opened and apply additional styling
     const checkCrispReady = setInterval(() => {
       if (window.$crisp && typeof window.$crisp.push === "function") {
+        // Set color theme via API as well (backup)
+        window.$crisp.push(["config", "color:theme", [CRISP_BRAND_COLOR]]);
+        
+        // Track chat opens
         window.$crisp.push(["on", "chat:opened", () => {
           trackTrustPageEvent("start_crisp_chat", "chat_opened");
         }]);
