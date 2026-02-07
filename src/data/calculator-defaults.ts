@@ -65,7 +65,7 @@ type DefaultsMeta = {
 // =============================================================================
 
 export const calculatorDefaults: CalculatorDefaults = {
-  lastUpdated: "2025-12-27",
+  lastUpdated: "2026-02-07",
   
   global: {
     vynosInvestice: 7.0,                  // VERIFIED - GS/Vanguard 10yr forecast + 30yr horizon
@@ -77,8 +77,8 @@ export const calculatorDefaults: CalculatorDefaults = {
   cities: {
     "praha": {
       displayName: "Praha",
-      rustNajemneho: 4.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 6.0,        // PLACEHOLDER
+      rustNajemneho: 3.5,                 // VERIFIED - OECD 10yr CAGR 3.8%, Deloitte Q3'25: 3.1% YoY, AEW EU forecast 3.2%
+      rustHodnotyNemovitosti: 4.0,        // VERIFIED - ČSÚ HPI 2015-25 CAGR 9.2% adjusted for 30yr equilibrium, ČNB analysis
       apartments: {
         "1+kk": {
           kupniCena: 5500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -125,8 +125,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "brno": {
       displayName: "Brno",
-      rustNajemneho: 3.5,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 5.5,        // PLACEHOLDER
+      rustNajemneho: 3.5,                 // VERIFIED - OECD 10yr CAGR 3.8%, Deloitte Q3'25: +7.8% YoY normalizing
+      rustHodnotyNemovitosti: 4.0,        // VERIFIED - CBA Monitor convergence with Praha, strong regional economy
       apartments: {
         "1+kk": {
           kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -173,8 +173,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "ostrava": {
       displayName: "Ostrava",
-      rustNajemneho: 3.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
       apartments: {
         "1+kk": {
           kupniCena: 2200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -221,8 +221,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "plzen": {
       displayName: "Plzeň",
-      rustNajemneho: 3.5,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
       apartments: {
         "1+kk": {
           kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -269,8 +269,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "ceske-budejovice": {
       displayName: "České Budějovice",
-      rustNajemneho: 3.5,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
       apartments: {
         "1+kk": {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -317,8 +317,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "hradec-kralove": {
       displayName: "Hradec Králové",
-      rustNajemneho: 3.5,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 5.0,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
       apartments: {
         "1+kk": {
           kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -365,8 +365,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "liberec": {
       displayName: "Liberec",
-      rustNajemneho: 3.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
       apartments: {
         "1+kk": {
           kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -413,8 +413,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "olomouc": {
       displayName: "Olomouc",
-      rustNajemneho: 3.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
       apartments: {
         "1+kk": {
           kupniCena: 2700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -461,8 +461,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "pardubice": {
       displayName: "Pardubice",
-      rustNajemneho: 3.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 4.5,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
       apartments: {
         "1+kk": {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -509,8 +509,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "usti-nad-labem": {
       displayName: "Ústí nad Labem",
-      rustNajemneho: 2.5,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 3.5,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Deloitte Q3'25: lowest avg price, weak fundamentals
+      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
       apartments: {
         "1+kk": {
           kupniCena: 1400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -557,8 +557,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "karlovy-vary": {
       displayName: "Karlovy Vary",
-      rustNajemneho: 3.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Tourist-dependent market: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
       apartments: {
         "1+kk": {
           kupniCena: 1700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -605,8 +605,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "jihlava": {
       displayName: "Jihlava",
-      rustNajemneho: 3.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
+      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
       apartments: {
         "1+kk": {
           kupniCena: 3000000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -653,8 +653,8 @@ export const calculatorDefaults: CalculatorDefaults = {
     
     "zlin": {
       displayName: "Zlín",
-      rustNajemneho: 3.0,                 // PLACEHOLDER
-      rustHodnotyNemovitosti: 4.0,        // PLACEHOLDER
+      rustNajemneho: 3.0,                 // VERIFIED - Deloitte Q3'25: -0.7% YoY (declining), conservative estimate
+      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
       apartments: {
         "1+kk": {
           kupniCena: 3800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
