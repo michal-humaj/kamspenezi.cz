@@ -283,9 +283,9 @@ export function LabeledSliderInput({
                 handleInputFocus(e);
                 const wrapper = e.target.closest("div");
                 if (wrapper) {
-                  wrapper.style.borderColor = "var(--color-primary)";
+                  wrapper.style.borderColor = "var(--color-accent)";
                   wrapper.style.boxShadow =
-                    "0 0 0 4px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.04), 0 8px 20px rgba(15, 23, 42, 0.08)";
+                    "0 0 0 4px var(--color-accent-ring-strong), 0 0 0 1px rgba(15, 23, 42, 0.04), 0 8px 20px rgba(15, 23, 42, 0.08)";
                 }
               }}
               onBlur={(e) => {

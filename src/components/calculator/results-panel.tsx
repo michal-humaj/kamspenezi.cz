@@ -410,8 +410,6 @@ export function ResultsPanel({
   const percentageA = (scenarioAResult / maxValue) * 100;
   const percentageB = (scenarioBResult / maxValue) * 100;
 
-  const canViewResults = state.selectedCity && state.selectedApartmentSize;
-
   return (
     <div className="rounded-none border-t border-gray-100 md:border-0 px-4 py-6 shadow-none md:mx-0 md:rounded-[24px] md:bg-white md:p-8 md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)]">
       {/* Header Row: Title + Toggle */}
@@ -419,66 +417,56 @@ export function ResultsPanel({
         <h2 className="section-title mb-0">
           Čisté jmění za 30 let
         </h2>
-        {canViewResults && (
-          <div className="inline-flex rounded-lg bg-slate-100 p-0.5 shrink-0 h-9 items-center">
-            <button
-              onClick={() => setCalcMode("monteCarlo")}
-              className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-all ${
-                calcMode === "monteCarlo"
-                  ? "bg-white text-slate-900 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              Realistický
-            </button>
-            <button
-              onClick={() => setCalcMode("fixed")}
-              className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-all ${
-                calcMode === "fixed"
-                  ? "bg-white text-slate-900 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              Fixní
-            </button>
+        <div className="inline-flex rounded-lg bg-slate-100 p-0.5 shrink-0 h-9 items-center">
+          <button
+            onClick={() => setCalcMode("monteCarlo")}
+            className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-all ${
+              calcMode === "monteCarlo"
+                ? "bg-white text-slate-900 shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+            }`}
+          >
+            Realistický
+          </button>
+          <button
+            onClick={() => setCalcMode("fixed")}
+            className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-all ${
+              calcMode === "fixed"
+                ? "bg-white text-slate-900 shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+            }`}
+          >
+            Fixní
+          </button>
+        </div>
+      </div>
+
+      <div>
+        {calcMode === "monteCarlo" && monteCarloResults && (
+          <MonteCarloResults data={monteCarloResults} />
+        )}
+        {calcMode === "fixed" && (
+          <div className="flex flex-col">
+            <ScenarioBlock 
+              label="Scénář A: Vlastní bydlení na hypotéku"
+              value={scenarioAResult}
+              color="var(--scenario-a-dot)"
+              percentage={percentageA}
+              tooltipContent="Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů."
+              assetLabel="Hodnota nemovitosti"
+            />
+            <div className="my-6" />
+            <ScenarioBlock 
+              label="Scénář B: Bydlení v nájmu a investování"
+              value={scenarioBResult}
+              color="var(--scenario-b-dot)"
+              percentage={percentageB}
+              tooltipContent="Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio."
+              assetLabel="Hodnota investičního portfolia"
+            />
           </div>
         )}
       </div>
-
-      {canViewResults ? (
-        <div>
-          {calcMode === "monteCarlo" && monteCarloResults && (
-            <MonteCarloResults data={monteCarloResults} />
-          )}
-          {calcMode === "fixed" && (
-            <div className="flex flex-col">
-              <ScenarioBlock 
-                label="Scénář A: Vlastní bydlení na hypotéku"
-                value={scenarioAResult}
-                color="var(--scenario-a-dot)"
-                percentage={percentageA}
-                tooltipContent="Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů."
-                assetLabel="Hodnota nemovitosti"
-              />
-              <div className="my-6" />
-              <ScenarioBlock 
-                label="Scénář B: Bydlení v nájmu a investování"
-                value={scenarioBResult}
-                color="var(--scenario-b-dot)"
-                percentage={percentageB}
-                tooltipContent="Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio."
-                assetLabel="Hodnota investičního portfolia"
-              />
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="rounded-lg p-6" style={{ background: "var(--bg-lilac-section)" }}>
-          <p className="font-uiSans text-sm text-center leading-relaxed text-[var(--color-secondary)]">
-            Vyber město a velikost bytu pro zobrazení výsledků
-          </p>
-        </div>
-      )}
 
       {/* Methodology */}
       <div className="mt-6">
@@ -500,7 +488,7 @@ export function ResultsPanel({
       </div>
 
       {/* Share Button */}
-      {canViewResults && copyShareUrl && (
+      {copyShareUrl && (
         <div className="mt-4 flex justify-center">
           <ShareButton onCopy={copyShareUrl} variant="small" />
         </div>

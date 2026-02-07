@@ -1,13 +1,15 @@
 # Design Manual — kamspenezi.cz
 
-> Last updated: December 27, 2025
-> This document reflects the current production design system including calculator page.  
-> All changes to brand, UI, or components must update this file first.
+> Last updated: February 8, 2026
+> This document reflects the actual production implementation of the design system.
+> All changes to brand, UI, or components must update this file.
 > 
-> **Recent Updates**: 
-> - Scenario colors updated: A = Copper/Terracotta (#C2410C), B = Forest Green (#2F5C45)
-> - Purple palette removed entirely in favor of Sage Green for Scenario B
-> - "ETF" terminology replaced with "investice" throughout
+> **Implementation Status**:
+> - Primary design system uses CSS custom properties defined in `globals.css`
+> - Tailwind config provides backwards compatibility but CSS vars are preferred
+> - Scenario colors: A = Copper/Terracotta (#C2410C), B = Forest Green (#2F5C45)
+> - All components use inline styles with `var(--token)` or utility classes
+> - Two calculator pages: **Bydlení** (`/`) and **Investice** (`/investice`)
 
 ───────────────────────────────
 
@@ -88,16 +90,13 @@
 - `--bg-lilac-section`: City Presets, Results, Myths+Scenarios (grouped), FAQ
 - `--bg-card`: All cards (city cards, result card, scenario cards, author card, FAQ items)
 
-**Alternation Pattern**:
-1. Hero: base
-2. City Presets: lilac-section
-3. Results: base
-4. Myths: lilac-section
-5. Scenarios: base
-6. Transparency: lilac-section
-7. What doesn't solve: base
-8. FAQ: lilac-section
-9. Footer: base
+**Alternation Pattern** (Calculator pages — `/` and `/investice`):
+1. Hero + Inputs: base (desktop), inputs use lilac-section on mobile
+2. Yearly Overview Table: base
+3. FAQ: lilac-section
+4. Footer: base
+
+> **Note**: The original 9-section landing page pattern (Hero → City Presets → Results → Myths → Scenarios → Transparency → What doesn't solve → FAQ → Footer) was the initial design, but the current production site is a calculator-first layout. The `--bg-base` / `--bg-lilac-section` alternation principle still applies to any future content sections.
 
 ### 3.2 Text Colors
 
@@ -327,14 +326,11 @@ py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]
 ```
 
 **Sections using these tokens**:
-- Hero
-- City Presets ("Začni podle svého města a velikosti bytu")
-- Results ("Jak vypadá výsledek")
-- Myths ("Mýty o nájmu")
-- Scenarios ("Co přesně kalkulačka porovnává")
-- Transparency ("Transparentní výpočet, žádná tajemství")
-- What calculator doesn't solve ("Co kalkulačka neřeší")
-- FAQ ("Nejčastější otázky")
+- Hero section
+- Calculator input area
+- Yearly Overview Table section
+- FAQ section ("Nejčastější otázky")
+- Content pages (`/jak-to-funguje`, `/metodika-a-zdroje`, `/o-projektu`, `/kontakt`)
 
 **Result**: Consistent vertical rhythm throughout the page. Adjacent sections with the same background color maintain clear visual separation through this spacing.
 
@@ -358,67 +354,117 @@ py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]
 
 ───────────────────────────────
 
-## 7. Hero Section Specifics
+## 7. Site Navigation
 
-### 7.1 Hero Structure (Desktop)
-
-```
-┌─────────────────────────────────────────────┐
-│ Left Column (text)      Right Column (card) │
-│ - Badge (lilac pill)    - Illustration card │
-│ - H1 (Newsreader)       - Icon              │
-│ - Subtitle (Figtree)    - Title (sans)      │
-│ - Italic line           - Description       │
-│ - Primary CTA (52px)    │                    │
-│ - Secondary CTA (48px)  │                    │
-│ - "Zdarma, bez..." (mt-2) │                  │
-│ - Bullet list (mt-6)    │                    │
-└─────────────────────────────────────────────┘
-```
-
-**Desktop CTAs**:
-- Side by side: `gap-6`
-- Primary: 52px height, 16px text, semibold
-- Secondary: 48px height, 15px text, medium
-- Visual hierarchy clear through size and weight
-
-### 7.2 Hero Structure (Mobile)
+### 7.1 Route Structure
 
 ```
-┌─────────────────────────────┐
-│ - Badge                     │
-│ - H1                        │
-│ - Subtitle                  │
-│ - Italic line               │
-│ - Primary CTA (full width,  │
-│   52px height)              │
-│ - mt-4 gap                  │
-│ - Secondary CTA (full width,│
-│   48px height, ghost)       │
-│ - "Zdarma, bez..." (mt-2)   │
-│ - mt-6 gap                  │
-│ - Bullet list               │
-│ - Illustration card         │
-└─────────────────────────────┘
+/                    → Bydlení calculator (main page)
+/investice           → Investice calculator
+/jak-to-funguje      → How it works
+/metodika-a-zdroje   → Methodology and sources
+/o-projektu          → About the project
+/kontakt             → Contact
 ```
 
-**Mobile CTAs**:
-- Stacked, full width
-- `mt-4` between primary and secondary
-- "Zdarma, bez registrace": `text-sm`, `mt-2` (closer to CTAs than before)
-- Bullet list: `mt-6` after meta text
+### 7.2 Desktop Navigation
 
-### 7.3 Hero Bullets
+**Layout**: Horizontal nav bar, full width, border-bottom `#EDEEF3`, background `--bg-base`.
 
-- Neutral grey bullets (`--color-bullet`), NOT orange
-- Small dot: `h-1.5 w-1.5 rounded-full mt-1.5`
-- Text: `text-base text-[#4B5563] font-uiSans leading-relaxed`
-- Spacing: `space-y-2.5`
-- Same line height as body text (1.6) for visual consistency
+**Nav Links**: `Bydlení` | `Investice` | `Jak to funguje` | `Metodika`
+
+**Active State**:
+- Font weight: 600 (semibold)
+- Color: `var(--color-primary)`
+- 2px bottom underline in `var(--color-primary)`
+
+**Inactive State**:
+- Color: `var(--color-secondary)`
+- Hover: `var(--color-primary)`
+
+### 7.3 Mobile Navigation
+
+**Trigger**: Hamburger menu icon (pill-shaped border button)
+
+**Sheet Panel** (Radix UI Sheet, slides from right):
+- Background: `var(--bg-card)`
+- Primary links: `Bydlení`, `Investice` — separated by divider from secondary links
+- Secondary links: `Jak to funguje`, `Metodika a zdroje`, `O projektu`, `Kontakt`
+- No CTA buttons in the mobile menu
+- Active state: 3px left border in `var(--color-primary)`
+
+**Close Button** (top-right):
+```css
+/* 44x44px circular tap target for accessibility */
+position: absolute;
+right: 8px (right-2);
+top: 8px (top-2);
+width: 44px (w-11);
+height: 44px (h-11);
+border-radius: 50% (rounded-full);
+/* Icon: 20x20 (h-5 w-5) centered inside */
+/* Active state: bg-slate-100 + scale(0.95) for tap feedback */
+```
+
+**Auto-Close on Navigate**: Every link inside the mobile menu is wrapped with `<SheetClose asChild>` (Radix primitive). Tapping any link triggers the sheet close animation (300ms slide-out) before navigation completes.
 
 ───────────────────────────────
 
-## 8. FAQ Section
+## 8. Hero Section Specifics
+
+### 8.1 Hero Structure
+
+Both calculators use the same hero layout — only the copy and image differ.
+
+**Desktop**: Two-column grid (`md:grid-cols-2 gap-12`)
+```
+┌─────────────────────────────────────────────┐
+│ Left Column (text)      Right Column (image)│
+│ - Eyebrow (uppercase)   - Hero photo        │
+│ - H1 (Newsreader)         rounded-[32px]    │
+│ - Subtitle (Figtree)      aspect-[4/3]      │
+│ - Scenario pills           scale-105        │
+│                             rotate-[1.5deg]  │
+└─────────────────────────────────────────────┘
+```
+
+**Mobile**: Single column, image appears as full-bleed band below pills
+```
+┌─────────────────────────────┐
+│ - Eyebrow                   │
+│ - H1                        │
+│ - Subtitle                  │
+│ - Scenario pills            │
+│ - Full-bleed hero image     │
+│   (h-44, no radius, -mx-4) │
+└─────────────────────────────┘
+```
+
+### 8.2 Hero Images
+
+**Bydleni** (`/`):
+- Desktop: `/hero-couch.webp`
+- Mobile: `/hero-couch-mobile.webp`
+
+**Investice** (`/investice`):
+- Desktop + Mobile: `/bars.png`
+
+### 8.3 Hero Eyebrow
+
+```css
+font-size: 12px (text-xs);
+font-weight: 600 (semibold);
+letter-spacing: widest;
+color: text-slate-700;
+text-transform: uppercase;
+margin-bottom: 8px (mb-2);
+```
+
+Content: "Online kalkulačka" (both pages)
+
+───────────────────────────────
+
+## 9. FAQ Section
 
 **Structure**:
 - Background: `--bg-lilac-section`
@@ -449,9 +495,9 @@ Padding: p-5 md:p-6
 
 ───────────────────────────────
 
-## 9. Motion and Transitions
+## 10. Motion and Transitions
 
-### 9.1 Tokens
+### 10.1 Tokens
 
 ```css
 --transition-duration: 200ms;
@@ -463,7 +509,7 @@ Padding: p-5 md:p-6
 transition: all var(--transition-duration) var(--transition-easing);
 ```
 
-### 9.2 Framer Motion Animations
+### 10.2 Framer Motion Animations
 
 **Page sections**:
 ```jsx
@@ -491,7 +537,7 @@ whileHover={{
 
 ───────────────────────────────
 
-## 10. Forbidden Elements
+## 11. Forbidden Elements
 
 **Never use**:
 - Pills as section headings (small label pills above H2) ← Already removed
@@ -509,25 +555,108 @@ whileHover={{
 
 ───────────────────────────────
 
-## 11. Implementation Guidelines
+## 12. Implementation Guidelines
 
-### 11.1 Tailwind Configuration
+### 12.1 Architecture Decision: CSS Custom Properties Over Tailwind
 
-**In `tailwind.config.ts`**, extend theme with:
+**Why we use CSS custom properties (CSS vars) as the primary design token system:**
+
+1. **Single Source of Truth**: All design tokens defined once in `globals.css`
+2. **Dynamic Theming**: Can be changed at runtime if needed
+3. **Better TypeScript Support**: No Tailwind JIT compilation issues with dynamic values
+4. **Consistent Across Technologies**: CSS vars work everywhere (React, vanilla JS, etc.)
+5. **Easier Maintenance**: Change one value, updates everywhere
+
+**Implementation Pattern**:
+```tsx
+// ✅ PREFERRED: CSS custom properties with inline styles
+<div style={{ 
+  background: 'var(--bg-card)', 
+  color: 'var(--color-primary)',
+  borderRadius: 'var(--radius-card)',
+  boxShadow: 'var(--shadow-card)'
+}} />
+
+// ✅ ALTERNATIVE: CSS vars with Tailwind arbitrary values
+<div className="bg-[var(--bg-card)] text-[var(--color-primary)] rounded-[var(--radius-card)]" />
+
+// ⚠️ ACCEPTABLE: Standard Tailwind utilities when they match design tokens
+<div className="bg-white text-slate-900 rounded-3xl" />
+// Note: rounded-3xl = 24px = var(--radius-card)
+
+// ❌ AVOID: Hardcoded values
+<div className="bg-[#FFFFFF] text-[#0F172A]" />
+```
+
+### 12.2 Tailwind Configuration
+
+**Current Implementation in `tailwind.config.ts`**:
 
 ```ts
 theme: {
+  fontFamily: {
+    displaySerif: ['var(--font-display-serif)', 'serif'],
+    uiSans: ['var(--font-ui-sans)', 'sans-serif'],
+  },
   extend: {
-    fontFamily: {
-      displaySerif: ['var(--font-display-serif)'],
-      uiSans: ['var(--font-ui-sans)'],
+    colors: {
+      // Note: These are legacy. Use CSS custom properties instead.
+      // Example: Use var(--color-primary) instead of text-kp-text-main
+      kp: {
+        'text-main': '#0F172A',   // Kept for backwards compatibility
+        'text-muted': '#6B7280',  // Kept for backwards compatibility
+      },
     },
-    // Colors and other tokens pulled from globals.css variables
+    borderRadius: {
+      card: "24px",      // Standard cards (same as rounded-3xl)
+      'faq': "16px",     // FAQ items (same as rounded-2xl)
+      pill: "9999px",    // Buttons/pills (same as rounded-full)
+    },
+    boxShadow: {
+      // Matches CSS custom properties in globals.css
+      card: "0 8px 28px rgba(15, 23, 42, 0.06)",
+      'card-hover': "0 12px 32px rgba(15, 23, 42, 0.10)",
+    },
+    // Custom font sizes for typography (optional, standard Tailwind classes work too)
+    fontSize: {
+      "display-landing": ["3rem", { lineHeight: "1.1", fontWeight: "600" }],
+      "h1-app": ["2.25rem", { lineHeight: "1.2", fontWeight: "600" }],
+      h2: ["1.75rem", { lineHeight: "1.3", fontWeight: "600" }],
+      h3: ["1.375rem", { lineHeight: "1.3", fontWeight: "500" }],
+      body: ["1rem", { lineHeight: "1.5", fontWeight: "400" }],
+      "body-sm": ["0.875rem", { lineHeight: "1.5", fontWeight: "400" }],
+      label: ["0.75rem", { lineHeight: "1.4", fontWeight: "500", letterSpacing: "0.04em" }],
+    },
+    // Transition utilities
+    transitionTimingFunction: {
+      'premium': 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+    },
+    transitionDuration: {
+      '180': '180ms',
+      '220': '220ms',
+    },
   }
 }
 ```
 
-### 11.2 Global CSS Variables
+**Tailwind Class Equivalents** (when CSS vars not needed):
+```tsx
+// Border radius
+rounded-3xl        = var(--radius-card)    = 24px
+rounded-2xl        = var(--radius-faq)     = 16px  
+rounded-full       = var(--radius-pill)    = 9999px
+
+// Shadows (use sparingly, prefer CSS vars for consistency)
+shadow-card        ≈ var(--shadow-card)
+shadow-card-hover  ≈ var(--shadow-card-hover)
+
+// Common colors that match our palette
+bg-white           = var(--bg-card)        = #FFFFFF
+text-slate-900     ≈ var(--color-primary)  = #0F172A
+text-slate-600     ≈ var(--color-secondary) = #6B7280
+```
+
+### 12.3 Global CSS Variables
 
 **In `globals.css`**:
 
@@ -599,81 +728,102 @@ theme: {
 }
 ```
 
-### 11.3 Component Standards
+### 12.4 Component Standards
 
-**Button Component Pattern**:
+**Real Component Patterns from Production Code**:
 
-```jsx
-// Primary Button (Desktop)
-<Button 
-  className="h-[52px] rounded-full text-white text-[16px] font-semibold px-6"
+**Button Component Pattern** (Inline styles approach):
+
+```tsx
+// Primary Button - As used in basic-inputs.tsx (line 175)
+<button
+  type="button"
+  className="w-full rounded-full bg-gray-900 hover:bg-gray-800 py-4 font-uiSans text-base font-bold text-white shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all"
+>
+  Zobrazit výsledek →
+</button>
+
+// City Button - As used in city-selector.tsx (line 59-91)
+<button
+  className="shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] px-4 py-3 font-uiSans text-sm font-medium transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-[var(--btn-focus-ring)] focus:ring-offset-0"
   style={{
-    background: 'var(--btn-primary-bg)',
-    boxShadow: 'var(--btn-primary-shadow)'
-  }}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.background = 'var(--btn-primary-hover-bg)';
-    e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow-hover)';
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.background = 'var(--btn-primary-bg)';
-    e.currentTarget.style.boxShadow = 'var(--btn-primary-shadow)';
+    background: isSelected ? "var(--color-primary)" : "#FFFFFF",
+    color: isSelected ? "var(--color-on-primary)" : "var(--color-primary)",
+    border: `1.5px solid ${isSelected ? "var(--color-primary)" : "rgb(229, 231, 235)"}`,
+    boxShadow: isSelected 
+      ? "0 12px 24px -6px rgba(15, 23, 42, 0.15)" 
+      : "0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)",
   }}
 >
-  CTA Text
-</Button>
-
-// Secondary/Tertiary Button
-<Button 
-  className="h-[48px] rounded-full text-[15px] font-medium px-5"
-  style={{
-    background: 'var(--btn-secondary-bg)',
-    border: '1px solid var(--btn-secondary-border)',
-    color: 'var(--btn-secondary-text)',
-    boxShadow: 'var(--shadow-card)'
-  }}
->
-  Action Text
-</Button>
+  Praha
+</button>
 ```
 
-**Scenario Pill Pattern**:
+**Scenario Pill Pattern** (Actual Implementation):
 
-```jsx
-<span 
-  className="inline-flex items-center gap-1.5 font-medium text-[13px] font-uiSans"
-  style={{
-    background: 'var(--scenario-a-bg)',  // or scenario-b-bg
-    color: 'var(--scenario-a-dot)',      // or scenario-b-dot
-    borderRadius: 'var(--radius-pill)',
-    padding: '3px 8px'
-  }}
->
-  <span 
-    className="h-1.5 w-1.5 rounded-full"
-    style={{ background: 'var(--scenario-a-dot)' }}
-  />
-  Label text
+```tsx
+// Using ScenarioBadge component (src/components/ui/scenario-badge.tsx)
+import { ScenarioBadge } from "@/components/ui/scenario-badge";
+
+<ScenarioBadge scenario="A" label="Scénář A: Koupě" />
+<ScenarioBadge scenario="B" label="Scénář B: Nájem + investice" />
+
+// Or inline implementation (as used in hero-section.tsx, line 36):
+<span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-800">
+  Scénář A: Koupě
 </span>
-```
 
-**Card Pattern**:
-
-```jsx
-<div 
-  className="rounded-3xl bg-white border p-6 md:p-8"
-  style={{
-    borderColor: 'var(--color-border)',
-    boxShadow: 'var(--shadow-card)'
+<span 
+  className="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold"
+  style={{ 
+    background: 'var(--scenario-b-bg)', 
+    color: 'var(--scenario-b-dot)' 
   }}
 >
+  Scénář B: Nájem + investice
+</span>
+
+// With dot (as used in basic-inputs.tsx, line 69-71):
+<div className="flex items-center gap-2">
+  <div className="w-2 h-2 rounded-full bg-orange-700" />
+  <span className="text-base font-semibold text-slate-900">
+    Scénář A: Vlastní bydlení na hypotéku
+  </span>
+</div>
+
+<div className="flex items-center gap-2">
+  <div className="w-2 h-2 rounded-full" style={{ background: 'var(--scenario-b-dot)' }} />
+  <span className="text-base font-semibold text-slate-900">
+    Scénář B: Bydlení v nájmu a investování
+  </span>
+</div>
+```
+
+**Card Pattern** (As used in hero-section.tsx, line 84-92):
+
+```tsx
+<div 
+  className="flex flex-col items-center border text-center" 
+  style={{
+    background: 'var(--bg-card)',
+    borderColor: 'var(--color-border)',
+    borderRadius: 'var(--radius-card)',
+    boxShadow: 'var(--shadow-card)',
+    padding: '28px 24px'
+  }}
+>
+  Card content
+</div>
+
+// Alternative: Using Tailwind classes
+<div className="rounded-3xl bg-white border border-[var(--color-border)] p-6 md:p-8 shadow-[var(--shadow-card)]">
   Card content
 </div>
 ```
 
 ───────────────────────────────
 
-## 12. Visual QA Checklist
+## 13. Visual QA Checklist
 
 Before shipping any page, verify:
 
@@ -717,7 +867,35 @@ Before shipping any page, verify:
 
 ───────────────────────────────
 
-## 13. Quick Reference: Do's and Don'ts
+## 14. Quick Reference: Do's and Don'ts
+
+### Implementation Approach
+
+✅ **Do**: Use CSS custom properties with inline styles as primary pattern
+```tsx
+style={{ background: 'var(--bg-card)', color: 'var(--color-primary)' }}
+```
+
+✅ **Do**: Use Tailwind utility classes when they match design tokens exactly
+```tsx
+className="rounded-3xl bg-white"  // rounded-3xl = 24px = var(--radius-card)
+```
+
+✅ **Do**: Mix inline styles and Tailwind classes pragmatically
+```tsx
+className="flex items-center gap-2 px-4 py-3"
+style={{ background: 'var(--bg-card)', borderColor: 'var(--color-border)' }}
+```
+
+❌ **Don't**: Use deprecated Tailwind color classes (bg-kp-*)
+```tsx
+className="bg-kp-bg-page text-kp-text-main"  // These don't match our palette
+```
+
+❌ **Don't**: Hardcode color values when CSS vars exist  
+```tsx
+className="bg-[#FFFFFF]"  // Use var(--bg-card) or bg-white instead
+```
 
 ### Typography
 
@@ -773,33 +951,44 @@ Before shipping any page, verify:
 
 ───────────────────────────────
 
-## 14. Calculator Page Design System
+## 15. Calculator Page Design System
 
-The calculator page (`/bydleni-kalkulacka`) extends the landing page design system with interactive components optimized for data entry and comparison.
+The site has two calculator pages that share the same design system and component patterns:
+- **Bydlení** (`/`) — Housing buy-vs-rent calculator (Scenario A: buy, B: rent + invest)
+- **Investice** (`/investice`) — Investment property calculator (Scenario A: investment flat, B: ETF portfolio)
 
-### 14.1 Page Structure
+Both pages reuse the same UI components (sliders, accordions, cards, result panels, yearly tables) with different labels and calculation engines.
 
-**Layout Pattern**:
+**Default State**: Both calculators initialize with **Praha + 1+kk** preselected. Results are always visible on page load — there is no empty state gating results behind city/apartment selection.
+
+### 15.1 Page Structure
+
+**Layout Pattern** (shared by both `/` and `/investice`):
 ```
 Desktop: Two-column grid
 ├─ Left Column (8/12): Inputs, stacked vertically
 │  ├─ City + Apartment selection
-│  ├─ Basic inputs (Základní nastavení)
-│  ├─ Uncertainty inputs (Nejistota vývoje v čase)
-│  └─ Advanced inputs (Rozšířené předpoklady)
+│  ├─ Basic inputs (Základní nastavení / vstupy)
+│  ├─ Uncertainty inputs (Nejistota vývoje / Klíčové tržní předpoklady)
+│  └─ Advanced inputs (Rozšířené předpoklady / Poplatky a náklady)
 │
 └─ Right Column (4/12): Results panel (sticky)
    └─ Sticky positioning (top-24)
 
+Below grid: Yearly Overview Table ("Vývoj v čase")
+Below table: FAQ section (lilac background)
+
 Mobile: Single column, stacked
 ├─ City + Apartment selection
 ├─ All inputs
-└─ Results panel (below inputs, not sticky)
+├─ Results panel (below inputs, not sticky)
+├─ Yearly Overview (mobile accordion)
+└─ FAQ section
 ```
 
-**Background**: Uses `--bg-base` (#F5F6F8) throughout. No lilac sections on calculator page.
+**Background**: Uses `--bg-base` (#F5F6F8) throughout. Inputs use `--bg-lilac-section` on mobile for visual grouping. FAQ section uses `--bg-lilac-section`.
 
-### 14.2 Calculator Typography
+### 15.2 Calculator Typography
 
 **Section Titles** (`.calc-section-title`):
 ```css
@@ -811,7 +1000,9 @@ letter-spacing: -0.01em;
 margin-bottom: 24px (mb-6);
 ```
 
-**Usage**: "Základní nastavení", "Nejistota vývoje v čase", "Rozšířené předpoklady", "Výsledek po 30 letech"
+**Usage**: 
+- Bydlení: "Základní nastavení", "Nejistota vývoje v čase", "Rozšířené předpoklady", "Výsledek po 30 letech"
+- Investice: "Základní vstupy", "Klíčové tržní předpoklady", "Poplatky a náklady", "Výsledek po 30 letech"
 
 **Input Scenario Headers**:
 ```css
@@ -847,7 +1038,7 @@ letter-spacing: 0.02em;
 
 **Usage**: "SCÉNÁŘ A – BYT NA HYPOTÉKU", "SCÉNÁŘ B – NÁJEM A INVESTOVÁNÍ" above result values
 
-### 14.3 Input System
+### 15.3 Input System
 
 **Labeled Slider Input** (Primary input pattern):
 
@@ -877,8 +1068,8 @@ font-variant-numeric: tabular-nums;  /* Monospace numbers */
 
 /* Focus state */
 border-color: var(--color-primary);
-box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04),
-            0 8px 20px rgba(15, 23, 42, 0.06);
+box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.15),
+            0 8px 20px rgba(15, 23, 42, 0.08);
 ```
 
 **Unit Display** (`.calc-input-unit`):
@@ -908,30 +1099,33 @@ line-height: 1.5 (leading-relaxed);
 margin-top: 4px (mt-1);
 ```
 
-**Slider Styling**:
+**Slider Styling** (`.slider-input`):
 ```css
-height: 8px (h-2);
+/* Hit area: 32px height (transparent background) */
+/* Visible track: 6px height, subtle guide-rail feel */
+track-height: 6px;
 border-radius: var(--radius-pill);
-background: var(--bg-hover);  /* Track */
-
-/* Progress fill */
 background: linear-gradient(
   to right,
   var(--color-primary) 0%,
-  var(--color-primary) var(--value),
-  var(--bg-hover) var(--value)
+  var(--color-primary) var(--slider-progress),
+  #E5E7EB var(--slider-progress),
+  #E5E7EB 100%
 );
 
-/* Thumb */
-width: 16px;
-height: 16px;
+/* Thumb: 28px, navy with white border */
+width: 28px;
+height: 28px;
 border-radius: 50%;
 background: var(--color-primary);
 border: 2px solid white;
-box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+box-shadow: 0 4px 8px rgba(15, 23, 42, 0.25), 0 0 0 2px #ffffff;
+
+/* Hover: scale(1.05), stronger shadow */
+/* Active: scale(1.1), cursor: grabbing */
 ```
 
-### 14.4 Number Formatting
+### 15.4 Number Formatting
 
 **Millions Format** (Purchase price only):
 - **Display**: "7,8 mil. Kč" (one decimal place, Czech locale)
@@ -957,7 +1151,7 @@ box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
 - Automatic comma/period normalization (. → ,)
 - Debounced updates (300ms) while typing
 
-### 14.5 Collapsible Sections
+### 15.5 Collapsible Sections
 
 **Header Styling** (`.calc-collapse-header`):
 ```css
@@ -995,7 +1189,9 @@ font-size: 11px;
 color: var(--color-secondary);
 ```
 
-### 14.6 Results Panel
+### 15.6 Results Panel
+
+**Visibility**: Results are always shown — no empty/placeholder state. Both calculators initialize with Praha + 1+kk, so results are computed and visible on first render.
 
 **Card Styling**:
 ```css
@@ -1056,7 +1252,7 @@ hover: text-slate-700;
   - Result values: `font-displaySerif text-3xl md:text-4xl font-semibold` (SERIF)
   - Asset labels: `text-[13px] font-medium text-slate-500`
 
-### 14.6.1 Monte Carlo Results (Realistic Mode)
+### 15.6.1 Monte Carlo Results (Realistic Mode)
 
 **Structure** (Top to Bottom):
 1. Advisor Insight Box (Verdict)
@@ -1143,51 +1339,60 @@ background: none (sits on white card background);
 - Layout: Centered, `mt-6`
 - Content: "Metodika a vysvětlení pojmů" with ChevronRight icon
 
-### 14.7 City and Apartment Selection
+### 15.7 City and Apartment Selection
 
 **City Buttons**:
 ```css
-padding: 12px 20px;
-border: 2px solid transparent;
+padding: 12px 16px (py-3 px-4);
+border: 1.5px solid rgb(229, 231, 235);
 border-radius: var(--radius-pill);
 background: white;
-box-shadow: var(--shadow-card);
-font-size: 15px;
+box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+font-size: 14px (text-sm);
 font-weight: 500;
-transition: all var(--transition-duration) var(--transition-easing);
+transition: all 200ms ease-out;
 
-/* Selected state */
-border-color: var(--selection-border);  /* Navy */
-background: var(--selection-bg);  /* Very light navy tint */
-box-shadow: var(--selection-shadow);
+/* Hover: lift + shadow + border darken */
+transform: translateY(-2px);
+border-color: rgb(209, 213, 219);
+box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+
+/* Selected state — navy solid fill */
+background: var(--color-primary);
+color: var(--color-on-primary);
+border-color: var(--color-primary);
+box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.15);
 ```
 
 **Apartment Size Cards**:
 ```css
-padding: 16px 20px;
-border: 2px solid transparent;
-border-radius: 16px (rounded-2xl);
+padding: 20px (p-5);
+border: 2px solid;
+border-radius: var(--radius-card);  /* 24px */
 background: white;
-box-shadow: var(--shadow-card);
 
 /* Content */
 ┌─────────────────────────┐
-│ 2+kk (large, bold)      │
-│ 7,8 mil · 24 tis / měsíc│
-│ (small, grey)           │
+│ 2+kk (text-2xl, bold)   │
+│ 8,1 mil · 54 m²         │
+│ (text-sm, price medium + area muted)│
 └─────────────────────────┘
 
+/* Default state */
+border-color: gray-200;
+box-shadow: shadow-sm;
+hover: border-gray-300 shadow-md -translate-y-0.5;
+
 /* Selected state */
-border-color: var(--selection-border);
-background: var(--selection-bg);
-transform: translateY(-2px);
+border-color: #0F172A (navy);
+box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.15);
 ```
 
 **Formatting**: 
-- Purchase price: millions format ("7,8 mil")
-- Rent: thousands format ("24 tis")
+- Purchase price: millions format ("8,1 mil")
+- Area: square meters ("54 m²")
 
-### 14.8 Mobile Optimization
+### 15.8 Mobile Optimization
 
 **Viewport Meta Tag** (CRITICAL):
 ```html
@@ -1206,7 +1411,7 @@ transform: translateY(-2px);
 - Buttons: 48-52px height
 - Adequate spacing between interactive elements
 
-### 14.9 Animation and Transitions
+### 15.9 Animation and Transitions
 
 **Input Highlight Animation** (when preset applied):
 ```css
@@ -1229,7 +1434,7 @@ animation: highlightInput 1.5s ease-out;
 - Prevents excessive calculations while typing
 - Visual feedback: none (silent, seamless)
 
-### 14.10 Calculator Color Extensions
+### 15.10 Calculator Color Extensions
 
 In addition to landing page colors, calculator page uses:
 
@@ -1245,7 +1450,7 @@ In addition to landing page colors, calculator page uses:
 --selection-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
 ```
 
-### 14.11 Calculator Button Variants
+### 15.11 Calculator Button Variants
 
 **"Upravit vstupy" Button** (Edit inputs):
 ```css
@@ -1274,7 +1479,7 @@ width: 100%;
 /* ... (standard primary button styling) */
 ```
 
-### 14.12 Data Entry Patterns
+### 15.12 Data Entry Patterns
 
 **Input Behavior Rules**:
 1. **Never reset to zero**: If user clicks in/out without typing, value remains unchanged
@@ -1290,7 +1495,7 @@ width: 100%;
 - Null values fall back to current valid value
 - Never allow empty or NaN state in calculator state
 
-### 14.13 Spacing in Calculator
+### 15.13 Spacing in Calculator
 
 **Section Vertical Spacing**:
 ```css
@@ -1320,7 +1525,7 @@ padding: 24px (p-6);
 padding: 24px 0 (py-6);
 ```
 
-### 14.14 Calculator Typography Scale
+### 15.14 Calculator Typography Scale
 
 ```
 Section titles:    18px → 20px (.calc-section-title)
@@ -1351,7 +1556,7 @@ Context text:      10px (text-[10px], uppercase)
 - Monte Carlo range values: 400 (regular)
 - Helper text: 400 (regular)
 
-### 14.15 Yearly Overview Table System
+### 15.15 Yearly Overview Table System
 
 **Desktop Table (Wealthsimple/Stripe Polish)**:
 - **Density**: Ultra-compact (`py-1` padding, `text-xs` font, `leading-tight`).
@@ -1377,6 +1582,60 @@ Context text:      10px (text-[10px], uppercase)
   - Blocks: Two "paper strip" blocks (`bg-white`, `shadow-sm`, `border-l-2` with scenario color).
   - **Visual Grouping**: Dashed border (`border-t border-dashed border-slate-200`) separating expenses from final asset value.
   - **Typography**: Labels `text-xs text-slate-500`, Values `text-sm font-medium text-slate-900`. "Náklady celkem" promoted to `font-medium`.
+
+### 15.16 Investice Page Specifics
+
+The Investice page (`/investice`) follows the same design system as Bydlení — same background (`#F5F6F8`), same card styles, same slider/input components, no special theming or accent overrides. Differences are limited to:
+
+**Results Panel**: Fixed mode only (no Realistický/Fixní toggle). No Monte Carlo simulation on this page.
+
+**Scenario Labels**:
+- Scenario A: "Investiční byt" (investment flat) — uses `--scenario-a-dot` (Copper)
+- Scenario B: "ETF portfolio" — uses `--scenario-b-dot` (Forest Green)
+
+**Investice-Specific Input Fields** (not present on Bydlení):
+- `Obsazenost bytu` — Occupancy rate as percentage (default: 90%)
+- `Sazba daně z příjmu` — Income tax rate toggle (15% or 23%)
+
+**Investice-Specific Components**:
+```
+src/components/calculator/
+├─ investice-basic-inputs.tsx            # Basic inputs with occupancy
+├─ investice-uncertainty-inputs.tsx      # Market assumptions
+├─ investice-advanced-inputs.tsx         # Fees, costs, tax rate
+├─ investice-results-panel.tsx           # Net worth comparison
+├─ InvesticeYearlyTable.tsx              # Desktop yearly table (21 columns)
+└─ investice-yearly-breakdown-mobile.tsx # Mobile accordion view
+```
+
+**Investice Yearly Table Columns** (21 total):
+```
+Scenario A (Investment Property):
+  Rok | Hodnota nemovitosti | Příjem z nájmu | Provozní náklady |
+  Splátka hypotéky | Jistina | Úroky | Dlužná částka | Odpisy |
+  Základ daně | Daň z příjmu | Čistý cashflow | Vedlejší fond |
+  Čisté jmění (A)
+
+Scenario B (ETF):
+  ETF portfolio (B)
+```
+
+**Calculation Engine Files**:
+```
+src/lib/calculations/
+├─ investice-yearly.ts    # Core year-by-year simulation
+├─ investice-fixed.ts     # Fixed-rate wrapper (scalar → array)
+└─ mortgage-math.ts       # Shared PMT/FV utilities
+```
+
+**Key Calculation Rules** (per Excel model):
+1. Side fund can never be negative — only positive cashflow is deposited
+2. ETF (Scenario B) receives matching out-of-pocket costs for fair comparison
+3. Maintenance costs affect cashflow but are NOT tax-deductible
+4. Straight-line depreciation: purchasePrice / 30
+5. Tax only applies when tax base is positive
+
+**URL State**: Uses `useInvesticeUrlState` hook with `i_` prefixed params (e.g., `i_kc`, `i_vz`) to avoid conflicts with Bydlení URL params.
 
 ───────────────────────────────
 

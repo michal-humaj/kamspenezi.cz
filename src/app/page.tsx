@@ -58,27 +58,26 @@ const config = calculatorDefaults;
 
 // Get Praha defaults for initial state (using slug)
 const prahaDefaults = config.cities["praha"];
-const praha2kkDefaults = prahaDefaults.apartments["2+kk"];
+const praha1kkDefaults = prahaDefaults.apartments["1+kk"];
 
-// Initial state with Praha preselected (using slug), apartment size requires user selection
+// Initial state with Praha + 1+kk preselected — results always visible
 const initialState: CalculatorState = {
   selectedCity: "praha",
-  selectedApartmentSize: null,
+  selectedApartmentSize: "1+kk",
   // Default calculation mode
   calcMode: "fixed",
-  // Use 2+kk defaults as initial values (user will select actual apartment)
-  kupniCena: praha2kkDefaults.kupniCena,
+  kupniCena: praha1kkDefaults.kupniCena,
   vlastniZdroje: 10,
   urokovaSazbaHypoteky: config.global.urokovaSazbaHypoteky,
-  najemne: praha2kkDefaults.najemne,
+  najemne: praha1kkDefaults.najemne,
   vynosInvestice: config.global.vynosInvestice,
   prispevekRodicu: 0,
-  zarizeniNemovitosti: praha2kkDefaults.zarizeniNemovitosti,
+  zarizeniNemovitosti: praha1kkDefaults.zarizeniNemovitosti,
   rustHodnotyNemovitosti: prahaDefaults.rustHodnotyNemovitosti,
-  fondOprav: praha2kkDefaults.fondOprav,
-  pojisteniNemovitosti: praha2kkDefaults.pojisteniNemovitosti,
-  danZNemovitosti: praha2kkDefaults.danZNemovitosti,
-  nakladyUdrzba: praha2kkDefaults.nakladyUdrzba,
+  fondOprav: praha1kkDefaults.fondOprav,
+  pojisteniNemovitosti: praha1kkDefaults.pojisteniNemovitosti,
+  danZNemovitosti: praha1kkDefaults.danZNemovitosti,
+  nakladyUdrzba: praha1kkDefaults.nakladyUdrzba,
   ocekavanaInflace: config.global.ocekavanaInflace,
   rustNajemneho: prahaDefaults.rustNajemneho,
   // Key market assumptions

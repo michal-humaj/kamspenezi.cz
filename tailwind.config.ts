@@ -27,35 +27,27 @@ const config = {
     },
     extend: {
       colors: {
+        // Note: Primary colors are defined in globals.css as CSS custom properties
+        // Use var(--color-primary), var(--scenario-a-dot), etc. instead of these utility classes
+        // These are kept for backwards compatibility but should not be used in new code
         kp: {
-          'bg-page': '#F7F9FC',
-          'bg-hero': '#FCFDFE',
-          'bg-band': '#EEF2FF',
-          'surface': '#FFFFFF',
-          'border-subtle': '#E2E8F0',
-          'text-main': '#0F172A',
-          'text-muted': '#6B7280',
-          'text-soft': '#9CA3AF',
-          'primary': '#020617',
-          'primary-hover': '#02051A',
-          'scenario-a': '#F8B686',
-          'scenario-a-soft': '#FFF3E8',
-          'scenario-b': '#9C88FF',
-          'scenario-b-soft': '#F2EFFF',
+          'text-main': '#0F172A',      // Use var(--color-primary) instead
+          'text-muted': '#6B7280',     // Use var(--color-secondary) instead
         },
       },
       borderRadius: {
-        sm: "6px",
-        md: "12px",
-        lg: "18px",
-        card: "24px",
-        'card-mobile': "18px",
-        'faq': "16px",
-        pill: "9999px",
+        // Standard radii - align with design manual
+        // For cards, use: rounded-[var(--radius-card)] or rounded-3xl (24px)
+        // For buttons/pills, use: rounded-full or rounded-[var(--radius-pill)]
+        card: "24px",          // Standard cards (same as rounded-3xl)
+        'faq': "16px",         // FAQ accordion items (same as rounded-2xl)
+        pill: "9999px",        // Buttons and pills (same as rounded-full)
       },
       boxShadow: {
-        card: "0 18px 45px rgba(15, 23, 42, 0.08)",
-        'card-hover': "0 22px 55px rgba(15, 23, 42, 0.12)",
+        // Note: Use var(--shadow-card) and var(--shadow-card-hover) from globals.css instead
+        // These are kept for backwards compatibility with existing Tailwind classes
+        card: "0 8px 28px rgba(15, 23, 42, 0.06)",      // Matches --shadow-card
+        'card-hover': "0 12px 32px rgba(15, 23, 42, 0.10)", // Matches --shadow-card-hover
       },
       transitionTimingFunction: {
         'premium': 'cubic-bezier(0.22, 0.61, 0.36, 1)',

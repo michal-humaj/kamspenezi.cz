@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -20,22 +20,8 @@ const NAV_LINKS = [
   { href: "/metodika-a-zdroje", label: "Metodika" },
 ];
 
-const CTA_CONFIG = [
-  {
-    match: (pathname: string) => pathname.startsWith("/investice"),
-    label: "Investice kalkulačka",
-    href: "/investice-kalkulacka",
-  },
-  {
-    match: () => true,
-    label: "Bydlení kalkulačka",
-    href: "/",
-  },
-];
-
 export function SiteHeader() {
   const pathname = usePathname();
-  const cta = CTA_CONFIG.find((config) => config.match(pathname))!;
 
   return (
     <header 
@@ -99,18 +85,20 @@ export function SiteHeader() {
               <nav className="flex flex-col gap-6 pt-16">
                 <Logo />
                 <div className="flex flex-col gap-5 text-[var(--color-primary)] font-uiSans">
-                  <Link
-                    href="/"
-                    className={cn(
-                      "text-[1.3rem] font-semibold",
-                      pathname === "/" && "border-l-[3px] pl-3"
-                    )}
-                    style={pathname === "/" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                    aria-current={pathname === "/" ? "page" : undefined}
-                  >
-                    Bydlení
-                  </Link>
-                  <div className="flex items-center gap-2">
+                  <SheetClose asChild>
+                    <Link
+                      href="/"
+                      className={cn(
+                        "text-[1.3rem] font-semibold",
+                        pathname === "/" && "border-l-[3px] pl-3"
+                      )}
+                      style={pathname === "/" ? { borderLeftColor: 'var(--color-primary)' } : {}}
+                      aria-current={pathname === "/" ? "page" : undefined}
+                    >
+                      Bydlení
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
                     <Link
                       href="/investice"
                       className={cn(
@@ -122,70 +110,58 @@ export function SiteHeader() {
                     >
                       Investice
                     </Link>
-                    <span 
-                      className="px-3 py-1 text-xs font-medium"
-                      style={{
-                        background: 'var(--bg-section-alt)',
-                        color: '#9CA3AF',
-                        borderRadius: 'var(--radius-pill)'
-                      }}
-                    >
-                      Nové
-                    </span>
-                  </div>
+                  </SheetClose>
                 </div>
                 <div className="h-px" style={{ background: 'var(--border-subtle)' }} />
                 <div className="flex flex-col gap-3 text-body font-medium text-[var(--color-primary)] font-uiSans">
-                  <Link 
-                    href="/jak-to-funguje"
-                    className={cn(
-                      pathname === "/jak-to-funguje" && "border-l-[3px] pl-3"
-                    )}
-                    style={pathname === "/jak-to-funguje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                    aria-current={pathname === "/jak-to-funguje" ? "page" : undefined}
-                  >
-                    Jak to funguje
-                  </Link>
-                  <Link 
-                    href="/metodika-a-zdroje"
-                    className={cn(
-                      pathname === "/metodika-a-zdroje" && "border-l-[3px] pl-3"
-                    )}
-                    style={pathname === "/metodika-a-zdroje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                    aria-current={pathname === "/metodika-a-zdroje" ? "page" : undefined}
-                  >
-                    Metodika a zdroje
-                  </Link>
-                  <Link 
-                    href="/o-projektu"
-                    className={cn(
-                      pathname === "/o-projektu" && "border-l-[3px] pl-3"
-                    )}
-                    style={pathname === "/o-projektu" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                    aria-current={pathname === "/o-projektu" ? "page" : undefined}
-                  >
-                    O projektu
-                  </Link>
-                  <Link 
-                    href="/kontakt"
-                    className={cn(
-                      pathname === "/kontakt" && "border-l-[3px] pl-3"
-                    )}
-                    style={pathname === "/kontakt" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                    aria-current={pathname === "/kontakt" ? "page" : undefined}
-                  >
-                    Kontakt
-                  </Link>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <Button asChild>
-                    <Link href={cta.href}>{cta.label}</Link>
-                  </Button>
-                  <Button variant="secondary" asChild>
-                    <Link href="/investice-kalkulacka">
-                      Investice kalkulačka
+                  <SheetClose asChild>
+                    <Link 
+                      href="/jak-to-funguje"
+                      className={cn(
+                        pathname === "/jak-to-funguje" && "border-l-[3px] pl-3"
+                      )}
+                      style={pathname === "/jak-to-funguje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
+                      aria-current={pathname === "/jak-to-funguje" ? "page" : undefined}
+                    >
+                      Jak to funguje
                     </Link>
-                  </Button>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link 
+                      href="/metodika-a-zdroje"
+                      className={cn(
+                        pathname === "/metodika-a-zdroje" && "border-l-[3px] pl-3"
+                      )}
+                      style={pathname === "/metodika-a-zdroje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
+                      aria-current={pathname === "/metodika-a-zdroje" ? "page" : undefined}
+                    >
+                      Metodika a zdroje
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link 
+                      href="/o-projektu"
+                      className={cn(
+                        pathname === "/o-projektu" && "border-l-[3px] pl-3"
+                      )}
+                      style={pathname === "/o-projektu" ? { borderLeftColor: 'var(--color-primary)' } : {}}
+                      aria-current={pathname === "/o-projektu" ? "page" : undefined}
+                    >
+                      O projektu
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link 
+                      href="/kontakt"
+                      className={cn(
+                        pathname === "/kontakt" && "border-l-[3px] pl-3"
+                      )}
+                      style={pathname === "/kontakt" ? { borderLeftColor: 'var(--color-primary)' } : {}}
+                      aria-current={pathname === "/kontakt" ? "page" : undefined}
+                    >
+                      Kontakt
+                    </Link>
+                  </SheetClose>
                 </div>
               </nav>
             </SheetContent>

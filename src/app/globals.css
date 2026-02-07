@@ -65,6 +65,11 @@
   --section-padding-y-desktop: 96px;
   --section-padding-y-mobile: 64px;
 
+  /* Interactive accent — defaults to primary, overridden by themes */
+  --color-accent: var(--color-primary);
+  --color-accent-ring: rgba(15, 23, 42, 0.15);
+  --color-accent-ring-strong: rgba(15, 23, 42, 0.25);
+
   /* Motion */
   --transition-duration: 200ms;
   --transition-easing: ease-out;
@@ -187,8 +192,8 @@
   }
 
   .calc-input:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.15),
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-accent-ring),
                 0 8px 20px rgba(15, 23, 42, 0.08);
     background-color: #ffffff;
   }
@@ -279,8 +284,8 @@
     height: 6px; /* Reduced to 6px for subtle guide rail feel */
     border-radius: 999px;
     background: linear-gradient(to right, 
-      var(--color-primary) 0%, 
-      var(--color-primary) var(--slider-progress, 0%), 
+      var(--color-accent) 0%, 
+      var(--color-accent) var(--slider-progress, 0%), 
       #E5E7EB var(--slider-progress, 0%), 
       #E5E7EB 100%);
     transition: opacity 0.2s;
@@ -298,7 +303,7 @@
     height: 28px;
     margin-top: -11px; /* (6px track - 28px thumb) / 2 = -11px */
     border-radius: 50%;
-    background: var(--color-primary);
+    background: var(--color-accent);
     cursor: grab;
     border: 2px solid white;
     box-shadow: 0 4px 8px rgba(15, 23, 42, 0.25), 0 0 0 2px #ffffff;
@@ -322,8 +327,8 @@
     height: 6px; /* Reduced to 6px for subtle guide rail feel */
     border-radius: 999px;
     background: linear-gradient(to right, 
-      var(--color-primary) 0%, 
-      var(--color-primary) var(--slider-progress, 0%), 
+      var(--color-accent) 0%, 
+      var(--color-accent) var(--slider-progress, 0%), 
       #E5E7EB var(--slider-progress, 0%), 
       #E5E7EB 100%);
     transition: opacity 0.2s;
@@ -334,7 +339,7 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: var(--color-primary);
+    background: var(--color-accent);
     cursor: grab;
     border: 2px solid white;
     box-shadow: 0 4px 8px rgba(15, 23, 42, 0.25), 0 0 0 2px #ffffff;
@@ -486,4 +491,46 @@
   .overflow-x-auto::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INVESTICE THEME — Strict Monochrome (Zinc Black)
+   Applied via .theme-investice on the page root container.
+   Architectural, razor-sharp — distinct from Bydlení's Navy.
+   ═══════════════════════════════════════════════════════════════ */
+.theme-investice {
+  /* ------------------------------------------------------------------
+     PRIMARY BRANDING: ARCHITECTURAL BLACK
+     Replaces Navy. Used for Text, Headings, Borders.
+     ------------------------------------------------------------------ */
+  --color-primary: #09090b;       /* Zinc-950 (Virtually Black) */
+  --color-primary-hover: #27272a; /* Zinc-800 (Dark Grey) */
+  
+  /* ------------------------------------------------------------------
+     BUTTONS: HIGH CONTRAST
+     Primary Action is now Pitch Black. Distinct from Navy.
+     ------------------------------------------------------------------ */
+  --btn-primary-bg: #09090b;
+  --btn-primary-hover-bg: #27272a;
+  --btn-primary-text: #ffffff;
+  --btn-primary-shadow: 0 4px 14px rgba(0, 0, 0, 0.25); /* Sharper shadow */
+
+  /* ------------------------------------------------------------------
+     INTERACTION ACCENTS
+     Sliders and active states become Monochrome.
+     ------------------------------------------------------------------ */
+  --selection-border: #09090b;    /* Active pills have black borders */
+  --selection-bg: rgba(0, 0, 0, 0.05); /* Grey tint instead of Blue/Gold */
+  --selection-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  
+  /* ------------------------------------------------------------------
+     FOCUS RINGS
+     Neutral Grey ring. No Lilac. No Gold.
+     ------------------------------------------------------------------ */
+  --btn-focus-ring: #a1a1aa;      /* Zinc-400 */
+
+  /* Interactive Accent: Monochrome Black (for sliders/thumbs that use --color-accent) */
+  --color-accent: #09090b;
+  --color-accent-ring: rgba(0, 0, 0, 0.12);
+  --color-accent-ring-strong: rgba(0, 0, 0, 0.22);
 }
