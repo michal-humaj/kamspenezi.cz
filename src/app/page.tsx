@@ -40,7 +40,8 @@ export interface CalculatorState {
   nakladyUdrzba: number;
   ocekavanaInflace: number;
   rustNajemneho: number;
-  
+  pasmoDane: number;            // Sazba daně z příjmu (15 nebo 23)
+
   // Key market assumptions (used by both Fixed and Monte Carlo modes)
   vynosInvesticeExpected: number;
   rustHodnotyExpected: number;
@@ -73,6 +74,7 @@ const initialState: CalculatorState = {
   nakladyUdrzba: praha1kkDefaults.nakladyUdrzba,
   ocekavanaInflace: config.global.ocekavanaInflace,
   rustNajemneho: prahaDefaults.rustNajemneho,
+  pasmoDane: 15,
   // Key market assumptions
   vynosInvesticeExpected: config.global.vynosInvestice,
   rustHodnotyExpected: prahaDefaults.rustHodnotyNemovitosti,
@@ -178,6 +180,7 @@ export default function Home() {
       rentGrowthAnnual: state.rustNajemnehoExpected / 100,
       rentMonthly: state.najemne,
       investiceReturnAnnual: state.vynosInvesticeExpected / 100,
+      taxRate: state.pasmoDane / 100,
     });
   }, [state]);
 

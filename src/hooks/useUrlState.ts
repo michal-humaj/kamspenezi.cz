@@ -24,6 +24,7 @@ const URL_SYNC_FIELDS: (keyof CalculatorState)[] = [
   "nakladyUdrzba",
   "ocekavanaInflace",
   "rustNajemneho",
+  "pasmoDane",
   // Key market assumptions (expected values)
   "vynosInvesticeExpected",
   "rustHodnotyExpected",
@@ -51,6 +52,7 @@ const PARAM_ALIASES: Record<string, string> = {
   nakladyUdrzba: "nu",
   ocekavanaInflace: "oi",
   rustNajemneho: "rn",
+  pasmoDane: "pd",
   // Expected values (short aliases)
   vynosInvesticeExpected: "vie",
   rustHodnotyExpected: "rhe",

@@ -61,8 +61,8 @@ export type CityMappingEntry = {
 
 export const calculatorDefaultsMeta = {
   dataset: {
-    lastUpdated: "2026-02-07",
-    version: "2.0",
+    lastUpdated: "2026-02-28",
+    version: "2.1",
     maintainerNotes: "Hierarchical metadata structure. Parameters documented once, city overrides only when needed.",
   },
 
@@ -288,6 +288,62 @@ export const calculatorDefaultsMeta = {
       methodology: "Institutional portfolio analysis of real estate returns over 82 years. Finding: long-term real income growth rates close to zero for residential properties.",
       coverage: "Institutional portfolios (US/Europe)",
       notes: "Residential real estate less profitable long-term than commonly believed. Real returns near zero over multiple decades. Supports conservative growth assumptions.",
+    },
+    "investropa-czech-rents-2026": {
+      name: "Investropa — Exact Rents in the Czech Republic (2026)",
+      url: "https://investropa.com/blogs/news/czech-rents",
+      retrievedAt: "2026-02-28",
+      methodology: "Multi-source triangulation: Savills institutional rental data + Deloitte Rent Index Q3 2025 + CBRE Prague Living Figures + Expats.cz expert commentary. Primary dataset for national vacancy ranges.",
+      coverage: "National (Czech Republic) + city-level context",
+      notes: "Key finding: national vacancy 3-5%, Praha 2-4%, smaller regional cities 6-8%, historical average 5-7%. Well-priced Prague apartments rent in 3-10 days. Days on market nationally: 10-20 days (well-priced), up to 6 weeks (overpriced or less popular areas). Peak demand: August-October.",
+    },
+    "investropa-prague-yields-2026": {
+      name: "Investropa — Prague Rental Yields (2026)",
+      url: "https://investropa.com/blogs/news/prague-rental-yields",
+      retrievedAt: "2026-02-28",
+      methodology: "Triangulated from Savills professional rental building research, CBRE Prague Living Figures absorption rates, and direct market observation.",
+      coverage: "Praha (city-level)",
+      notes: "Praha overall vacancy 3-5%, inner-ring (Karlín, Holešovice, Smíchov) 2-3%. More recent data: 1-2.5% in tightest areas. Well-priced units rent within 2 weeks. Gross yields 3.6-4.5% (Praha). Full property management: 6-10% monthly rent + 1 month leasing fee on each new tenant.",
+    },
+    "deloitte-rent-index-city-2025": {
+      name: "Deloitte Rent Index Q1-Q3 2025 — City-Level Data",
+      url: "https://www.deloitte.com/cz-sk/en/Industries/real-estate/collections/rent-index.html",
+      retrievedAt: "2026-02-28",
+      methodology: "Quarterly Czech rental market analysis providing city-level rent per m² and YoY growth rates, used as demand/supply proxy for vacancy tier classification.",
+      coverage: "All krajská města",
+      notes: "Vacancy proxy signals: Praha 456 Kč/m² (prime, tight), Brno 399 Kč/m² +7.8% YoY (fastest growth = very tight), Zlín 292 Kč/m² -0.7% YoY (only city with absolute rent decline), Ústí nad Labem 208 Kč/m² (lowest nationally, weak demand). Q1 2025: Liberec +7.6% YoY spike but Dreamville shows subsequent decline.",
+    },
+    "conbiz-czech-market-2025": {
+      name: "Conbiz — Czech Real Estate Market Summary 2025",
+      url: "https://conbiz.eu/summary-of-the-residential-real-estate-market-in-the-czech-republic-and-prague-in-2025-and-outlook-for-2026/",
+      retrievedAt: "2026-02-28",
+      methodology: "Market summary article aggregating developer data (Central Group, Skanska, Trigema) and AFI Europe institutional portfolio data.",
+      coverage: "National focus on Praha",
+      notes: "AFI Home portfolio (~900 Prague apartments): near-full occupancy in 2025. Structural supply deficit: Prague needs 10,000 units/year, actual permits lowest in 25 years (61,613 nationwide in 2025). Central Group froze 1,000+ units. Supply constraints are partly structural (permitting).",
+    },
+    "csu-census-2021-vacancy": {
+      name: "ČSÚ 2021 Census — Housing Vacancy",
+      url: "https://csu.gov.cz/2021-census",
+      retrievedAt: "2026-02-28",
+      methodology: "National Population and Housing Census (March 26-27, 2021). Counted all dwellings including unoccupied. 4,480,139 occupied dwellings recorded nationally.",
+      coverage: "National (Czech Republic)",
+      notes: "200,000 unoccupied apartments in apartment buildings (40% increase vs 2011). Structural vacancy ~4.5% of stock. IMPORTANT: Census captures owner-absent structural vacancy, NOT rental turnover vacancy. Used only for city-tier ranking, not direct vacancy rate estimation.",
+    },
+    "worldpopulationreview-usti-2026": {
+      name: "WorldPopulationReview — Ústí nad Labem Population 2026",
+      url: "https://worldpopulationreview.com/cities/czechia/usti-nad-labem",
+      retrievedAt: "2026-02-28",
+      methodology: "Population data from national statistics with trend extrapolation.",
+      coverage: "Ústí nad Labem",
+      notes: "2026 population: 88,974. Annual decline rate: -0.68%/year. Key structural factor for higher long-term vacancy estimate. Czech Republic's most challenged rental market.",
+    },
+    "dreamville-regional-rent-2026": {
+      name: "Dreamville — Regional Rent Growth Reshapes Czech Housing Market",
+      url: "https://www.dreamville.cz/en/regional-rent-growth-housing-market/",
+      retrievedAt: "2026-02-28",
+      methodology: "Analysis of Deloitte Rent Index city-level data with qualitative market commentary.",
+      coverage: "Regional Czech cities",
+      notes: "Key finding: Liberec and Jihlava among the only regions showing rent decreases (~-2% YoY). Olomouc among steepest increases nationally. Pardubice strong growth. Used for city-tier vacancy classification.",
     },
   } as Record<string, SourceMeta>,
 
@@ -692,6 +748,63 @@ export const calculatorDefaultsMeta = {
         },
         "zlin": {
           notes: "3.0% p.a.: Deloitte Q3 2025: 292 Kč/m², -0.7% YoY (declining). Conservative estimate despite current weakness - 30-year horizon assumes reversion to inflation.",
+        },
+      },
+    },
+    obsazenost: {
+      quality: "VERIFIED" as DataQuality,
+      sourceIds: [
+        "investropa-czech-rents-2026",
+        "investropa-prague-yields-2026",
+        "deloitte-rent-index-city-2025",
+        "conbiz-czech-market-2025",
+        "csu-census-2021-vacancy",
+        "worldpopulationreview-usti-2026",
+        "dreamville-regional-rent-2026",
+      ],
+      methodology: "Conservative 30-year occupancy forecast for residential rental property per city. Three-level triangulation: (1) Current market vacancy (investropa direct estimate: Praha 2-4%, national 3-5%, smaller regional 6-8%); (2) Historical Czech benchmark (investropa: 5-7% long-term average); (3) City-specific fundamentals (Deloitte rent growth proxy, population trends, economic base). Conservative bias: current market is unusually tight; 30-year horizon must account for economic cycles, tenant turnover gaps (~2-4 weeks per change), and occasional renovation periods.",
+      retrievedAt: "2026-02-28",
+      formula: "obsazenost = 100 − vacancyRate(city, 30yr estimate); vacancyRate = conservative estimate anchored on historical average adjusted by city fundamentals",
+      notes: "Percentage (0-100). Direct residential rental vacancy data by city not published by ČSÚ or ČNB. Best available direct source: investropa 2026 (triangulated from Savills, Deloitte, CBRE). City ranking uses Deloitte rent growth and population trends as proxies. Full methodology in VACANCY_RATE_RESEARCH.md.",
+      cityOverrides: {
+        "praha": {
+          notes: "95% (5% vacancy): Current market 2-4% (investropa). AFI Home portfolio near-full. Rents in 3-10 days. 30yr conservative +1-3% over current.",
+        },
+        "brno": {
+          notes: "94% (6% vacancy): Fastest-growing Czech rental market (Deloitte +7.8% YoY = very tight). Strong tech/R&D/university base. Slightly below Praha market depth.",
+        },
+        "plzen": {
+          notes: "93% (7% vacancy): Strong industrial base (Škoda Works). National regional median 4-6% current vacancy. 30yr conservative: 7%.",
+        },
+        "hradec-kralove": {
+          notes: "93% (7% vacancy): Administrative/military/pharma employment. Growth corridor. 30yr conservative: 7%.",
+        },
+        "pardubice": {
+          notes: "93% (7% vacancy): Growth corridor with Hradec Králové. Chemical industry, logistics, university. 30yr conservative: 7%.",
+        },
+        "olomouc": {
+          notes: "93% (7% vacancy): University city (Palacký ~25k students) creates structural demand floor. Dreamville: steepest national rent increases. 30yr conservative: 7%.",
+        },
+        "ceske-budejovice": {
+          notes: "92% (8% vacancy): Stable regional capital, no strong trend signals. Applies national regional benchmark. 30yr conservative: 8%.",
+        },
+        "ostrava": {
+          notes: "91% (9% vacancy): Post-industrial transition risks (coal/steel → automotive). Some outmigration. Market depth from 3rd-largest city size. 30yr conservative: 9%.",
+        },
+        "liberec": {
+          notes: "91% (9% vacancy): Deloitte/Dreamville: among declining rent cities (~-2% YoY). Border region, German economic dependency. 30yr conservative: 9%.",
+        },
+        "jihlava": {
+          notes: "91% (9% vacancy): Deloitte/Dreamville: declining rent city. Small market, limited economic diversity. 30yr conservative: 9%.",
+        },
+        "zlin": {
+          notes: "90% (10% vacancy): Only Czech city with absolute rent decline (Deloitte -0.7% YoY Q3 2025). Post-Baťa industrial niche market. 30yr conservative: 10%.",
+        },
+        "karlovy-vary": {
+          notes: "90% (10% vacancy): Seasonal spa/tourist economy. July peak vs January trough. Geopolitical risk (historical Russian/Chinese spa tourism). 30yr conservative: 10%.",
+        },
+        "usti-nad-labem": {
+          notes: "87% (13% vacancy): Depopulating (-0.68%/yr). Lowest rents nationally (208 Kč/m² Deloitte). Lowest prices (44,000 Kč/m² CBA). Structural demand weakness. 30yr conservative: 13%.",
         },
       },
     },

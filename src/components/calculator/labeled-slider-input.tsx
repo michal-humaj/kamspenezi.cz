@@ -74,6 +74,8 @@ export function LabeledSliderInput({
   // Touch intent detection - prevents Android scroll from accidentally changing sliders
   const touchStartRef = React.useRef<{ x: number; y: number } | null>(null);
   const touchIntentRef = React.useRef<"unknown" | "scroll" | "drag">("unknown");
+  // Ref to the range input DOM element so we can read its current value when drag is confirmed
+  const sliderRef = React.useRef<HTMLInputElement>(null);
 
   // Sync local slider with prop when not dragging
   React.useEffect(() => {
@@ -184,15 +186,16 @@ export function LabeledSliderInput({
     }, 0);
   };
 
-  // Handle slider change - only update local state during drag
+  // Handle slider change - suppress all touch-driven changes until drag intent is confirmed.
+  // This prevents the slider from visually jumping when the user's finger touches it while scrolling.
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // If a touch is active but intent isn't confirmed as horizontal drag, ignore the event entirely.
+    // The value will be read from the DOM directly once intent is confirmed in handleTouchMove.
+    if (touchStartRef.current && touchIntentRef.current !== "drag") return;
+
     const newValue = Number(e.target.value);
     setLocalSliderValue(newValue);
-    
-    // Clear local text input state if slider is used
     setLocalValue(null);
-    
-    // Don't call onChange during drag - wait for release
   };
 
   // Handle slider drag end - emit final value
@@ -218,9 +221,14 @@ export function LabeledSliderInput({
         // Vertical movement dominates → user is scrolling, do not engage slider
         touchIntentRef.current = "scroll";
       } else if (dx > dy && dx > 8) {
-        // Horizontal movement dominates → user intends to drag slider
+        // Horizontal movement dominates → user intends to drag slider.
+        // Read the current DOM value and apply it now (onChange was suppressed up to this point).
         touchIntentRef.current = "drag";
         setIsDragging(true);
+        if (sliderRef.current) {
+          setLocalSliderValue(Number(sliderRef.current.value));
+          setLocalValue(null);
+        }
       }
     }
   };
@@ -229,6 +237,8 @@ export function LabeledSliderInput({
     if (touchIntentRef.current === "drag") {
       handleSliderDragEnd();
     }
+    // For scroll or undetermined: onChange was already suppressed, so localSliderValue
+    // was never changed — nothing to restore and no visual snap-back.
     touchStartRef.current = null;
     touchIntentRef.current = "unknown";
   };
@@ -352,6 +362,7 @@ export function LabeledSliderInput({
       {/* Slider Row (Full Width) */}
       <div className="relative mt-1">
         <input
+          ref={sliderRef}
           type="range"
           min={min}
           max={max}
@@ -368,7 +379,6 @@ export function LabeledSliderInput({
           style={{
             // @ts-ignore - CSS custom property
             "--slider-progress": `${((localSliderValue - min) / (max - min)) * 100}%`,
-            touchAction: "pan-y",
           }}
         />
       </div>

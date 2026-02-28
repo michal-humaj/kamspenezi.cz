@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   AreaChart,
   Area,
@@ -36,39 +37,45 @@ function yAxisFormatter(value: number): string {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function CustomTooltip({ active, payload, label }: any) {
-  if (!active || !payload || payload.length < 2) return null;
-  return (
-    <div className="rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-lg text-sm font-uiSans">
-      <p className="font-semibold text-gray-700 mb-2">Rok {label}</p>
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <span className="inline-block h-2 w-2 rounded-full" style={{ background: COLOR_A }} />
-          <span className="text-gray-600">{payload[0]?.name}:</span>
-          <span className="font-medium text-gray-800">{fmtMillions(payload[0]?.value ?? 0)}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="inline-block h-2 w-2 rounded-full" style={{ background: COLOR_B }} />
-          <span className="text-gray-600">{payload[1]?.name}:</span>
-          <span className="font-medium text-gray-800">{fmtMillions(payload[1]?.value ?? 0)}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorthChartProps) {
+  const [hasInteracted, setHasInteracted] = React.useState(false);
+
   const chartData = Array.from({ length: 31 }, (_, i) => ({
     year: i,
     a: netWorthA[i] ?? 0,
     b: netWorthB[i] ?? 0,
   }));
 
+  const yMin = Math.min(netWorthA[0] ?? 0, netWorthB[0] ?? 0) * 0.9;
+  const yMax = Math.max(netWorthA[30] ?? 0, netWorthB[30] ?? 0) * 1.05;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const renderTooltip = ({ active, payload, label }: any) => {
+    if (!hasInteracted || !active || !payload || payload.length < 2) return null;
+    return (
+      <div className="rounded-xl border border-slate-100 bg-white px-4 py-3 shadow-lg text-sm font-uiSans">
+        <p className="font-semibold text-gray-700 mb-2">Rok {label}</p>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: COLOR_A }} />
+            <span className="text-gray-600">{payload[0]?.name}:</span>
+            <span className="font-medium text-gray-800">{fmtMillions(payload[0]?.value ?? 0)}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: COLOR_B }} />
+            <span className="text-gray-600">{payload[1]?.name}:</span>
+            <span className="font-medium text-gray-800">{fmtMillions(payload[1]?.value ?? 0)}</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="rounded-none md:rounded-[24px] md:bg-white md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)] px-0 py-6 md:px-8 md:py-8">
-      {/* External legend */}
-      <div className="flex items-center gap-6 mb-4 px-4 md:px-0">
+      {/* Legend */}
+      <div className="flex items-center gap-6 mb-2 px-4 md:px-0">
         <div className="flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: COLOR_A }} />
           <span className="font-uiSans text-sm font-medium text-gray-600">{labelA}</span>
@@ -80,19 +87,23 @@ export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorth
       </div>
 
       {/* Chart */}
-      <div className="h-[200px] md:h-[260px]">
+      <div
+        className="net-worth-chart h-[240px] md:h-[380px]"
+        onMouseMove={() => !hasInteracted && setHasInteracted(true)}
+        onTouchStart={() => !hasInteracted && setHasInteracted(true)}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}
-            margin={{ top: 4, right: 4, left: 4, bottom: 0 }}
+            margin={{ top: 4, right: 28, left: 4, bottom: 8 }}
           >
             <defs>
               <linearGradient id="gradA" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLOR_A} stopOpacity={0.15} />
+                <stop offset="5%" stopColor={COLOR_A} stopOpacity={0.07} />
                 <stop offset="95%" stopColor={COLOR_A} stopOpacity={0} />
               </linearGradient>
               <linearGradient id="gradB" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLOR_B} stopOpacity={0.15} />
+                <stop offset="5%" stopColor={COLOR_B} stopOpacity={0.07} />
                 <stop offset="95%" stopColor={COLOR_B} stopOpacity={0} />
               </linearGradient>
             </defs>
@@ -101,6 +112,8 @@ export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorth
 
             <XAxis
               dataKey="year"
+              type="number"
+              domain={[0, 30]}
               ticks={[0, 5, 10, 15, 20, 25, 30]}
               tick={{ fontSize: 12, fill: "#9CA3AF", fontFamily: "var(--font-ui-sans)" }}
               axisLine={false}
@@ -113,10 +126,11 @@ export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorth
               tick={{ fontSize: 12, fill: "#9CA3AF", fontFamily: "var(--font-ui-sans)" }}
               axisLine={false}
               tickLine={false}
-              width={56}
+              width={62}
+              domain={[yMin, yMax]}
             />
 
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={renderTooltip} cursor={false} />
 
             <Area
               type="monotone"
@@ -138,6 +152,7 @@ export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorth
               dot={false}
               activeDot={{ r: 4, strokeWidth: 0, fill: COLOR_B }}
             />
+
           </AreaChart>
         </ResponsiveContainer>
       </div>

@@ -32,6 +32,7 @@ export type YearlyEngineInputs = {
   maintenanceBaseKc: number;      // Náklady na údržbu ročně (base)
   costInflationAnnual: number;    // Inflace nákladů (např. 0.02 = 2%)
   rentMonthly: number;            // Nájem měsíčně (base year 1)
+  taxRate?: number;               // Sazba daně z příjmu (0.15 nebo 0.23), pro odpočet úroků
 
   // Per-year arrays (length 31: index 0 = year 0, index 30 = year 30)
   propertyGrowthSeries: number[];    // rustHodnotyNemovitosti[t] (např. 0.03 = 3%)
@@ -86,6 +87,7 @@ export function calculateBydleniYearly(inputs: YearlyEngineInputs): YearlyEngine
   const maintenanceBaseKc = inputs.maintenanceBaseKc;
   const costInflationAnnual = inputs.costInflationAnnual;
   const rentMonthly = inputs.rentMonthly;
+  const taxRate = inputs.taxRate ?? 0.15;
 
   // Extract series
   const propGrowth = inputs.propertyGrowthSeries;
@@ -214,12 +216,18 @@ export function calculateBydleniYearly(inputs: YearlyEngineInputs): YearlyEngine
   // Year 0: Initial costs (down payment + furnishing - parents help)
   ownershipCosts[0] = purchasePrice - loanAmount + furnishingOneOff - parentsContribution;
   for (let t = 1; t <= YEARS; t++) {
+    // Mortgage interest paid in year t = total payments minus principal reduction
+    const annualInterestPaid = mortgagePaymentsAnnual[t] - (remainingDebt[t - 1] - remainingDebt[t]);
+    // Tax deduction: interest up to 150 000 Kč/year × tax rate (§15 ZDP)
+    const taxSaving = Math.min(Math.max(annualInterestPaid, 0), 150_000) * taxRate;
+
     ownershipCosts[t] =
       mortgagePaymentsAnnual[t] +
       taxAnnual[t] +
       repairFundAnnual[t] +
       insuranceAnnualSeries[t] +
-      maintenanceAnnual[t];
+      maintenanceAnnual[t] -
+      taxSaving;
   }
 
   // ============================================

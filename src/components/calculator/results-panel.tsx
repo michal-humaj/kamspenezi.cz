@@ -145,17 +145,6 @@ export function ResultsPanel({
     return computeTippingPoints(state);
   }, [state, calculationResults]);
 
-  const crossoverYear = useMemo(() => {
-    if (!calculationResults) return null;
-    const { propertyValue, remainingDebt, investiceValue } = calculationResults;
-    for (let t = 1; t <= 30; t++) {
-      const prevDiff = (propertyValue[t - 1] - remainingDebt[t - 1]) - investiceValue[t - 1];
-      const currDiff = (propertyValue[t]     - remainingDebt[t])     - investiceValue[t];
-      if (prevDiff * currDiff < 0) return t;
-    }
-    return null;
-  }, [calculationResults]);
-
   return (
     <div className="rounded-none border-t border-gray-100 md:border-0 px-4 py-6 shadow-none md:mx-0 md:rounded-[24px] md:bg-white md:p-8 md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)]">
       {/* Header */}
@@ -176,17 +165,7 @@ export function ResultsPanel({
         </p>
       )}
 
-      {/* Crossover note */}
-      {crossoverYear && insight && insight.marginTier !== "near-equal" && (
-        <p className="font-uiSans text-sm text-gray-400 mb-4">
-          {insight.winner === "A"
-            ? `Nájem a investice vedly do roku ${crossoverYear - 1}, pak vlastní bydlení dohnalo.`
-            : `Vlastní bydlení vedlo do roku ${crossoverYear - 1}, pak nájem a investice dohnaly.`}
-        </p>
-      )}
-      {insight && (!crossoverYear || insight.marginTier === "near-equal") && (
-        <div className="mb-4" />
-      )}
+      <div className="mb-4" />
 
       <div className="flex flex-col">
         <ScenarioBlock 

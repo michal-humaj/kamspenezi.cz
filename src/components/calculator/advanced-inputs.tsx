@@ -220,6 +220,40 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             parser={parsePercent}
             inputMode="decimal"
           />
+
+          {/* 8. Sazba daně z příjmu */}
+          <div className="space-y-2">
+            <label className="font-uiSans text-sm font-medium text-slate-900">
+              Sazba daně z příjmu
+            </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => updateState({ pasmoDane: 15 })}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
+                  state.pasmoDane === 15
+                    ? "bg-slate-900 text-white border-slate-900"
+                    : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                15 %
+              </button>
+              <button
+                type="button"
+                onClick={() => updateState({ pasmoDane: 23 })}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
+                  state.pasmoDane === 23
+                    ? "bg-slate-900 text-white border-slate-900"
+                    : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                23 %
+              </button>
+            </div>
+            <p className="font-uiSans text-xs text-slate-400 mt-1">
+              15 % pro příjmy do 36× průměrné mzdy, 23 % nad touto hranicí
+            </p>
+          </div>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

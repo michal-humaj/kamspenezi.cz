@@ -276,6 +276,7 @@
     background: transparent;
     outline: none;
     cursor: pointer;
+    touch-action: pan-y !important; /* Allow vertical scroll to pass through on Android */
   }
 
   /* Webkit (Chrome, Safari) Track */
@@ -355,6 +356,19 @@
     transform: scale(1.1);
     cursor: grabbing;
     box-shadow: 0 6px 12px rgba(15, 23, 42, 0.35), 0 0 0 2px #ffffff;
+  }
+
+  /* Chart — kill every possible focus / tap-highlight artifact */
+  .net-worth-chart,
+  .net-worth-chart *,
+  .net-worth-chart div,
+  .net-worth-chart svg,
+  .net-worth-chart svg * {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
   }
 
   /* Animations */

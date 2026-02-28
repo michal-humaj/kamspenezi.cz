@@ -168,6 +168,32 @@ export const SOURCES_DATA: SourceEntry[] = [
     notes: "Placeholder hodnoty. Praha 4%, Brno 3.5%, menší města 2.5-3.5%.",
   },
 
+  {
+    id: "obsazenost",
+    category: "najem",
+    name: "Obsazenost bytu",
+    description: "Průměrná dlouhodobá obsazenost pronajatého bytu — kolik procent roku je byt pronajat. Zahrnuje dobu mezi nájemníky, ekonomické cykly a sezónní výkyvy.",
+    formula: "obsazenost = 100 % − míra neobsazenosti (vacancy rate), odhad pro 30letý horizont",
+    sources: [
+      {
+        name: "Investropa — Czech Republic Rental Market 2026",
+        url: "https://investropa.com/blogs/news/czech-rents",
+        date: "2026-02",
+      },
+      {
+        name: "Deloitte Rent Index Q3 2025",
+        url: "https://www.deloitte.com/cz-sk/en/Industries/real-estate/collections/rent-index.html",
+        date: "2025-12",
+      },
+      {
+        name: "ČSÚ Sčítání lidu 2021",
+        url: "https://csu.gov.cz/2021-census",
+        date: "2021-03",
+      },
+    ],
+    notes: "Aktuální trh (2025-2026) je mimořádně napjatý — Praha 2-4% neobsazenost, národní průměr 3-5%. Historický průměr v ČR: 5-7%. Výchozí hodnoty jsou konzervativní odhady pro 30letý horizont: Praha 95%, Brno 94%, silná krajská města 92-93%, slabší trhy 87-91%. Ústí nad Labem nejnižší (87%) kvůli demografickému poklesu. Přímá statistika obsazenosti bytových nájmů dle krajských měst v ČR není dostupná — hodnoty jsou odvozeny triangulací z dostupných dat.",
+  },
+
   // =========================================================================
   // Investice
   // =========================================================================

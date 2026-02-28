@@ -13,6 +13,10 @@
  * displayName: Human-readable city name with diacritics (e.g., "České Budějovice")
  * rustNajemneho: Expected annual rent growth rate (% p.a.)
  * rustHodnotyNemovitosti: Expected annual property value growth (% p.a.)
+ * obsazenost: Expected long-term occupancy rate (% of time the apartment is rented, 0-100)
+ *   - e.g., 95 means the apartment is occupied 95% of the time on average
+ *   - Accounts for tenant turnover gaps, economic cycles, and city-specific fundamentals
+ *   - Conservative 30-year estimate: Praha 95%, Brno 94%, regional 90-93%, Ústí 87%
  * 
  * === PER APARTMENT ===
  * kupniCena: Purchase price (Kč, total)
@@ -47,6 +51,7 @@ export interface CityDefaults {
   displayName: string;
   rustNajemneho: number;
   rustHodnotyNemovitosti: number;
+  obsazenost: number;
   apartments: {
     "1+kk": ApartmentDefaults;
     "2+kk": ApartmentDefaults;

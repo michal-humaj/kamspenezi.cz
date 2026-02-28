@@ -65,7 +65,7 @@ const initialState: InvesticeCalculatorState = {
   vlastniZdroje: 10,
   urokovaSazbaHypoteky: config.global.urokovaSazbaHypoteky,
   najemne: praha1kkDefaults.najemne,
-  obsazenost: 90,                      // 90% default occupancy
+  obsazenost: prahaDefaults.obsazenost,
   prispevekRodicu: 0,
   zarizeniNemovitosti: praha1kkDefaults.zarizeniNemovitosti,
   rustHodnotyNemovitosti: prahaDefaults.rustHodnotyNemovitosti,
@@ -104,6 +104,7 @@ export default function InvesticePage() {
         rustHodnotyNemovitosti: cityDefaults.rustHodnotyNemovitosti,
         rustHodnotyExpected: cityDefaults.rustHodnotyNemovitosti,
         rustNajemnehoExpected: cityDefaults.rustNajemneho,
+        obsazenost: cityDefaults.obsazenost,
       };
 
       if (prev.selectedApartmentSize) {

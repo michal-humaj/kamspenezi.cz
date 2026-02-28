@@ -155,17 +155,6 @@ export function InvesticeResultsPanel({
     return computeInvesticeTippingPoints(state);
   }, [state, calculationResults]);
 
-  const crossoverYear = useMemo(() => {
-    if (!calculationResults) return null;
-    const { propertyValue, remainingDebt, sideFundValue, etfPortfolioValue } = calculationResults;
-    for (let t = 1; t <= 30; t++) {
-      const prevDiff = (propertyValue[t - 1] - remainingDebt[t - 1] + sideFundValue[t - 1]) - etfPortfolioValue[t - 1];
-      const currDiff = (propertyValue[t]     - remainingDebt[t]     + sideFundValue[t])     - etfPortfolioValue[t];
-      if (prevDiff * currDiff < 0) return t;
-    }
-    return null;
-  }, [calculationResults]);
-
   const irrA = useMemo(() => {
     if (!calculationResults) return null;
     const { netCashflowAnnual, propertyValue, remainingDebt, sideFundValue, etfPortfolioValue } = calculationResults;
@@ -203,17 +192,7 @@ export function InvesticeResultsPanel({
         </p>
       )}
 
-      {/* Crossover note */}
-      {crossoverYear && insight && insight.marginTier !== "near-equal" && (
-        <p className="font-uiSans text-sm text-gray-400 mb-4">
-          {insight.winner === "A"
-            ? `Akciový fond vedl do roku ${crossoverYear - 1}, pak investiční byt dohnal.`
-            : `Investiční byt vedl do roku ${crossoverYear - 1}, pak akciový fond dohnal.`}
-        </p>
-      )}
-      {insight && (!crossoverYear || insight.marginTier === "near-equal") && (
-        <div className="mb-4" />
-      )}
+      {insight && <div className="mb-4" />}
 
       <div className="flex flex-col">
         <ScenarioBlock

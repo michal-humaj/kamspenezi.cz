@@ -111,7 +111,9 @@ export function calculateInvesticeYearly(inputs: InvesticeYearlyInputs): Investi
   // Derived
   const loanAmount = purchasePrice * (1 - ownFundsRatio);
   const initialCashOutlay = purchasePrice * ownFundsRatio + furnishingOneOff - parentsContribution;
-  const annualDepreciation = purchasePrice / YEARS; // straight-line over 30 years
+  // Straight-line depreciation over 30 years, applied to 90% of purchase price.
+  // The remaining 10% is assumed to be land (pozemek), which is not depreciable under Czech tax law.
+  const annualDepreciation = purchasePrice * 0.9 / YEARS;
 
   // Pre-allocate arrays
   const years = Array.from({ length: YEARS + 1 }, (_, i) => i);
@@ -259,11 +261,21 @@ export function calculateInvesticeYearly(inputs: InvesticeYearlyInputs): Investi
   }
 
   // ============================
-  // DEPRECIATION & TAX
+  // DEPRECIATION & TAX (with 5-year loss carry-forward, §34 ZDP)
   // ============================
   // Tax-deductible costs: repair fund + insurance + property tax + interest + depreciation.
   // Maintenance (náklady na údržbu) is NOT included in the tax base per the Excel model,
   // but it IS included in cashflow as a real expense.
+  //
+  // Loss carry-forward: a negative tax base (rental loss) can be carried forward for up to
+  // 5 years and used to offset future positive income. Losses that are not used within
+  // 5 years expire.
+
+  // Raw tax base per year (before applying carried-forward losses)
+  const základDaněRaw = new Array<number>(YEARS + 1).fill(0);
+  // Running bank of unused carried-forward losses
+  const lossBank = new Array<number>(YEARS + 1).fill(0);
+
   depreciationAnnual[0] = 0;
   taxBaseAnnual[0] = 0;
   incomeTaxAnnual[0] = 0;
@@ -277,16 +289,39 @@ export function calculateInvesticeYearly(inputs: InvesticeYearlyInputs): Investi
       insuranceArr[t] +
       taxPropertyArr[t];
 
-    // Tax base = rental income - deductible operating costs - interest - depreciation
-    const base =
+    // Raw tax base = rental income - deductible costs - interest - depreciation
+    základDaněRaw[t] =
       rentIncomeAnnual[t] -
       deductibleOpCosts -
       interestPaidAnnual[t] -
       depreciationAnnual[t];
-    taxBaseAnnual[t] = base;
 
-    // Tax only if base positive
-    incomeTaxAnnual[t] = base > 0 ? base * taxRate : 0;
+    // Update loss bank with carry-forward and expiration logic
+    if (t <= 4) {
+      // No expiration yet — accumulate unused losses
+      lossBank[t] =
+        Math.max(0, lossBank[t - 1] - Math.max(0, základDaněRaw[t])) +
+        Math.max(0, -základDaněRaw[t]);
+    } else {
+      // Year 5+: loss created 5 years ago expires now (used or not)
+      const expired = Math.max(
+        0,
+        Math.max(0, -základDaněRaw[t - 5]) - Math.max(0, základDaněRaw[t])
+      );
+      lossBank[t] =
+        Math.max(0, lossBank[t - 1] - Math.max(0, základDaněRaw[t])) +
+        Math.max(0, -základDaněRaw[t]) -
+        expired;
+    }
+
+    // Effective tax base after using carried-forward losses from prior years
+    const základDaněEff = Math.max(0, základDaněRaw[t] - lossBank[t - 1]);
+
+    // Store effective base for display in the yearly table
+    taxBaseAnnual[t] = základDaněEff;
+
+    // Income tax on effective base
+    incomeTaxAnnual[t] = základDaněEff * taxRate;
   }
 
   // ============================

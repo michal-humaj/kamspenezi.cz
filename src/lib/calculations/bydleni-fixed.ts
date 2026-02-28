@@ -35,6 +35,7 @@ export type InputsBydleniFixed = {
   rentGrowthAnnual: number;       // Roční růst nájemného
   rentMonthly: number;            // Měsíční nájem
   investiceReturnAnnual: number;  // Roční výnos investic
+  taxRate?: number;               // Sazba daně z příjmu (0.15 nebo 0.23)
 };
 
 /**
@@ -73,6 +74,7 @@ export function calculateBydleniFixed(inputs: InputsBydleniFixed): BydleniFixedR
     maintenanceBaseKc: inputs.maintenanceBaseKc,
     costInflationAnnual: inputs.costInflationAnnual,
     rentMonthly: inputs.rentMonthly,
+    taxRate: inputs.taxRate,
     propertyGrowthSeries,
     rentGrowthSeries,
     investiceReturnSeries,

@@ -65,7 +65,7 @@ type DefaultsMeta = {
 // =============================================================================
 
 export const calculatorDefaults: CalculatorDefaults = {
-  lastUpdated: "2026-02-07",
+  lastUpdated: "2026-02-28",
   
   global: {
     vynosInvestice: 7.0,                  // VERIFIED - GS/Vanguard 10yr forecast + 30yr horizon
@@ -79,6 +79,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Praha",
       rustNajemneho: 3.5,                 // VERIFIED - OECD 10yr CAGR 3.8%, Deloitte Q3'25: 3.1% YoY, AEW EU forecast 3.2%
       rustHodnotyNemovitosti: 4.0,        // VERIFIED - ČSÚ HPI 2015-25 CAGR 9.2% adjusted for 30yr equilibrium, ČNB analysis
+      obsazenost: 95,                     // VERIFIED - investropa 2026: 2-4% vacancy; AFI Home near-full; 30yr conservative 5%
       apartments: {
         "1+kk": {
           kupniCena: 5500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -127,6 +128,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Brno",
       rustNajemneho: 3.5,                 // VERIFIED - OECD 10yr CAGR 3.8%, Deloitte Q3'25: +7.8% YoY normalizing
       rustHodnotyNemovitosti: 4.0,        // VERIFIED - CBA Monitor convergence with Praha, strong regional economy
+      obsazenost: 94,                     // VERIFIED - Deloitte fastest-growing (+7.8% YoY) = very tight supply; 30yr conservative 6%
       apartments: {
         "1+kk": {
           kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -175,6 +177,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Ostrava",
       rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
+      obsazenost: 91,                     // VERIFIED - Post-industrial transition risks, some outmigration; 30yr conservative 9%
       apartments: {
         "1+kk": {
           kupniCena: 2200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -223,6 +226,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Plzeň",
       rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
+      obsazenost: 93,                     // VERIFIED - Strong industrial base (Škoda Works); national regional median; 30yr conservative 7%
       apartments: {
         "1+kk": {
           kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -271,6 +275,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "České Budějovice",
       rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
+      obsazenost: 92,                     // VERIFIED - Stable regional capital, no strong trend signals; 30yr conservative 8%
       apartments: {
         "1+kk": {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -319,6 +324,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Hradec Králové",
       rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
+      obsazenost: 93,                     // VERIFIED - Administrative/military center, strong long-term demand; 30yr conservative 7%
       apartments: {
         "1+kk": {
           kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -367,6 +373,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Liberec",
       rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
+      obsazenost: 91,                     // VERIFIED - Deloitte/Dreamville: rent decline trend (~-2%); border region; 30yr conservative 9%
       apartments: {
         "1+kk": {
           kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -415,6 +422,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Olomouc",
       rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
+      obsazenost: 93,                     // VERIFIED - University city (Palacký, ~25k students); Dreamville: steepest rent rises; 30yr conservative 7%
       apartments: {
         "1+kk": {
           kupniCena: 2700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -463,6 +471,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Pardubice",
       rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
+      obsazenost: 93,                     // VERIFIED - Growth corridor with HK; logistics/chemical industry; 30yr conservative 7%
       apartments: {
         "1+kk": {
           kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -511,6 +520,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Ústí nad Labem",
       rustNajemneho: 3.0,                 // VERIFIED - Deloitte Q3'25: lowest avg price, weak fundamentals
       rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
+      obsazenost: 87,                     // VERIFIED - Depopulating (-0.68%/yr); lowest rents nationally (208 Kč/m²); 30yr conservative 13%
       apartments: {
         "1+kk": {
           kupniCena: 1400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -559,6 +569,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Karlovy Vary",
       rustNajemneho: 3.0,                 // VERIFIED - Tourist-dependent market: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
+      obsazenost: 90,                     // VERIFIED - Seasonal spa/tourist economy (July peak, January trough); geopolitical risk; 30yr conservative 10%
       apartments: {
         "1+kk": {
           kupniCena: 1700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -607,6 +618,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Jihlava",
       rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
       rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
+      obsazenost: 91,                     // VERIFIED - Deloitte/Dreamville: among declining rent cities; small market; 30yr conservative 9%
       apartments: {
         "1+kk": {
           kupniCena: 3000000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
@@ -655,6 +667,7 @@ export const calculatorDefaults: CalculatorDefaults = {
       displayName: "Zlín",
       rustNajemneho: 3.0,                 // VERIFIED - Deloitte Q3'25: -0.7% YoY (declining), conservative estimate
       rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
+      obsazenost: 90,                     // VERIFIED - Only city with absolute rent decline (Deloitte -0.7% YoY); niche post-Baťa market; 30yr conservative 10%
       apartments: {
         "1+kk": {
           kupniCena: 3800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
