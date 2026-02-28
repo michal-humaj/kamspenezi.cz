@@ -8,6 +8,7 @@ import type { InvesticeCalculatorState } from "@/app/investice/page";
 import { ShareButton } from "./ShareButton";
 import { computeInvesticeTippingPoints } from "@/lib/calculations/investice-tipping-points";
 import { fmt } from "@/lib/calculations/tipping-points-shared";
+import { calculateIRR } from "@/lib/calculations/irr";
 
 interface InvesticeFixedResult {
   netWorthScenarioA: number;
@@ -16,6 +17,7 @@ interface InvesticeFixedResult {
   sideFundValue: number[];
   remainingDebt: number[];
   etfPortfolioValue: number[];
+  netCashflowAnnual: number[];
 }
 
 interface InvesticeResultsPanelProps {
@@ -80,10 +82,11 @@ function SplitTooltipLabel({
 
 // Scenario block
 function ScenarioBlock({
-  label, value, color, percentage, tooltipContent, assetLabel,
+  label, value, color, percentage, tooltipContent, assetLabel, irr,
 }: {
   label: string; value: number; color: string; percentage: number;
   tooltipContent: string; assetLabel: string | React.ReactNode;
+  irr?: number | null;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -113,6 +116,11 @@ function ScenarioBlock({
         <AnimatedNumber value={Math.round(value)} />
       </div>
       <p className="font-uiSans text-[13px] font-medium text-[var(--color-secondary)]">{assetLabel}</p>
+      {typeof irr === "number" && (
+        <p className="font-uiSans text-xs text-gray-400">
+          Skutečný výnos: {(irr * 100).toFixed(1).replace(".", ",")} % ročně
+        </p>
+      )}
       <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
         <div
           className="h-full rounded-full transition-all duration-1000 ease-out"
@@ -156,6 +164,20 @@ export function InvesticeResultsPanel({
       if (prevDiff * currDiff < 0) return t;
     }
     return null;
+  }, [calculationResults]);
+
+  const irrA = useMemo(() => {
+    if (!calculationResults) return null;
+    const { netCashflowAnnual, propertyValue, remainingDebt, sideFundValue, etfPortfolioValue } = calculationResults;
+    const n = 30;
+    const initial = etfPortfolioValue[0];
+    const cf = netCashflowAnnual.map((ncf, t) => {
+      const outflow = Math.min(0, ncf);
+      if (t === 0) return -initial;
+      if (t === n) return outflow + (propertyValue[n] - remainingDebt[n]) + sideFundValue[n];
+      return outflow;
+    });
+    return calculateIRR(cf);
   }, [calculationResults]);
 
   const propertyVal30 = calculationResults?.propertyValue[30] ?? 0;
@@ -206,6 +228,7 @@ export function InvesticeResultsPanel({
               sideFundVal={sideFundVal30}
             />
           }
+          irr={irrA}
         />
         <div className="my-6" />
         <ScenarioBlock

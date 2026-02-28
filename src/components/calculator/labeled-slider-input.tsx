@@ -71,6 +71,10 @@ export function LabeledSliderInput({
   const [localSliderValue, setLocalSliderValue] = React.useState<number>(value);
   const [isDragging, setIsDragging] = React.useState(false);
 
+  // Touch intent detection - prevents Android scroll from accidentally changing sliders
+  const touchStartRef = React.useRef<{ x: number; y: number } | null>(null);
+  const touchIntentRef = React.useRef<"unknown" | "scroll" | "drag">("unknown");
+
   // Sync local slider with prop when not dragging
   React.useEffect(() => {
     if (!isDragging) {
@@ -196,6 +200,37 @@ export function LabeledSliderInput({
     setIsDragging(false);
     // Emit the final value to trigger calculation
     onChange(localSliderValue);
+  };
+
+  // Touch handlers with intent detection to prevent Android scroll from hijacking sliders
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    touchIntentRef.current = "unknown";
+    // Do NOT mark as dragging yet — wait for intent to be determined on touchmove
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartRef.current || touchIntentRef.current === "scroll") return;
+    const dx = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
+    const dy = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
+    if (touchIntentRef.current === "unknown") {
+      if (dy > dx && dy > 8) {
+        // Vertical movement dominates → user is scrolling, do not engage slider
+        touchIntentRef.current = "scroll";
+      } else if (dx > dy && dx > 8) {
+        // Horizontal movement dominates → user intends to drag slider
+        touchIntentRef.current = "drag";
+        setIsDragging(true);
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (touchIntentRef.current === "drag") {
+      handleSliderDragEnd();
+    }
+    touchStartRef.current = null;
+    touchIntentRef.current = "unknown";
   };
 
   // Cleanup timer on unmount
@@ -325,13 +360,15 @@ export function LabeledSliderInput({
           onChange={handleSliderChange}
           onMouseDown={() => setIsDragging(true)}
           onMouseUp={handleSliderDragEnd}
-          onTouchStart={() => setIsDragging(true)}
-          onTouchEnd={handleSliderDragEnd}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           aria-labelledby={id}
           className="slider-input w-full"
           style={{
             // @ts-ignore - CSS custom property
             "--slider-progress": `${((localSliderValue - min) / (max - min)) * 100}%`,
+            touchAction: "pan-y",
           }}
         />
       </div>
