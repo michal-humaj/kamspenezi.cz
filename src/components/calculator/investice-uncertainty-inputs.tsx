@@ -51,21 +51,6 @@ export function InvesticeUncertaintyInputs({ state, updateState }: InvesticeUnce
           />
 
           <LabeledSliderInput
-            id="inv-investice-expected"
-            label="Výnos investic / ETF (ročně)"
-            description="Očekávaný roční výnos akciového ETF"
-            value={state.vynosInvesticeExpected}
-            onChange={(v) => updateState({ vynosInvesticeExpected: v })}
-            unit="percent"
-            min={0}
-            max={15}
-            step={0.1}
-            formatter={formatPercent}
-            parser={parsePercent}
-            inputMode="decimal"
-          />
-
-          <LabeledSliderInput
             id="inv-sazba-expected"
             label="Budoucí sazba hypotéky (od roku 6)"
             description="Očekávaná úroková sazba po skončení fixace"

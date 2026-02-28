@@ -161,12 +161,21 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         </div>
       </div>
 
-      {/* Info: ETF scenario is automatic — no additional inputs needed */}
-      <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 text-sm text-slate-600 leading-relaxed">
-        <p>
-          <strong>Scénář B</strong> automaticky počítá s investicí stejné částky ({formatCashShort(Math.max(0, state.kupniCena * (state.vlastniZdroje / 100) + state.zarizeniNemovitosti - state.prispevekRodicu))}) do globálního akciového ETF. Výnos nastavíte v sekci &quot;Klíčové tržní předpoklady&quot;.
-        </p>
-      </div>
+      {/* Výnos investic / ETF */}
+      <LabeledSliderInput
+        id="inv-investice-expected"
+        label="Výnos investic / ETF (ročně)"
+        description="Očekávaný roční výnos akciového ETF"
+        value={state.vynosInvesticeExpected}
+        onChange={(v) => updateState({ vynosInvesticeExpected: v })}
+        unit="percent"
+        min={0}
+        max={15}
+        step={0.1}
+        formatter={formatPercent}
+        parser={parsePercent}
+        inputMode="decimal"
+      />
 
       {/* Mobile CTA */}
       <div className="md:hidden mt-8 pb-2">

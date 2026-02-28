@@ -13,21 +13,16 @@ import { calculateBydleniFixed } from "@/lib/calculations/bydleni-fixed";
 import { YearlyOverviewTable, type YearlyRow } from "@/components/calculator/YearlyOverviewTable";
 import { YearlyBreakdownMobile } from "@/components/calculator/yearly-breakdown-mobile";
 import { FAQSection } from "@/components/home/faq-section";
+import { NetWorthChart } from "@/components/calculator/NetWorthChart";
 import { calculatorDefaults } from "@/data/calculator-defaults";
 import { useUrlState } from "@/hooks/useUrlState";
 import type { ApartmentSize } from "@/data/calculator-defaults.types";
-
-// Calculation mode type
-export type CalculationMode = "monteCarlo" | "fixed";
 
 // Types for calculator state
 export interface CalculatorState {
   selectedCity: string | null;
   selectedApartmentSize: string | null;
-  
-  // Calculation mode
-  calcMode: CalculationMode;
-  
+
   // Basic inputs
   kupniCena: number;
   vlastniZdroje: number;
@@ -64,8 +59,6 @@ const praha1kkDefaults = prahaDefaults.apartments["1+kk"];
 const initialState: CalculatorState = {
   selectedCity: "praha",
   selectedApartmentSize: "1+kk",
-  // Default calculation mode
-  calcMode: "fixed",
   kupniCena: praha1kkDefaults.kupniCena,
   vlastniZdroje: 10,
   urokovaSazbaHypoteky: config.global.urokovaSazbaHypoteky,
@@ -371,7 +364,6 @@ export default function Home() {
                   onEditSettings={scrollToInputs}
                   calculationResults={calculationResults}
                   copyShareUrl={copyShareUrl}
-                  onModeChange={(mode) => updateState({ calcMode: mode })}
                 />
               </div>
             </div>
@@ -388,9 +380,20 @@ export default function Home() {
             onEditSettings={scrollToInputs}
             calculationResults={calculationResults}
             copyShareUrl={copyShareUrl}
-            onModeChange={(mode) => updateState({ calcMode: mode })}
           />
         </div>
+
+        {/* Net Worth Chart */}
+        {calculationResults && (
+          <div className="mx-auto max-w-7xl px-4 md:px-6 pt-2 pb-6">
+            <NetWorthChart
+              netWorthA={calculationResults.propertyValue.map((v, i) => v - calculationResults.remainingDebt[i])}
+              netWorthB={calculationResults.investiceValue}
+              labelA="Vlastní bydlení"
+              labelB="Nájem a investice"
+            />
+          </div>
+        )}
 
         {/* Yearly Overview Section */}
         <div className="mx-auto max-w-7xl px-4 md:px-6">

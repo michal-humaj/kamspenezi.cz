@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import type { CalculatorState, CalculationMode } from "@/app/page";
+import type { CalculatorState } from "@/app/page";
 
 /**
  * Fields to sync to URL
@@ -10,7 +10,6 @@ import type { CalculatorState, CalculationMode } from "@/app/page";
 const URL_SYNC_FIELDS: (keyof CalculatorState)[] = [
   "selectedCity",
   "selectedApartmentSize",
-  "calcMode",
   "kupniCena",
   "vlastniZdroje",
   "urokovaSazbaHypoteky",
@@ -38,7 +37,6 @@ const URL_SYNC_FIELDS: (keyof CalculatorState)[] = [
 const PARAM_ALIASES: Record<string, string> = {
   selectedCity: "c",
   selectedApartmentSize: "a",
-  calcMode: "m",
   kupniCena: "kc",
   vlastniZdroje: "vz",
   urokovaSazbaHypoteky: "us",
@@ -77,11 +75,6 @@ export function parseUrlState(searchParams: URLSearchParams): Partial<Calculator
     // Parse based on field type
     if (fieldName === "selectedCity" || fieldName === "selectedApartmentSize") {
       state[fieldName] = value || null;
-    } else if (fieldName === "calcMode") {
-      // Validate calcMode value
-      if (value === "monteCarlo" || value === "fixed") {
-        state.calcMode = value as CalculationMode;
-      }
     } else {
       const numValue = parseFloat(value);
       if (!isNaN(numValue)) {

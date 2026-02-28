@@ -11,6 +11,7 @@ import { InvesticeResultsPanel } from "@/components/calculator/investice-results
 import { calculateInvesticeFixed } from "@/lib/calculations/investice-fixed";
 import { InvesticeYearlyTable, type InvesticeYearlyRow } from "@/components/calculator/InvesticeYearlyTable";
 import { InvesticeYearlyBreakdownMobile } from "@/components/calculator/investice-yearly-breakdown-mobile";
+import { NetWorthChart } from "@/components/calculator/NetWorthChart";
 import { calculatorDefaults } from "@/data/calculator-defaults";
 import { useInvesticeUrlState } from "@/hooks/useInvesticeUrlState";
 import type { ApartmentSize } from "@/data/calculator-defaults.types";
@@ -262,11 +263,11 @@ export default function InvesticePage() {
               </p>
 
               <h1 className="font-displaySerif text-4xl font-bold text-[#0F172A] md:text-6xl tracking-tight leading-[1.05] md:leading-[1.1]">
-                Investiční byt, nebo akciové ETF?
+                Investiční byt, nebo akciový fond ETF?
               </h1>
 
               <p className="mt-4 font-uiSans text-base leading-relaxed text-slate-700 md:text-lg">
-                Spočítejte si, jestli se víc vyplatí koupit investiční byt na pronájem, nebo stejnou hotovost investovat do globálního akciového ETF.
+                Spočítejte si, jestli se víc vyplatí koupit investiční byt na pronájem, nebo stejnou hotovost investovat do globálního akciového fondu ETF.
               </p>
 
               <div className="flex flex-col items-start gap-2 mt-4 md:flex-row md:items-center md:gap-5">
@@ -274,20 +275,20 @@ export default function InvesticePage() {
                   Scénář A: Investiční byt
                 </span>
                 <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
-                  Scénář B: ETF portfolio
+                  Scénář B: Akciový fond
                 </span>
               </div>
 
               {/* Mobile Hero Image */}
               <div className="mt-6 mb-0 md:hidden -mx-4 w-[calc(100%+2rem)]">
                 <Image
-                  src="/bars.png"
+                  src="/bars-mobile.webp"
                   alt="Kalkulačka investice - porovnání investičního bytu a ETF"
-                  width={800}
-                  height={437}
+                  width={768}
+                  height={512}
                   className="w-full h-44 object-cover object-[center_60%]"
                   sizes="100vw"
-                  quality={85}
+                  quality={80}
                 />
               </div>
             </div>
@@ -295,14 +296,14 @@ export default function InvesticePage() {
             {/* Right Column: Hero Image - Desktop */}
             <div className="hidden md:block md:mt-0 overflow-hidden rounded-[32px]">
               <Image
-                src="/bars.png"
+                src="/bars.webp"
                 alt="Kalkulačka investice - porovnání investičního bytu a ETF"
-                width={1600}
-                height={873}
+                width={1200}
+                height={800}
                 className="shadow-[0_25px_80px_-20px_rgba(0,0,0,0.15)] w-full aspect-[4/3] object-cover scale-105 rotate-[1.5deg]"
                 priority
                 sizes="(min-width: 768px) 50vw, 100vw"
-                quality={85}
+                quality={82}
               />
             </div>
           </div>
@@ -399,6 +400,19 @@ export default function InvesticePage() {
             copyShareUrl={copyShareUrl}
           />
         </div>
+
+        {/* Net Worth Chart */}
+        {calculationResults && (
+          <div className="mx-auto max-w-7xl px-4 md:px-6 pt-2 pb-6">
+            <NetWorthChart
+              netWorthA={calculationResults.propertyValue.map((v, i) =>
+                v - calculationResults.remainingDebt[i] + calculationResults.sideFundValue[i])}
+              netWorthB={calculationResults.etfPortfolioValue}
+              labelA="Investiční byt"
+              labelB="Akciový fond"
+            />
+          </div>
+        )}
 
         {/* Yearly Overview */}
         <div className="mx-auto max-w-7xl px-4 md:px-6">

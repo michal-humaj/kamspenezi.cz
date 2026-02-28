@@ -51,21 +51,6 @@ export function UncertaintyInputs({ state, updateState }: UncertaintyInputsProps
           />
 
           <LabeledSliderInput
-            id="investice-expected"
-            label="Výnos investic (ročně)"
-            description="Očekávaný roční výnos investičního portfolia"
-            value={state.vynosInvesticeExpected}
-            onChange={(v) => updateState({ vynosInvesticeExpected: v })}
-            unit="percent"
-            min={0}
-            max={15}
-            step={0.1}
-            formatter={formatPercent}
-            parser={parsePercent}
-            inputMode="decimal"
-          />
-
-          <LabeledSliderInput
             id="sazba-expected"
             label="Budoucí sazba hypotéky (od roku 6)"
             description="Očekávaná úroková sazba po skončení fixace"

@@ -165,6 +165,22 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         isAnimating={animatingFields.has("najemne")}
       />
 
+      {/* 5. Výnos investic */}
+      <LabeledSliderInput
+        id="investice-expected"
+        label="Výnos investic (ročně)"
+        description="Očekávaný roční výnos investičního portfolia"
+        value={state.vynosInvesticeExpected}
+        onChange={(v) => updateState({ vynosInvesticeExpected: v })}
+        unit="percent"
+        min={0}
+        max={15}
+        step={0.1}
+        formatter={formatPercent}
+        parser={parsePercent}
+        inputMode="decimal"
+      />
+
       {/* Mobile CTA Button */}
       <div className="md:hidden mt-8 pb-2">
         <button
