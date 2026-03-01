@@ -74,8 +74,13 @@ export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorth
 
   return (
     <div className="rounded-none md:rounded-[24px] md:bg-white md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)] px-0 py-6 md:px-8 md:py-8">
+      {/* Chart headline — no inner horizontal padding; parent provides same as result card & table */}
+      <h2 className="section-title mb-2">
+        Vývoj čistého jmění v čase
+      </h2>
+
       {/* Legend */}
-      <div className="flex items-center gap-6 mb-2 px-4 md:px-0">
+      <div className="flex items-center gap-6 mb-2">
         <div className="flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: COLOR_A }} />
           <span className="font-uiSans text-sm font-medium text-gray-600">{labelA}</span>
@@ -95,7 +100,7 @@ export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorth
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}
-            margin={{ top: 4, right: 28, left: 4, bottom: 8 }}
+            margin={{ top: 4, right: 4, left: 0, bottom: 8 }}
           >
             <defs>
               <linearGradient id="gradA" x1="0" y1="0" x2="0" y2="1">
@@ -123,7 +128,19 @@ export function NetWorthChart({ netWorthA, netWorthB, labelA, labelB }: NetWorth
 
             <YAxis
               tickFormatter={yAxisFormatter}
-              tick={{ fontSize: 12, fill: "#9CA3AF", fontFamily: "var(--font-ui-sans)" }}
+              tick={({ x, y, payload }) => (
+                <g transform={`translate(0, ${y})`}>
+                  <text
+                    x={0}
+                    y={0}
+                    textAnchor="start"
+                    dominantBaseline="middle"
+                    style={{ fontSize: 12, fill: "#9CA3AF", fontFamily: "var(--font-ui-sans)" }}
+                  >
+                    {yAxisFormatter(payload.value)}
+                  </text>
+                </g>
+              )}
               axisLine={false}
               tickLine={false}
               width={62}

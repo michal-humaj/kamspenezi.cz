@@ -1,6 +1,6 @@
 # Design Manual — kamspenezi.cz
 
-> Last updated: February 8, 2026
+> Last updated: March 1, 2026
 > This document reflects the actual production implementation of the design system.
 > All changes to brand, UI, or components must update this file.
 > 
@@ -41,9 +41,10 @@
 ### 2.2 Typography Rules
 
 **Serif (Newsreader)** — Use ONLY for:
-- H1 on landing pages
-- H2, H3 section headings (e.g., "Začni podle svého města", "Jak vypadá výsledek", "Transparentní výpočet")
+- H1 on landing pages (hero headline only)
 - Large monetary values in **Fixed Mode** result cards only (exception for emphasis)
+
+> **Note**: H2 and H3 are **not** serif by default. The global CSS rule restricts `font-displaySerif` to `h1` only. Any editorial H2/H3 that needs serif must add the `font-displaySerif` class explicitly. In practice, all H2/H3 in the calculator pages use `font-uiSans` (via the `.section-title` class or explicit overrides).
 
 **Sans (Figtree)** — Use for EVERYTHING else, INCLUDING:
 - **Monte Carlo / Realistic Mode** result values (Sans-Serif for modern data visualization feel)
@@ -546,6 +547,11 @@ whileHover={{
 - Multiple card radii (always 24px for standard cards, 16px for FAQ only)
 - Different shadows for different cards (always `--shadow-card`)
 - Oversized button text (primary: 16px desktop, secondary: 15px desktop, tertiary: 14px)
+- `font-bold` (700) for section titles — always `font-semibold` (600)
+- Hardcoded Tailwind scenario colors (`bg-orange-50 text-orange-800`) — always use CSS vars
+- Hardcoded `bg-gray-900` for primary buttons — always use `var(--btn-primary-bg)`
+- Navy focus rings (`ring-[#0F172A]`) — always use `ring-[var(--btn-focus-ring)]` (lilac)
+- Serif for H2/H3 by default — only H1 gets display serif in global rules
 - Serif for card titles, scenario labels, or FAQ questions
 - Solid dark hover fills for secondary/tertiary buttons
 - Blue focus rings (use lilac `--btn-focus-ring`)
@@ -735,13 +741,26 @@ text-slate-600     ≈ var(--color-secondary) = #6B7280
 **Button Component Pattern** (Inline styles approach):
 
 ```tsx
-// Primary Button - As used in basic-inputs.tsx (line 175)
+// Primary Button - Mobile CTA "Zobrazit výsledek" (page.tsx / investice/page.tsx)
 <button
-  type="button"
-  className="w-full rounded-full bg-gray-900 hover:bg-gray-800 py-4 font-uiSans text-base font-bold text-white shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all"
+  onClick={scrollToResults}
+  className="w-full rounded-full py-4 font-uiSans text-base font-semibold text-white active:scale-[0.98] transition-all"
+  style={{
+    background: "var(--btn-primary-bg)",
+    boxShadow: "var(--btn-primary-shadow)",
+  }}
+  onMouseEnter={e => {
+    e.currentTarget.style.background = "var(--btn-primary-hover-bg)";
+    e.currentTarget.style.boxShadow = "var(--btn-primary-shadow-hover)";
+  }}
+  onMouseLeave={e => {
+    e.currentTarget.style.background = "var(--btn-primary-bg)";
+    e.currentTarget.style.boxShadow = "var(--btn-primary-shadow)";
+  }}
 >
   Zobrazit výsledek →
 </button>
+// NEVER use: bg-gray-900 hover:bg-gray-800 font-bold — these bypass the token system
 
 // City Button - As used in city-selector.tsx (line 59-91)
 <button
@@ -768,36 +787,41 @@ import { ScenarioBadge } from "@/components/ui/scenario-badge";
 <ScenarioBadge scenario="A" label="Scénář A: Koupě" />
 <ScenarioBadge scenario="B" label="Scénář B: Nájem + investice" />
 
-// Or inline implementation (as used in hero-section.tsx, line 36):
-<span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-800">
+// Or inline — ALWAYS use CSS vars, NEVER hardcode Tailwind color classes:
+<span
+  className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium"
+  style={{ background: 'var(--scenario-a-bg)', color: 'var(--scenario-a-dot)' }}
+>
   Scénář A: Koupě
 </span>
 
-<span 
-  className="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold"
-  style={{ 
-    background: 'var(--scenario-b-bg)', 
-    color: 'var(--scenario-b-dot)' 
-  }}
+<span
+  className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium"
+  style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}
 >
   Scénář B: Nájem + investice
 </span>
 
-// With dot (as used in basic-inputs.tsx, line 69-71):
+// ❌ NEVER use hardcoded Tailwind color classes for scenario pills:
+// className="bg-orange-50 text-orange-800"  ← wrong, bypasses token system
+
+// With dot (as used in results panels):
 <div className="flex items-center gap-2">
-  <div className="w-2 h-2 rounded-full bg-orange-700" />
-  <span className="text-base font-semibold text-slate-900">
+  <div className="w-2 h-2 rounded-full" style={{ background: 'var(--scenario-a-dot)' }} />
+  <span className="text-base font-semibold" style={{ color: 'var(--color-primary)' }}>
     Scénář A: Vlastní bydlení na hypotéku
   </span>
 </div>
 
 <div className="flex items-center gap-2">
   <div className="w-2 h-2 rounded-full" style={{ background: 'var(--scenario-b-dot)' }} />
-  <span className="text-base font-semibold text-slate-900">
+  <span className="text-base font-semibold" style={{ color: 'var(--color-primary)' }}>
     Scénář B: Bydlení v nájmu a investování
   </span>
 </div>
 ```
+
+**Pill font weight**: Always `font-medium` (500) — NOT `font-semibold` (600). Pills are supplementary labels, not headlines.
 
 **Card Pattern** (As used in hero-section.tsx, line 84-92):
 
@@ -834,7 +858,8 @@ Before shipping any page, verify:
 - [ ] "Zdarma, bez registrace" positioned 8px below CTAs (mt-2)
 
 **Typography**:
-- [ ] Serif only in H1, H2, H3 section headings
+- [ ] Serif (Newsreader) only in H1 hero headlines — never in H2/H3 by default
+- [ ] All H2/H3 section titles are sans-serif (`font-uiSans font-semibold`)
 - [ ] All card titles are sans-serif
 - [ ] All scenario labels ("Scénář A – ...") are sans-serif
 - [ ] FAQ questions are sans-serif, font-medium (weight 500)
@@ -899,7 +924,8 @@ className="bg-[#FFFFFF]"  // Use var(--bg-card) or bg-white instead
 
 ### Typography
 
-✅ **Do**: Use serif for H1, H2, H3 section headings  
+✅ **Do**: Use serif (Newsreader) for H1 hero headlines only  
+❌ **Don't**: Use serif for H2/H3 by default — they use `font-uiSans font-semibold`  
 ❌ **Don't**: Use serif for card titles, scenario labels, FAQ questions, or body text
 
 ✅ **Do**: Use sans (Figtree) for all UI, buttons, cards, pills  
@@ -990,19 +1016,30 @@ Mobile: Single column, stacked
 
 ### 15.2 Calculator Typography
 
-**Section Titles** (`.calc-section-title`):
+**Section Titles** — two classes exist; use `.section-title` for all production headings:
+
+**`.section-title`** (standard — used everywhere):
 ```css
 font-family: var(--font-ui-sans);  /* Figtree, NOT serif */
 font-size: 20px (text-xl) → 24px (md:text-2xl);
-font-weight: 600 (semibold);
-color: var(--color-primary);
+font-weight: 600 (semibold);       /* NOT bold */
+color: var(--color-primary);       /* NOT text-slate-900 */
 letter-spacing: -0.01em;
-margin-bottom: 24px (mb-6);
+margin-bottom: 24px;               /* Standard spacing */
+```
+
+**`.calc-section-title`** (legacy alias — identical to `.section-title`, kept for backwards compatibility):
+```css
+/* Same as .section-title */
+@apply font-uiSans font-semibold text-[var(--color-primary)] text-xl md:text-2xl;
+letter-spacing: -0.01em;
 ```
 
 **Usage**: 
-- Bydlení: "Základní nastavení", "Nejistota vývoje v čase", "Rozšířené předpoklady", "Výsledek po 30 letech"
-- Investice: "Základní vstupy", "Klíčové tržní předpoklady", "Poplatky a náklady", "Výsledek po 30 letech"
+- Bydlení: "Základní nastavení", "Nejistota vývoje v čase", "Rozšířené předpoklady", "Čisté jmění za 30 let", "Vývoj v čase (podrobný přehled)"
+- Investice: "Základní vstupy", "Klíčové tržní předpoklady", "Poplatky a náklady", "Čisté jmění za 30 let", "Vývoj v čase (podrobný přehled)"
+
+> **Critical rule**: Always `font-semibold` (600), never `font-bold` (700). Always `var(--color-primary)`, never hardcoded `text-slate-900`.
 
 **Input Scenario Headers**:
 ```css
@@ -1216,9 +1253,9 @@ align-self: start;
 - Simplified border styling: `border-t border-gray-100` only
 
 **Header Row**:
-- **Layout**: Flex row, `items-center`, `justify-between`, `gap-4`
-- **Title**: `text-xl font-bold text-slate-900`
-- **Spacing**: `mb-4` below header row
+- **Layout**: `mb-2` below title
+- **Title**: Uses `.section-title` class → `font-uiSans font-semibold text-[var(--color-primary)] text-xl md:text-2xl`
+- **Content**: "Čisté jmění za 30 let"
 
 **Toggle Buttons** (Realistický / Fixní):
 ```css
@@ -1585,13 +1622,58 @@ Context text:      10px (text-[10px], uppercase)
 
 ### 15.16 Investice Page Specifics
 
-The Investice page (`/investice`) follows the same design system as Bydlení — same background (`#F5F6F8`), same card styles, same slider/input components, no special theming or accent overrides. Differences are limited to:
+The Investice page (`/investice`) follows the same design system as Bydlení — same background (`#F5F6F8`), same card styles, same slider/input components. One optional theme override exists (`.theme-investice`, documented below) but is not applied to the page wrapper by default.
 
 **Results Panel**: Fixed mode only (no Realistický/Fixní toggle). No Monte Carlo simulation on this page.
 
 **Scenario Labels**:
 - Scenario A: "Investiční byt" (investment flat) — uses `--scenario-a-dot` (Copper)
-- Scenario B: "ETF portfolio" — uses `--scenario-b-dot` (Forest Green)
+- Scenario B: "Akciový fond" / "ETF portfolio" — uses `--scenario-b-dot` (Forest Green)
+
+**Investice Results Panel — Winner Sentence Colors**:
+The winner sentence below the panel heading uses scenario CSS vars for color, not Tailwind:
+```tsx
+style={{
+  color: insight.winner === "A"
+    ? "var(--scenario-a-dot)"    // Copper (#C2410C)
+    : insight.winner === "B"
+    ? "var(--scenario-b-dot)"    // Forest Green (#2F5C45)
+    : "var(--color-secondary)",  // Tie — grey
+}}
+```
+
+**Investice Results Panel — Scenario A Metrics Row**:
+Below the asset label for Scenario A (Investiční byt), two metrics appear inline:
+
+```
+Skutečný výnos: 5,2 % ročně [ⓘ] · Výnosové %: 3,8 % [ⓘ]
+```
+
+- **Skutečný výnos** (IRR): Internal rate of return over 30 years, including property appreciation, net rental income, and tax effects. `irr` prop passed to `ScenarioBlock`.
+- **Výnosové %** (Gross Yield): `(state.najemne × 12) / state.kupniCena × 100`. Hrubé výnosové procento — annual rent at year 0 divided by purchase price, before costs/taxes/appreciation. `grossYield` prop passed to `ScenarioBlock`.
+- **Layout**: `flex flex-wrap items-center gap-x-3 gap-y-1` — inline on wide panels, wraps on narrow.
+- **Separator**: `·` in `text-[#D1D5DB]` between the two metrics.
+- **Font**: Both `font-uiSans text-[13px] text-[#6B7280]`.
+- Each metric has its own `[ⓘ]` info icon with a hover tooltip.
+
+**`.theme-investice`** (optional, currently unused on the page wrapper):
+Defined in `globals.css`. Overrides primary brand tokens to a monochrome Zinc Black aesthetic:
+```css
+.theme-investice {
+  --color-primary: #09090b;           /* Zinc-950 (near-black) */
+  --color-primary-hover: #27272a;     /* Zinc-800 */
+  --btn-primary-bg: #09090b;
+  --btn-primary-hover-bg: #27272a;
+  --btn-primary-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  --selection-border: #09090b;
+  --selection-bg: rgba(0, 0, 0, 0.05);
+  --btn-focus-ring: #a1a1aa;          /* Zinc-400 (grey, not lilac) */
+  --color-accent: #09090b;
+  --color-accent-ring: rgba(0, 0, 0, 0.12);
+  --color-accent-ring-strong: rgba(0, 0, 0, 0.22);
+}
+```
+Apply by adding `className="theme-investice"` to the page root `<main>`. Only activate if a deliberate brand distinction between the two calculators is desired. Scenario colors (`--scenario-a-*`, `--scenario-b-*`) are NOT overridden.
 
 **Investice-Specific Input Fields** (not present on Bydlení):
 - `Obsazenost bytu` — Occupancy rate as percentage (default: 90%)

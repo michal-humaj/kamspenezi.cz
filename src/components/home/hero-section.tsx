@@ -33,7 +33,7 @@ export function HeroSection() {
             {/* Versus Pills - Above H1 */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-5">
               {/* Pill A: Buy */}
-              <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-800">
+              <span className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium" style={{ background: 'var(--scenario-a-bg)', color: 'var(--scenario-a-dot)' }}>
                 <span className="hidden min-[380px]:inline">Scénář A: </span>Koupě
               </span>
               
@@ -41,7 +41,7 @@ export function HeroSection() {
               <span className="text-sm italic text-gray-400">vs</span>
               
               {/* Pill B: Rent */}
-              <span className="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
+              <span className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
                 <span className="hidden min-[380px]:inline">Scénář B: </span>Nájem<span className="hidden sm:inline"> + investice</span>
               </span>
             </div>

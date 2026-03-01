@@ -130,7 +130,7 @@ export function computeInvesticeTippingPoints(
       rawTpsA.push({
         key: "rent",
         relDist: Math.abs(flipRent - currentRent) / (currentRent || 1),
-        sentence: `– nájem z bytu byl jen ${fmtCzk(flipRentR)}/měsíc (teď: ${fmtCzk(currentRent)})`,
+        sentence: `– nájem z bytu byl jen ${fmtCzk(flipRentR)}/měsíc`,
       });
     }
     rawTpsA.push({

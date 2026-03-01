@@ -184,6 +184,13 @@ export default function Home() {
     });
   }, [state]);
 
+  // Pre-compute net worth arrays for sparkline + chart (shared between ResultsPanel and NetWorthChart)
+  const netWorthAArray = useMemo(
+    () => calculationResults.propertyValue.map((v, i) => v - calculationResults.remainingDebt[i] + calculationResults.sideFundA[i]),
+    [calculationResults]
+  );
+  const netWorthBArray = calculationResults.portfolioB;
+
   // Map calculation results to yearly rows for the breakdown table
   const yearlyRows: YearlyRow[] = useMemo(() => {
     return calculationResults.years.map((year, index) => ({
@@ -194,12 +201,19 @@ export default function Home() {
       repairFund: calculationResults.repairFundAnnual[index],
       insurance: calculationResults.insuranceAnnualSeries[index],
       maintenance: calculationResults.maintenanceAnnual[index],
+      taxSaving: calculationResults.taxSavingAnnual[index],
       totalPropertyCosts: calculationResults.ownershipCosts[index],
+      savingsA: calculationResults.savingsA[index],
+      sideFundA: calculationResults.sideFundA[index],
+      netWorthA:
+        calculationResults.propertyValue[index] -
+        calculationResults.remainingDebt[index] +
+        calculationResults.sideFundA[index],
       propertyValue: calculationResults.propertyValue[index],
       propertyNetWorth: calculationResults.propertyValue[index] - calculationResults.remainingDebt[index],
       rent: calculationResults.rentAnnual[index],
-      savedComparedToOwnership: calculationResults.savedVsOwnership[index],
-      portfolioValue: calculationResults.investiceValue[index],
+      savingsB: calculationResults.savingsB[index],
+      portfolioValue: calculationResults.portfolioB[index],
     }));
   }, [calculationResults]);
 
@@ -247,12 +261,12 @@ export default function Home() {
               {/* 4. Scenario Pills - Below Subtitle (Stacked on mobile for readability) */}
               <div className="flex flex-col items-start gap-2 mt-4 md:flex-row md:items-center md:gap-5">
                 {/* Pill A: Own */}
-                <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1.5 text-sm font-semibold text-orange-800">
+                <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium" style={{ background: 'var(--scenario-a-bg)', color: 'var(--scenario-a-dot)' }}>
                   Scénář A: Vlastní bydlení
                 </span>
                 
                 {/* Pill B: Rent - Forest Green */}
-                <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
+                <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
                   Scénář B: Nájem a investice
                 </span>
               </div>
@@ -295,7 +309,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-4 md:px-6">
             <div id="city-card">
               <h2 className="section-title mb-3 md:mb-0">
-                Začni městem a velikostí bytu
+              Začněte městem a velikostí bytu
               </h2>
 
               <div className="mt-3 md:mt-4">
@@ -317,7 +331,19 @@ export default function Home() {
               <div className="mt-6 pb-4 md:hidden">
                 <button
                   onClick={scrollToResults}
-                  className="w-full rounded-full bg-gray-900 hover:bg-gray-800 py-4 font-uiSans text-base font-bold text-white shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all"
+                  className="w-full rounded-full py-4 font-uiSans text-base font-semibold text-white active:scale-[0.98] transition-all"
+                  style={{
+                    background: "var(--btn-primary-bg)",
+                    boxShadow: "var(--btn-primary-shadow)",
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "var(--btn-primary-hover-bg)";
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = "var(--btn-primary-shadow-hover)";
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "var(--btn-primary-bg)";
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = "var(--btn-primary-shadow)";
+                  }}
                 >
                   Zobrazit výsledek →
                 </button>
@@ -337,7 +363,7 @@ export default function Home() {
             {/* Left Column: Inputs - UNIFIED CARD */}
             <div id="nastaveni" className="space-y-6">
               <section
-                className="space-y-0 mb-0 rounded-none border-none shadow-none md:mb-0 md:mx-0 md:rounded-[24px] md:border-0 md:bg-white md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)] md:overflow-hidden"
+                className="space-y-0 mb-0 rounded-none border-none shadow-none md:mb-0 md:mx-0 md:rounded-[24px] md:border-0 md:bg-white md:shadow-[var(--shadow-card)] md:overflow-hidden"
               >
                 {/* Basic Inputs Header + Content */}
                 <div className="px-0 py-4 md:p-8 space-y-6">
@@ -352,7 +378,7 @@ export default function Home() {
                 </div>
 
                 {/* Unified Advanced Footer (Naked Accordions) */}
-                <div className="px-0 pb-8 md:px-8 md:pb-8 md:bg-white">
+                <div className="px-0 pb-2 md:px-8 md:pb-8 md:bg-white">
                   <UncertaintyInputs state={state} updateState={updateState} />
                   <AdvancedInputs state={state} updateState={updateState} />
                 </div>
@@ -361,12 +387,14 @@ export default function Home() {
 
             {/* Right Column: Results - Desktop only in grid (Sticky) */}
             <div id="vysledek-desktop" className="hidden md:block">
-              <div className="sticky top-6">
+              <div className="sticky top-24">
                 <ResultsPanel
                   state={state}
                   onEditSettings={scrollToInputs}
                   calculationResults={calculationResults}
                   copyShareUrl={copyShareUrl}
+                  netWorthA={netWorthAArray}
+                  netWorthB={netWorthBArray}
                 />
               </div>
             </div>
@@ -383,6 +411,8 @@ export default function Home() {
             onEditSettings={scrollToInputs}
             calculationResults={calculationResults}
             copyShareUrl={copyShareUrl}
+            netWorthA={netWorthAArray}
+            netWorthB={netWorthBArray}
           />
         </div>
 
@@ -390,8 +420,8 @@ export default function Home() {
         {calculationResults && (
           <div className="mx-auto max-w-7xl px-4 md:px-6 pt-2 pb-6">
             <NetWorthChart
-              netWorthA={calculationResults.propertyValue.map((v, i) => v - calculationResults.remainingDebt[i])}
-              netWorthB={calculationResults.investiceValue}
+              netWorthA={netWorthAArray}
+              netWorthB={netWorthBArray}
               labelA="Vlastní bydlení"
               labelB="Nájem a investice"
             />
@@ -399,16 +429,11 @@ export default function Home() {
         )}
 
         {/* Yearly Overview Section */}
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
-          {/* Desktop: Analytical table */}
-          <div className="hidden lg:block lg:pt-8 lg:pb-12">
-            <YearlyOverviewTable rows={yearlyRows} />
-          </div>
-
-          {/* Mobile: Accordion */}
-          <div className="block lg:hidden py-8">
-            <YearlyBreakdownMobile rows={yearlyRows} />
-          </div>
+        <div className="hidden lg:block px-4 md:px-6 lg:pb-12">
+          <YearlyOverviewTable rows={yearlyRows} />
+        </div>
+        <div className="block lg:hidden mx-auto max-w-7xl px-4 md:px-6 py-8">
+          <YearlyBreakdownMobile rows={yearlyRows} />
         </div>
       </div>
 

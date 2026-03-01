@@ -68,6 +68,7 @@ export type InvesticeYearlyResult = {
   incomeTaxAnnual: number[];        // max(0, taxBase) * taxRate
   netCashflowAnnual: number[];     // rentIncome - opCosts - mortgagePayment - incomeTax
   sideFundValue: number[];          // Accumulated side fund (cashflow invested in ETF)
+  lossBank: number[];               // §34 ZDP: cumulative undeducted losses available to carry forward
 
   // Scenario A sub-costs for table
   repairFundAnnual: number[];
@@ -382,6 +383,7 @@ export function calculateInvesticeYearly(inputs: InvesticeYearlyInputs): Investi
     incomeTaxAnnual,
     netCashflowAnnual,
     sideFundValue,
+    lossBank,
     repairFundAnnual: repairFundArr,
     insuranceAnnualSeries: insuranceArr,
     taxPropertyAnnual: taxPropertyArr,

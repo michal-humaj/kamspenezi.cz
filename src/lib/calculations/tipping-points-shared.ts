@@ -52,6 +52,21 @@ export function fmtMillions(value: number): string {
 }
 
 /**
+ * Formats an absolute CZK difference for the winner sentence.
+ * ≥ 1 000 000 → "X,X mil. Kč"  |  < 1 000 000 → "XXX tis. Kč"
+ */
+export function fmtAbsDiff(diff: number): string {
+  const abs = Math.abs(diff);
+  if (abs >= 1_000_000) {
+    return (abs / 1_000_000).toLocaleString("cs-CZ", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }) + " mil. Kč";
+  }
+  return Math.round(abs / 1000).toLocaleString("cs-CZ") + " tis. Kč";
+}
+
+/**
  * Legacy combined formatter — kept for callers that pass type explicitly.
  * New code should call fmtCzk / fmtPct / fmtMillions directly.
  */

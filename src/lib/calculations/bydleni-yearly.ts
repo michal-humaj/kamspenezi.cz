@@ -1,15 +1,13 @@
 /**
  * Bydlení Yearly Calculation Engine
- * 
- * This is the core annual calculation engine that accepts per-year arrays for stochastic drivers.
- * Both Fixed mode and Monte Carlo mode use this same engine to ensure identical formulas.
- * 
- * The engine computes year-by-year:
- * - Scenario A: Own housing with mortgage
- * - Scenario B: Rent + invest the difference
+ *
+ * Side-fund model (no withdrawals):
+ *   Scenario A: when rent > ownership costs, surplus goes into a side fund (ETF rate).
+ *   Scenario B: when ownership costs > rent, surplus goes into the ETF portfolio.
+ *   Neither side ever withdraws from its fund.
  */
 
-import { PMT, FV, recalculateMortgagePayment } from "./mortgage-math";
+import { FV, recalculateMortgagePayment } from "./mortgage-math";
 
 // Re-export shared helpers so existing imports keep working
 export { buildMortgageRateSeriesFixed, buildConstantSeries } from "./mortgage-math";
@@ -35,10 +33,10 @@ export type YearlyEngineInputs = {
   taxRate?: number;               // Sazba daně z příjmu (0.15 nebo 0.23), pro odpočet úroků
 
   // Per-year arrays (length 31: index 0 = year 0, index 30 = year 30)
-  propertyGrowthSeries: number[];    // rustHodnotyNemovitosti[t] (např. 0.03 = 3%)
-  rentGrowthSeries: number[];        // rustNajemneho[t] (např. 0.02 = 2%)
-  investiceReturnSeries: number[];   // vynosInvestice[t] (např. 0.07 = 7%)
-  mortgageRateSeries: number[];      // urokovaSazbaHypoteky[t] (např. 0.05 = 5%)
+  propertyGrowthSeries: number[];    // rustHodnotyNemovitosti[t]
+  rentGrowthSeries: number[];        // rustNajemneho[t]
+  investiceReturnSeries: number[];   // vynosInvestice[t]
+  mortgageRateSeries: number[];      // urokovaSazbaHypoteky[t]
 };
 
 /**
@@ -49,8 +47,6 @@ export type YearlyEngineResult = {
   // Full time series (length 31: years 0-30)
   years: number[];
   rentAnnual: number[];
-  savedVsOwnership: number[];
-  investiceValue: number[];
   ownershipCosts: number[];
   propertyValue: number[];
   remainingDebt: number[];
@@ -59,24 +55,24 @@ export type YearlyEngineResult = {
   repairFundAnnual: number[];
   insuranceAnnualSeries: number[];
   maintenanceAnnual: number[];
+  taxSavingAnnual: number[];      // Annual mortgage interest tax deduction (§15 ZDP)
+
+  // Side fund model arrays
+  savingsA: number[];             // Annual surplus from Scenario A (rent > costs) → side fund
+  sideFundA: number[];            // Accumulated Scenario A side fund (ETF compounding)
+  savingsB: number[];             // Annual surplus from Scenario B (costs > rent) → ETF portfolio
+  portfolioB: number[];           // Scenario B ETF portfolio value
 
   // Key outputs
-  netWorthRentPlusInvestice: number; // Scenario B final value
-  netWorthOwnFlat: number;           // Scenario A final value
+  netWorthRentPlusInvestice: number; // Scenario B final value = portfolioB[30]
+  netWorthOwnFlat: number;           // Scenario A final value = propertyValue[30] - debt[30] + sideFundA[30]
 };
 
 /**
  * Main yearly calculation engine.
- * Runs both Scenario A and Scenario B year-by-year using the provided time series.
- * 
- * Key difference from fixed mode: mortgage rate can change at any year boundary.
- * When rate changes, we recalculate the monthly payment based on:
- * - Remaining principal at that point
- * - Remaining term
- * - New rate
+ * Side-fund model: neither scenario ever withdraws from its investment portfolio.
  */
 export function calculateBydleniYearly(inputs: YearlyEngineInputs): YearlyEngineResult {
-  // Extract static inputs
   const purchasePrice = inputs.purchasePrice;
   const parentsContribution = inputs.parentsContribution;
   const ownFundsRatio = inputs.ownFundsRatio;
@@ -89,20 +85,16 @@ export function calculateBydleniYearly(inputs: YearlyEngineInputs): YearlyEngine
   const rentMonthly = inputs.rentMonthly;
   const taxRate = inputs.taxRate ?? 0.15;
 
-  // Extract series
   const propGrowth = inputs.propertyGrowthSeries;
   const rentGrowth = inputs.rentGrowthSeries;
   const investReturn = inputs.investiceReturnSeries;
   const mortgageRate = inputs.mortgageRateSeries;
 
-  // Derived values
   const loanAmount = purchasePrice * (1 - ownFundsRatio);
 
   // Pre-allocate arrays
   const years: number[] = new Array(YEARS + 1);
   const rentAnnual: number[] = new Array(YEARS + 1);
-  const savedVsOwnership: number[] = new Array(YEARS + 1);
-  const investiceValue: number[] = new Array(YEARS + 1);
   const ownershipCosts: number[] = new Array(YEARS + 1);
   const propertyValue: number[] = new Array(YEARS + 1);
   const remainingDebt: number[] = new Array(YEARS + 1);
@@ -111,115 +103,78 @@ export function calculateBydleniYearly(inputs: YearlyEngineInputs): YearlyEngine
   const repairFundAnnual: number[] = new Array(YEARS + 1);
   const insuranceAnnualSeries: number[] = new Array(YEARS + 1);
   const maintenanceAnnual: number[] = new Array(YEARS + 1);
+  const taxSavingAnnual: number[] = new Array(YEARS + 1);
+  const savingsA: number[] = new Array(YEARS + 1);
+  const sideFundA: number[] = new Array(YEARS + 1);
+  const savingsB: number[] = new Array(YEARS + 1);
+  const portfolioB: number[] = new Array(YEARS + 1);
 
-  // Initialize years array
-  for (let t = 0; t <= YEARS; t++) {
-    years[t] = t;
-  }
+  for (let t = 0; t <= YEARS; t++) years[t] = t;
 
   // ============================================
   // PROPERTY VALUE (Scenario A asset)
   // ============================================
-  // Property value compounds annually using per-year growth rates
   propertyValue[0] = purchasePrice;
   for (let t = 1; t <= YEARS; t++) {
     propertyValue[t] = propertyValue[t - 1] * (1 + propGrowth[t]);
   }
 
   // ============================================
-  // MORTGAGE CALCULATION with dynamic refix
+  // MORTGAGE with dynamic refix
   // ============================================
-  // Track current monthly payment and remaining principal
-  let currentMonthlyPayment = 0;
-  let currentRate = mortgageRate[1]; // Year 1 rate
-  
-  // Calculate initial monthly payment for year 1
-  // Assuming 30-year amortization from start
-  currentMonthlyPayment = recalculateMortgagePayment(loanAmount, currentRate, 30);
-  
-  // Year 0: Just the loan balance, no payments yet
+  let currentMonthlyPayment = recalculateMortgagePayment(loanAmount, mortgageRate[1], 30);
+  let currentRate = mortgageRate[1];
+
   remainingDebt[0] = loanAmount;
   mortgagePaymentsAnnual[0] = 0;
 
   for (let t = 1; t <= YEARS; t++) {
     const yearRate = mortgageRate[t];
-    
-    // Check if rate changed from previous year (refix boundary)
     if (t > 1 && yearRate !== currentRate) {
-      // Recalculate payment based on remaining principal and remaining term
-      const remainingYears = YEARS - t + 1;
       currentMonthlyPayment = recalculateMortgagePayment(
         remainingDebt[t - 1],
         yearRate,
-        remainingYears
+        YEARS - t + 1
       );
       currentRate = yearRate;
     }
-    
-    // Calculate remaining debt at end of year t
-    // We paid 12 months at currentMonthlyPayment with currentRate
     const monthlyRate = currentRate / 12;
-    const startingBalance = remainingDebt[t - 1];
-    
-    // Use FV to calculate balance after 12 monthly payments
-    const pv = -startingBalance;
-    remainingDebt[t] = FV(monthlyRate, 12, currentMonthlyPayment, pv);
-    
-    // Safety check for floating point errors near end of term
+    remainingDebt[t] = FV(monthlyRate, 12, currentMonthlyPayment, -remainingDebt[t - 1]);
     if (remainingDebt[t] < 1) remainingDebt[t] = 0;
-    
     mortgagePaymentsAnnual[t] = currentMonthlyPayment * 12;
   }
 
   // ============================================
-  // OWNERSHIP COSTS (Tax, Repair Fund, Insurance, Maintenance)
+  // OWNERSHIP COSTS
   // ============================================
-  // These grow with cost inflation, not stochastic
-  
-  // Tax
   taxAnnual[0] = 0;
   for (let t = 1; t <= YEARS; t++) {
-    if (t === 1) {
-      taxAnnual[t] = propertyTaxAnnual;
-    } else {
-      taxAnnual[t] = taxAnnual[t - 1] * (1 + costInflationAnnual);
-    }
+    taxAnnual[t] = t === 1 ? propertyTaxAnnual : taxAnnual[t - 1] * (1 + costInflationAnnual);
   }
 
-  // Repair fund
   repairFundAnnual[0] = 0;
   for (let t = 1; t <= YEARS; t++) {
-    if (t === 1) {
-      repairFundAnnual[t] = repairFundMonthly * 12;
-    } else {
-      repairFundAnnual[t] = repairFundAnnual[t - 1] * (1 + costInflationAnnual);
-    }
+    repairFundAnnual[t] = t === 1 ? repairFundMonthly * 12 : repairFundAnnual[t - 1] * (1 + costInflationAnnual);
   }
 
-  // Insurance
   insuranceAnnualSeries[0] = 0;
   for (let t = 1; t <= YEARS; t++) {
-    if (t === 1) {
-      insuranceAnnualSeries[t] = insuranceAnnual;
-    } else {
-      insuranceAnnualSeries[t] = insuranceAnnualSeries[t - 1] * (1 + costInflationAnnual);
-    }
+    insuranceAnnualSeries[t] = t === 1 ? insuranceAnnual : insuranceAnnualSeries[t - 1] * (1 + costInflationAnnual);
   }
 
-  // Maintenance
   maintenanceAnnual[0] = 0;
   for (let t = 1; t <= YEARS; t++) {
     maintenanceAnnual[t] = maintenanceBaseKc * Math.pow(1 + costInflationAnnual, t - 1);
   }
 
-  // Total ownership costs
-  // Year 0: Initial costs (down payment + furnishing - parents help)
+  // Year 0: initial cash outlay (down payment + furnishing - parents contribution)
+  taxSavingAnnual[0] = 0;
   ownershipCosts[0] = purchasePrice - loanAmount + furnishingOneOff - parentsContribution;
+
   for (let t = 1; t <= YEARS; t++) {
-    // Mortgage interest paid in year t = total payments minus principal reduction
     const annualInterestPaid = mortgagePaymentsAnnual[t] - (remainingDebt[t - 1] - remainingDebt[t]);
-    // Tax deduction: interest up to 150 000 Kč/year × tax rate (§15 ZDP)
     const taxSaving = Math.min(Math.max(annualInterestPaid, 0), 150_000) * taxRate;
+    taxSavingAnnual[t] = taxSaving;
 
     ownershipCosts[t] =
       mortgagePaymentsAnnual[t] +
@@ -231,47 +186,54 @@ export function calculateBydleniYearly(inputs: YearlyEngineInputs): YearlyEngine
   }
 
   // ============================================
-  // RENT CALCULATION (Scenario B costs)
+  // RENT (Scenario B cost)
   // ============================================
-  // Rent grows using per-year growth rates
   rentAnnual[0] = 0;
   for (let t = 1; t <= YEARS; t++) {
-    if (t === 1) {
-      rentAnnual[t] = rentMonthly * 12;
-    } else {
-      rentAnnual[t] = rentAnnual[t - 1] * (1 + rentGrowth[t]);
-    }
+    rentAnnual[t] = t === 1 ? rentMonthly * 12 : rentAnnual[t - 1] * (1 + rentGrowth[t]);
   }
 
   // ============================================
-  // SAVINGS vs OWNERSHIP
+  // SIDE FUND MODEL (no withdrawals)
   // ============================================
-  // What the renter saves compared to the owner each year
-  for (let t = 0; t <= YEARS; t++) {
-    savedVsOwnership[t] = ownershipCosts[t] - rentAnnual[t];
+  // Year 0: handle the initial cash outlay symmetrically.
+  //   Normal case (outlay > 0): Scenario B mirrors the same outlay into ETF; Scenario A side fund starts empty.
+  //   Parents cover everything (outlay <= 0): Scenario A has surplus → goes into side fund; Scenario B invests nothing.
+  const initialOutlay = ownershipCosts[0];
+  if (initialOutlay >= 0) {
+    savingsA[0] = 0;
+    sideFundA[0] = 0;
+    savingsB[0] = initialOutlay;
+    portfolioB[0] = savingsB[0];
+  } else {
+    // Parents contribution exceeds all year-0 costs → Scenario A pockets the surplus
+    savingsA[0] = -initialOutlay;
+    sideFundA[0] = savingsA[0];
+    savingsB[0] = 0;
+    portfolioB[0] = 0;
   }
 
-  // ============================================
-  // INVESTMENT PORTFOLIO (Scenario B asset)
-  // ============================================
-  // Portfolio grows using per-year investment returns
-  investiceValue[0] = savedVsOwnership[0]; // Initial investment of savings
   for (let t = 1; t <= YEARS; t++) {
-    // Previous balance grows at this year's return rate, plus new savings added
-    investiceValue[t] = investiceValue[t - 1] * (1 + investReturn[t]) + savedVsOwnership[t];
+    const surplus = ownershipCosts[t] - rentAnnual[t];
+    // When costs > rent: Scenario B invests the difference
+    savingsB[t] = Math.max(0, surplus);
+    // When rent > costs: Scenario A invests the difference into side fund
+    savingsA[t] = Math.max(0, -surplus);
+
+    sideFundA[t] = sideFundA[t - 1] * (1 + investReturn[t]) + savingsA[t];
+    portfolioB[t] = portfolioB[t - 1] * (1 + investReturn[t]) + savingsB[t];
   }
 
   // ============================================
   // FINAL NET WORTH
   // ============================================
-  const netWorthRentPlusInvestice = investiceValue[YEARS]; // Scenario B
-  const netWorthOwnFlat = propertyValue[YEARS];             // Scenario A
+  const netWorthOwnFlat =
+    propertyValue[YEARS] - remainingDebt[YEARS] + sideFundA[YEARS]; // Scenario A
+  const netWorthRentPlusInvestice = portfolioB[YEARS];               // Scenario B
 
   return {
     years,
     rentAnnual,
-    savedVsOwnership,
-    investiceValue,
     ownershipCosts,
     propertyValue,
     remainingDebt,
@@ -280,9 +242,12 @@ export function calculateBydleniYearly(inputs: YearlyEngineInputs): YearlyEngine
     repairFundAnnual,
     insuranceAnnualSeries,
     maintenanceAnnual,
+    taxSavingAnnual,
+    savingsA,
+    sideFundA,
+    savingsB,
+    portfolioB,
     netWorthRentPlusInvestice,
     netWorthOwnFlat,
   };
 }
-
-

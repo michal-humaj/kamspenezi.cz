@@ -487,10 +487,10 @@ function generateDebugCSV(runs: SimulationRun[]): string {
         run.rentGrowthSeries[t].toFixed(6),
         run.mortgageRateSeries[t].toFixed(6),
         run.timeline.propertyValue[t].toFixed(2),
-        run.timeline.investiceValue[t].toFixed(2),
+        run.timeline.portfolioB[t].toFixed(2),
         run.timeline.remainingDebt[t].toFixed(2),
         run.timeline.mortgagePaymentsAnnual[t].toFixed(2),
-        run.timeline.investiceValue[t].toFixed(2),
+        run.timeline.portfolioB[t].toFixed(2),
       ];
       lines.push(row.join(","));
     }

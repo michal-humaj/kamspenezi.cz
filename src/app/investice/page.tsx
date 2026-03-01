@@ -182,26 +182,62 @@ export default function InvesticePage() {
     });
   }, [state]);
 
-  // Map to table rows
+  // Pre-compute net worth arrays for sparkline + chart
+  const netWorthAArray = useMemo(
+    () => calculationResults.propertyValue.map((v, i) => v - calculationResults.remainingDebt[i] + calculationResults.sideFundValue[i]),
+    [calculationResults]
+  );
+  const netWorthBArray = calculationResults.etfPortfolioValue;
+
+  // Map to table rows — 24 columns matching Excel A–X
   const yearlyRows: InvesticeYearlyRow[] = useMemo(() => {
     const r = calculationResults;
-    return r.years.map((year, i) => ({
-      year,
-      propertyValue: r.propertyValue[i],
-      rentIncome: r.rentIncomeAnnual[i],
-      operatingCosts: r.operatingCostsAnnual[i],
-      mortgagePayment: r.mortgagePaymentAnnual[i],
-      principalPaid: r.mortgagePrincipalPaid[i],
-      interestPaid: r.interestPaidAnnual[i],
-      remainingDebt: r.remainingDebt[i],
-      depreciation: r.depreciationAnnual[i],
-      taxBase: r.taxBaseAnnual[i],
-      incomeTax: r.incomeTaxAnnual[i],
-      netCashflow: r.netCashflowAnnual[i],
-      sideFundValue: r.sideFundValue[i],
-      netWorthA: r.propertyValue[i] - r.remainingDebt[i] + r.sideFundValue[i],
-      etfPortfolioValue: r.etfPortfolioValue[i],
-    }));
+    return r.years.map((year, i) => {
+      // Costs deductible for income tax (repair fund + insurance + property tax + interest + depreciation)
+      // Note: maintenance is NOT tax-deductible under Czech rental income rules
+      const taxDeductibleCosts =
+        r.repairFundAnnual[i] +
+        r.insuranceAnnualSeries[i] +
+        r.taxPropertyAnnual[i] +
+        r.interestPaidAnnual[i] +
+        r.depreciationAnnual[i];
+
+      return {
+        year,
+        // Sub-costs
+        propertyTax: r.taxPropertyAnnual[i],
+        repairFund: r.repairFundAnnual[i],
+        insurance: r.insuranceAnnualSeries[i],
+        maintenance: r.maintenanceAnnual[i],
+        // Core A
+        propertyValue: r.propertyValue[i],
+        operatingCosts: r.operatingCostsAnnual[i],
+        remainingDebt: r.remainingDebt[i],
+        mortgagePayment: r.mortgagePaymentAnnual[i],
+        interestPaid: r.interestPaidAnnual[i],
+        depreciation: r.depreciationAnnual[i],
+        // Tax
+        taxDeductibleCosts,
+        rentIncome: r.rentIncomeAnnual[i],
+        rawTaxBase: r.rentIncomeAnnual[i] - taxDeductibleCosts,
+        lossCarryForward: i === 0 ? 0 : r.lossBank[i - 1],
+        effectiveTaxBase: r.taxBaseAnnual[i],
+        incomeTax: r.incomeTaxAnnual[i],
+        // Cash flow
+        netIncomeAfterTax:
+          r.rentIncomeAnnual[i] -
+          r.operatingCostsAnnual[i] -
+          r.interestPaidAnnual[i] -
+          r.incomeTaxAnnual[i],
+        netCashflow: r.netCashflowAnnual[i],
+        monthlyCashflow: r.netCashflowAnnual[i] / 12,
+        sideFundValue: r.sideFundValue[i],
+        netWorthA: r.propertyValue[i] - r.remainingDebt[i] + r.sideFundValue[i],
+        // Scénář B
+        investedThisYear: Math.max(0, -r.netCashflowAnnual[i]),
+        etfPortfolioValue: r.etfPortfolioValue[i],
+      };
+    });
   }, [calculationResults]);
 
   // QA validation harness (dev mode only)
@@ -272,10 +308,10 @@ export default function InvesticePage() {
               </p>
 
               <div className="flex flex-col items-start gap-2 mt-4 md:flex-row md:items-center md:gap-5">
-                <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1.5 text-sm font-semibold text-orange-800">
+                <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium" style={{ background: 'var(--scenario-a-bg)', color: 'var(--scenario-a-dot)' }}>
                   Scénář A: Investiční byt
                 </span>
-                <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
+                <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
                   Scénář B: Akciový fond
                 </span>
               </div>
@@ -318,7 +354,7 @@ export default function InvesticePage() {
           <div className="mx-auto max-w-7xl px-4 md:px-6">
             <div id="city-card">
               <h2 className="section-title mb-3 md:mb-0">
-                Začni městem a velikostí bytu
+              Začněte městem a velikostí bytu
               </h2>
 
               <div className="mt-3 md:mt-4">
@@ -340,7 +376,19 @@ export default function InvesticePage() {
               <div className="mt-6 pb-4 md:hidden">
                 <button
                   onClick={scrollToResults}
-                  className="w-full rounded-full bg-gray-900 hover:bg-gray-800 py-4 font-uiSans text-base font-bold text-white shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all"
+                  className="w-full rounded-full py-4 font-uiSans text-base font-semibold text-white active:scale-[0.98] transition-all"
+                  style={{
+                    background: "var(--btn-primary-bg)",
+                    boxShadow: "var(--btn-primary-shadow)",
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "var(--btn-primary-hover-bg)";
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = "var(--btn-primary-shadow-hover)";
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "var(--btn-primary-bg)";
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = "var(--btn-primary-shadow)";
+                  }}
                 >
                   Zobrazit výsledek →
                 </button>
@@ -357,7 +405,7 @@ export default function InvesticePage() {
             {/* Left: Inputs */}
             <div id="nastaveni" className="space-y-6">
               <section
-                className="space-y-0 mb-0 rounded-none border-none shadow-none md:mb-0 md:mx-0 md:rounded-[24px] md:border-0 md:bg-white md:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.06)] md:overflow-hidden"
+                className="space-y-0 mb-0 rounded-none border-none shadow-none md:mb-0 md:mx-0 md:rounded-[24px] md:border-0 md:bg-white md:shadow-[var(--shadow-card)] md:overflow-hidden"
               >
                 <div className="px-0 py-4 md:p-8 space-y-6">
                   <h2 className="section-title mb-0">
@@ -370,7 +418,7 @@ export default function InvesticePage() {
                   />
                 </div>
 
-                <div className="px-0 pb-8 md:px-8 md:pb-8 md:bg-white">
+                <div className="px-0 pb-2 md:px-8 md:pb-8 md:bg-white">
                   <InvesticeUncertaintyInputs state={state} updateState={updateState} />
                   <InvesticeAdvancedInputs state={state} updateState={updateState} />
                 </div>
@@ -379,11 +427,13 @@ export default function InvesticePage() {
 
             {/* Right: Results (Desktop sticky) */}
             <div id="vysledek-desktop" className="hidden md:block">
-              <div className="sticky top-6">
+              <div className="sticky top-24">
                 <InvesticeResultsPanel
                   state={state}
                   calculationResults={calculationResults}
                   copyShareUrl={copyShareUrl}
+                  netWorthA={netWorthAArray}
+                  netWorthB={netWorthBArray}
                 />
               </div>
             </div>
@@ -399,6 +449,8 @@ export default function InvesticePage() {
             state={state}
             calculationResults={calculationResults}
             copyShareUrl={copyShareUrl}
+            netWorthA={netWorthAArray}
+            netWorthB={netWorthBArray}
           />
         </div>
 
@@ -406,9 +458,8 @@ export default function InvesticePage() {
         {calculationResults && (
           <div className="mx-auto max-w-7xl px-4 md:px-6 pt-2 pb-6">
             <NetWorthChart
-              netWorthA={calculationResults.propertyValue.map((v, i) =>
-                v - calculationResults.remainingDebt[i] + calculationResults.sideFundValue[i])}
-              netWorthB={calculationResults.etfPortfolioValue}
+              netWorthA={netWorthAArray}
+              netWorthB={netWorthBArray}
               labelA="Investiční byt"
               labelB="Akciový fond"
             />
@@ -416,13 +467,11 @@ export default function InvesticePage() {
         )}
 
         {/* Yearly Overview */}
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <div className="hidden lg:block lg:pt-8 lg:pb-12">
-            <InvesticeYearlyTable rows={yearlyRows} />
-          </div>
-          <div className="block lg:hidden py-8">
-            <InvesticeYearlyBreakdownMobile rows={yearlyRows} />
-          </div>
+        <div className="hidden lg:block px-4 md:px-6 lg:pb-12">
+          <InvesticeYearlyTable rows={yearlyRows} />
+        </div>
+        <div className="block lg:hidden mx-auto max-w-7xl px-4 md:px-6 py-8">
+          <InvesticeYearlyBreakdownMobile rows={yearlyRows} />
         </div>
       </div>
     </main>

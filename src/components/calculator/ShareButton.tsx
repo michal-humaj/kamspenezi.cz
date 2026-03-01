@@ -7,7 +7,7 @@ import { trackTrustPageEvent } from "@/lib/analytics";
 
 interface ShareButtonProps {
   onCopy: () => Promise<boolean>;
-  variant?: "default" | "small";
+  variant?: "default" | "small" | "pill";
 }
 
 export function ShareButton({ onCopy, variant = "default" }: ShareButtonProps) {
@@ -21,6 +21,42 @@ export function ShareButton({ onCopy, variant = "default" }: ShareButtonProps) {
       setTimeout(() => setCopied(false), 2000);
     }
   };
+
+  if (variant === "pill") {
+    return (
+      <button
+        onClick={handleClick}
+        style={{
+          background: copied ? "var(--scenario-b-dot)" : "var(--btn-primary-bg)",
+          color: "var(--btn-primary-text)",
+          borderRadius: "var(--radius-pill)",
+          padding: "10px 24px",
+          fontSize: 14,
+          fontWeight: 500,
+          border: "none",
+          cursor: "pointer",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          boxShadow: "var(--btn-primary-shadow)",
+          transition: `background ${200}ms ease`,
+        }}
+        title="Zkopírovat odkaz na výpočet"
+      >
+        {copied ? (
+          <>
+            <Check className="h-3.5 w-3.5" />
+            <span>Zkopírováno</span>
+          </>
+        ) : (
+          <>
+            <Copy className="h-3.5 w-3.5" />
+            <span>Sdílet</span>
+          </>
+        )}
+      </button>
+    );
+  }
 
   if (variant === "small") {
     return (

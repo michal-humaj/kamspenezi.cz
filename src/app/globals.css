@@ -97,12 +97,12 @@
     min-height: 100vh;
   }
 
-  h1,
-  h2,
-  h3 {
+  h1 {
     @apply font-displaySerif font-bold text-[var(--color-primary)] tracking-tight;
   }
 
+  h2,
+  h3,
   h4,
   h5,
   h6 {
@@ -152,9 +152,9 @@
 
   /* Standard section title with spacing */
   .section-title {
-    @apply font-uiSans font-bold text-slate-900 text-xl md:text-2xl;
+    @apply font-uiSans font-semibold text-[var(--color-primary)] text-xl md:text-2xl;
     letter-spacing: -0.01em;
-    margin-bottom: 24px; /* Standard spacing */
+    margin-bottom: 24px;
   }
 
   .calc-result-value {
@@ -172,6 +172,16 @@
   .calc-scenario-label {
     @apply text-xs font-uiSans text-[var(--color-secondary)];
     letter-spacing: 0.02em;
+  }
+
+  /* Result card shadow: none on mobile (no divider between card and chart), applied from md up */
+  .result-card-shadow {
+    box-shadow: none;
+  }
+  @media (min-width: 768px) {
+    .result-card-shadow {
+      box-shadow: var(--shadow-card);
+    }
   }
 
   /* Input styles for uncertainty-inputs triple mini inputs */

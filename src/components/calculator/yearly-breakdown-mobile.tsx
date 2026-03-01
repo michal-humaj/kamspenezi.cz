@@ -52,8 +52,8 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
       <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
         <Accordion type="single" collapsible className="w-full divide-y divide-slate-100">
           {rows.map((row) => {
-            // Format summary for header
-            const propertyNetWorthMil = formatMillionsCzk(row.propertyNetWorth);
+            // Format summary for header (Scenario A now includes side fund)
+            const netWorthAMil = formatMillionsCzk(row.netWorthA);
             const portfolioValueMil = formatMillionsCzk(row.portfolioValue);
             
             return (
@@ -73,7 +73,7 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
                     {/* Col 2: Scenario A Value - Fixed Width */}
                     <div className="flex w-[75px] items-center justify-end gap-1.5 font-uiSans text-sm tabular-nums text-slate-700">
                       <TerracottaDot />
-                      {propertyNetWorthMil} mil
+                      {netWorthAMil} mil
                     </div>
                     
                     {/* Col 3: Scenario B Value - Fixed Width */}
@@ -118,15 +118,23 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
                       <dt className="pl-2 text-xs text-slate-500">Náklady na údržbu</dt>
                       <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.maintenance))}</dd>
 
+                      <dt className="pl-2 text-xs text-slate-500">Daňová úspora z odpočtu úroků</dt>
+                      <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.taxSaving))}</dd>
+
                       <dt className="pl-2 text-xs text-slate-500 pt-1 border-t border-slate-100 mt-1">Náklady celkem</dt>
-                      {/* Sub-total hierarchy: font-medium */}
                       <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums pt-1 border-t border-slate-100 mt-1">{formatValue(Math.round(row.totalPropertyCosts))}</dd>
+
+                      <dt className="pl-2 text-xs text-slate-500">Ušetřeno oproti nájmu</dt>
+                      <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.savingsA))}</dd>
+
+                      <dt className="pl-2 text-xs text-slate-500">Zhodnocené úspory (vedlejší fond)</dt>
+                      <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.sideFundA))}</dd>
 
                       <dt className="pl-2 text-xs font-medium text-slate-900 mt-2 pt-3 border-t border-dashed border-slate-200">Hodnota nemovitosti</dt>
                       <dd className="pr-2 text-right text-sm font-bold text-slate-900 tabular-nums mt-2 pt-3 border-t border-dashed border-slate-200">{formatValue(Math.round(row.propertyValue))}</dd>
 
-                      <dt className="pl-2 text-xs font-medium text-slate-900">Hodnota minus dluh</dt>
-                      <dd className="pr-2 text-right text-sm font-bold text-slate-900 tabular-nums">{formatValue(Math.round(row.propertyNetWorth))}</dd>
+                      <dt className="pl-2 text-xs font-medium text-slate-900">Čisté jmění (Scénář A)</dt>
+                      <dd className="pr-2 text-right text-sm font-bold text-slate-900 tabular-nums">{formatValue(Math.round(row.netWorthA))}</dd>
                     </dl>
                   </div>
 
@@ -142,8 +150,8 @@ export function YearlyBreakdownMobile({ rows }: YearlyBreakdownMobileProps) {
                       <dt className="pl-2 text-xs text-slate-500">Nájemné</dt>
                       <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.rent))}</dd>
 
-                      <dt className="pl-2 text-xs text-slate-500">Ušetřeno k investici</dt>
-                      <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.savedComparedToOwnership))}</dd>
+                      <dt className="pl-2 text-xs text-slate-500">Ušetřeno oproti vlastnímu bydlení</dt>
+                      <dd className="pr-2 text-right text-sm font-medium text-slate-900 tabular-nums">{formatValue(Math.round(row.savingsB))}</dd>
 
                       <dt className="pl-2 text-xs font-medium text-slate-900 mt-2 pt-3 border-t border-dashed border-slate-200">Hodnota portfolia</dt>
                       <dd className="pr-2 text-right text-sm font-bold text-slate-900 tabular-nums mt-2 pt-3 border-t border-dashed border-slate-200">{formatValue(Math.round(row.portfolioValue))}</dd>

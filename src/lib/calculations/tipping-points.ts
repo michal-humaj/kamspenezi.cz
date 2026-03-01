@@ -125,7 +125,7 @@ export function computeTippingPoints(state: CalculatorState): InsightResult | nu
         key: "rent",
         relDist: Math.abs(flipRent - currentRent) / (currentRent || 1),
         sentence: rentRealistic
-          ? `– nájem pod ${fmtCzk(flipRentR)}/měsíc (teď: ${fmtCzk(currentRent)})`
+          ? `– nájem pod ${fmtCzk(flipRentR)}/měsíc`
           : "– ani výrazně nižší nájem by výsledek neobrátil",
       },
       {
