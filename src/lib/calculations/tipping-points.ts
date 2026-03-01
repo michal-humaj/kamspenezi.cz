@@ -133,7 +133,7 @@ export function computeTippingPoints(state: CalculatorState): InsightResult | nu
         relDist: Math.abs(flipEtf - currentEtf) / (currentEtf || 0.001),
         sentence: etfRealistic
           ? `– akciový fond vynášející přes ${fmtPct(flipEtfR)} ročně`
-          : `– akciový fond by musel vynášet ${fmtPct(flipEtfR)} ročně, mimo reálný rozsah`,
+          : `– akciový fond by musel vynášet ${fmtPct(flipEtfR)} ročně`,
       },
       {
         key: "appr",

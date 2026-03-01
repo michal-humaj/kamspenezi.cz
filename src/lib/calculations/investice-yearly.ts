@@ -9,7 +9,7 @@
  * Key differences from Bydlení:
  * - Rental INCOME (not cost) — the property earns money
  * - Occupancy rate applied to rental income
- * - Straight-line depreciation (purchasePrice / 30) for tax deduction
+ * - Czech group-5 depreciation: 1.4 % (year 1) / 3.4 % (years 2–30) of 90 % of purchase price
  * - Income tax on net rental profit (15% or 23%)
  * - Side fund: net cashflow from the property invested into ETFs
  * - No "poplatek při prodeji" (sale fee)
@@ -63,7 +63,7 @@ export type InvesticeYearlyResult = {
   mortgagePrincipalPaid: number[];  // How much principal was paid off each year
   interestPaidAnnual: number[];     // Interest portion of mortgage payments
   remainingDebt: number[];
-  depreciationAnnual: number[];     // Straight-line: purchasePrice / 30
+  depreciationAnnual: number[];     // Group-5: 1.4 % (yr 1) / 3.4 % (yr 2–30) of 90 % of price
   taxBaseAnnual: number[];          // rentIncome - opCosts - interest - depreciation
   incomeTaxAnnual: number[];        // max(0, taxBase) * taxRate
   netCashflowAnnual: number[];     // rentIncome - opCosts - mortgagePayment - incomeTax
@@ -112,9 +112,12 @@ export function calculateInvesticeYearly(inputs: InvesticeYearlyInputs): Investi
   // Derived
   const loanAmount = purchasePrice * (1 - ownFundsRatio);
   const initialCashOutlay = purchasePrice * ownFundsRatio + furnishingOneOff - parentsContribution;
-  // Straight-line depreciation over 30 years, applied to 90% of purchase price.
-  // The remaining 10% is assumed to be land (pozemek), which is not depreciable under Czech tax law.
-  const annualDepreciation = purchasePrice * 0.9 / YEARS;
+  // Czech tax law depreciation (group 5, §31 ZDP):
+  // - Year 1: 1.4 % of 90 % of purchase price (land is not depreciable)
+  // - Years 2–30: 3.4 % of 90 % of purchase price
+  const depreciableBase = purchasePrice * 0.9;
+  const depreciationYear1 = depreciableBase * 0.014;
+  const depreciationYearN = depreciableBase * 0.034;
 
   // Pre-allocate arrays
   const years = Array.from({ length: YEARS + 1 }, (_, i) => i);
@@ -282,7 +285,7 @@ export function calculateInvesticeYearly(inputs: InvesticeYearlyInputs): Investi
   incomeTaxAnnual[0] = 0;
 
   for (let t = 1; t <= YEARS; t++) {
-    depreciationAnnual[t] = annualDepreciation;
+    depreciationAnnual[t] = t === 1 ? depreciationYear1 : depreciationYearN;
 
     // Tax-deductible operating costs (excludes maintenance)
     const deductibleOpCosts =

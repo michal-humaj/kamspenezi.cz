@@ -1,334 +1,247 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { Mail, Share2, Bug, MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { TrustPageHero } from "@/components/shared/TrustPageHero";
 import { CalloutBox } from "@/components/shared/CalloutBox";
+import { Linkedin, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "O projektu | kamspenezi.cz",
-  description: "Kdo stojí za kalkulačkou kamspenezi.cz, proč vznikla a jaké jsou její principy. Nezávislý nástroj bez provizí a reklam.",
+  description:
+    "Kdo stojí za kalkulačkou kamspenezi.cz a proč vznikla. Nezávislá, bez reklam, bez bankovních provizí. Michal Humaj — produkt a data.",
+  alternates: { canonical: "https://kamspenezi.cz/o-projektu" },
   openGraph: {
     title: "O projektu | kamspenezi.cz",
-    description: "Kdo stojí za kalkulačkou kamspenezi.cz, proč vznikla a jaké jsou její principy.",
-    type: "website",
-    locale: "cs_CZ",
+    description:
+      "Nezávislá kalkulačka pro rozhodnutí o bydlení a investicích. Kdo za ní stojí a proč vznikla.",
     url: "https://kamspenezi.cz/o-projektu",
-    siteName: "kamspenezi.cz",
-    images: [{ url: "/hero-couch.webp", width: 1600, height: 873 }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "O projektu | kamspenezi.cz",
-    description: "Kdo stojí za kalkulačkou kamspenezi.cz, proč vznikla a jaké jsou její principy.",
-    images: ["/hero-couch.webp"],
-  },
-  alternates: {
-    canonical: "https://kamspenezi.cz/o-projektu",
   },
 };
 
+const STATS = [
+  { value: "28+", label: "datasetů a studií", description: "ČNB, Hypoindex, JLL, Deloitte, Jordà et al. a další" },
+  { value: "52", label: "sady parametrů", description: "13 měst × 4 dispozice — každé kombinaci vlastní hodnoty" },
+  { value: "23 000+", label: "slov výzkumu", description: "Dokumentace předpokladů, zdrojů a metodiky" },
+];
+
 export default function OProjektuPage() {
   return (
-    <main className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
-      {/* Hero Section */}
+    <main className="min-h-screen" style={{ background: "var(--bg-base)" }}>
+      {/* ── 1. Hero — autor ── */}
       <TrustPageHero
-        breadcrumbs={[
-          { label: "Domů", href: "/" },
-          { label: "O projektu" },
-        ]}
-        title="O projektu kamspenezi.cz"
-        subtitle="Nezávislá kalkulačka pro lidi v Česku, kteří chtějí dělat informovaná rozhodnutí o bydlení. Bez provizí, bez reklam, bez prodeje."
+        breadcrumbs={[{ label: "Domů", href: "/" }, { label: "O projektu" }]}
+        title="Michal Humaj"
+        subtitle="Řešil jsem stejnou otázku jako vy — koupit byt, nebo bydlet v nájmu a investovat? Nenašel jsem kalkulačku, která by to počítala poctivě. Tak jsem ji postavil."
       />
 
-      {/* Neutralita Section */}
-      <section 
-        className="py-12 md:py-16"
-        style={{ background: 'var(--bg-lilac-section)' }}
-      >
-        <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <h2 className="text-2xl md:text-3xl mb-6">
-            Proč to děláme
-          </h2>
-
-          <div className="space-y-6">
-            <CalloutBox variant="info" title="Žádné provize, žádný prodej">
-              <p>
-                Nebereme provize od bank, realitních kanceláří ani investičních společností. 
-                Neprodáváme hypotéky, nemovitosti ani investiční produkty. 
-                Kalkulačka je nástroj pro vaše informované rozhodnutí – ne marketingový trychtýř.
-              </p>
-            </CalloutBox>
-
-            <div 
-              className="rounded-2xl border p-6 md:p-8"
-              style={{
-                background: 'var(--bg-card)',
-                borderColor: 'var(--color-border)',
-                boxShadow: 'var(--shadow-card)',
-              }}
+      {/* Author photo placeholder + LinkedIn */}
+      <div className="mx-auto max-w-4xl px-4 md:px-6 pb-12">
+        <div className="flex items-center gap-5">
+          {/* Circular photo placeholder */}
+          <div
+            className="h-20 w-20 flex-shrink-0 rounded-full border-2 flex items-center justify-center text-2xl font-displaySerif font-bold"
+            style={{ background: "var(--bg-lilac-section)", borderColor: "var(--color-border)", color: "var(--color-primary)" }}
+            aria-label="Fotka Michala Humaje"
+          >
+            MH
+          </div>
+          <div>
+            <p className="font-uiSans font-semibold text-base" style={{ color: "var(--color-primary)" }}>
+              Michal Humaj
+            </p>
+            <p className="font-uiSans text-sm" style={{ color: "var(--color-secondary)" }}>
+              Produkt · Data · Praha
+            </p>
+            <a
+              href="https://linkedin.com/in/michal-humaj/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-flex items-center gap-1.5 text-sm font-medium font-uiSans transition-colors hover:text-[var(--color-primary)]"
+              style={{ color: "var(--color-secondary)" }}
             >
-              <p 
-                className="font-uiSans text-base leading-relaxed mb-4"
-                style={{ color: 'var(--color-secondary)' }}
-              >
-                Otázka &bdquo;koupit, nebo pronajímat?&ldquo; je jedna z největších finančních rozhodnutí v životě. 
-                Přesto většina lidí nemá přístup k nástroji, který by ji férově porovnal.
-              </p>
-              <p 
-                className="font-uiSans text-base leading-relaxed"
-                style={{ color: 'var(--color-secondary)' }}
-              >
-                Typické kalkulačky porovnávají jen splátku hypotéky s nájmem – a ignorují, 
-                co by se stalo s penězi, kdybyste je investovali místo koupě nemovitosti. 
-                To jsme chtěli změnit.
-              </p>
-            </div>
+              <Linkedin className="h-3.5 w-3.5" />
+              linkedin.com/in/michal-humaj
+            </a>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Jak to funguje Section */}
-      <section className="py-12 md:py-16" style={{ background: 'var(--bg-base)' }}>
+      {/* ── 2. Proč projekt vznikl ── */}
+      <section className="py-12 md:py-16" style={{ background: "var(--bg-lilac-section)" }}>
         <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <h2 className="text-2xl md:text-3xl mb-6">
-            Jak projekt funguje
+          <h2 className="font-uiSans font-semibold text-2xl md:text-3xl mb-6" style={{ color: "var(--color-primary)" }}>
+            Proč projekt vznikl
           </h2>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: "Veřejná data",
-                desc: "Defaultní hodnoty (ceny bytů, nájmy, sazby) čerpáme z veřejných zdrojů: ČSÚ, CBA Monitor, ČNB. Každý zdroj je zdokumentovaný.",
-              },
-              {
-                title: "Transparentní metodika",
-                desc: "Všechny vzorce a předpoklady jsou popsané v metodice. Můžete si ověřit, jak výpočet funguje, v přiloženém Google Sheetu.",
-              },
-              {
-                title: "Otevřená zpětná vazba",
-                desc: "Pokud najdete chybu nebo máte lepší zdroj dat, napište nám. Projekt se vyvíjí díky zpětné vazbě od uživatelů.",
-              },
-            ].map((item) => (
-              <div 
-                key={item.title}
-                className="rounded-2xl border p-6"
-                style={{
-                  background: 'var(--bg-card)',
-                  borderColor: 'var(--color-border)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <h3 
-                  className="font-uiSans font-semibold text-lg mb-3"
-                  style={{ color: 'var(--color-primary)' }}
-                >
-                  {item.title}
-                </h3>
-                <p 
-                  className="font-uiSans text-sm leading-relaxed"
-                  style={{ color: 'var(--color-secondary)' }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+          <div className="space-y-5 text-base leading-relaxed font-uiSans" style={{ color: "var(--color-secondary)" }}>
+            <p>
+              České kalkulačky pro rozhodnutí o bydlení tradičně srovnávají jedno číslo: splátka hypotéky
+              vs. nájemné. To je jako porovnávat auta jen podle barvy.
+            </p>
+            <p>
+              Správné srovnání musí zohledňovat celkové jmění po 30 letech — tedy nejen co platíte dnes,
+              ale i co vlastníte na konci. Scénář "nájem" neznamená jen vyhazovat peníze. Znamená to, že
+              stejný kapitál, který byste dali do zálohy, investujete místo toho do indexových fondů —
+              a každý měsíc, kdy je nájem nižší než splátka, investujete i tento rozdíl.
+            </p>
+            <p>
+              Strávil jsem několik měsíců sbíráním dat z{" "}
+              <strong style={{ color: "var(--color-primary)" }}>28+ datasetů</strong>, psáním výpočetních
+              modelů a ověřováním předpokladů, než jsem dostal výsledky, kterým věřím. Pak jsem to
+              celé otevřel veřejnosti.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Kdo za tím stojí Section */}
-      <section 
-        className="py-12 md:py-16"
-        style={{ background: 'var(--bg-lilac-section)' }}
-      >
+      {/* ── 3. Nezávislost ── */}
+      <section className="py-12 md:py-16" style={{ background: "var(--bg-base)" }}>
         <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <h2 className="text-2xl md:text-3xl mb-6">
-            Kdo za tím stojí
+          <h2 className="font-uiSans font-semibold text-2xl md:text-3xl mb-6" style={{ color: "var(--color-primary)" }}>
+            Nezávislost
           </h2>
-
-          <div 
-            className="rounded-3xl border p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start"
-            style={{
-              background: 'var(--bg-card)',
-              borderColor: 'var(--color-border)',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            {/* Photo */}
-            <div className="flex-shrink-0">
-              <Image
-                src="/michal.jpeg"
-                alt="Michal Humaj"
-                width={120}
-                height={120}
-                className="rounded-2xl object-cover"
-                style={{ aspectRatio: '1/1' }}
-              />
+          <CalloutBox variant="tip" title="Bez konfliktů zájmů">
+            <div className="space-y-2 text-sm">
+              <p>Tento projekt nemá žádné vazby na banky, realitní kanceláře, ani investiční poradce.</p>
+              <ul className="space-y-1 mt-2">
+                {[
+                  "Žádné provize za hypotéky ani jiné produkty",
+                  "Žádné leadové formuláře pro třetí strany",
+                  "Žádná reklama ani sponzorovaný obsah",
+                  "Zdrojový kód a výpočetní model jsou veřejně dostupné",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="text-base" style={{ color: "var(--scenario-b-dot)" }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            {/* Bio */}
-            <div className="flex-1">
-              <h3 
-                className="font-uiSans font-semibold text-xl mb-1"
-                style={{ color: 'var(--color-primary)' }}
-              >
-                Michal Humaj
-              </h3>
-              <p 
-                className="font-uiSans text-sm mb-4"
-                style={{ color: 'var(--color-secondary)' }}
-              >
-                Produktový manažer a investor
-              </p>
-              <p 
-                className="font-uiSans text-base leading-relaxed mb-4"
-                style={{ color: 'var(--color-secondary)' }}
-              >
-                Kalkulačku jsem postavil hlavně pro sebe, abych porovnal vlastní bydlení s nájmem 
-                a investicemi. Řeším stejné otázky jako vy &ndash; a chtěl jsem mít nástroj, 
-                kterému můžu věřit a který si můžu ověřit.
-              </p>
-              <div className="flex gap-3">
-                <Button variant="secondary" size="sm" asChild>
-                  <Link href="/kontakt">
-                    <Mail className="h-4 w-4 mr-2" />
-                    Napsat
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Jak můžeš pomoct Section */}
-      <section className="py-12 md:py-16" style={{ background: 'var(--bg-base)' }}>
-        <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <h2 className="text-2xl md:text-3xl mb-6">
-            Jak můžeš pomoct
-          </h2>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            {[
-              {
-                icon: MessageSquare,
-                title: "Pošli zpětnou vazbu",
-                desc: "Něco nefunguje? Něco není jasné? Dej nám vědět.",
-                href: "/kontakt",
-              },
-              {
-                icon: Share2,
-                title: "Sdílej kalkulačku",
-                desc: "Znáš někoho, kdo řeší bydlení? Pošli mu odkaz.",
-                href: "/",
-              },
-              {
-                icon: Bug,
-                title: "Nahlas chybu",
-                desc: "Našel jsi bug nebo nepřesnost v datech? Naprav nás.",
-                href: "/kontakt",
-              },
-            ].map((item) => (
-              <Link 
-                key={item.title}
-                href={item.href}
-                className="group rounded-2xl border p-5 transition-all duration-200 hover:shadow-lg"
-                style={{
-                  background: 'var(--bg-card)',
-                  borderColor: 'var(--color-border)',
-                }}
-              >
-                <item.icon 
-                  className="h-6 w-6 mb-3"
-                  style={{ color: 'var(--color-primary)' }}
-                />
-                <h3 
-                  className="font-uiSans font-semibold text-base mb-1 group-hover:underline"
-                  style={{ color: 'var(--color-primary)' }}
-                >
-                  {item.title}
-                </h3>
-                <p 
-                  className="font-uiSans text-sm"
-                  style={{ color: 'var(--color-secondary)' }}
-                >
-                  {item.desc}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Disclaimer Section */}
-      <section 
-        className="py-8 md:py-10"
-        style={{ background: 'var(--bg-lilac-section)' }}
-      >
-        <div className="mx-auto max-w-4xl px-4 md:px-6 text-center">
-          <p 
-            className="font-uiSans text-sm"
-            style={{ color: 'var(--color-secondary)' }}
-          >
-            Obsah této stránky není finanční poradenství. Kalkulačka je nástroj pro orientační porovnání 
-            a nenahrazuje konzultaci s odborníkem.
+          </CalloutBox>
+          <p className="mt-6 text-base leading-relaxed font-uiSans" style={{ color: "var(--color-secondary)" }}>
+            Projekt vznikl z osobní potřeby a zůstane nezávislý. Jediný zájem je poskytnout co
+            nejpřesnější orientaci při jednom z největších finančních rozhodnutí v životě.
           </p>
         </div>
       </section>
 
-      {/* Organization Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "kamspenezi.cz",
-            "url": "https://kamspenezi.cz",
-            "logo": "https://kamspenezi.cz/logo-mark.svg",
-            "description": "Nezávislá kalkulačka pro lidi v Česku, kteří chtějí dělat informovaná rozhodnutí o bydlení a investicích.",
-            "founder": {
-              "@type": "Person",
-              "name": "Michal Humaj",
-              "jobTitle": "Produktový manažer a investor"
-            },
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "email": "michal.humaj@gmail.com",
-              "contactType": "Customer Service"
-            }
-          })
-        }}
-      />
+      {/* ── 4. Data za projektem ── */}
+      <section className="py-12 md:py-16" style={{ background: "var(--bg-lilac-section)" }}>
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <h2 className="font-uiSans font-semibold text-2xl md:text-3xl mb-8" style={{ color: "var(--color-primary)" }}>
+            Data za projektem
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+            {STATS.map((stat) => (
+              <div
+                key={stat.value}
+                className="rounded-3xl p-6 text-center border"
+                style={{ background: "var(--bg-card)", borderColor: "var(--color-border)", boxShadow: "var(--shadow-card)" }}
+              >
+                <div
+                  className="font-displaySerif text-4xl font-bold mb-1"
+                  style={{ color: "var(--color-primary)" }}
+                >
+                  {stat.value}
+                </div>
+                <div className="font-uiSans font-semibold text-base mb-2" style={{ color: "var(--color-primary)" }}>
+                  {stat.label}
+                </div>
+                <div className="font-uiSans text-xs leading-relaxed" style={{ color: "var(--color-secondary)" }}>
+                  {stat.description}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm leading-relaxed font-uiSans" style={{ color: "var(--color-secondary)" }}>
+            Podrobnou metodiku výpočtů najdete na stránkách{" "}
+            <Link href="/metodika/bydleni" className="font-medium underline underline-offset-2 hover:text-[var(--color-primary)]" style={{ color: "var(--color-primary)" }}>
+              Metodika: Bydlení
+            </Link>{" "}
+            a{" "}
+            <Link href="/metodika/investice" className="font-medium underline underline-offset-2 hover:text-[var(--color-primary)]" style={{ color: "var(--color-primary)" }}>
+              Metodika: Investice
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
 
-      {/* Person Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            "name": "Michal Humaj",
-            "jobTitle": "Produktový manažer a investor",
-            "description": "Produktový manažer a investor. Kalkulačku jsem postavil hlavně pro sebe, abych porovnal vlastní bydlení s nájmem a investicemi.",
-            "image": "https://kamspenezi.cz/michal.jpeg",
-            "url": "https://kamspenezi.cz/o-projektu",
-            "worksFor": {
-              "@type": "Organization",
-              "name": "kamspenezi.cz"
-            },
-            "knowsAbout": [
-              "Personal Finance",
-              "Real Estate Investment",
-              "Investment Strategy",
-              "Product Management"
-            ]
-          })
-        }}
-      />
+      {/* ── 5. Psali o nás ── */}
+      <section className="py-12 md:py-16" style={{ background: "var(--bg-base)" }}>
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <h2 className="font-uiSans font-semibold text-2xl md:text-3xl mb-6" style={{ color: "var(--color-primary)" }}>
+            Psali o nás
+          </h2>
+          <div
+            className="rounded-3xl border p-8 text-center"
+            style={{ background: "var(--bg-card)", borderColor: "var(--color-border)", boxShadow: "var(--shadow-card)" }}
+          >
+            <p className="font-uiSans text-base" style={{ color: "var(--color-secondary)" }}>
+              Kalkulačka byla spuštěna v březnu 2026.
+            </p>
+            <p className="font-uiSans text-sm mt-2" style={{ color: "var(--color-bullet)" }}>
+              Mediální zmínky budou přibývat.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. Kontakt ── */}
+      <section className="py-12 md:py-16" style={{ background: "var(--bg-lilac-section)" }}>
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <h2 className="font-uiSans font-semibold text-2xl md:text-3xl mb-6" style={{ color: "var(--color-primary)" }}>
+            Kontakt
+          </h2>
+          <p className="text-base leading-relaxed font-uiSans mb-6" style={{ color: "var(--color-secondary)" }}>
+            Máte dotaz k metodice, upozornění na chybu v datech, nebo zájem o spolupráci?
+            Napište mi.
+          </p>
+          <div className="flex flex-col gap-4">
+            <a
+              href="mailto:michal.humaj@gmail.com"
+              className="inline-flex items-center gap-3 rounded-2xl border px-5 py-4 font-uiSans text-sm font-medium transition-colors hover:bg-[var(--bg-hover)]"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--color-border)",
+                color: "var(--color-primary)",
+                boxShadow: "var(--shadow-card-soft)",
+              }}
+            >
+              <Mail className="h-5 w-5 flex-shrink-0" style={{ color: "var(--color-secondary)" }} />
+              michal.humaj@gmail.com
+            </a>
+            <a
+              href="https://linkedin.com/in/michal-humaj/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 rounded-2xl border px-5 py-4 font-uiSans text-sm font-medium transition-colors hover:bg-[var(--bg-hover)]"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--color-border)",
+                color: "var(--color-primary)",
+                boxShadow: "var(--shadow-card-soft)",
+              }}
+            >
+              <Linkedin className="h-5 w-5 flex-shrink-0" style={{ color: "var(--color-secondary)" }} />
+              linkedin.com/in/michal-humaj
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. Právní upozornění ── */}
+      <section className="py-12 md:py-16" style={{ background: "var(--bg-base)" }}>
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <CalloutBox variant="warning" title="Právní upozornění">
+            <p>
+              Obsah na tomto webu slouží výhradně k vzdělávacím a orientačním účelům. Nepředstavuje
+              finanční poradenství ve smyslu zákona č. 256/2004 Sb. ani investiční doporučení.
+              Veškerá rozhodnutí o financování bydlení nebo investicích děláte výhradně na vlastní
+              odpovědnost. Před jakýmkoli závazným rozhodnutím doporučujeme konzultaci s licencovaným
+              odborníkem.
+            </p>
+          </CalloutBox>
+        </div>
+      </section>
     </main>
   );
 }
-

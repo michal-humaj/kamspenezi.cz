@@ -198,10 +198,8 @@ export function computeInvesticeTippingPoints(
     rawTps = rawTpsB;
   }
 
-  // ── Two-group sort: realistic first (by relDist asc), badge last (by relDist asc) ──
-  const nonBadgeTps = rawTps.filter((tp) => !tp.badge).sort((a, b) => a.relDist - b.relDist);
-  const badgeTps    = rawTps.filter((tp) =>  tp.badge).sort((a, b) => a.relDist - b.relDist);
-  const orderedTps  = [...nonBadgeTps, ...badgeTps];
+  // ── Sort all tipping points by relative distance (closest flip first) ──
+  const orderedTps = rawTps.slice().sort((a, b) => a.relDist - b.relDist);
 
   // ── Fragility check ────────────────────────────────────────────────────────
   const closestRelDist = rawTps.reduce(

@@ -321,18 +321,6 @@ export function InvesticeResultsPanel({
             {insight.orderedTippingPoints.map((tp) => (
               <p key={tp.key} className="font-uiSans text-sm text-gray-500">
                 {tp.sentence}
-                {tp.badge && (
-                  <span style={{
-                    fontSize: 11,
-                    color: "#9CA3AF",
-                    background: "#F3F4F6",
-                    borderRadius: 4,
-                    padding: "1px 6px",
-                    marginLeft: 6,
-                  }}>
-                    mimo reálný rozsah
-                  </span>
-                )}
               </p>
             ))}
           </div>

@@ -16,46 +16,52 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: "/", label: "Bydlení" },
   { href: "/investice", label: "Investice" },
-  { href: "/jak-to-funguje", label: "Jak to funguje" },
-  { href: "/metodika-a-zdroje", label: "Metodika" },
+  { href: "/o-projektu", label: "O projektu" },
 ];
+
+const MOBILE_SECONDARY_LINKS = [
+  { href: "/metodika/bydleni", label: "Metodika: Bydlení" },
+  { href: "/metodika/investice", label: "Metodika: Investice" },
+];
+
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header 
-      className="border-b border-[#EDEEF3]"
-      style={{
-        background: 'var(--bg-base)'
-      }}
+    <header
+      className="sticky top-0 z-50 border-b border-[var(--color-border)]"
+      style={{ background: "var(--bg-base)" }}
     >
       <div className="mx-auto max-w-7xl px-4 md:px-6 flex h-14 items-center justify-between md:h-16">
         <Logo />
 
-        <nav className="hidden items-center gap-8 text-body font-medium md:flex">
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Hlavní navigace">
           {NAV_LINKS.map((item) => {
-            const isActive = pathname === item.href;
+            const active = isActive(pathname, item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative pb-1 font-uiSans",
-                  isActive 
-                    ? "text-[var(--color-primary)] font-semibold" 
+                  "relative pb-1 font-uiSans text-sm",
+                  active
+                    ? "text-[var(--color-primary)] font-semibold"
                     : "text-[var(--color-secondary)] hover:text-[var(--color-primary)]"
                 )}
-                style={{
-                  transition: `color var(--transition-duration) var(--transition-easing)`
-                }}
-                aria-current={isActive ? "page" : undefined}
+                style={{ transition: "color var(--transition-duration) var(--transition-easing)" }}
+                aria-current={active ? "page" : undefined}
               >
                 {item.label}
-                {isActive && (
-                  <span 
+                {active && (
+                  <span
                     className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
-                    style={{ background: 'var(--color-primary)' }}
+                    style={{ background: "var(--color-primary)" }}
                   />
                 )}
               </Link>
@@ -63,105 +69,74 @@ export function SiteHeader() {
           })}
         </nav>
 
+        {/* Mobile hamburger */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <button
                 className="inline-flex items-center justify-center border border-slate-200/70 p-2 font-uiSans"
-                style={{
-                  borderRadius: 'var(--radius-pill)',
-                  color: 'var(--color-primary)'
-                }}
+                style={{ borderRadius: "var(--radius-pill)", color: "var(--color-primary)" }}
                 aria-label="Otevřít navigaci"
               >
                 <Menu className="size-5" />
               </button>
             </SheetTrigger>
-            <SheetContent 
-              side="right" 
-              className="w-full max-w-sm"
-              style={{ background: 'var(--bg-card)' }}
-            >
-              <nav className="flex flex-col gap-6 pt-16">
+            <SheetContent side="right" className="w-full max-w-sm" style={{ background: "var(--bg-card)" }}>
+              {/* Close button is built into SheetContent */}
+              <nav className="flex flex-col gap-6 pt-8" aria-label="Mobilní navigace">
                 <Logo />
-                <div className="flex flex-col gap-5 text-[var(--color-primary)] font-uiSans">
-                  <SheetClose asChild>
-                    <Link
-                      href="/"
-                      className={cn(
-                        "text-[1.3rem] font-semibold",
-                        pathname === "/" && "border-l-[3px] pl-3"
-                      )}
-                      style={pathname === "/" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                      aria-current={pathname === "/" ? "page" : undefined}
-                    >
-                      Bydlení
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link
-                      href="/investice"
-                      className={cn(
-                        "text-[1.3rem] font-semibold",
-                        pathname.startsWith("/investice") && "border-l-[3px] pl-3"
-                      )}
-                      style={pathname.startsWith("/investice") ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                      aria-current={pathname.startsWith("/investice") ? "page" : undefined}
-                    >
-                      Investice
-                    </Link>
-                  </SheetClose>
+
+                {/* Primary links */}
+                <div className="flex flex-col gap-5 font-uiSans">
+                  {NAV_LINKS.map((item) => {
+                    const active = isActive(pathname, item.href);
+                    return (
+                      <SheetClose asChild key={item.href}>
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            "text-[1.2rem] font-semibold transition-colors",
+                            active ? "border-l-[3px] pl-3" : "hover:text-[var(--color-primary)]"
+                          )}
+                          style={{
+                            color: "var(--color-primary)",
+                            ...(active ? { borderLeftColor: "var(--color-primary)" } : {}),
+                          }}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          {item.label}
+                        </Link>
+                      </SheetClose>
+                    );
+                  })}
                 </div>
-                <div className="h-px" style={{ background: 'var(--border-subtle)' }} />
-                <div className="flex flex-col gap-3 text-body font-medium text-[var(--color-primary)] font-uiSans">
-                  <SheetClose asChild>
-                    <Link 
-                      href="/jak-to-funguje"
-                      className={cn(
-                        pathname === "/jak-to-funguje" && "border-l-[3px] pl-3"
-                      )}
-                      style={pathname === "/jak-to-funguje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                      aria-current={pathname === "/jak-to-funguje" ? "page" : undefined}
-                    >
-                      Jak to funguje
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link 
-                      href="/metodika-a-zdroje"
-                      className={cn(
-                        pathname === "/metodika-a-zdroje" && "border-l-[3px] pl-3"
-                      )}
-                      style={pathname === "/metodika-a-zdroje" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                      aria-current={pathname === "/metodika-a-zdroje" ? "page" : undefined}
-                    >
-                      Metodika a zdroje
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link 
-                      href="/o-projektu"
-                      className={cn(
-                        pathname === "/o-projektu" && "border-l-[3px] pl-3"
-                      )}
-                      style={pathname === "/o-projektu" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                      aria-current={pathname === "/o-projektu" ? "page" : undefined}
-                    >
-                      O projektu
-                    </Link>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <Link 
-                      href="/kontakt"
-                      className={cn(
-                        pathname === "/kontakt" && "border-l-[3px] pl-3"
-                      )}
-                      style={pathname === "/kontakt" ? { borderLeftColor: 'var(--color-primary)' } : {}}
-                      aria-current={pathname === "/kontakt" ? "page" : undefined}
-                    >
-                      Kontakt
-                    </Link>
-                  </SheetClose>
+
+                {/* Divider */}
+                <div className="h-px" style={{ background: "var(--color-border)" }} />
+
+                {/* Secondary links — methodology */}
+                <div className="flex flex-col gap-3 font-uiSans">
+                  {MOBILE_SECONDARY_LINKS.map((item) => {
+                    const active = isActive(pathname, item.href);
+                    return (
+                      <SheetClose asChild key={item.href}>
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            "text-sm font-medium transition-colors",
+                            active ? "border-l-[3px] pl-3" : "hover:text-[var(--color-primary)]"
+                          )}
+                          style={{
+                            color: active ? "var(--color-primary)" : "var(--color-secondary)",
+                            ...(active ? { borderLeftColor: "var(--color-primary)" } : {}),
+                          }}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          {item.label}
+                        </Link>
+                      </SheetClose>
+                    );
+                  })}
                 </div>
               </nav>
             </SheetContent>

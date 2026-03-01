@@ -12,13 +12,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/jak-to-funguje`,
+      url: `${baseUrl}/investice`,
       lastModified: currentDate,
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/metodika-a-zdroje`,
+      url: `${baseUrl}/metodika/bydleni`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/metodika/investice`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/koupit-nebo-pronajmout`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/vyplati-se-investicni-byt`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,
@@ -27,20 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/o-projektu`,
       lastModified: currentDate,
       changeFrequency: 'yearly',
-      priority: 0.6,
+      priority: 0.7,
     },
-    {
-      url: `${baseUrl}/kontakt`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.5,
-    },
-    // Add investice page when ready
-    // {
-    //   url: `${baseUrl}/investice`,
-    //   lastModified: currentDate,
-    //   changeFrequency: 'monthly',
-    //   priority: 0.8,
-    // },
   ];
 }
