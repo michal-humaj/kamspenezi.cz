@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import InvesticePage from "./_investice-calculator";
 
 export const metadata: Metadata = {
-  title: "Investiční byt, nebo akciový fond? | kamspenezi.cz",
+  title: "Investiční byt, nebo akciový fond? Kalkulačka | kamspenezi.cz",
   description:
-    "Porovnej investiční byt na hypotéku s akciovým fondem. Kalkulačka spočítá čisté jmění po 30 letech včetně daní a inflace.",
+    "Porovnej investiční byt na hypotéku s akciovým fondem. Kalkulačka spočítá čisté jmění za 30 let včetně daní a inflace.",
   alternates: {
     canonical: "https://kamspenezi.cz/investice",
   },
   openGraph: {
-    title: "Investiční byt, nebo akciový fond? | kamspenezi.cz",
+    title: "Investiční byt, nebo akciový fond? Kalkulačka | kamspenezi.cz",
     description:
-      "Porovnej investiční byt na hypotéku s akciovým fondem. Kalkulačka spočítá čisté jmění po 30 letech včetně daní a inflace.",
+      "Porovnej investiční byt na hypotéku s akciovým fondem. Kalkulačka spočítá čisté jmění za 30 let včetně daní a inflace.",
     type: "website",
     url: "https://kamspenezi.cz/investice",
     siteName: "kamspenezi.cz",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Investiční byt, nebo akciový fond? | kamspenezi.cz",
+    title: "Investiční byt, nebo akciový fond? Kalkulačka | kamspenezi.cz",
     description:
-      "Porovnej investiční byt na hypotéku s akciovým fondem. Kalkulačka spočítá čisté jmění po 30 letech včetně daní a inflace.",
+      "Porovnej investiční byt na hypotéku s akciovým fondem. Kalkulačka spočítá čisté jmění za 30 let včetně daní a inflace.",
     images: ["/og/og-investice.png"],
   },
 };
