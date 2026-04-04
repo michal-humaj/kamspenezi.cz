@@ -4,7 +4,7 @@ import { formatCzk } from "@/lib/format";
 import { Download } from "lucide-react";
 import { trackCalculatorEvent } from "@/lib/analytics";
 
-// ─── Row type — 24 columns matching Excel A–X ────────────────────────────────
+// ─── Row type ────────────────────────────────────────────────────────────────
 
 export type InvesticeYearlyRow = {
   year: number;
@@ -50,14 +50,9 @@ function fmtSigned(val: number) {
   return fmtVal(val);
 }
 
-// ─── Column definitions ───────────────────────────────────────────────────────
+// ─── Component ───────────────────────────────────────────────────────────────
 
 const COL_W = 78;
-const STICKY_RIGHT_B = 0;
-const STICKY_RIGHT_B_INVESTED = COL_W;
-const STICKY_RIGHT_A = 2 * COL_W;
-
-// ─── Component ───────────────────────────────────────────────────────────────
 
 interface InvesticeYearlyTableProps {
   rows: InvesticeYearlyRow[];
@@ -134,15 +129,8 @@ export function InvesticeYearlyTable({ rows }: InvesticeYearlyTableProps) {
   };
 
   // ── Shared header class fragments ─────────────────────────────────────────
-  // All column headers: uniform white bg, text-xs, no bold
-  const thA   = "px-2 py-1 text-right align-bottom text-xs font-medium text-[#6B7280] whitespace-normal overflow-hidden bg-white";
-  const thAHi = "px-2 py-1 text-right align-bottom text-xs font-medium text-[#0F172A] whitespace-normal overflow-hidden bg-white";
-  // Sticky summary header — no tint, plain white
-  const thSummaryA = `sticky z-20 bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#0F172A] whitespace-normal overflow-hidden`;
-  // First sticky B header — carries the A/B divider border
-  const thBFirst = `sticky z-20 bg-white border-l-2 border-slate-300 px-2 py-1 text-right align-bottom text-xs font-medium text-[#6B7280] whitespace-normal overflow-hidden`;
-  // Subsequent sticky B headers — no divider border
-  const thBSummary = `sticky z-20 bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#0F172A] whitespace-normal overflow-hidden`;
+  const thA   = "bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#6B7280] whitespace-normal overflow-hidden";
+  const thAHi = "bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#0F172A] whitespace-normal overflow-hidden";
 
   return (
     <section className="mb-10 overflow-x-auto">
@@ -180,43 +168,32 @@ export function InvesticeYearlyTable({ rows }: InvesticeYearlyTableProps) {
             </colgroup>
 
             <thead>
-              {/* ── Group / super-header row ── */}
+              {/* ── Super-header row ── */}
               <tr className="border-b border-slate-100">
-                {/* Rok spans both header rows */}
+                {/* empty Rok spacer */}
+                <th className="bg-white px-2 py-1 sticky left-0 z-20" />
+                {/* Scénář A */}
                 <th
-                  rowSpan={2}
-                  className="sticky left-0 z-30 bg-white px-2 py-1 text-right text-xs font-medium text-[#0F172A] border-b border-slate-200"
-                  style={{ minWidth: COL_W }}
-                >
-                  Rok
-                </th>
-                {/* Scénář A label — sticky after Rok */}
-                <th
-                  className="sticky z-20 bg-white px-2 py-1 text-left text-xs font-semibold tracking-normal uppercase text-slate-500 whitespace-nowrap"
-                  style={{ left: COL_W, minWidth: COL_W }}
+                  colSpan={21}
+                  className="bg-white px-2 py-1 text-left text-xs font-semibold tracking-normal uppercase text-slate-500"
                 >
                   Scénář A: Investiční byt na hypotéku
                 </th>
-                {/* 20 filler cells for Scénář A */}
-                {Array.from({ length: 20 }, (_, i) => (
-                  <th key={`a-filler-${i}`} className="bg-white" style={{ minWidth: COL_W }} />
-                ))}
-                {/* Scénář B label — single A/B divider here */}
+                {/* Scénář B */}
                 <th
-                  className="sticky z-20 bg-white border-l-2 border-slate-300 px-2 py-1 text-left text-xs font-semibold tracking-normal uppercase text-slate-500"
-                  style={{ right: STICKY_RIGHT_B_INVESTED, minWidth: COL_W }}
+                  colSpan={2}
+                  className="bg-white border-l-2 border-slate-300 px-2 py-1 text-left text-xs font-semibold tracking-normal uppercase text-slate-500"
                 >
                   Scénář B: ETF
                 </th>
-                {/* Scénář B continuation */}
-                <th
-                  className="sticky z-20 bg-white"
-                  style={{ right: STICKY_RIGHT_B, minWidth: COL_W }}
-                />
               </tr>
 
               {/* ── Column label row ── */}
               <tr className="border-b border-slate-200" style={{ height: "48px" }}>
+                {/* Rok */}
+                <th className="bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#0F172A] sticky left-0 z-20 whitespace-normal overflow-hidden">
+                  Rok
+                </th>
                 {/* cols 2–5: sub-costs */}
                 <th className={thA} style={{ minWidth: COL_W }}>Daň z nemovitosti</th>
                 <th className={thA} style={{ minWidth: COL_W }}>Fond oprav</th>
@@ -241,29 +218,23 @@ export function InvesticeYearlyTable({ rows }: InvesticeYearlyTableProps) {
                 <th className={thA} style={{ minWidth: COL_W }}>Čistý cash flow</th>
                 <th className={thA} style={{ minWidth: COL_W }}>Měsíčně čistý cash flow</th>
                 <th className={thA} style={{ minWidth: COL_W }}>Vedlejší fond</th>
-                {/* col 22: netWorthA summary — sticky */}
-                <th className={thSummaryA} style={{ minWidth: COL_W, right: STICKY_RIGHT_A }}>
-                  Čisté jmění (A)
-                </th>
+                {/* col 22: netWorthA summary */}
+                <th className={thAHi} style={{ minWidth: COL_W }}>Čisté jmění (A)</th>
                 {/* col 23: first B col — carries the A/B divider */}
-                <th className={thBFirst} style={{ minWidth: COL_W, right: STICKY_RIGHT_B_INVESTED }}>
+                <th className="bg-white border-l-2 border-slate-300 px-2 py-1 text-right align-bottom text-xs font-medium text-[#6B7280] whitespace-normal overflow-hidden" style={{ minWidth: COL_W }}>
                   Investováno v daném roce
                 </th>
-                {/* col 24: ETF summary — no extra border */}
-                <th className={thBSummary} style={{ minWidth: COL_W, right: STICKY_RIGHT_B }}>
-                  Hodnota akciového portfolia (B)
-                </th>
+                {/* col 24: ETF summary */}
+                <th className={thAHi} style={{ minWidth: COL_W }}>Hodnota akciového portfolia (B)</th>
               </tr>
             </thead>
 
             <tbody>
               {rows.map((row) => {
                 const isLastRow = row.year === 30;
-                // No stripes — A cols white, B cols #FBFBFF, year-30 anchor
                 const bgA = isLastRow ? "bg-slate-100" : "bg-white group-hover:bg-slate-50";
                 const bgB = isLastRow ? "bg-slate-100" : "bg-[#FBFBFF] group-hover:bg-slate-50";
 
-                // Reusable td class builders
                 const tdGrey  = `px-1.5 py-1 text-right text-xs leading-tight text-[#6B7280] ${bgA}`;
                 const tdNavy  = `px-1.5 py-1 text-right text-xs leading-tight text-[#0F172A] ${bgA}`;
                 const tdGreyB = `px-1.5 py-1 text-right text-xs leading-tight text-[#6B7280] ${bgB}`;
@@ -274,14 +245,11 @@ export function InvesticeYearlyTable({ rows }: InvesticeYearlyTableProps) {
                     className="group transition-colors duration-100 border-b border-[#E5E7EB]"
                   >
                     {/* Rok — sticky left */}
-                    <td
-                      className={`sticky left-0 z-20 px-1.5 py-1 text-right text-xs leading-tight font-semibold text-[#0F172A] ${bgA}`}
-                      style={{ minWidth: COL_W }}
-                    >
+                    <td className={`sticky left-0 z-20 px-1.5 py-1 text-right text-xs leading-tight font-semibold text-[#0F172A] ${bgA}`}>
                       {row.year}
                     </td>
 
-                    {/* cols 2–5: sub-costs — grey */}
+                    {/* cols 2–5: sub-costs */}
                     <td className={tdGrey} style={{ minWidth: COL_W }}>{fmtVal(Math.round(row.propertyTax))}</td>
                     <td className={tdGrey} style={{ minWidth: COL_W }}>{fmtVal(Math.round(row.repairFund))}</td>
                     <td className={tdGrey} style={{ minWidth: COL_W }}>{fmtVal(Math.round(row.insurance))}</td>
@@ -309,27 +277,18 @@ export function InvesticeYearlyTable({ rows }: InvesticeYearlyTableProps) {
                     <td className={tdGrey} style={{ minWidth: COL_W }}>{fmtSigned(Math.round(row.monthlyCashflow))}</td>
                     <td className={tdGrey} style={{ minWidth: COL_W }}>{fmtVal(Math.round(row.sideFundValue))}</td>
 
-                    {/* col 22: netWorthA — bold summary, sticky right */}
-                    <td
-                      className={`sticky z-10 px-1.5 py-1 text-right text-xs leading-tight font-bold text-[#0F172A] ${bgA}`}
-                      style={{ minWidth: COL_W, right: STICKY_RIGHT_A }}
-                    >
+                    {/* col 22: netWorthA — bold summary */}
+                    <td className={`px-1.5 py-1 text-right text-xs leading-tight font-bold text-[#0F172A] ${bgA}`} style={{ minWidth: COL_W }}>
                       {fmtVal(Math.round(row.netWorthA))}
                     </td>
 
                     {/* col 23: investedThisYear — first B col, A/B divider */}
-                    <td
-                      className={`sticky z-10 border-l-2 border-slate-300 px-1.5 py-1 text-right text-xs leading-tight text-[#6B7280] ${bgB}`}
-                      style={{ minWidth: COL_W, right: STICKY_RIGHT_B_INVESTED }}
-                    >
+                    <td className={`border-l-2 border-slate-300 px-1.5 py-1 text-right text-xs leading-tight text-[#6B7280] ${bgB}`} style={{ minWidth: COL_W }}>
                       {fmtVal(Math.round(row.investedThisYear))}
                     </td>
 
-                    {/* col 24: etfPortfolioValue — bold summary, no extra border */}
-                    <td
-                      className={`sticky z-10 px-1.5 py-1 text-right text-xs leading-tight font-bold text-[#0F172A] ${bgB}`}
-                      style={{ minWidth: COL_W, right: STICKY_RIGHT_B }}
-                    >
+                    {/* col 24: etfPortfolioValue — bold summary */}
+                    <td className={`px-1.5 py-1 text-right text-xs leading-tight font-bold text-[#0F172A] ${bgB}`} style={{ minWidth: COL_W }}>
                       {fmtVal(Math.round(row.etfPortfolioValue))}
                     </td>
                   </tr>

@@ -1,713 +1,738 @@
 /**
- * Calculator Default Values & Audit Metadata
- * 
- * This file contains two main exports:
- * 
- * 1. `calculatorDefaults` - Runtime default values for the rent vs. buy calculator.
- *    Update numeric values here when refreshing data from real sources.
- * 
- * 2. `calculatorDefaultsMeta` - Audit metadata tracking data quality, sources, and
- *    per-field mapping. Use this to document where each value came from and when
- *    it was last verified.
- * 
- * IMPORTANT: City keys are ASCII slugs (URL-safe). Use displayName for UI.
- * 
- * Data Quality Legend (in calculatorDefaultsMeta.fields):
- * - "PLACEHOLDER" = AI-generated estimate, needs real data
- * - "VERIFIED" = Confirmed with audited source (see sourceIds)
- * - "DERIVED" = Calculated from other fields (see derivedFrom + formula)
- * 
- * Legacy inline comments (// PLACEHOLDER, // VERIFIED) are kept for quick reference
- * but calculatorDefaultsMeta is the authoritative audit trail.
+ * Výchozí hodnoty kalkulačky
+ *
+ * Tento soubor importuje hodnoty z jednotlivých atributových souborů v src/data/attributes/.
+ * Každý atributový soubor obsahuje vlastní výzkum, zdroje a metodiku v češtině.
+ *
+ * Chceš-li změnit hodnotu: uprav příslušný atributový soubor, ne tento soubor.
+ *
+ * zarizeniNemovitosti: full bydlení differential (furnishing from scratch vs. furnished rental).
+ * zarizeniNemovitostiInvestice: economy landlord standard (lower — see zarizeni-nemovitosti.ts).
  */
 
 import type { CalculatorDefaults } from "./calculator-defaults.types";
 
-// =============================================================================
-// Audit Metadata Types
-// =============================================================================
+// Globální atributy
+import { vynosInvesticeValue }             from "./attributes/vynos-investice";
+import { urokovaSazbaHypotekyValue }       from "./attributes/urokova-sazba-hypoteky";
+import { urokovaSazbaHypotekyFutureValue } from "./attributes/urokova-sazba-hypoteky-future";
+import { ocekavanaInflaceValue }           from "./attributes/ocekavana-inflace";
 
-type DataQuality = "PLACEHOLDER" | "VERIFIED" | "DERIVED";
+// Per-city atributy
+import { rustNajemnehoValues }           from "./attributes/rust-najemneho";
+import { rustHodnotyNemovitostiValues }  from "./attributes/rust-hodnoty-nemovitosti";
+import { obsazenostValues }              from "./attributes/obsazenost";
 
-type SourceMeta = {
-  id: string;
-  name: string;
-  url?: string;
-  retrievedAt: string; // ISO date
-  methodology?: string; // e.g., median, mean, listings vs realized, filters, period
-  sampleSize?: string; // string because sometimes "N=1200 listings"
-  coverage?: string;   // e.g., "Praha+Brno", "all krajská města"
-  notes?: string;
-};
-
-type FieldMeta = {
-  quality: DataQuality;
-  sourceIds?: string[];     // references to SourceMeta.id
-  retrievedAt?: string;     // optional override when field updated separately
-  methodology?: string;     // optional override
-  sampleSize?: string;      // optional override
-  derivedFrom?: string[];   // list of field paths used to derive this value
-  formula?: string;         // e.g., "kupniCena = cenaZaM2 * squareMeters"
-  notes?: string;
-};
-
-type DefaultsMeta = {
-  dataset: {
-    lastUpdated: string;  // should mirror calculatorDefaults.lastUpdated
-    maintainerNotes?: string;
-  };
-  sources: Record<string, SourceMeta>;
-  fields: Record<string, FieldMeta>; // keys are dot-paths into calculatorDefaults
-};
+// Per-city-per-size atributy
+import { squareMetersValues }            from "./attributes/square-meters";
+import { kupniCenaValues }               from "./attributes/kupni-cena";
+import { najemneValues }                 from "./attributes/najemne";
+import { fondOpravValues }               from "./attributes/fond-oprav";
+import { danZNemovitostiValues }         from "./attributes/dan-z-nemovitosti";
+import { pojisteniNemovitostiValues }    from "./attributes/pojisteni-nemovitosti";
+import { nakladyUdrzbyValues }           from "./attributes/naklady-udrzby";
+import { zarizeniNemovitosti }           from "./attributes/zarizeni-nemovitosti";
 
 // =============================================================================
-// Runtime Default Values
+// Sestavení výchozích hodnot z atributových souborů
 // =============================================================================
 
 export const calculatorDefaults: CalculatorDefaults = {
-  lastUpdated: "2026-02-28",
-  
+  lastUpdated: "2026-04-04",
+
   global: {
-    vynosInvestice: 7.0,                  // VERIFIED - GS/Vanguard 10yr forecast + 30yr horizon
-    urokovaSazbaHypoteky: 4.9,            // VERIFIED - Swiss Life Hypoindex Dec 2025
-    urokovaSazbaHypotekyFuture: 4.5,      // DERIVED - ČNB PRIBOR forecast + equilibrium
-    ocekavanaInflace: 2.5,                // VERIFIED - ČNB Inflation Forecast Autumn 2025
+    vynosInvestice:                vynosInvesticeValue,
+    urokovaSazbaHypoteky:          urokovaSazbaHypotekyValue,
+    urokovaSazbaHypotekyFuture:    urokovaSazbaHypotekyFutureValue,
+    ocekavanaInflace:              ocekavanaInflaceValue,
   },
-  
+
   cities: {
     "praha": {
       displayName: "Praha",
-      rustNajemneho: 3.5,                 // VERIFIED - OECD 10yr CAGR 3.8%, Deloitte Q3'25: 3.1% YoY, AEW EU forecast 3.2%
-      rustHodnotyNemovitosti: 4.0,        // VERIFIED - ČSÚ HPI 2015-25 CAGR 9.2% adjusted for 30yr equilibrium, ČNB analysis
-      obsazenost: 95,                     // VERIFIED - investropa 2026: 2-4% vacancy; AFI Home near-full; 30yr conservative 5%
+      rustNajemneho:              rustNajemnehoValues["praha"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["praha"],
+      obsazenost:                 obsazenostValues["praha"],
       apartments: {
         "1+kk": {
-          kupniCena: 5500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 34,               // VERIFIED - Sreality median, N=420
-          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,     // DERIVED - IKEA baseline
-          danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 14000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["praha"]["1+kk"],
+          kupniCena:              kupniCenaValues["praha"]["1+kk"],
+          najemne:                najemneValues["praha"]["1+kk"],
+          fondOprav:              fondOpravValues["praha"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["praha"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["praha"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["praha"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 54,               // VERIFIED - Sreality median, N=481
-          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["praha"]["2+kk"],
+          kupniCena:              kupniCenaValues["praha"]["2+kk"],
+          najemne:                najemneValues["praha"]["2+kk"],
+          fondOprav:              fondOpravValues["praha"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["praha"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["praha"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["praha"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 36500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 83,               // VERIFIED - Sreality median, N=486
-          fondOprav: 1850,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
-          pojisteniNemovitosti: 1700,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 26000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["praha"]["3+kk"],
+          kupniCena:              kupniCenaValues["praha"]["3+kk"],
+          najemne:                najemneValues["praha"]["3+kk"],
+          fondOprav:              fondOpravValues["praha"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["praha"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["praha"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["praha"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 15500000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 46500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 112,              // VERIFIED - Sreality median, N=407
-          fondOprav: 2450,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 3200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×4.5×1.5×m²)
-          pojisteniNemovitosti: 2200,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 35000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["praha"]["4+kk"],
+          kupniCena:              kupniCenaValues["praha"]["4+kk"],
+          najemne:                najemneValues["praha"]["4+kk"],
+          fondOprav:              fondOpravValues["praha"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["praha"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["praha"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["praha"]["4+kk"],
         },
       },
     },
-    
+
     "brno": {
       displayName: "Brno",
-      rustNajemneho: 3.5,                 // VERIFIED - OECD 10yr CAGR 3.8%, Deloitte Q3'25: +7.8% YoY normalizing
-      rustHodnotyNemovitosti: 4.0,        // VERIFIED - CBA Monitor convergence with Praha, strong regional economy
-      obsazenost: 94,                     // VERIFIED - Deloitte fastest-growing (+7.8% YoY) = very tight supply; 30yr conservative 6%
+      rustNajemneho:              rustNajemnehoValues["brno"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["brno"],
+      obsazenost:                 obsazenostValues["brno"],
       apartments: {
         "1+kk": {
-          kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 14500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 35,               // VERIFIED - Sreality median, N=233
-          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["brno"]["1+kk"],
+          kupniCena:              kupniCenaValues["brno"]["1+kk"],
+          najemne:                najemneValues["brno"]["1+kk"],
+          fondOprav:              fondOpravValues["brno"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["brno"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["brno"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["brno"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 6300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 53,               // VERIFIED - Sreality median, N=479
-          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["brno"]["2+kk"],
+          kupniCena:              kupniCenaValues["brno"]["2+kk"],
+          najemne:                najemneValues["brno"]["2+kk"],
+          fondOprav:              fondOpravValues["brno"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["brno"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["brno"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["brno"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 8800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 28500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 79,               // VERIFIED - Sreality median, N=395
-          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 22000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["brno"]["3+kk"],
+          kupniCena:              kupniCenaValues["brno"]["3+kk"],
+          najemne:                najemneValues["brno"]["3+kk"],
+          fondOprav:              fondOpravValues["brno"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["brno"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["brno"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["brno"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 11700000,            // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 37000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 107,              // VERIFIED - Sreality median, N=179
-          fondOprav: 2350,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["brno"]["4+kk"],
+          kupniCena:              kupniCenaValues["brno"]["4+kk"],
+          najemne:                najemneValues["brno"]["4+kk"],
+          fondOprav:              fondOpravValues["brno"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["brno"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["brno"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["brno"]["4+kk"],
         },
       },
     },
-    
+
     "ostrava": {
       displayName: "Ostrava",
-      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
-      obsazenost: 91,                     // VERIFIED - Post-industrial transition risks, some outmigration; 30yr conservative 9%
+      rustNajemneho:              rustNajemnehoValues["ostrava"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["ostrava"],
+      obsazenost:                 obsazenostValues["ostrava"],
       apartments: {
         "1+kk": {
-          kupniCena: 2200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 8500,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 33,               // VERIFIED - Sreality median, N=80
-          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ostrava"]["1+kk"],
+          kupniCena:              kupniCenaValues["ostrava"]["1+kk"],
+          najemne:                najemneValues["ostrava"]["1+kk"],
+          fondOprav:              fondOpravValues["ostrava"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ostrava"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ostrava"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ostrava"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 13000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 54,               // VERIFIED - Sreality median, N=126
-          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ostrava"]["2+kk"],
+          kupniCena:              kupniCenaValues["ostrava"]["2+kk"],
+          najemne:                najemneValues["ostrava"]["2+kk"],
+          fondOprav:              fondOpravValues["ostrava"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ostrava"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ostrava"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ostrava"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 4400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 17500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 76,               // VERIFIED - Sreality median, N=152
-          fondOprav: 1650,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ostrava"]["3+kk"],
+          kupniCena:              kupniCenaValues["ostrava"]["3+kk"],
+          najemne:                najemneValues["ostrava"]["3+kk"],
+          fondOprav:              fondOpravValues["ostrava"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ostrava"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ostrava"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ostrava"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 5900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 103,              // VERIFIED - Sreality median, N=59
-          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ostrava"]["4+kk"],
+          kupniCena:              kupniCenaValues["ostrava"]["4+kk"],
+          najemne:                najemneValues["ostrava"]["4+kk"],
+          fondOprav:              fondOpravValues["ostrava"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ostrava"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ostrava"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ostrava"]["4+kk"],
         },
       },
     },
-    
+
     "plzen": {
       displayName: "Plzeň",
-      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
-      obsazenost: 93,                     // VERIFIED - Strong industrial base (Škoda Works); national regional median; 30yr conservative 7%
+      rustNajemneho:              rustNajemnehoValues["plzen"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["plzen"],
+      obsazenost:                 obsazenostValues["plzen"],
       apartments: {
         "1+kk": {
-          kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 35,               // VERIFIED - Sreality median, N=44
-          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 500,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["plzen"]["1+kk"],
+          kupniCena:              kupniCenaValues["plzen"]["1+kk"],
+          najemne:                najemneValues["plzen"]["1+kk"],
+          fondOprav:              fondOpravValues["plzen"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["plzen"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["plzen"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["plzen"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 56,               // VERIFIED - Sreality median, N=136
-          fondOprav: 1250,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 17000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["plzen"]["2+kk"],
+          kupniCena:              kupniCenaValues["plzen"]["2+kk"],
+          najemne:                najemneValues["plzen"]["2+kk"],
+          fondOprav:              fondOpravValues["plzen"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["plzen"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["plzen"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["plzen"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 22000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 78,               // VERIFIED - Sreality median, N=156
-          fondOprav: 1700,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["plzen"]["3+kk"],
+          kupniCena:              kupniCenaValues["plzen"]["3+kk"],
+          najemne:                najemneValues["plzen"]["3+kk"],
+          fondOprav:              fondOpravValues["plzen"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["plzen"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["plzen"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["plzen"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 7800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 27500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 103,              // VERIFIED - Sreality median, N=43
-          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 29000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["plzen"]["4+kk"],
+          kupniCena:              kupniCenaValues["plzen"]["4+kk"],
+          najemne:                najemneValues["plzen"]["4+kk"],
+          fondOprav:              fondOpravValues["plzen"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["plzen"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["plzen"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["plzen"]["4+kk"],
         },
       },
     },
-    
+
     "ceske-budejovice": {
       displayName: "České Budějovice",
-      rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
-      obsazenost: 92,                     // VERIFIED - Stable regional capital, no strong trend signals; 30yr conservative 8%
+      rustNajemneho:              rustNajemnehoValues["ceske-budejovice"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["ceske-budejovice"],
+      obsazenost:                 obsazenostValues["ceske-budejovice"],
       apartments: {
         "1+kk": {
-          kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 37,               // VERIFIED - Sreality median, N=81
-          fondOprav: 800,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 600,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ceske-budejovice"]["1+kk"],
+          kupniCena:              kupniCenaValues["ceske-budejovice"]["1+kk"],
+          najemne:                najemneValues["ceske-budejovice"]["1+kk"],
+          fondOprav:              fondOpravValues["ceske-budejovice"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ceske-budejovice"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ceske-budejovice"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ceske-budejovice"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 56,               // VERIFIED - Sreality median, N=157
-          fondOprav: 1250,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ceske-budejovice"]["2+kk"],
+          kupniCena:              kupniCenaValues["ceske-budejovice"]["2+kk"],
+          najemne:                najemneValues["ceske-budejovice"]["2+kk"],
+          fondOprav:              fondOpravValues["ceske-budejovice"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ceske-budejovice"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ceske-budejovice"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ceske-budejovice"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 6500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 22000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 81,               // VERIFIED - Sreality median, N=190
-          fondOprav: 1800,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ceske-budejovice"]["3+kk"],
+          kupniCena:              kupniCenaValues["ceske-budejovice"]["3+kk"],
+          najemne:                najemneValues["ceske-budejovice"]["3+kk"],
+          fondOprav:              fondOpravValues["ceske-budejovice"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ceske-budejovice"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ceske-budejovice"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ceske-budejovice"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 100,              // VERIFIED - Sreality median, N=75
-          fondOprav: 2200,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×m²)
-          pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 27000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["ceske-budejovice"]["4+kk"],
+          kupniCena:              kupniCenaValues["ceske-budejovice"]["4+kk"],
+          najemne:                najemneValues["ceske-budejovice"]["4+kk"],
+          fondOprav:              fondOpravValues["ceske-budejovice"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["ceske-budejovice"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["ceske-budejovice"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["ceske-budejovice"]["4+kk"],
         },
       },
     },
-    
+
     "hradec-kralove": {
       displayName: "Hradec Králové",
-      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
-      obsazenost: 93,                     // VERIFIED - Administrative/military center, strong long-term demand; 30yr conservative 7%
+      rustNajemneho:              rustNajemnehoValues["hradec-kralove"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["hradec-kralove"],
+      obsazenost:                 obsazenostValues["hradec-kralove"],
       apartments: {
         "1+kk": {
-          kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 35,               // VERIFIED - Sreality median, N=45
-          fondOprav: 750,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 700,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["hradec-kralove"]["1+kk"],
+          kupniCena:              kupniCenaValues["hradec-kralove"]["1+kk"],
+          najemne:                najemneValues["hradec-kralove"]["1+kk"],
+          fondOprav:              fondOpravValues["hradec-kralove"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["hradec-kralove"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["hradec-kralove"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["hradec-kralove"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 52,               // VERIFIED - Sreality median, N=159
-          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
-          pojisteniNemovitosti: 1000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["hradec-kralove"]["2+kk"],
+          kupniCena:              kupniCenaValues["hradec-kralove"]["2+kk"],
+          najemne:                najemneValues["hradec-kralove"]["2+kk"],
+          fondOprav:              fondOpravValues["hradec-kralove"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["hradec-kralove"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["hradec-kralove"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["hradec-kralove"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 6600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 23000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 79,               // VERIFIED - Sreality median, N=141
-          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
-          pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["hradec-kralove"]["3+kk"],
+          kupniCena:              kupniCenaValues["hradec-kralove"]["3+kk"],
+          najemne:                najemneValues["hradec-kralove"]["3+kk"],
+          fondOprav:              fondOpravValues["hradec-kralove"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["hradec-kralove"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["hradec-kralove"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["hradec-kralove"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 7900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 27000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 97,               // VERIFIED - Sreality median, N=40
-          fondOprav: 2150,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.3×m²)
-          pojisteniNemovitosti: 1900,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["hradec-kralove"]["4+kk"],
+          kupniCena:              kupniCenaValues["hradec-kralove"]["4+kk"],
+          najemne:                najemneValues["hradec-kralove"]["4+kk"],
+          fondOprav:              fondOpravValues["hradec-kralove"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["hradec-kralove"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["hradec-kralove"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["hradec-kralove"]["4+kk"],
         },
       },
     },
-    
+
     "liberec": {
       displayName: "Liberec",
-      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
-      obsazenost: 91,                     // VERIFIED - Deloitte/Dreamville: rent decline trend (~-2%); border region; 30yr conservative 9%
+      rustNajemneho:              rustNajemnehoValues["liberec"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["liberec"],
+      obsazenost:                 obsazenostValues["liberec"],
       apartments: {
         "1+kk": {
-          kupniCena: 3100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 36,               // VERIFIED - Sreality median, N=85
-          fondOprav: 800,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["liberec"]["1+kk"],
+          kupniCena:              kupniCenaValues["liberec"]["1+kk"],
+          najemne:                najemneValues["liberec"]["1+kk"],
+          fondOprav:              fondOpravValues["liberec"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["liberec"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["liberec"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["liberec"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 53,               // VERIFIED - Sreality median, N=145
-          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["liberec"]["2+kk"],
+          kupniCena:              kupniCenaValues["liberec"]["2+kk"],
+          najemne:                najemneValues["liberec"]["2+kk"],
+          fondOprav:              fondOpravValues["liberec"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["liberec"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["liberec"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["liberec"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 23000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 82,               // VERIFIED - Sreality median, N=131
-          fondOprav: 1800,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["liberec"]["3+kk"],
+          kupniCena:              kupniCenaValues["liberec"]["3+kk"],
+          najemne:                najemneValues["liberec"]["3+kk"],
+          fondOprav:              fondOpravValues["liberec"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["liberec"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["liberec"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["liberec"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 7600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 28000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 105,              // VERIFIED - Sreality median, N=37
-          fondOprav: 2300,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 3100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["liberec"]["4+kk"],
+          kupniCena:              kupniCenaValues["liberec"]["4+kk"],
+          najemne:                najemneValues["liberec"]["4+kk"],
+          fondOprav:              fondOpravValues["liberec"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["liberec"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["liberec"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["liberec"]["4+kk"],
         },
       },
     },
-    
+
     "olomouc": {
       displayName: "Olomouc",
-      rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
-      obsazenost: 93,                     // VERIFIED - University city (Palacký, ~25k students); Dreamville: steepest rent rises; 30yr conservative 7%
+      rustNajemneho:              rustNajemnehoValues["olomouc"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["olomouc"],
+      obsazenost:                 obsazenostValues["olomouc"],
       apartments: {
         "1+kk": {
-          kupniCena: 2700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 10000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 31,               // VERIFIED - Sreality median, N=72
-          fondOprav: 700,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 900,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 600,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 11000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["olomouc"]["1+kk"],
+          kupniCena:              kupniCenaValues["olomouc"]["1+kk"],
+          najemne:                najemneValues["olomouc"]["1+kk"],
+          fondOprav:              fondOpravValues["olomouc"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["olomouc"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["olomouc"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["olomouc"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 53,               // VERIFIED - Sreality median, N=139
-          fondOprav: 1150,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,     // DERIVED - IKEA baseline
-          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["olomouc"]["2+kk"],
+          kupniCena:              kupniCenaValues["olomouc"]["2+kk"],
+          najemne:                najemneValues["olomouc"]["2+kk"],
+          fondOprav:              fondOpravValues["olomouc"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["olomouc"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["olomouc"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["olomouc"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 80,               // VERIFIED - Sreality median, N=143
-          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["olomouc"]["3+kk"],
+          kupniCena:              kupniCenaValues["olomouc"]["3+kk"],
+          najemne:                najemneValues["olomouc"]["3+kk"],
+          fondOprav:              fondOpravValues["olomouc"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["olomouc"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["olomouc"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["olomouc"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 7300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 26000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 98,               // VERIFIED - Sreality median, N=51
-          fondOprav: 2150,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 27000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["olomouc"]["4+kk"],
+          kupniCena:              kupniCenaValues["olomouc"]["4+kk"],
+          najemne:                najemneValues["olomouc"]["4+kk"],
+          fondOprav:              fondOpravValues["olomouc"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["olomouc"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["olomouc"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["olomouc"]["4+kk"],
         },
       },
     },
-    
+
     "pardubice": {
       displayName: "Pardubice",
-      rustNajemneho: 3.0,                 // VERIFIED - Regional city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.5,        // VERIFIED - Large regional city: inflation + 1.0% premium
-      obsazenost: 93,                     // VERIFIED - Growth corridor with HK; logistics/chemical industry; 30yr conservative 7%
+      rustNajemneho:              rustNajemnehoValues["pardubice"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["pardubice"],
+      obsazenost:                 obsazenostValues["pardubice"],
       apartments: {
         "1+kk": {
-          kupniCena: 3400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 36,               // VERIFIED - Sreality median, N=15
-          fondOprav: 800,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1100,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 700,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["pardubice"]["1+kk"],
+          kupniCena:              kupniCenaValues["pardubice"]["1+kk"],
+          najemne:                najemneValues["pardubice"]["1+kk"],
+          fondOprav:              fondOpravValues["pardubice"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["pardubice"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["pardubice"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["pardubice"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 16500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 54,               // VERIFIED - Sreality median, N=65
-          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["pardubice"]["2+kk"],
+          kupniCena:              kupniCenaValues["pardubice"]["2+kk"],
+          najemne:                najemneValues["pardubice"]["2+kk"],
+          fondOprav:              fondOpravValues["pardubice"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["pardubice"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["pardubice"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["pardubice"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 6100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 21000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 75,               // VERIFIED - Sreality median, N=86
-          fondOprav: 1650,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["pardubice"]["3+kk"],
+          kupniCena:              kupniCenaValues["pardubice"]["3+kk"],
+          najemne:                najemneValues["pardubice"]["3+kk"],
+          fondOprav:              fondOpravValues["pardubice"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["pardubice"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["pardubice"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["pardubice"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 8100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 27500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 102,              // VERIFIED - Sreality median, N=22
-          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 3000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["pardubice"]["4+kk"],
+          kupniCena:              kupniCenaValues["pardubice"]["4+kk"],
+          najemne:                najemneValues["pardubice"]["4+kk"],
+          fondOprav:              fondOpravValues["pardubice"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["pardubice"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["pardubice"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["pardubice"]["4+kk"],
         },
       },
     },
-    
+
     "usti-nad-labem": {
       displayName: "Ústí nad Labem",
-      rustNajemneho: 3.0,                 // VERIFIED - Deloitte Q3'25: lowest avg price, weak fundamentals
-      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
-      obsazenost: 87,                     // VERIFIED - Depopulating (-0.68%/yr); lowest rents nationally (208 Kč/m²); 30yr conservative 13%
+      rustNajemneho:              rustNajemnehoValues["usti-nad-labem"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["usti-nad-labem"],
+      obsazenost:                 obsazenostValues["usti-nad-labem"],
       apartments: {
         "1+kk": {
-          kupniCena: 1400000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 6500,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 27,               // VERIFIED - Sreality median, N=38
-          fondOprav: 600,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 800,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 500,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 11000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["usti-nad-labem"]["1+kk"],
+          kupniCena:              kupniCenaValues["usti-nad-labem"]["1+kk"],
+          najemne:                najemneValues["usti-nad-labem"]["1+kk"],
+          fondOprav:              fondOpravValues["usti-nad-labem"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["usti-nad-labem"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["usti-nad-labem"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["usti-nad-labem"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 2300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 10500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 48,               // VERIFIED - Sreality median, N=120
-          fondOprav: 1050,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["usti-nad-labem"]["2+kk"],
+          kupniCena:              kupniCenaValues["usti-nad-labem"]["2+kk"],
+          najemne:                najemneValues["usti-nad-labem"]["2+kk"],
+          fondOprav:              fondOpravValues["usti-nad-labem"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["usti-nad-labem"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["usti-nad-labem"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["usti-nad-labem"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 16000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 76,               // VERIFIED - Sreality median, N=81
-          fondOprav: 1650,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2300,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["usti-nad-labem"]["3+kk"],
+          kupniCena:              kupniCenaValues["usti-nad-labem"]["3+kk"],
+          najemne:                najemneValues["usti-nad-labem"]["3+kk"],
+          fondOprav:              fondOpravValues["usti-nad-labem"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["usti-nad-labem"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["usti-nad-labem"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["usti-nad-labem"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 18500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 94,               // VERIFIED - Sreality median, N=16
-          fondOprav: 2050,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2800,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1900,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 27000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["usti-nad-labem"]["4+kk"],
+          kupniCena:              kupniCenaValues["usti-nad-labem"]["4+kk"],
+          najemne:                najemneValues["usti-nad-labem"]["4+kk"],
+          fondOprav:              fondOpravValues["usti-nad-labem"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["usti-nad-labem"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["usti-nad-labem"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["usti-nad-labem"]["4+kk"],
         },
       },
     },
-    
+
     "karlovy-vary": {
       displayName: "Karlovy Vary",
-      rustNajemneho: 3.0,                 // VERIFIED - Tourist-dependent market: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
-      obsazenost: 90,                     // VERIFIED - Seasonal spa/tourist economy (July peak, January trough); geopolitical risk; 30yr conservative 10%
+      rustNajemneho:              rustNajemnehoValues["karlovy-vary"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["karlovy-vary"],
+      obsazenost:                 obsazenostValues["karlovy-vary"],
       apartments: {
         "1+kk": {
-          kupniCena: 1700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 8000,                  // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 29,               // VERIFIED - Sreality median, N=39
-          fondOprav: 650,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 900,           // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 600,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 11000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["karlovy-vary"]["1+kk"],
+          kupniCena:              kupniCenaValues["karlovy-vary"]["1+kk"],
+          najemne:                najemneValues["karlovy-vary"]["1+kk"],
+          fondOprav:              fondOpravValues["karlovy-vary"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["karlovy-vary"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["karlovy-vary"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["karlovy-vary"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 3300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 60,               // VERIFIED - Sreality median, N=133
-          fondOprav: 1300,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1800,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1200,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["karlovy-vary"]["2+kk"],
+          kupniCena:              kupniCenaValues["karlovy-vary"]["2+kk"],
+          najemne:                najemneValues["karlovy-vary"]["2+kk"],
+          fondOprav:              fondOpravValues["karlovy-vary"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["karlovy-vary"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["karlovy-vary"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["karlovy-vary"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 4500000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 87,               // VERIFIED - Sreality median, N=107
-          fondOprav: 1900,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1700,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["karlovy-vary"]["3+kk"],
+          kupniCena:              kupniCenaValues["karlovy-vary"]["3+kk"],
+          najemne:                najemneValues["karlovy-vary"]["3+kk"],
+          fondOprav:              fondOpravValues["karlovy-vary"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["karlovy-vary"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["karlovy-vary"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["karlovy-vary"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 5700000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 25500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 113,              // VERIFIED - Sreality median, N=30
-          fondOprav: 2500,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 3400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 2300,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["karlovy-vary"]["4+kk"],
+          kupniCena:              kupniCenaValues["karlovy-vary"]["4+kk"],
+          najemne:                najemneValues["karlovy-vary"]["4+kk"],
+          fondOprav:              fondOpravValues["karlovy-vary"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["karlovy-vary"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["karlovy-vary"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["karlovy-vary"]["4+kk"],
         },
       },
     },
-    
+
     "jihlava": {
       displayName: "Jihlava",
-      rustNajemneho: 3.0,                 // VERIFIED - Smaller city: inflation (2.5%) + 0.5% premium
-      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
-      obsazenost: 91,                     // VERIFIED - Deloitte/Dreamville: among declining rent cities; small market; 30yr conservative 9%
+      rustNajemneho:              rustNajemnehoValues["jihlava"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["jihlava"],
+      obsazenost:                 obsazenostValues["jihlava"],
       apartments: {
         "1+kk": {
-          kupniCena: 3000000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 11500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 39,               // VERIFIED - Sreality median, N=19
-          fondOprav: 850,                 // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
-          pojisteniNemovitosti: 800,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 12000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["jihlava"]["1+kk"],
+          kupniCena:              kupniCenaValues["jihlava"]["1+kk"],
+          najemne:                najemneValues["jihlava"]["1+kk"],
+          fondOprav:              fondOpravValues["jihlava"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["jihlava"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["jihlava"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["jihlava"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4100000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 57,               // VERIFIED - Sreality median, N=51
-          fondOprav: 1250,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1500,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["jihlava"]["2+kk"],
+          kupniCena:              kupniCenaValues["jihlava"]["2+kk"],
+          najemne:                najemneValues["jihlava"]["2+kk"],
+          fondOprav:              fondOpravValues["jihlava"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["jihlava"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["jihlava"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["jihlava"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 5300000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 20500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 80,               // VERIFIED - Sreality median, N=74
-          fondOprav: 1750,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2200,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
-          pojisteniNemovitosti: 1600,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 21000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["jihlava"]["3+kk"],
+          kupniCena:              kupniCenaValues["jihlava"]["3+kk"],
+          najemne:                najemneValues["jihlava"]["3+kk"],
+          fondOprav:              fondOpravValues["jihlava"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["jihlava"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["jihlava"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["jihlava"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 6900000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 26000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 106,              // VERIFIED - Sreality median, N=18
-          fondOprav: 2350,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2900,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×1.8×m²)
-          pojisteniNemovitosti: 2100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["jihlava"]["4+kk"],
+          kupniCena:              kupniCenaValues["jihlava"]["4+kk"],
+          najemne:                najemneValues["jihlava"]["4+kk"],
+          fondOprav:              fondOpravValues["jihlava"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["jihlava"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["jihlava"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["jihlava"]["4+kk"],
         },
       },
     },
-    
+
     "zlin": {
       displayName: "Zlín",
-      rustNajemneho: 3.0,                 // VERIFIED - Deloitte Q3'25: -0.7% YoY (declining), conservative estimate
-      rustHodnotyNemovitosti: 3.0,        // VERIFIED - Smaller city: inflation + 0.5% premium
-      obsazenost: 90,                     // VERIFIED - Only city with absolute rent decline (Deloitte -0.7% YoY); niche post-Baťa market; 30yr conservative 10%
+      rustNajemneho:              rustNajemnehoValues["zlin"],
+      rustHodnotyNemovitosti:     rustHodnotyNemovitostiValues["zlin"],
+      obsazenost:                 obsazenostValues["zlin"],
       apartments: {
         "1+kk": {
-          kupniCena: 3800000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 15500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 46,               // VERIFIED - Sreality median, N=25
-          fondOprav: 1000,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 90000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1400,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 900,      // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 13000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["zlin"]["1+kk"],
+          kupniCena:              kupniCenaValues["zlin"]["1+kk"],
+          najemne:                najemneValues["zlin"]["1+kk"],
+          fondOprav:              fondOpravValues["zlin"]["1+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["1+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["1+kk"],
+          danZNemovitosti:        danZNemovitostiValues["zlin"]["1+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["zlin"]["1+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["zlin"]["1+kk"],
         },
         "2+kk": {
-          kupniCena: 4200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 17000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 54,               // VERIFIED - Sreality median, N=60
-          fondOprav: 1200,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 120000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 1600,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1100,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 16000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["zlin"]["2+kk"],
+          kupniCena:              kupniCenaValues["zlin"]["2+kk"],
+          najemne:                najemneValues["zlin"]["2+kk"],
+          fondOprav:              fondOpravValues["zlin"]["2+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["2+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["2+kk"],
+          danZNemovitosti:        danZNemovitostiValues["zlin"]["2+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["zlin"]["2+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["zlin"]["2+kk"],
         },
         "3+kk": {
-          kupniCena: 5600000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 22500,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 77,               // VERIFIED - Sreality median, N=65
-          fondOprav: 1700,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 170000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 2300,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 1500,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 20000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["zlin"]["3+kk"],
+          kupniCena:              kupniCenaValues["zlin"]["3+kk"],
+          najemne:                najemneValues["zlin"]["3+kk"],
+          fondOprav:              fondOpravValues["zlin"]["3+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["3+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["3+kk"],
+          danZNemovitosti:        danZNemovitostiValues["zlin"]["3+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["zlin"]["3+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["zlin"]["3+kk"],
         },
         "4+kk": {
-          kupniCena: 7200000,             // DERIVED - CBA Monitor Q3 2025 × size multiplier × m²
-          najemne: 28000,                 // DERIVED - GPG Q1 2025 × rent multiplier × m²
-          squareMeters: 102,              // VERIFIED - Sreality median, N=37
-          fondOprav: 2250,                // DERIVED - 22 Kč/m² × squareMeters
-          zarizeniNemovitosti: 200000,    // DERIVED - IKEA baseline
-          danZNemovitosti: 3000,          // DERIVED - § 338/1992 Sb. (3.50×1.22×3.5×2.0×m²)
-          pojisteniNemovitosti: 2000,     // DERIVED - 20 Kč/m²/year × squareMeters
-          nakladyUdrzba: 28000,          // DERIVED - (baseFixed + 73×m²) × regionalCoef
+          squareMeters:           squareMetersValues["zlin"]["4+kk"],
+          kupniCena:              kupniCenaValues["zlin"]["4+kk"],
+          najemne:                najemneValues["zlin"]["4+kk"],
+          fondOprav:              fondOpravValues["zlin"]["4+kk"],
+          zarizeniNemovitosti:          zarizeniNemovitosti.hodnoty.bydleni["4+kk"],
+          zarizeniNemovitostiInvestice: zarizeniNemovitosti.hodnoty.investice["4+kk"],
+          danZNemovitosti:        danZNemovitostiValues["zlin"]["4+kk"],
+          pojisteniNemovitosti:   pojisteniNemovitostiValues["zlin"]["4+kk"],
+          nakladyUdrzba:          nakladyUdrzbyValues["zlin"]["4+kk"],
         },
       },
     },
@@ -715,71 +740,17 @@ export const calculatorDefaults: CalculatorDefaults = {
 };
 
 // =============================================================================
-// Audit Metadata
+// Helper funkce
 // =============================================================================
 
-export const calculatorDefaultsMeta: DefaultsMeta = {
-  dataset: {
-    lastUpdated: calculatorDefaults.lastUpdated,
-    maintainerNotes: "Add/refresh sources per parameter; keep calculatorDefaults values stable and audit via fields mapping."
-  },
-  sources: {
-    placeholder: {
-      id: "placeholder",
-      name: "Placeholder (needs research)",
-      retrievedAt: calculatorDefaults.lastUpdated,
-      methodology: "AI estimate; replace with audited sources",
-      coverage: "all"
-    }
-  },
-  fields: {
-    // Global parameters
-    "global.vynosInvestice": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-    "global.urokovaSazbaHypoteky": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-    "global.urokovaSazbaHypotekyFuture": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-    "global.ocekavanaInflace": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-
-    // City-level parameters (Praha as example pattern)
-    "cities.praha.rustNajemneho": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-    "cities.praha.rustHodnotyNemovitosti": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-
-    // Apartment-level parameters (Praha 1+kk as example pattern)
-    "cities.praha.apartments.1+kk.squareMeters": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-    "cities.praha.apartments.1+kk.kupniCena": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-    "cities.praha.apartments.1+kk.najemne": { quality: "PLACEHOLDER", sourceIds: ["placeholder"] },
-    "cities.praha.apartments.1+kk.fondOprav": { 
-      quality: "PLACEHOLDER", 
-      sourceIds: ["placeholder"], 
-      notes: "Defined as total CZK/month paid by owner to SVJ (can include admin + building insurance depending on SVJ accounting)." 
-    },
-    "cities.praha.apartments.1+kk.pojisteniNemovitosti": { 
-      quality: "PLACEHOLDER", 
-      sourceIds: ["placeholder"], 
-      notes: "Owner-paid: domácnost + odpovědnost (not SVJ building insurance)." 
-    },
-    "cities.praha.apartments.1+kk.nakladyUdrzba": { 
-      quality: "PLACEHOLDER", 
-      sourceIds: ["placeholder"], 
-      notes: "Annual interior-only maintenance/capex (floors, kitchen, bathroom, painting). Excludes building envelope/elevator (SVJ)." 
-    }
-  }
-};
-
-// =============================================================================
-// Helper Functions
-// =============================================================================
-
-// Helper to get city slug from display name
 export function getCitySlug(displayName: string): string | undefined {
   return Object.entries(calculatorDefaults.cities).find(
     ([, city]) => city.displayName === displayName
   )?.[0];
 }
 
-// Helper to get display name from slug
 export function getCityDisplayName(slug: string): string | undefined {
   return calculatorDefaults.cities[slug]?.displayName;
 }
 
-// Re-export for convenience
 export default calculatorDefaults;

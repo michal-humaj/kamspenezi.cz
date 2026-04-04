@@ -99,6 +99,42 @@ export const trackCalculatorEvent = (action: string, label?: string) => {
 };
 
 /**
+ * Track city selection in the calculator
+ */
+export const trackCitySelected = (
+  city: string,
+  calculator: 'bydleni' | 'investice',
+  changedFromDefault: boolean,
+) => {
+  if (isInternalUser()) return;
+  if (typeof window === 'undefined' || !window.gtag) return;
+
+  window.gtag('event', 'city_selected', {
+    city,
+    calculator,
+    changed_from_default: changedFromDefault,
+  });
+};
+
+/**
+ * Track apartment size selection in the calculator
+ */
+export const trackApartmentSizeSelected = (
+  size: string,
+  calculator: 'bydleni' | 'investice',
+  changedFromDefault: boolean,
+) => {
+  if (isInternalUser()) return;
+  if (typeof window === 'undefined' || !window.gtag) return;
+
+  window.gtag('event', 'apartment_size_selected', {
+    size,
+    calculator,
+    changed_from_default: changedFromDefault,
+  });
+};
+
+/**
  * Track trust page interactions
  */
 export type TrustPageAction =

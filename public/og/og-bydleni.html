@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: 'Figtree', system-ui, sans-serif;
+      display: flex;
+    }
+
+    /* ── LEFT PANEL ── */
+    .left {
+      width: 420px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 52px 56px 48px 56px;
+      border-right: 1px solid #EDEEF3;
+    }
+
+    .top-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: #0F172A;
+      letter-spacing: 0.2px;
+      margin-bottom: 32px;
+    }
+    .brand-tld { color: #6B7280; }
+
+    /* THE HEADLINE — this is the hook */
+    .headline {
+      font-family: 'Newsreader', serif;
+      font-weight: 700;
+      font-size: 44px;
+      color: #0F172A;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 18px;
+    }
+
+    .winner-statement {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      color: #C2410C;
+      line-height: 1.5;
+    }
+
+    .bottom-block {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      color: #9CA3AF;
+    }
+
+    /* ── RIGHT PANEL ── */
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 56px;
+      gap: 40px;
+    }
+
+    .scenario {}
+
+    .scenario-label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-a { background: #C2410C; }
+    .dot-b { background: #2F5C45; }
+
+    /* Bigger labels — readable at social preview size */
+    .label-text {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: #6B7280;
+    }
+
+    .amount-winner {
+      font-family: 'Newsreader', serif;
+      font-weight: 600;
+      font-size: 90px;
+      color: #0F172A;
+      line-height: 1;
+      letter-spacing: -3px;
+      margin-bottom: 8px;
+    }
+
+    .amount-loser {
+      font-family: 'Newsreader', serif;
+      font-weight: 600;
+      font-size: 90px;
+      color: #C5C2BB;
+      line-height: 1;
+      letter-spacing: -3px;
+      margin-bottom: 8px;
+    }
+
+    .amount-sub {
+      font-family: 'Figtree', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: #9CA3AF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="top-block">
+      <div class="brand">kamspenezi<span class="brand-tld">.cz</span></div>
+      <div class="headline">Bydlet ve vlastním,<br>nebo v nájmu?</div>
+      <div class="winner-statement">Vlastní bydlení vychází<br>přibližně 2× lépe.</div>
+    </div>
+    <div class="bottom-block">Praha · 1+kk · 30 let</div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+
+    <div class="scenario">
+      <div class="scenario-label">
+        <div class="dot dot-a"></div>
+        <span class="label-text">Vlastní bydlení na hypotéku</span>
+      </div>
+      <div class="amount-winner">20,2 mil. Kč</div>
+      <div class="amount-sub">Nemovitost + vedlejší fond</div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">
+        <div class="dot dot-b"></div>
+        <span class="label-text">Nájem a akciový fond</span>
+      </div>
+      <div class="amount-loser">9,3 mil. Kč</div>
+      <div class="amount-sub">Hodnota akciového portfolia</div>
+    </div>
+
+  </div>
+
+</body>
+</html>

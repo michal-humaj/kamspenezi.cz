@@ -40,9 +40,62 @@ function formatValue(val: number) {
 }
 
 export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
-  // ── Shared column-header class (uniform across all groups) ────────────────
-  const thA   = "bg-white px-2 py-1 text-right align-bottom text-xs font-medium tracking-normal text-[#6B7280] whitespace-normal overflow-hidden";
-  const thAHi = "bg-white px-2 py-1 text-right align-bottom text-xs font-medium tracking-normal text-[#0F172A] whitespace-normal overflow-hidden";
+  const handleExport = () => {
+    trackCalculatorEvent("export_table_clicked", "yearly_overview");
+
+    const headers = [
+      "Rok",
+      "Splátka hypotéky",
+      "Daň z nemovitosti",
+      "Fond oprav",
+      "Pojištění nemovitosti",
+      "Náklady na údržbu",
+      "Daňová úspora z odpočtu úroků",
+      "Celkové náklady",
+      "Ušetřeno oproti nájmu",
+      "Zhodnocené úspory (vedlejší fond)",
+      "Hodnota bytu",
+      "Dlužná částka hypotéky",
+      "Čisté jmění (Scénář A)",
+      "Nájemné",
+      "Ušetřeno oproti vlastnímu bydlení",
+      "Hodnota portfolia (ETF)",
+    ];
+
+    const csvRows = rows.map((r) =>
+      [
+        r.year,
+        Math.round(r.mortgagePayment),
+        Math.round(r.propertyTax),
+        Math.round(r.repairFund),
+        Math.round(r.insurance),
+        Math.round(r.maintenance),
+        Math.round(r.taxSaving),
+        Math.round(r.totalPropertyCosts),
+        Math.round(r.savingsA),
+        Math.round(r.sideFundA),
+        Math.round(r.propertyValue),
+        Math.round(r.mortgageRemaining),
+        Math.round(r.netWorthA),
+        Math.round(r.rent),
+        Math.round(r.savingsB),
+        Math.round(r.portfolioValue),
+      ].join(";")
+    );
+
+    const csv = [headers.join(";"), ...csvRows].join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "bydleni-kalkulacka-export.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // ── Shared column-header classes ──────────────────────────────────────────
+  const thA   = "bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#6B7280] whitespace-normal overflow-hidden";
+  const thAHi = "bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#0F172A] whitespace-normal overflow-hidden";
 
   return (
     <section className="mb-10 overflow-x-auto">
@@ -57,20 +110,14 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
             <p className="mt-1 max-w-[560px] font-uiSans text-sm leading-relaxed text-[#6B7280]">
               Ukazujeme přehled po jednotlivých letech pro oba scénáře.
             </p>
-            <p className="mt-2 font-uiSans text-xs font-medium text-indigo-600">
-              Tabulka zobrazuje vývoj očekávané střední hodnoty (mediánu).
-            </p>
           </div>
           <button
             type="button"
             className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 font-uiSans text-[13px] font-medium text-[#0F172A] shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--btn-focus-ring)] focus-visible:ring-offset-2"
-            onClick={() => {
-              trackCalculatorEvent("export_table_clicked", "yearly_overview");
-              alert("Export bude brzy dostupný! Děkujeme za váš zájem.");
-            }}
+            onClick={handleExport}
           >
             <Download className="h-3.5 w-3.5 text-slate-500" />
-            <span>Exportovat tabulku</span>
+            <span>Exportovat CSV</span>
           </button>
         </div>
 
@@ -89,9 +136,9 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
 
             <thead>
               {/* ── Super-headers ── */}
-              <tr className="border-b border-slate-200">
+              <tr className="border-b border-slate-100">
                 {/* empty Rok spacer */}
-                <th className="bg-white px-2 py-1 text-right text-xs font-semibold tracking-normal uppercase text-slate-500 sticky left-0 z-20" />
+                <th className="bg-white px-2 py-1 sticky left-0 z-20" />
                 {/* Scénář A */}
                 <th
                   colSpan={12}
@@ -99,7 +146,7 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                 >
                   Scénář A: Vlastní bydlení na hypotéku
                 </th>
-                {/* Scénář B — carries the single A/B divider */}
+                {/* Scénář B */}
                 <th
                   colSpan={3}
                   className="bg-white border-l-2 border-slate-300 px-2 py-1 text-left text-xs font-semibold tracking-normal uppercase text-slate-500"
@@ -108,10 +155,10 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                 </th>
               </tr>
 
-              {/* ── Column headers — uniform bg-white, no group tints ── */}
+              {/* ── Column headers ── */}
               <tr className="border-b border-slate-200" style={{ height: "48px" }}>
                 {/* Rok */}
-                <th className="bg-white px-2 py-1 text-right align-bottom text-xs font-medium tracking-normal text-[#0F172A] sticky left-0 z-20 whitespace-normal overflow-hidden">
+                <th className="bg-white px-2 py-1 text-right align-bottom text-xs font-medium text-[#0F172A] sticky left-0 z-20 whitespace-normal overflow-hidden">
                   Rok
                 </th>
                 {/* Scenario A */}
@@ -126,14 +173,12 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                 <th className={thA}>Zhodnocené úspory (vedlejší fond)</th>
                 <th className={thAHi}>Hodnota bytu</th>
                 <th className={thA}>Dlužná částka hypotéky</th>
-                {/* Summary A — no special bg */}
                 <th className={thAHi}>Čisté jmění (Scénář A)</th>
                 {/* Scenario B — first col carries A/B divider */}
-                <th className="bg-white border-l-2 border-slate-300 px-2 py-1 text-right align-bottom text-xs font-medium tracking-normal text-[#6B7280] whitespace-normal overflow-hidden">
+                <th className="bg-white border-l-2 border-slate-300 px-2 py-1 text-right align-bottom text-xs font-medium text-[#6B7280] whitespace-normal overflow-hidden">
                   Nájemné
                 </th>
                 <th className={thA}>Ušetřeno oproti vlastnímu bydlení</th>
-                {/* Summary B — no extra border, same header style */}
                 <th className={thAHi}>Hodnota portfolia (ETF)</th>
               </tr>
             </thead>
@@ -141,7 +186,6 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
             <tbody>
               {rows.map((row) => {
                 const isLastRow = row.year === 30;
-                // No stripes — A cols white, B cols #FBFBFF, year-30 anchor
                 const bgA = isLastRow ? "bg-slate-100" : "bg-white group-hover:bg-slate-50";
                 const bgB = isLastRow ? "bg-slate-100" : "bg-[#FBFBFF] group-hover:bg-slate-50";
 
@@ -152,7 +196,7 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                 return (
                   <tr
                     key={row.year}
-                    className="group transition-colors duration-150 border-b border-[#E5E7EB]"
+                    className="group transition-colors duration-100 border-b border-[#E5E7EB]"
                   >
                     {/* Year */}
                     <td className={`sticky left-0 z-20 px-1.5 py-1 text-right text-xs leading-tight font-semibold text-[#0F172A] ${bgA}`}>
@@ -169,7 +213,6 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                     <td className={tdGrey}>{formatValue(Math.round(row.totalPropertyCosts))}</td>
                     <td className={tdGrey}>{formatValue(Math.round(row.savingsA))}</td>
                     <td className={tdGrey}>{formatValue(Math.round(row.sideFundA))}</td>
-                    {/* Key metric — navy */}
                     <td className={tdNavy}>{formatValue(Math.round(row.propertyValue))}</td>
                     <td className={tdGrey}>{formatValue(Math.round(row.mortgageRemaining))}</td>
                     {/* Summary A — bold */}
@@ -177,12 +220,12 @@ export function YearlyOverviewTable({ rows }: YearlyOverviewTableProps) {
                       {formatValue(Math.round(row.netWorthA))}
                     </td>
 
-                    {/* Scenario B — #FBFBFF tint; first col carries A/B divider */}
+                    {/* Scenario B — first col carries A/B divider */}
                     <td className={`border-l-2 border-slate-300 px-1.5 py-1 text-right text-xs leading-tight text-[#6B7280] ${bgB}`}>
                       {formatValue(Math.round(row.rent))}
                     </td>
                     <td className={tdGreyB}>{formatValue(Math.round(row.savingsB))}</td>
-                    {/* Summary B — bold, no extra border */}
+                    {/* Summary B — bold */}
                     <td className={`px-1.5 py-1 text-right text-xs leading-tight font-bold text-[#0F172A] ${bgB}`}>
                       {formatValue(Math.round(row.portfolioValue))}
                     </td>

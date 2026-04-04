@@ -41,7 +41,10 @@ export interface ApartmentDefaults {
   najemne: number;
   squareMeters: number;
   fondOprav: number;
+  /** Bydlení: full differential (furnishing from scratch vs. furnished rental). */
   zarizeniNemovitosti: number;
+  /** Investice: economy landlord standard (lower than zarizeniNemovitosti). */
+  zarizeniNemovitostiInvestice: number;
   danZNemovitosti: number;
   pojisteniNemovitosti: number;
   nakladyUdrzba: number;
