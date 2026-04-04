@@ -9,7 +9,7 @@
  * cost is well within a single useMemo tick.
  */
 
-import type { CalculatorState } from "@/app/page";
+import type { CalculatorState } from "@/app/_home-calculator";
 import {
   calculateBydleniFixed,
   type InputsBydleniFixed,

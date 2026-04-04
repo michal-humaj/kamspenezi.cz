@@ -10,7 +10,7 @@
  * and copy strings differ.
  */
 
-import type { InvesticeCalculatorState } from "@/app/investice/page";
+import type { InvesticeCalculatorState } from "@/app/investice/_investice-calculator";
 import {
   calculateInvesticeFixed,
   type InputsInvesticeFixed,

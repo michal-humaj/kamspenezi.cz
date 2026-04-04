@@ -1,7 +1,7 @@
 "use client";
 
 import { LabeledSliderInput } from "./labeled-slider-input";
-import type { InvesticeCalculatorState } from "@/app/investice/page";
+import type { InvesticeCalculatorState } from "@/app/investice/_investice-calculator";
 import {
   formatMillionsCzk,
   parseMillionsCzk,

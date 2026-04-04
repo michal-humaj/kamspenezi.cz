@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { LabeledSliderInput } from "./labeled-slider-input";
-import type { InvesticeCalculatorState } from "@/app/investice/page";
+import type { InvesticeCalculatorState } from "@/app/investice/_investice-calculator";
 import {
   formatCzk,
   parseCzk,

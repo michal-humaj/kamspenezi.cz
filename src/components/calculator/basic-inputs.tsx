@@ -1,7 +1,7 @@
 "use client";
 
 import { LabeledSliderInput } from "./labeled-slider-input";
-import type { CalculatorState } from "@/app/page";
+import type { CalculatorState } from "@/app/_home-calculator";
 import {
   formatMillionsCzk,
   parseMillionsCzk,

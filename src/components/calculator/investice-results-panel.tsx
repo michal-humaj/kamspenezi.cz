@@ -4,7 +4,7 @@ import React from "react";
 import { formatLargeCurrency, formatCzk } from "@/lib/format";
 import { useState, useMemo } from "react";
 import { Info, ChevronRight } from "lucide-react";
-import type { InvesticeCalculatorState } from "@/app/investice/page";
+import type { InvesticeCalculatorState } from "@/app/investice/_investice-calculator";
 import { ShareButton } from "./ShareButton";
 import { computeInvesticeTippingPoints } from "@/lib/calculations/investice-tipping-points";
 import { fmt } from "@/lib/calculations/tipping-points-shared";

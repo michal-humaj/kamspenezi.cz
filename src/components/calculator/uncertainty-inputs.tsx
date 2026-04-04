@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { LabeledSliderInput } from "./labeled-slider-input";
 import { formatPercent, parsePercent } from "@/lib/format";
-import type { CalculatorState } from "@/app/page";
+import type { CalculatorState } from "@/app/_home-calculator";
 
 interface UncertaintyInputsProps {
   state: CalculatorState;

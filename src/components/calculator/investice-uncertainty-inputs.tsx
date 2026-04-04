@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { LabeledSliderInput } from "./labeled-slider-input";
 import { formatPercent, parsePercent } from "@/lib/format";
-import type { InvesticeCalculatorState } from "@/app/investice/page";
+import type { InvesticeCalculatorState } from "@/app/investice/_investice-calculator";
 
 interface InvesticeUncertaintyInputsProps {
   state: InvesticeCalculatorState;

@@ -3,7 +3,7 @@
 import { formatLargeCurrency, formatCzk } from "@/lib/format";
 import { useState, useMemo } from "react";
 import { Info, ChevronRight } from "lucide-react";
-import type { CalculatorState } from "@/app/page";
+import type { CalculatorState } from "@/app/_home-calculator";
 import { ShareButton } from "./ShareButton";
 import { computeTippingPoints } from "@/lib/calculations/tipping-points";
 import { ResultsSparkline } from "./ResultsSparkline";

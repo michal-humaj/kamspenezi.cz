@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { LabeledSliderInput } from "./labeled-slider-input";
-import type { CalculatorState } from "@/app/page";
+import type { CalculatorState } from "@/app/_home-calculator";
 import {
   formatCzk,
   parseCzk,
