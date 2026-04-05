@@ -1,7 +1,7 @@
 /**
  * Atribut: Kupní cena bytu (kupniCena)
  * Výzkum proveden: 2026-04-04 (ČBA Monitor + Sreality disposition scrape)
- * Aktualizace:     2026-04-05 (Sreality starší zástavba price scrape + haircut kalibrace)
+ * Aktualizace:     2026-04-05 (Sreality starší zástavba price scrape + per-city haircut kalibrace)
  */
 
 import type { AttributeDoc, PerCity, PerCityPerSize } from "./_types";
@@ -12,47 +12,112 @@ import { squareMetersValues } from "./square-meters";
 // =============================================================================
 
 /**
- * Odhadované transakční ceny Kč/m² pro 2+kk starší zástavby (cihlové + panelové domy).
- * Zdroj: Sreality.cz API, duben 2026 (nabídkové ceny) × haircut faktor 0.802.
- * Script: scripts/sreality-older-buildings-price.mjs, spuštěno 2026-04-05.
+ * Nabídkové ceny Kč/m² pro 2+kk starší zástavby (cihlová + panelová) — PŘED haircut.
+ * Zdroj: Sreality.cz API, duben 2026. Script: scripts/sreality-older-buildings-price.mjs.
+ * Filtr: category_type_cb=1 (prodej), building_type_cb[]=1 + building_type_cb[]=2.
  *
- * Filtr: category_type_cb=1 (prodej), building_type_cb[]=1 (cihlová) + building_type_cb[]=2 (panelová).
- * Tato populace je shodná s najemne.ts (Sreality starší zástavba, stejný filtr) —
- * cena i nájemné tak popisují stejný typ bytu.
+ * POUZE NABÍDKOVÉ CENY — transakční ceny viz srealityStarsiZastavba2kk_Apr2026 níže.
+ */
+const _srealityNabidkovaCena2kk_Asking_Apr2026: PerCity<number> = {
+  "praha":            175_045, // n=1 350 — velmi spolehlivý vzorek
+  "brno":             142_453, // n=331 — spolehlivý vzorek
+  "ostrava":           92_470, // n=64 — ČBA Monitor biased (61 600 → 34 % pod asking)
+  "plzen":            102_381, // n=81 — spolehlivý
+  "ceske-budejovice":  99_756, // n=64 — spolehlivý
+  "hradec-kralove":   119_984, // n=42 — suspektně vysoké vs. srovnatelná města → fallback haircut
+  "liberec":           99_929, // n=66 — spolehlivý
+  "olomouc":          106_207, // n=73 — spolehlivý
+  "pardubice":        100_000, // n=25 — marginálně spolehlivý
+  "usti-nad-labem":    62_720, // n=16 — malý vzorek
+  "karlovy-vary":      91_499, // n=104 — ČBA Monitor biased (51 700 → 44 % pod asking)
+  "jihlava":           89_579, // n=17 — malý vzorek
+  "zlin":              81_660, // n=29 — ANOMÁLIE: koeficienty 3+kk, 4+kk > 2+kk → ČBA Monitor použit
+};
+void _srealityNabidkovaCena2kk_Asking_Apr2026;
+
+/**
+ * Per-city haircut faktory (nabídková cena → odhadovaná transakční cena).
  *
- * Haircut faktor 0.802 (= nabídková cena → odhadovaná transakční cena):
- *   Kalibrován z Praha (0.828), Brno (0.802) a Ústí nad Labem (0.740).
- *   Medián kalibračních měst = 0.802.
- *   Zahrnuje standardní srážku nabídka→transakce (~10–15 %) + časový posun
- *   (ČBA Monitor Q4 2025 vs. Sreality duben 2026, trh rostl ~4–5 % za 6 měsíců).
+ * METODIKA ODVOZENÍ:
+ *   haircut[město] = (ČBA Monitor Q4 2025 × 1.05) / Sreality asking duben 2026
  *
- * Výjimka — Zlín:
- *   Sreality starší zástavba Zlín 2+kk (n=29) vykazuje anomální koeficienty
- *   (3+kk a 4+kk dražší na m² než 2+kk), což naznačuje nevýběrový vzorek.
- *   Po haircutu by Zlín vyšlo 65 500 Kč/m² — o 13,5 % níže než ČBA Monitor (75 700).
- *   Pro Zlín proto používáme ČBA Monitor Q4 2025 jako spolehlivější zdroj.
- *   ČBA Monitor haircut pro Zlín = 7,3 % (81 660 ask → 75 700 CBA tx) — v normálním rozsahu.
+ *   Faktor 1.05 = tržní zhodnocení ~5 % za 4–5 měsíců (Q4 2025 → duben 2026).
+ *   Zdroj: ČBA Monitor tiskový report 2025 (starší zástavba +18 % YoY za rok 2025,
+ *   předpokládáme ~12–14 % anualizovaný růst pro 2026 → ~5 % za 4,5 měsíce).
  *
- * Nabídkové ceny Sreality starší zástavba 2+kk (duben 2026, před haircut):
- *   Praha: 175 045 (n=1350), Brno: 142 453 (n=331), Ostrava: 92 470 (n=64),
- *   Plzeň: 102 381 (n=81), ČB: 99 756 (n=64), HK: 119 984 (n=42),
- *   Liberec: 99 929 (n=66), Olomouc: 106 207 (n=73), Pardubice: 100 000 (n=25),
- *   Ústí: 62 720 (n=16), KV: 91 499 (n=104), Jihlava: 89 579 (n=17), Zlín: 81 660 (n=29).
+ *   Výsledný haircut zahrnuje pouze čistou srážku nabídka→transakce (10–25 %),
+ *   nikoli časový posun (ten je eliminován faktorem 1.05).
+ *
+ * ODVOZENÉ PER-CITY HODNOTY:
+ *   Praha:    145 000 × 1.05 / 175 045 = 0.870 ← čistá srážka ~13 %, likvid. trh
+ *   Brno:     114 300 × 1.05 / 142 453 = 0.843 ← čistá srážka ~16 %
+ *   Plzeň:     78 400 × 1.05 / 102 381 = 0.804 ← čistá srážka ~20 %
+ *   ČB:        81 100 × 1.05 /  99 756 = 0.854 ← čistá srážka ~15 %
+ *   Liberec:   74 200 × 1.05 /  99 929 = 0.780 ← čistá srážka ~22 %
+ *   Olomouc:   79 200 × 1.05 / 106 207 = 0.783 ← čistá srážka ~22 %
+ *   Pardubice: 84 000 × 1.05 / 100 000 = 0.882 ← čistá srážka ~12 %
+ *   Ústí:      46 400 × 1.05 /  62 720 = 0.777 ← čistá srážka ~22 %
+ *   Jihlava:   68 100 × 1.05 /  89 579 = 0.798 ← čistá srážka ~20 %
+ *
+ * FALLBACK — použit pro 3 problematická města (hodnota = medián spolehlivých měst):
+ *   Medián {0.870, 0.843, 0.804, 0.854, 0.780, 0.783, 0.882, 0.777, 0.798} = 0.804
+ *
+ *   Ostrava [FALLBACK 0.804]: ČBA Monitor 61 600 je prokazatelně biased (zaznamenává
+ *     pouze nejlevnější panelové bloky). Odvozený haircut 0.700 není realitní srážka —
+ *     je to artefakt selekčního zkreslení ČBA Monitoru.
+ *
+ *   Karlovy Vary [FALLBACK 0.804]: Totéž — ČBA Monitor KV 51 700 je extrémně nízký
+ *     (odvozený haircut 0.594 = 41% srážka, fyzicky nemožná pro aktivní trh).
+ *
+ *   Hradec Králové [FALLBACK 0.804]: Sreality asking 119 984 je suspektně vysoké
+ *     vs. srovnatelná města (Olomouc 106 207, Liberec 99 929). Odvozený haircut
+ *     0.754 je pod rozsahem spolehlivých měst (0.777–0.882). Fallback je konzervativnější.
+ */
+const perCityHaircutFaktor: PerCity<number> = {
+  "praha":            0.870, // odvozeno: 145 000 × 1.05 / 175 045
+  "brno":             0.843, // odvozeno: 114 300 × 1.05 / 142 453
+  "ostrava":          0.804, // FALLBACK medián — ČBA Monitor biased
+  "plzen":            0.804, // odvozeno: 78 400 × 1.05 / 102 381
+  "ceske-budejovice": 0.854, // odvozeno: 81 100 × 1.05 / 99 756
+  "hradec-kralove":   0.804, // FALLBACK medián — Sreality asking suspektně vysoké
+  "liberec":          0.780, // odvozeno: 74 200 × 1.05 / 99 929
+  "olomouc":          0.783, // odvozeno: 79 200 × 1.05 / 106 207
+  "pardubice":        0.882, // odvozeno: 84 000 × 1.05 / 100 000
+  "usti-nad-labem":   0.777, // odvozeno: 46 400 × 1.05 / 62 720
+  "karlovy-vary":     0.804, // FALLBACK medián — ČBA Monitor biased
+  "jihlava":          0.798, // odvozeno: 68 100 × 1.05 / 89 579
+  "zlin":             1.000, // VÝJIMKA: Zlín používá ČBA Monitor přímo (cena níže)
+};
+
+/**
+ * Odhadované transakční ceny Kč/m² pro 2+kk starší zástavby (cihlová + panelová).
+ * = Sreality nabídková cena × per-city haircut faktor (viz výše).
+ * Výjimka Zlín: ČBA Monitor Q4 2025 přímo (Sreality vzorek anomální).
+ *
+ * SROVNÁNÍ S PŘEDCHOZÍ METODIKOU (flat haircut 0.802):
+ *   Praha:     140 500 → 152 300  (+8,4 %) — přesnější haircut pro likvidní trh
+ *   Brno:      114 300 → 120 100  (+5,1 %)
+ *   Pardubice:  80 200 →  88 200 (+10,0 %) — Pardubice nízká srážka (dynamický trh)
+ *   ČB:         80 000 →  85 200  (+6,5 %)
+ *   Liberec:    80 200 →  77 900  (-2,9 %) — vyšší srážka v méně likvidním trhu
+ *   Olomouc:    85 200 →  83 200  (-2,3 %)
+ *   Ústí:       50 300 →  48 700  (-3,2 %)
+ *   Ostrava, KV, HK, Plzeň, Jihlava, Zlín: beze změny nebo marginální (<1 %)
  */
 const srealityStarsiZastavba2kk_Apr2026: PerCity<number> = {
-  "praha":            140_500, // ask 175 045 × 0.802 (n=1 350)
-  "brno":             114_300, // ask 142 453 × 0.802 (n=331) — shoduje se s ČBA Monitor
-  "ostrava":           74_200, // ask 92 470 × 0.802 (n=64) — +20 % vs. ČBA Monitor (61 600)
-  "plzen":             82_100, // ask 102 381 × 0.802 (n=81)
-  "ceske-budejovice":  80_000, // ask 99 756 × 0.802 (n=64)
-  "hradec-kralove":    96_300, // ask 119 984 × 0.802 (n=42) — +11,8 % vs. ČBA Monitor (86 100)
-  "liberec":           80_200, // ask 99 929 × 0.802 (n=66)
-  "olomouc":           85_200, // ask 106 207 × 0.802 (n=73)
-  "pardubice":         80_200, // ask 100 000 × 0.802 (n=25)
-  "usti-nad-labem":    50_300, // ask 62 720 × 0.802 (n=16) — malý vzorek, viz dokumentace
-  "karlovy-vary":      73_400, // ask 91 499 × 0.802 (n=104) — +42 % vs. ČBA Monitor (51 700)
-  "jihlava":           71_900, // ask 89 579 × 0.802 (n=17) — malý vzorek
-  "zlin":              75_700, // VÝJIMKA: ČBA Monitor Q4 2025 — Sreality vzorek anomální
+  "praha":            152_300, // 175 045 × 0.870 (n=1 350)
+  "brno":             120_100, // 142 453 × 0.843 (n=331)
+  "ostrava":           74_300, // 92 470 × 0.804 fallback (n=64) — +20,6 % vs. ČBA Monitor
+  "plzen":             82_300, // 102 381 × 0.804 (n=81)
+  "ceske-budejovice":  85_200, // 99 756 × 0.854 (n=64)
+  "hradec-kralove":    96_500, // 119 984 × 0.804 fallback (n=42)
+  "liberec":           77_900, // 99 929 × 0.780 (n=66)
+  "olomouc":           83_200, // 106 207 × 0.783 (n=73)
+  "pardubice":         88_200, // 100 000 × 0.882 (n=25)
+  "usti-nad-labem":    48_700, // 62 720 × 0.777 (n=16) — malý vzorek
+  "karlovy-vary":      73_600, // 91 499 × 0.804 fallback (n=104) — +42 % vs. ČBA Monitor
+  "jihlava":           71_500, // 89 579 × 0.798 (n=17) — malý vzorek
+  "zlin":              75_700, // VÝJIMKA: ČBA Monitor Q4 2025 (Sreality vzorek anomální)
 };
 
 /**
@@ -133,7 +198,7 @@ const dispozicniKoeficient: Record<"1+kk" | "2+kk" | "3+kk" | "4+kk", number> = 
  * Výpočet kupní ceny bytu v Kč.
  * kupniCena = cenaZaM2[město] × koeficientDispozice[dispozice] × squareMeters[město][dispozice]
  *
- * Zdroj cenaZaM2: Sreality starší zástavba (cihlová + panelová) × haircut 0.802, duben 2026.
+ * Zdroj cenaZaM2: Sreality nabídková cena (starší zástavba) × per-city haircut faktor, duben 2026.
  * Výjimka Zlín: ČBA Monitor Q4 2025 (Sreality vzorek anomální).
  * Zaokrouhlení na 10 000 Kč — přesnost vstupních dat to nedovoluje více.
  */
@@ -149,76 +214,76 @@ function vypoctiKupniCenu(
 
 export const kupniCenaValues: PerCityPerSize<number> = {
   "praha": {
-    "1+kk": vypoctiKupniCenu("praha", "1+kk"),              // 140 500 × 1,163 × 33 ≈ 5 390 000 Kč
-    "2+kk": vypoctiKupniCenu("praha", "2+kk"),              // 140 500 × 1,000 × 52 ≈ 7 310 000 Kč
-    "3+kk": vypoctiKupniCenu("praha", "3+kk"),              // 140 500 × 0,951 × 80 ≈ 10 690 000 Kč
-    "4+kk": vypoctiKupniCenu("praha", "4+kk"),              // 140 500 × 0,927 × 110 ≈ 14 330 000 Kč
+    "1+kk": vypoctiKupniCenu("praha", "1+kk"),              // 152 300 × 1,163 × 33 ≈ 5 840 000 Kč
+    "2+kk": vypoctiKupniCenu("praha", "2+kk"),              // 152 300 × 1,000 × 52 ≈ 7 920 000 Kč
+    "3+kk": vypoctiKupniCenu("praha", "3+kk"),              // 152 300 × 0,951 × 80 ≈ 11 590 000 Kč
+    "4+kk": vypoctiKupniCenu("praha", "4+kk"),              // 152 300 × 0,927 × 110 ≈ 15 530 000 Kč
   },
   "brno": {
-    "1+kk": vypoctiKupniCenu("brno", "1+kk"),               // 114 300 × 1,163 × 32 ≈ 4 250 000 Kč
-    "2+kk": vypoctiKupniCenu("brno", "2+kk"),               // 114 300 × 1,000 × 53 ≈ 6 060 000 Kč
-    "3+kk": vypoctiKupniCenu("brno", "3+kk"),               // 114 300 × 0,951 × 78 ≈ 8 480 000 Kč
-    "4+kk": vypoctiKupniCenu("brno", "4+kk"),               // 114 300 × 0,927 × 113 ≈ 11 980 000 Kč
+    "1+kk": vypoctiKupniCenu("brno", "1+kk"),               // 120 100 × 1,163 × 32 ≈ 4 470 000 Kč
+    "2+kk": vypoctiKupniCenu("brno", "2+kk"),               // 120 100 × 1,000 × 53 ≈ 6 370 000 Kč
+    "3+kk": vypoctiKupniCenu("brno", "3+kk"),               // 120 100 × 0,951 × 78 ≈ 8 910 000 Kč
+    "4+kk": vypoctiKupniCenu("brno", "4+kk"),               // 120 100 × 0,927 × 113 ≈ 12 580 000 Kč
   },
   "ostrava": {
-    "1+kk": vypoctiKupniCenu("ostrava", "1+kk"),            // 74 200 × 1,163 × 31 ≈ 2 670 000 Kč
-    "2+kk": vypoctiKupniCenu("ostrava", "2+kk"),            // 74 200 × 1,000 × 54 ≈ 4 010 000 Kč
-    "3+kk": vypoctiKupniCenu("ostrava", "3+kk"),            // 74 200 × 0,951 × 78 ≈ 5 500 000 Kč
-    "4+kk": vypoctiKupniCenu("ostrava", "4+kk"),            // 74 200 × 0,927 × 105 ≈ 7 220 000 Kč
+    "1+kk": vypoctiKupniCenu("ostrava", "1+kk"),            // 74 300 × 1,163 × 31 ≈ 2 680 000 Kč
+    "2+kk": vypoctiKupniCenu("ostrava", "2+kk"),            // 74 300 × 1,000 × 54 ≈ 4 010 000 Kč
+    "3+kk": vypoctiKupniCenu("ostrava", "3+kk"),            // 74 300 × 0,951 × 78 ≈ 5 510 000 Kč
+    "4+kk": vypoctiKupniCenu("ostrava", "4+kk"),            // 74 300 × 0,927 × 105 ≈ 7 230 000 Kč
   },
   "plzen": {
-    "1+kk": vypoctiKupniCenu("plzen", "1+kk"),              // 82 100 × 1,163 × 34 ≈ 3 240 000 Kč
-    "2+kk": vypoctiKupniCenu("plzen", "2+kk"),              // 82 100 × 1,000 × 55 ≈ 4 520 000 Kč
-    "3+kk": vypoctiKupniCenu("plzen", "3+kk"),              // 82 100 × 0,951 × 82 ≈ 6 400 000 Kč
-    "4+kk": vypoctiKupniCenu("plzen", "4+kk"),              // 82 100 × 0,927 × 104 ≈ 7 910 000 Kč
+    "1+kk": vypoctiKupniCenu("plzen", "1+kk"),              // 82 300 × 1,163 × 34 ≈ 3 250 000 Kč
+    "2+kk": vypoctiKupniCenu("plzen", "2+kk"),              // 82 300 × 1,000 × 55 ≈ 4 530 000 Kč
+    "3+kk": vypoctiKupniCenu("plzen", "3+kk"),              // 82 300 × 0,951 × 82 ≈ 6 420 000 Kč
+    "4+kk": vypoctiKupniCenu("plzen", "4+kk"),              // 82 300 × 0,927 × 104 ≈ 7 930 000 Kč
   },
   "ceske-budejovice": {
-    "1+kk": vypoctiKupniCenu("ceske-budejovice", "1+kk"),   // 80 000 × 1,163 × 40 ≈ 3 720 000 Kč
-    "2+kk": vypoctiKupniCenu("ceske-budejovice", "2+kk"),   // 80 000 × 1,000 × 54 ≈ 4 320 000 Kč
-    "3+kk": vypoctiKupniCenu("ceske-budejovice", "3+kk"),   // 80 000 × 0,951 × 84 ≈ 6 390 000 Kč
-    "4+kk": vypoctiKupniCenu("ceske-budejovice", "4+kk"),   // 80 000 × 0,927 × 99 ≈ 7 340 000 Kč
+    "1+kk": vypoctiKupniCenu("ceske-budejovice", "1+kk"),   // 85 200 × 1,163 × 40 ≈ 3 960 000 Kč
+    "2+kk": vypoctiKupniCenu("ceske-budejovice", "2+kk"),   // 85 200 × 1,000 × 54 ≈ 4 600 000 Kč
+    "3+kk": vypoctiKupniCenu("ceske-budejovice", "3+kk"),   // 85 200 × 0,951 × 84 ≈ 6 810 000 Kč
+    "4+kk": vypoctiKupniCenu("ceske-budejovice", "4+kk"),   // 85 200 × 0,927 × 99 ≈ 7 820 000 Kč
   },
   "hradec-kralove": {
-    "1+kk": vypoctiKupniCenu("hradec-kralove", "1+kk"),     // 96 300 × 1,163 × 35 ≈ 3 920 000 Kč
-    "2+kk": vypoctiKupniCenu("hradec-kralove", "2+kk"),     // 96 300 × 1,000 × 53 ≈ 5 100 000 Kč
-    "3+kk": vypoctiKupniCenu("hradec-kralove", "3+kk"),     // 96 300 × 0,951 × 86 ≈ 7 870 000 Kč
-    "4+kk": vypoctiKupniCenu("hradec-kralove", "4+kk"),     // 96 300 × 0,927 × 107 ≈ 9 550 000 Kč
+    "1+kk": vypoctiKupniCenu("hradec-kralove", "1+kk"),     // 96 500 × 1,163 × 35 ≈ 3 930 000 Kč
+    "2+kk": vypoctiKupniCenu("hradec-kralove", "2+kk"),     // 96 500 × 1,000 × 53 ≈ 5 110 000 Kč
+    "3+kk": vypoctiKupniCenu("hradec-kralove", "3+kk"),     // 96 500 × 0,951 × 86 ≈ 7 890 000 Kč
+    "4+kk": vypoctiKupniCenu("hradec-kralove", "4+kk"),     // 96 500 × 0,927 × 107 ≈ 9 570 000 Kč
   },
   "liberec": {
-    "1+kk": vypoctiKupniCenu("liberec", "1+kk"),            // 80 200 × 1,163 × 41 ≈ 3 830 000 Kč
-    "2+kk": vypoctiKupniCenu("liberec", "2+kk"),            // 80 200 × 1,000 × 52 ≈ 4 170 000 Kč
-    "3+kk": vypoctiKupniCenu("liberec", "3+kk"),            // 80 200 × 0,951 × 78 ≈ 5 950 000 Kč
-    "4+kk": vypoctiKupniCenu("liberec", "4+kk"),            // 80 200 × 0,927 × 97 ≈ 7 210 000 Kč
+    "1+kk": vypoctiKupniCenu("liberec", "1+kk"),            // 77 900 × 1,163 × 41 ≈ 3 720 000 Kč
+    "2+kk": vypoctiKupniCenu("liberec", "2+kk"),            // 77 900 × 1,000 × 52 ≈ 4 050 000 Kč
+    "3+kk": vypoctiKupniCenu("liberec", "3+kk"),            // 77 900 × 0,951 × 78 ≈ 5 780 000 Kč
+    "4+kk": vypoctiKupniCenu("liberec", "4+kk"),            // 77 900 × 0,927 × 97 ≈ 7 010 000 Kč
   },
   "olomouc": {
-    "1+kk": vypoctiKupniCenu("olomouc", "1+kk"),            // 85 200 × 1,163 × 32 ≈ 3 170 000 Kč
-    "2+kk": vypoctiKupniCenu("olomouc", "2+kk"),            // 85 200 × 1,000 × 55 ≈ 4 690 000 Kč
-    "3+kk": vypoctiKupniCenu("olomouc", "3+kk"),            // 85 200 × 0,951 × 80 ≈ 6 480 000 Kč
-    "4+kk": vypoctiKupniCenu("olomouc", "4+kk"),            // 85 200 × 0,927 × 90 ≈ 7 100 000 Kč
+    "1+kk": vypoctiKupniCenu("olomouc", "1+kk"),            // 83 200 × 1,163 × 32 ≈ 3 090 000 Kč
+    "2+kk": vypoctiKupniCenu("olomouc", "2+kk"),            // 83 200 × 1,000 × 55 ≈ 4 580 000 Kč
+    "3+kk": vypoctiKupniCenu("olomouc", "3+kk"),            // 83 200 × 0,951 × 80 ≈ 6 330 000 Kč
+    "4+kk": vypoctiKupniCenu("olomouc", "4+kk"),            // 83 200 × 0,927 × 90 ≈ 6 930 000 Kč
   },
   "pardubice": {
-    "1+kk": vypoctiKupniCenu("pardubice", "1+kk"),          // 80 200 × 1,163 × 33 ≈ 3 080 000 Kč
-    "2+kk": vypoctiKupniCenu("pardubice", "2+kk"),          // 80 200 × 1,000 × 58 ≈ 4 650 000 Kč
-    "3+kk": vypoctiKupniCenu("pardubice", "3+kk"),          // 80 200 × 0,951 × 74 ≈ 5 650 000 Kč
-    "4+kk": vypoctiKupniCenu("pardubice", "4+kk"),          // 80 200 × 0,927 × 101 ≈ 7 510 000 Kč
+    "1+kk": vypoctiKupniCenu("pardubice", "1+kk"),          // 88 200 × 1,163 × 33 ≈ 3 380 000 Kč
+    "2+kk": vypoctiKupniCenu("pardubice", "2+kk"),          // 88 200 × 1,000 × 58 ≈ 5 120 000 Kč
+    "3+kk": vypoctiKupniCenu("pardubice", "3+kk"),          // 88 200 × 0,951 × 74 ≈ 6 200 000 Kč
+    "4+kk": vypoctiKupniCenu("pardubice", "4+kk"),          // 88 200 × 0,927 × 101 ≈ 8 250 000 Kč
   },
   "usti-nad-labem": {
-    "1+kk": vypoctiKupniCenu("usti-nad-labem", "1+kk"),     // 50 300 × 1,163 × 25 ≈ 1 460 000 Kč
-    "2+kk": vypoctiKupniCenu("usti-nad-labem", "2+kk"),     // 50 300 × 1,000 × 43 ≈ 2 160 000 Kč
-    "3+kk": vypoctiKupniCenu("usti-nad-labem", "3+kk"),     // 50 300 × 0,951 × 75 ≈ 3 590 000 Kč
-    "4+kk": vypoctiKupniCenu("usti-nad-labem", "4+kk"),     // 50 300 × 0,927 × 94 ≈ 4 380 000 Kč
+    "1+kk": vypoctiKupniCenu("usti-nad-labem", "1+kk"),     // 48 700 × 1,163 × 25 ≈ 1 420 000 Kč
+    "2+kk": vypoctiKupniCenu("usti-nad-labem", "2+kk"),     // 48 700 × 1,000 × 43 ≈ 2 090 000 Kč
+    "3+kk": vypoctiKupniCenu("usti-nad-labem", "3+kk"),     // 48 700 × 0,951 × 75 ≈ 3 480 000 Kč
+    "4+kk": vypoctiKupniCenu("usti-nad-labem", "4+kk"),     // 48 700 × 0,927 × 94 ≈ 4 240 000 Kč
   },
   "karlovy-vary": {
-    "1+kk": vypoctiKupniCenu("karlovy-vary", "1+kk"),       // 73 400 × 1,163 × 39 ≈ 3 330 000 Kč
-    "2+kk": vypoctiKupniCenu("karlovy-vary", "2+kk"),       // 73 400 × 1,000 × 60 ≈ 4 400 000 Kč
-    "3+kk": vypoctiKupniCenu("karlovy-vary", "3+kk"),       // 73 400 × 0,951 × 88 ≈ 6 140 000 Kč
-    "4+kk": vypoctiKupniCenu("karlovy-vary", "4+kk"),       // 73 400 × 0,927 × 118 ≈ 8 030 000 Kč
+    "1+kk": vypoctiKupniCenu("karlovy-vary", "1+kk"),       // 73 600 × 1,163 × 39 ≈ 3 340 000 Kč
+    "2+kk": vypoctiKupniCenu("karlovy-vary", "2+kk"),       // 73 600 × 1,000 × 60 ≈ 4 420 000 Kč
+    "3+kk": vypoctiKupniCenu("karlovy-vary", "3+kk"),       // 73 600 × 0,951 × 88 ≈ 6 160 000 Kč
+    "4+kk": vypoctiKupniCenu("karlovy-vary", "4+kk"),       // 73 600 × 0,927 × 118 ≈ 8 060 000 Kč
   },
   "jihlava": {
-    "1+kk": vypoctiKupniCenu("jihlava", "1+kk"),            // 71 900 × 1,163 × 38 ≈ 3 180 000 Kč
-    "2+kk": vypoctiKupniCenu("jihlava", "2+kk"),            // 71 900 × 1,000 × 55 ≈ 3 950 000 Kč
-    "3+kk": vypoctiKupniCenu("jihlava", "3+kk"),            // 71 900 × 0,951 × 89 ≈ 6 090 000 Kč
-    "4+kk": vypoctiKupniCenu("jihlava", "4+kk"),            // 71 900 × 0,927 × 102 ≈ 6 800 000 Kč
+    "1+kk": vypoctiKupniCenu("jihlava", "1+kk"),            // 71 500 × 1,163 × 38 ≈ 3 160 000 Kč
+    "2+kk": vypoctiKupniCenu("jihlava", "2+kk"),            // 71 500 × 1,000 × 55 ≈ 3 930 000 Kč
+    "3+kk": vypoctiKupniCenu("jihlava", "3+kk"),            // 71 500 × 0,951 × 89 ≈ 6 060 000 Kč
+    "4+kk": vypoctiKupniCenu("jihlava", "4+kk"),            // 71 500 × 0,927 × 102 ≈ 6 760 000 Kč
   },
   "zlin": {
     "1+kk": vypoctiKupniCenu("zlin", "1+kk"),               // 75 700 × 1,163 × 35 ≈ 3 080 000 Kč (ČBA Monitor)
@@ -269,46 +334,55 @@ export const kupniCenaDoc: AttributeDoc<PerCityPerSize<number>> = {
     zvolenaMetoda: `
       kupniCena = cenaZaM2[město] × koeficientDispozice[dispozice] × squareMeters[město][dispozice]
 
-      cenaZaM2 pochází z nabídkových cen Sreality.cz pro cihlové a panelové domy
-      (starší zástavba), upravených haircut faktorem 0.802 (konverze nabídková → odhadovaná
-      transakční cena). Data stažena 2026-04-05, script: scripts/sreality-older-buildings-price.mjs.
-      Výjimka: Zlín — ČBA Monitor Q4 2025, neboť Sreality vzorek pro Zlín je anomální.
+      cenaZaM2 = srealityNabidkovaCena2kk[město] × perCityHaircutFaktor[město]
 
-      koeficientDispozice pochází ze stejného Sreality dotazu filtrovaného na starší zástavbu
-      (cihlová + panelová), 2026-04-05, script: scripts/sreality-older-buildings-price.mjs.
-      Tím je zaručena interní konzistence: cena i koeficienty vycházejí ze stejné populace.
+      Nabídkové ceny Sreality.cz pro cihlové a panelové domy (starší zástavba), staženy 2026-04-05,
+      script: scripts/sreality-older-buildings-price.mjs. Každé město má vlastní haircut faktor.
 
-      Haircut faktor 0.802 byl kalibrován porovnáním Praha (0.828), Brno (0.802) a Ústí (0.740)
-      vs. ČBA Monitor Q4 2025 — ta tři města jsou jedinou dostupnou ground truth pro transakční
-      ceny ve stejném tržním segmentu. Medián kalibrace = 0.802.
+      Per-city haircut metodika (2026-04-05):
+        haircut[město] = (ČBA Monitor Q4 2025 × 1.05) / Sreality asking[město]
+        Faktor 1.05 eliminuje časový posun (~5 % za 4,5 měsíce, při anualizovaném růstu ~12–14 %).
+        Spolehlivé výsledky: Praha 0.870, Brno 0.843, Plzeň 0.804, ČB 0.854,
+          Liberec 0.780, Olomouc 0.783, Pardubice 0.882, Ústí 0.777, Jihlava 0.798.
+        Fallback (0.804 = medián spolehlivých měst): Ostrava, KV (ČBA Monitor biased),
+          Hradec Králové (Sreality asking suspektně vysoké).
+        Výjimka: Zlín — ČBA Monitor Q4 2025 přímo (Sreality vzorek anomální).
+
+      Výhoda per-city haircut vs. flat 0.802:
+        Plně odstraňuje systematické chyby plynoucí z různé likvidity trhů.
+        Likvidní trhy (Praha, Brno, Pardubice) mají nižší čistou srážku (~12–13 %).
+        Méně likvidní trhy (Ústí, Liberec, Olomouc) mají vyšší srážku (~22 %).
+        Zbývající nejistota: kvalita časové korekce (+5 %) — citlivost ±3 p.b.
+
+      koeficientDispozice pochází ze stejného Sreality dotazu, 2026-04-05.
     `,
     procTatoMetoda: `
       Klíčová motivace pro přechod z ČBA Monitor na Sreality starší zástavba:
       
       ČBA Monitor zaznamenává pouze hypotečně financované transakce pre-1995 zástavby.
-      V některých městech (Ostrava, Karlovy Vary, Liberec) pokrývá ČBA Monitor zjevně
-      pouze nejlevnější segment trhu — nabídkové ceny Sreality jsou o 15–43 % výše,
-      přičemž část tohoto rozdílu nelze vysvětlit standardní srážkou nabídka→transakce.
+      V některých městech (Ostrava, Karlovy Vary) pokrývá ČBA Monitor zjevně
+      pouze nejlevnější segment trhu — nabídkové ceny Sreality jsou o 34–77 % výše
+      i po odečtení standardní srážky nabídka→transakce.
       Výsledkem bylo systematické podhodnocení kupniCena a nadhodnocení výnosového procenta.
 
       Sreality starší zástavba (cihlová + panelová) je konzistentní s populací bytů
       v najemne.ts (stejný filtr). Kupní cena i nájemné tak popisují tentýž typ bytu.
 
-      Přesnost výsledků (post-haircut):
-        Praha: -3,1 % vs. ČBA Monitor (marginální)
-        Brno: 0,0 % vs. ČBA Monitor (perfektní shoda — kalibrační bod)
-        Ostrava: +20,5 % vs. ČBA Monitor (korekce prokázaného podhodnocení)
-        KV: +42 % vs. ČBA Monitor (korekce extrémního podhodnocení — n=104 potvrzuje)
-        HK: +11,8 % vs. ČBA Monitor (vyšší tržní ceny HK nebyly v CBA zachyceny)
+      Per-city haircut vs. flat haircut:
+        Praha: 0.870 (flat 0.802 → systematicky podhodnocoval ceny o ~8 %)
+        Brno: 0.843 (flat 0.802 → systematicky podhodnocoval ceny o ~5 %)
+        Pardubice: 0.882 (flat 0.802 → podhodnocoval o ~10 %; dynamický trh)
+        Ústí: 0.777 (flat 0.802 → mírně nadhodnocoval; méně likvidní trh)
+        Liberec: 0.780 (flat 0.802 → mírně nadhodnocoval; méně likvidní trh)
     `,
     presnost: `
-      Cena za m² (Sreality starší zástavba × haircut 0.802):
-        Velká města (Praha n=1350, Brno n=331): ±5–8 % — vysoká spolehlivost vzorku.
-        Střední města (Ostrava n=64, KV n=104, Olomouc n=73): ±8–12 %.
+      Cena za m² (Sreality starší zástavba × per-city haircut):
+        Velká města (Praha n=1350 haircut 0.870, Brno n=331 haircut 0.843): ±6–9 %.
+          Haircut odvozeno z ČBA Monitor — nejspolehlivější kalibrační bod.
+        Střední města (Plzeň n=81, ČB n=64, KV n=104, Olomouc n=73): ±8–12 %.
+          KV a Ostrava: fallback haircut 0.804, neurčitost haircutu vyšší (±5 p.b.).
         Malá města (Ústí n=16, Jihlava n=17): ±12–18 % — malý vzorek.
-        Haircut faktor 0.802 je mediánem 3 kalibračních měst. Skutečný haircut per město
-        se liší — může být konzervativnější v likvidnějších trzích (Praha) nebo širší
-        v méně likvidních (Ústí, Jihlava). Odhadovaná neurčitost haircutu: ±3–5 p.b.
+        Časová korekce (+5 %): citlivost na ±2 p.b. chyby v odhadu růstu = ±2–3 % na ceně.
 
       Koeficienty dispozice (Sreality starší zástavba, 2026-04-05):
         1+kk: 1.163, odchylka ±3–4 p.b. (rozptyl: Praha 1.096, Plzeň 1.299)
@@ -323,17 +397,20 @@ export const kupniCenaDoc: AttributeDoc<PerCityPerSize<number>> = {
     kdyNeniPresna: [
       "Novostavby (post-1995) — filtr starší zástavba je aplikován, ale okrajové případy post-1995 cihlových domů mohou projít",
       "Extrémní lokality — centrum vs. periferie se liší o 20–40 % uvnitř jednoho města",
-      "Ústí nad Labem — 2+kk n=16 je nedostatečný vzorek; výsledek (50 300 Kč/m²) může mít odchylku ±15 %",
+      "Ústí nad Labem — 2+kk n=16 je nedostatečný vzorek; výsledek (48 700 Kč/m²) může mít odchylku ±15 %",
       "Jihlava — 2+kk n=17, podobná výhrada jako Ústí",
       "Zlín — použit ČBA Monitor (n/a Sreality), koeficienty Sreality pro Zlín anomální (3+kk > 2+kk na m²)",
       "Liberec — nabídkový trh 1+kk vykazuje minimální prémii (+3 %), národní koeficient (+16,3 %) může 1+kk mírně nadhodnotit",
-      "Hradec Králové 1+kk: Sreality vzorek n=7, koeficient nespolehlivý — národní medián použit jako záloha",
-      "Haircut faktor 0.802 zahrnuje i časový posun (ČBA Monitor Q4 2025 vs. Sreality duben 2026). V případě stagnace nebo poklesu cen by byl haircut nadhodnocen",
+      "Hradec Králové 1+kk: Sreality vzorek n=7, koeficient nespolehlivý — národní medián použit; haircut fallback 0.804",
+      "Časová korekce +5 %: pokud skutečný růst Q4 2025→duben 2026 byl jiný, ovlivní per-city haircuty rovnoměrně (~±0.02 u všech měst). Relativní pořadí cen měst se nemění",
     ],
     vzorec: `
       kupniCena = ROUND(cenaZaM2[město] × dispozicniKoeficient[dispozice] × squareMeters[město][dispozice], -4)
       
-      cenaZaM2 = srealityNabidkovaCena2kk × 0.802  (haircut faktor)
+      cenaZaM2 = srealityNabidkovaCena2kk[město] × perCityHaircutFaktor[město]
+      perCityHaircutFaktor: { Praha: 0.870, Brno: 0.843, Plzeň: 0.804, ČB: 0.854,
+        Liberec: 0.780, Olomouc: 0.783, Pardubice: 0.882, Ústí: 0.777, Jihlava: 0.798,
+        Ostrava/KV/HK: 0.804 (fallback), Zlín: n/a (ČBA Monitor přímo) }
       dispozicniKoeficient: { '1+kk': 1.163, '2+kk': 1.000, '3+kk': 0.951, '4+kk': 0.927 }
       Zdroj dat: Sreality starší zástavba (cihlová + panelová), 2026-04-05.
       Výjimka Zlín: cenaZaM2 = ČBA Monitor Q4 2025 = 75 700 Kč/m².
@@ -367,13 +444,21 @@ export const kupniCenaDoc: AttributeDoc<PerCityPerSize<number>> = {
           Dispozicní koeficienty ze starší zástavby (národní mediány):
             1+kk: 1.163, 3+kk: 0.951, 4+kk: 0.927 (12 měst, Ústí bez 4+kk).
 
-          Haircut kalibrace (nabídková → transakční cena):
-            Praha: 145 000 (ČBA) / 175 045 (Sreality ask) = 0.828 ← kalibrační bod
-            Brno:  114 300 (ČBA) / 142 453 (Sreality ask) = 0.802 ← kalibrační bod
-            Ústí:   46 400 (ČBA) /  62 720 (Sreality ask) = 0.740 ← kalibrační bod
-            Medián kalibrace = 0.802.
-          Haircut zahrnuje: standardní srážku nabídka→transakce (~10–15 %) +
-          časový posun Q4 2025 → duben 2026 (~4–5 % tržního růstu).
+          Per-city haircut kalibrace (nabídková → transakční cena):
+          Metoda: (ČBA Monitor Q4 2025 × 1.05) / Sreality asking = čistá srážka
+          Faktor 1.05 eliminuje ~5 % tržního růstu Q4 2025→duben 2026 (anualizovaně 12–14 %).
+            Praha:     145 000 × 1.05 / 175 045 = 0.870 ← čistá srážka 13 % (likvidní trh)
+            Brno:      114 300 × 1.05 / 142 453 = 0.843 ← čistá srážka 16 %
+            Plzeň:      78 400 × 1.05 / 102 381 = 0.804 ← čistá srážka 20 %
+            ČB:         81 100 × 1.05 /  99 756 = 0.854 ← čistá srážka 15 %
+            Liberec:    74 200 × 1.05 /  99 929 = 0.780 ← čistá srážka 22 %
+            Olomouc:    79 200 × 1.05 / 106 207 = 0.783 ← čistá srážka 22 %
+            Pardubice:  84 000 × 1.05 / 100 000 = 0.882 ← čistá srážka 12 % (dynamický trh)
+            Ústí:       46 400 × 1.05 /  62 720 = 0.777 ← čistá srážka 22 %
+            Jihlava:    68 100 × 1.05 /  89 579 = 0.798 ← čistá srážka 20 %
+            Ostrava: ČBA Monitor biased → fallback 0.804 (medián spolehlivých měst)
+            KV:      ČBA Monitor biased → fallback 0.804
+            HK:      Sreality asking suspektně vysoké → fallback 0.804
         `,
       },
       {
@@ -410,7 +495,8 @@ export const kupniCenaDoc: AttributeDoc<PerCityPerSize<number>> = {
     odvozeniHodnoty: `
       PRIMÁRNÍ ZDROJ — cena za m² (12/13 měst): Sreality.cz API, starší zástavba 
       (cihlová + panelová), nabídkové ceny, duben 2026. Script: sreality-older-buildings-price.mjs.
-      Haircut faktor 0.802 kalibrován z Praha/Brno/Ústí vs. ČBA Monitor Q4 2025.
+      Per-city haircut kalibrován: (ČBA Monitor Q4 2025 × 1.05) / Sreality asking.
+      Fallback 0.804 (medián spolehlivých měst) pro Ostrava, KV (ČBA Monitor biased), HK (suspektní asking).
 
       VÝJIMKA — Zlín (1/13 měst): ČBA Monitor Q4 2025 = 75 700 Kč/m².
       Důvod: Sreality vzorek Zlín (n=29) vykazuje anomální koeficienty (3+kk a 4+kk dražší
@@ -421,12 +507,15 @@ export const kupniCenaDoc: AttributeDoc<PerCityPerSize<number>> = {
       Stejný filtr (cihlová + panelová) = stejná populace bytů pro cenu i nájemné.
       Výnosové procento je proto interně konzistentní a nepromíchává různé typy zástavby.
 
-      SROVNÁNÍ NOVÉ A STARÉ METODIKY (2+kk, vybrané změny):
-        Ostrava: 3 330 000 → 4 010 000 Kč (+20,5 %) — korekce podhodnocení ČBA Monitor
-        KV:      3 100 000 → 4 400 000 Kč (+42 %) — korekce extrémního podhodnocení
-        HK:      4 560 000 → 5 100 000 Kč (+11,8 %) — korekce podhodnocení
-        Praha:   7 540 000 → 7 310 000 Kč (-3,1 %) — marginální změna (ČBA Monitor spolehlivý)
-        Brno:    6 060 000 → 6 060 000 Kč (0 %) — beze změny (kalibrační bod)
+      SROVNÁNÍ S PŘEDCHOZÍ METODIKOU — flat haircut 0.802 (2+kk, vybrané změny):
+        Praha:     7 310 000 → 7 920 000 Kč (+8,4 %) — flat haircut podhodnocoval Prahu
+        Brno:      6 060 000 → 6 370 000 Kč (+5,1 %)
+        Pardubice: 4 650 000 → 5 120 000 Kč (+10,0 %) — dynamický trh, nízká srážka
+        ČB:        4 320 000 → 4 600 000 Kč (+6,5 %)
+        Liberec:   4 170 000 → 4 050 000 Kč (-2,9 %) — méně likvidní, vyšší srážka
+        Olomouc:   4 690 000 → 4 580 000 Kč (-2,3 %)
+        Ústí:      2 160 000 → 2 090 000 Kč (-3,2 %)
+        Ostrava/KV/HK/Plzeň/Jihlava/Zlín: beze změny nebo marginální (<1 %)
     `,
   },
 
