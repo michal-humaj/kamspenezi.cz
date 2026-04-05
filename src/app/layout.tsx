@@ -22,7 +22,7 @@ const figtree = Figtree({
 
 const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "600"],
   variable: "--font-display-serif",
   display: "swap",
 });

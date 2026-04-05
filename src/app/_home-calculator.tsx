@@ -286,6 +286,7 @@ export default function HomeCalculator() {
                   className="w-full h-44 object-cover object-[center_30%]"
                   sizes="100vw"
                   quality={85}
+                  priority
                 />
               </div>
             </div>
