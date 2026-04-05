@@ -20,9 +20,9 @@ import { squareMetersValues } from "./square-meters";
  * — VYNECHÁNY: developerské projekty, novostavby, montované stavby
  *
  * METODICKÁ KONZISTENCE S KUPNICENA:
- *   kupniCena vychází z ČBA Monitor / Flat Zone — transakční ceny pre-1995 zástavby
- *   (cihlová + panelová). Tato data zachovávají stejnou populaci bytů: obě strany
- *   (cena i nájemné) popisují starší zástavbu → výnosové procento je vnitřně konzistentní.
+ *   kupniCena vychází ze Sreality.cz (duben 2026) filtrovaného na cihlovou a panelovou
+ *   zástavbu × haircut faktor 0.802. Tato data zachovávají stejnou populaci bytů: obě
+ *   strany (cena i nájemné) popisují starší zástavbu → výnosové procento je vnitřně konzistentní.
  *
  *   Předchozí přístup (Deloitte Rent Index Q4 2025) zahrnoval všechny typy bytů
  *   včetně developerských projektů → systematicky nadhodnocoval nájemné vůči cenám
@@ -299,10 +299,10 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
     `,
     procTatoMetoda: `
       KLÍČOVÝ DŮVOD — METODICKÁ KONZISTENCE S KUPNICENA:
-      kupniCena vychází z ČBA Monitor / Flat Zone — transakční ceny bytů v cihlové
-      a panelové zástavbě postavené před rokem 1995. Pokud by nájemné vycházelo
-      z blendované hodnoty zahrnující developerské projekty (jako předchozí Deloitte
-      přístup), vznikal by systematický nesoulad: cena popisuje levnější starší segment,
+      kupniCena vychází ze Sreality.cz (duben 2026) filtrovaného na cihlovou a panelovou
+      zástavbu × haircut 0.802 (scripts/sreality-older-buildings-price.mjs). Pokud by
+      nájemné vycházelo z blendované hodnoty zahrnující developerské projekty (jako
+      předchozí Deloitte přístup), vznikal by systematický nesoulad: cena popisuje starší segment,
       nájemné popisuje trh včetně dražších novostaveb → hrubé výnosové procento
       by bylo uměle vyšší než odpovídá realitě.
 
