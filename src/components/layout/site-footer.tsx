@@ -9,26 +9,6 @@ const FOOTER_COLUMNS = [
       { href: "/investice", label: "Kalkulačka investice" },
     ],
   },
-  {
-    heading: "Metodika",
-    links: [
-      { href: "/metodika/bydleni", label: "Metodika: Bydlení" },
-      { href: "/metodika/investice", label: "Metodika: Investice" },
-    ],
-  },
-  {
-    heading: "Projekt",
-    links: [
-      { href: "/o-projektu", label: "O projektu" },
-    ],
-  },
-  {
-    heading: "Články",
-    links: [
-      { href: "/koupit-nebo-pronajmout", label: "Koupit nebo pronajmout?" },
-      { href: "/vyplati-se-investicni-byt", label: "Vyplatí se investiční byt?" },
-    ],
-  },
 ];
 
 export function SiteFooter() {
@@ -38,7 +18,7 @@ export function SiteFooter() {
       style={{ background: "var(--bg-base)", borderColor: "var(--color-border)" }}
     >
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-10 md:py-14">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.6fr_1fr]">
           {/* Brand column */}
           <div className="space-y-3">
             <Logo />

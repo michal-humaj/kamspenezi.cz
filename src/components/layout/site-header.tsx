@@ -16,12 +16,6 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: "/", label: "Bydlení" },
   { href: "/investice", label: "Investice" },
-  { href: "/o-projektu", label: "O projektu" },
-];
-
-const MOBILE_SECONDARY_LINKS = [
-  { href: "/metodika/bydleni", label: "Metodika: Bydlení" },
-  { href: "/metodika/investice", label: "Metodika: Investice" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -111,33 +105,6 @@ export function SiteHeader() {
                   })}
                 </div>
 
-                {/* Divider */}
-                <div className="h-px" style={{ background: "var(--color-border)" }} />
-
-                {/* Secondary links — methodology */}
-                <div className="flex flex-col gap-3 font-uiSans">
-                  {MOBILE_SECONDARY_LINKS.map((item) => {
-                    const active = isActive(pathname, item.href);
-                    return (
-                      <SheetClose asChild key={item.href}>
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            "text-sm font-medium transition-colors",
-                            active ? "border-l-[3px] pl-3" : "hover:text-[var(--color-primary)]"
-                          )}
-                          style={{
-                            color: active ? "var(--color-primary)" : "var(--color-secondary)",
-                            ...(active ? { borderLeftColor: "var(--color-primary)" } : {}),
-                          }}
-                          aria-current={active ? "page" : undefined}
-                        >
-                          {item.label}
-                        </Link>
-                      </SheetClose>
-                    );
-                  })}
-                </div>
               </nav>
             </SheetContent>
           </Sheet>
