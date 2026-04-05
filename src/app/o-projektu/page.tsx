@@ -139,7 +139,7 @@ export default function OProjektuPage() {
             >
               Má smysl kupovat byt na vlastní bydlení, nebo je lepší platit
               nájem a investovat? Nejblíže jsem přišel ke kalkulačce New York
-              Times, skvěle zpracovaná, ale pro americký trh. Nepočítá fond
+              Times, skvěle zpracované, ale pro americký trh. Nepočítá fond
               oprav, pojistění ani daňovou úsporu z hypotečních úroků, které
               jsou pro českou realitu klíčové.
             </p>
