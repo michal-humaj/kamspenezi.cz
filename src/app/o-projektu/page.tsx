@@ -1,0 +1,536 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { ExternalLink, Linkedin, Mail, ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "O projektu | kamspenezi.cz",
+  description:
+    "Nezávislá kalkulačka bydlení a investičního bytu bez reklam a bankovních provizí. Kdo stojí za projektem a proč vznikl.",
+  alternates: {
+    canonical: "https://kamspenezi.cz/o-projektu",
+  },
+  openGraph: {
+    title: "O projektu | kamspenezi.cz",
+    description:
+      "Nezávislá kalkulačka bydlení a investičního bytu bez reklam a bankovních provizí. Kdo stojí za projektem a proč vznikl.",
+    type: "website",
+    url: "https://kamspenezi.cz/o-projektu",
+    siteName: "kamspenezi.cz",
+    locale: "cs_CZ",
+  },
+};
+
+// ─── Reusable section divider ────────────────────────────────────────────────
+function Divider() {
+  return (
+    <hr
+      className="my-10 md:my-12"
+      style={{ borderColor: "var(--color-border)" }}
+    />
+  );
+}
+
+// ─── Section heading (H2 — always sans, semibold, per design manual) ─────────
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h2
+      className="font-uiSans text-xl font-semibold tracking-[-0.01em] mb-4"
+      style={{ color: "var(--color-primary)" }}
+    >
+      {children}
+    </h2>
+  );
+}
+
+// ─── Body copy paragraph ─────────────────────────────────────────────────────
+function Prose({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="font-uiSans text-base leading-relaxed md:text-lg"
+      style={{ color: "var(--color-secondary)" }}
+    >
+      {children}
+    </p>
+  );
+}
+
+export default function OProjektuPage() {
+  return (
+    <div style={{ background: "var(--bg-base)" }}>
+
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <section
+        className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
+        style={{ background: "var(--bg-base)" }}
+      >
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-16">
+
+            {/* Left: identity */}
+            <div>
+              {/* Eyebrow */}
+              <p
+                className="font-uiSans text-xs font-semibold uppercase tracking-widest mb-3"
+                style={{ color: "var(--color-secondary)" }}
+              >
+                O projektu
+              </p>
+
+              {/* H1 — serif, per design manual (hero headline on this page) */}
+              <h1
+                className="font-displaySerif text-[clamp(36px,5vw,52px)] leading-[1.1] tracking-tight mb-4"
+                style={{ color: "var(--color-primary)" }}
+              >
+                Michal Humaj
+              </h1>
+
+              {/* Role / subtitle */}
+              <p
+                className="font-uiSans text-base md:text-lg leading-relaxed mb-8"
+                style={{ color: "var(--color-secondary)" }}
+              >
+                Produktový manažer v IT · Praha
+              </p>
+
+              {/* Independence badge */}
+              <div
+                className="inline-flex items-center gap-2 rounded-full px-4 py-2 font-uiSans text-sm font-medium"
+                style={{
+                  background: "var(--scenario-b-bg)",
+                  color: "var(--scenario-b-dot)",
+                }}
+              >
+                <span
+                  className="h-1.5 w-1.5 rounded-full flex-shrink-0"
+                  style={{ background: "var(--scenario-b-dot)" }}
+                />
+                Bez reklam · Bez bankovních provizí · Nezávislý projekt
+              </div>
+            </div>
+
+            {/* Right: photo */}
+            <div className="flex md:justify-end">
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  width: 200,
+                  height: 200,
+                  borderRadius: "var(--radius-card)",
+                  border: "1px solid var(--color-border)",
+                  boxShadow: "var(--shadow-card)",
+                  flexShrink: 0,
+                }}
+              >
+                <Image
+                  src="/michal.jpeg"
+                  alt="Michal Humaj"
+                  fill
+                  className="object-cover object-top"
+                  sizes="200px"
+                  priority
+                />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── MAIN CONTENT ──────────────────────────────────────────────────── */}
+      <section
+        className="pb-[var(--section-padding-y-mobile)] md:pb-[var(--section-padding-y-desktop)]"
+        style={{ background: "var(--bg-base)" }}
+      >
+        <div className="mx-auto max-w-2xl px-4 md:px-6">
+
+          {/* Osobní příběh */}
+          <div>
+            <SectionHeading>Osobní příběh</SectionHeading>
+            <Prose>
+              Řešil jsem dvě finanční otázky. Možná je řešíš taky.
+            </Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
+              style={{ color: "var(--color-secondary)" }}
+            >
+              Má smysl kupovat byt na vlastní bydlení, nebo je lepší platit
+              nájem a investovat? Nejblíže jsem přišel ke kalkulačce New York
+              Times — skvěle zpracovaná, ale pro americký trh. Nepočítá fond
+              oprav, pojistění ani daňovou úsporu z hypotečních úroků, které
+              jsou pro českou realitu klíčové.
+            </p>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
+              style={{ color: "var(--color-secondary)" }}
+            >
+              A pak: je výhodné kupovat investiční byt, nebo je lepší dát ty
+              samé peníze do globálního akciového fondu? Investiční byty mají
+              v Česku auru dobrého rozhodnutí. Výsledek, který mi kalkulačka
+              ukázala, mě překvapil.{" "}
+              <Link
+                href="/investice"
+                className="font-medium underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-primary)] transition-all"
+                style={{ color: "var(--color-primary)" }}
+              >
+                Jdi si ho spočítat sám.
+              </Link>
+            </p>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
+              style={{ color: "var(--color-secondary)" }}
+            >
+              Pro český trh jsem nenašel nic srovnatelného. Tak jsem ho
+              postavil.
+            </p>
+          </div>
+
+          <Divider />
+
+          {/* Kdo za tím stojí */}
+          <div>
+            <SectionHeading>Kdo za tím stojí</SectionHeading>
+            <Prose>
+              Jsem produktový manažer v Grouponu a drobný investor do
+              nemovitostí.
+            </Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
+              style={{ color: "var(--color-secondary)" }}
+            >
+              Nejsem finanční poradce ani hypoteční makléř. Právě proto mi
+              nikdo neplatí za to, abys koupil konkrétní produkt nebo volil
+              konkrétní scénář.
+            </p>
+          </div>
+
+          <Divider />
+
+          {/* Co kamspenezi.cz není */}
+          <div>
+            <SectionHeading>Co kamspenezi.cz není</SectionHeading>
+            <Prose>
+              Není to projekt banky, pojišťovny ani hypotečního makléře. Na
+              webu nejsou reklamy. Žádný affiliate odkaz, žádné komerční
+              partnerství.
+            </Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
+              style={{ color: "var(--color-secondary)" }}
+            >
+              Výsledek kalkulačky není doporučení. Ukáže ti čísla a rozhodnutí
+              je na tobě.
+            </p>
+          </div>
+
+          <Divider />
+
+          {/* Jak to funguje */}
+          <div>
+            <SectionHeading>Jak to funguje</SectionHeading>
+            <Prose>
+              Obě kalkulačky porovnávají dva scénáře na horizontu 30 let.
+              Ceny bytů, výše nájmů a úrokové sazby vychází z veřejně
+              dostupných dat. Každý předpoklad je zdokumentovaný a
+              dohledatelný.
+            </Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
+              style={{ color: "var(--color-secondary)" }}
+            >
+              Výpočet si ověříš v Google Sheets. Tabulka počítá úplně stejně
+              jako kalkulačka, řádek po řádku.
+            </p>
+
+            {/* Google Sheets callout */}
+            <a
+              href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 flex items-center justify-between gap-4 rounded-2xl border px-5 py-4 transition-all"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--color-border)",
+                boxShadow: "var(--shadow-card)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border-hover)";
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card-hover)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border)";
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card)";
+              }}
+            >
+              <div>
+                <p
+                  className="font-uiSans text-sm font-semibold"
+                  style={{ color: "var(--color-primary)" }}
+                >
+                  Ověřit výpočet v Google Sheets
+                </p>
+                <p
+                  className="font-uiSans text-xs mt-0.5"
+                  style={{ color: "var(--color-secondary)" }}
+                >
+                  Stejný výpočet, řádek po řádku. Otevírá novou záložku.
+                </p>
+              </div>
+              <ExternalLink
+                className="h-4 w-4 flex-shrink-0"
+                style={{ color: "var(--color-secondary)" }}
+              />
+            </a>
+
+            {/* Metodika links */}
+            <div className="mt-5 flex flex-col gap-2">
+              <p
+                className="font-uiSans text-sm font-medium mb-1"
+                style={{ color: "var(--color-secondary)" }}
+              >
+                Detailní metodiku najdeš tady:
+              </p>
+              {[
+                {
+                  href: "/metodika/bydleni",
+                  label: "Jak kalkulačka bydlení počítá",
+                },
+                {
+                  href: "/metodika/investice",
+                  label: "Jak kalkulačka investičního bytu počítá",
+                },
+              ].map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="inline-flex items-center gap-2 font-uiSans text-sm font-medium transition-colors hover:underline"
+                  style={{ color: "var(--color-primary)" }}
+                >
+                  <ArrowRight className="h-3.5 w-3.5 flex-shrink-0" />
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── KONTAKT ───────────────────────────────────────────────────────── */}
+      <section
+        className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
+        style={{ background: "var(--bg-lilac-section)" }}
+      >
+        <div className="mx-auto max-w-2xl px-4 md:px-6">
+          <h2
+            className="font-uiSans text-xl font-semibold tracking-[-0.01em] mb-2"
+            style={{ color: "var(--color-primary)" }}
+          >
+            Kontakt
+          </h2>
+          <p
+            className="font-uiSans text-base leading-relaxed mb-6"
+            style={{ color: "var(--color-secondary)" }}
+          >
+            Máš otázku k metodice nebo jiný pohled na některý předpoklad?
+            Napiš mi.
+          </p>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+            {/* LinkedIn */}
+            <a
+              href="https://linkedin.com/in/michal-humaj"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 rounded-full border px-5 py-3 font-uiSans text-sm font-medium transition-all"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--color-border)",
+                color: "var(--color-primary)",
+                boxShadow: "0 1px 3px rgba(15,23,42,0.04)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border-hover)";
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border)";
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "0 1px 3px rgba(15,23,42,0.04)";
+              }}
+            >
+              <Linkedin className="h-4 w-4 flex-shrink-0" />
+              LinkedIn: Michal Humaj
+            </a>
+
+            {/* Email */}
+            <a
+              href="mailto:michal@kamspenezi.cz"
+              className="inline-flex items-center gap-3 rounded-full border px-5 py-3 font-uiSans text-sm font-medium transition-all"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--color-border)",
+                color: "var(--color-primary)",
+                boxShadow: "0 1px 3px rgba(15,23,42,0.04)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border)";
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border)";
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "0 1px 3px rgba(15,23,42,0.04)";
+              }}
+            >
+              <Mail className="h-4 w-4 flex-shrink-0" />
+              michal@kamspenezi.cz
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA — Vyzkoušej to ────────────────────────────────────────────── */}
+      <section
+        className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
+        style={{ background: "var(--bg-base)" }}
+      >
+        <div className="mx-auto max-w-2xl px-4 md:px-6">
+          <p
+            className="font-uiSans text-base leading-relaxed mb-6"
+            style={{ color: "var(--color-secondary)" }}
+          >
+            Chceš vidět výsledek? Spočítej si to.
+          </p>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {/* Bydlení CTA card */}
+            <Link
+              href="/"
+              className="group flex flex-col justify-between rounded-[var(--radius-card)] border p-6 transition-all"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--color-border)",
+                boxShadow: "var(--shadow-card)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card-hover)";
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border-hover)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card)";
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border)";
+              }}
+            >
+              <div>
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-uiSans text-xs font-medium mb-3"
+                  style={{
+                    background: "var(--scenario-a-bg)",
+                    color: "var(--scenario-a-dot)",
+                  }}
+                >
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ background: "var(--scenario-a-dot)" }}
+                  />
+                  Vlastní bydlení
+                </span>
+                <p
+                  className="font-uiSans text-base font-semibold mb-1"
+                  style={{ color: "var(--color-primary)" }}
+                >
+                  Kalkulačka vlastního bydlení
+                </p>
+                <p
+                  className="font-uiSans text-sm leading-relaxed"
+                  style={{ color: "var(--color-secondary)" }}
+                >
+                  Koupě bytu vs. nájem a investice. 30letý horizont.
+                </p>
+              </div>
+              <div className="flex items-center justify-end mt-4">
+                <ArrowRight
+                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                  style={{ color: "var(--color-secondary)" }}
+                />
+              </div>
+            </Link>
+
+            {/* Investice CTA card */}
+            <Link
+              href="/investice"
+              className="group flex flex-col justify-between rounded-[var(--radius-card)] border p-6 transition-all"
+              style={{
+                background: "var(--bg-card)",
+                borderColor: "var(--color-border)",
+                boxShadow: "var(--shadow-card)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card-hover)";
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border-hover)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow =
+                  "var(--shadow-card)";
+                (e.currentTarget as HTMLElement).style.borderColor =
+                  "var(--color-border)";
+              }}
+            >
+              <div>
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-uiSans text-xs font-medium mb-3"
+                  style={{
+                    background: "var(--scenario-b-bg)",
+                    color: "var(--scenario-b-dot)",
+                  }}
+                >
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ background: "var(--scenario-b-dot)" }}
+                  />
+                  Investiční byt
+                </span>
+                <p
+                  className="font-uiSans text-base font-semibold mb-1"
+                  style={{ color: "var(--color-primary)" }}
+                >
+                  Kalkulačka investičního bytu
+                </p>
+                <p
+                  className="font-uiSans text-sm leading-relaxed"
+                  style={{ color: "var(--color-secondary)" }}
+                >
+                  Investiční byt vs. akciový fond ETF. 30letý horizont.
+                </p>
+              </div>
+              <div className="flex items-center justify-end mt-4">
+                <ArrowRight
+                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                  style={{ color: "var(--color-secondary)" }}
+                />
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}

@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: "/", label: "Bydlení" },
   { href: "/investice", label: "Investice" },
+  { href: "/o-projektu", label: "O projektu" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
