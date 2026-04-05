@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── Reusable section divider ────────────────────────────────────────────────
 function Divider() {
   return (
     <hr
@@ -31,7 +30,6 @@ function Divider() {
   );
 }
 
-// ─── Section heading (H2 — always sans, semibold, per design manual) ─────────
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <h2
@@ -40,18 +38,6 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
     >
       {children}
     </h2>
-  );
-}
-
-// ─── Body copy paragraph ─────────────────────────────────────────────────────
-function Prose({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      className="font-uiSans text-base leading-relaxed md:text-lg"
-      style={{ color: "var(--color-secondary)" }}
-    >
-      {children}
-    </p>
   );
 }
 
@@ -69,7 +55,6 @@ export default function OProjektuPage() {
 
             {/* Left: identity */}
             <div>
-              {/* Eyebrow */}
               <p
                 className="font-uiSans text-xs font-semibold uppercase tracking-widest mb-3"
                 style={{ color: "var(--color-secondary)" }}
@@ -77,7 +62,6 @@ export default function OProjektuPage() {
                 O projektu
               </p>
 
-              {/* H1 — serif, per design manual (hero headline on this page) */}
               <h1
                 className="font-displaySerif text-[clamp(36px,5vw,52px)] leading-[1.1] tracking-tight mb-4"
                 style={{ color: "var(--color-primary)" }}
@@ -85,7 +69,6 @@ export default function OProjektuPage() {
                 Michal Humaj
               </h1>
 
-              {/* Role / subtitle */}
               <p
                 className="font-uiSans text-base md:text-lg leading-relaxed mb-8"
                 style={{ color: "var(--color-secondary)" }}
@@ -93,7 +76,6 @@ export default function OProjektuPage() {
                 Produktový manažer v IT · Praha
               </p>
 
-              {/* Independence badge */}
               <div
                 className="inline-flex items-center gap-2 rounded-full px-4 py-2 font-uiSans text-sm font-medium"
                 style={{
@@ -112,14 +94,13 @@ export default function OProjektuPage() {
             {/* Right: photo */}
             <div className="flex md:justify-end">
               <div
-                className="relative overflow-hidden"
+                className="relative overflow-hidden flex-shrink-0"
                 style={{
                   width: 200,
                   height: 200,
                   borderRadius: "var(--radius-card)",
                   border: "1px solid var(--color-border)",
                   boxShadow: "var(--shadow-card)",
-                  flexShrink: 0,
                 }}
               >
                 <Image
@@ -147,9 +128,12 @@ export default function OProjektuPage() {
           {/* Osobní příběh */}
           <div>
             <SectionHeading>Osobní příběh</SectionHeading>
-            <Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg"
+              style={{ color: "var(--color-secondary)" }}
+            >
               Řešil jsem dvě finanční otázky. Možná je řešíš taky.
-            </Prose>
+            </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
               style={{ color: "var(--color-secondary)" }}
@@ -190,10 +174,13 @@ export default function OProjektuPage() {
           {/* Kdo za tím stojí */}
           <div>
             <SectionHeading>Kdo za tím stojí</SectionHeading>
-            <Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg"
+              style={{ color: "var(--color-secondary)" }}
+            >
               Jsem produktový manažer v Grouponu a drobný investor do
               nemovitostí.
-            </Prose>
+            </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
               style={{ color: "var(--color-secondary)" }}
@@ -209,11 +196,14 @@ export default function OProjektuPage() {
           {/* Co kamspenezi.cz není */}
           <div>
             <SectionHeading>Co kamspenezi.cz není</SectionHeading>
-            <Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg"
+              style={{ color: "var(--color-secondary)" }}
+            >
               Není to projekt banky, pojišťovny ani hypotečního makléře. Na
               webu nejsou reklamy. Žádný affiliate odkaz, žádné komerční
               partnerství.
-            </Prose>
+            </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
               style={{ color: "var(--color-secondary)" }}
@@ -228,12 +218,15 @@ export default function OProjektuPage() {
           {/* Jak to funguje */}
           <div>
             <SectionHeading>Jak to funguje</SectionHeading>
-            <Prose>
+            <p
+              className="font-uiSans text-base leading-relaxed md:text-lg"
+              style={{ color: "var(--color-secondary)" }}
+            >
               Obě kalkulačky porovnávají dva scénáře na horizontu 30 let.
               Ceny bytů, výše nájmů a úrokové sazby vychází z veřejně
               dostupných dat. Každý předpoklad je zdokumentovaný a
               dohledatelný.
-            </Prose>
+            </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
               style={{ color: "var(--color-secondary)" }}
@@ -242,29 +235,12 @@ export default function OProjektuPage() {
               jako kalkulačka, řádek po řádku.
             </p>
 
-            {/* Google Sheets callout */}
+            {/* Google Sheets callout — pure CSS hover, no JS handlers */}
             <a
               href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex items-center justify-between gap-4 rounded-2xl border px-5 py-4 transition-all"
-              style={{
-                background: "var(--bg-card)",
-                borderColor: "var(--color-border)",
-                boxShadow: "var(--shadow-card)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border-hover)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card-hover)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card)";
-              }}
+              className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-[var(--color-border)] bg-white px-5 py-4 shadow-[var(--shadow-card)] transition-all hover:border-[var(--color-border-hover)] hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
             >
               <div>
                 <p
@@ -295,14 +271,8 @@ export default function OProjektuPage() {
                 Detailní metodiku najdeš tady:
               </p>
               {[
-                {
-                  href: "/metodika/bydleni",
-                  label: "Jak kalkulačka bydlení počítá",
-                },
-                {
-                  href: "/metodika/investice",
-                  label: "Jak kalkulačka investičního bytu počítá",
-                },
+                { href: "/metodika/bydleni", label: "Jak kalkulačka bydlení počítá" },
+                { href: "/metodika/investice", label: "Jak kalkulačka investičního bytu počítá" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -341,57 +311,19 @@ export default function OProjektuPage() {
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-            {/* LinkedIn */}
             <a
               href="https://linkedin.com/in/michal-humaj"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 rounded-full border px-5 py-3 font-uiSans text-sm font-medium transition-all"
-              style={{
-                background: "var(--bg-card)",
-                borderColor: "var(--color-border)",
-                color: "var(--color-primary)",
-                boxShadow: "0 1px 3px rgba(15,23,42,0.04)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border-hover)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 1px 3px rgba(15,23,42,0.04)";
-              }}
+              className="inline-flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-5 py-3 font-uiSans text-sm font-medium text-[var(--color-primary)] shadow-[0_1px_3px_rgba(15,23,42,0.04)] transition-all hover:border-[var(--color-border-hover)] hover:shadow-[var(--shadow-card)]"
             >
               <Linkedin className="h-4 w-4 flex-shrink-0" />
               LinkedIn: Michal Humaj
             </a>
 
-            {/* Email */}
             <a
               href="mailto:michal@kamspenezi.cz"
-              className="inline-flex items-center gap-3 rounded-full border px-5 py-3 font-uiSans text-sm font-medium transition-all"
-              style={{
-                background: "var(--bg-card)",
-                borderColor: "var(--color-border)",
-                color: "var(--color-primary)",
-                boxShadow: "0 1px 3px rgba(15,23,42,0.04)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 1px 3px rgba(15,23,42,0.04)";
-              }}
+              className="inline-flex items-center gap-3 rounded-full border border-[var(--color-border)] bg-white px-5 py-3 font-uiSans text-sm font-medium text-[var(--color-primary)] shadow-[0_1px_3px_rgba(15,23,42,0.04)] transition-all hover:border-[var(--color-border-hover)] hover:shadow-[var(--shadow-card)]"
             >
               <Mail className="h-4 w-4 flex-shrink-0" />
               michal@kamspenezi.cz
@@ -400,7 +332,7 @@ export default function OProjektuPage() {
         </div>
       </section>
 
-      {/* ── CTA — Vyzkoušej to ────────────────────────────────────────────── */}
+      {/* ── CTA ───────────────────────────────────────────────────────────── */}
       <section
         className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
         style={{ background: "var(--bg-base)" }}
@@ -414,27 +346,10 @@ export default function OProjektuPage() {
           </p>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {/* Bydlení CTA card */}
+            {/* Bydlení */}
             <Link
               href="/"
-              className="group flex flex-col justify-between rounded-[var(--radius-card)] border p-6 transition-all"
-              style={{
-                background: "var(--bg-card)",
-                borderColor: "var(--color-border)",
-                boxShadow: "var(--shadow-card)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card-hover)";
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border-hover)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card)";
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border)";
-              }}
+              className="group flex flex-col justify-between rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-card)] transition-all hover:border-[var(--color-border-hover)] hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
             >
               <div>
                 <span
@@ -471,27 +386,10 @@ export default function OProjektuPage() {
               </div>
             </Link>
 
-            {/* Investice CTA card */}
+            {/* Investice */}
             <Link
               href="/investice"
-              className="group flex flex-col justify-between rounded-[var(--radius-card)] border p-6 transition-all"
-              style={{
-                background: "var(--bg-card)",
-                borderColor: "var(--color-border)",
-                boxShadow: "var(--shadow-card)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card-hover)";
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border-hover)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "var(--shadow-card)";
-                (e.currentTarget as HTMLElement).style.borderColor =
-                  "var(--color-border)";
-              }}
+              className="group flex flex-col justify-between rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-card)] transition-all hover:border-[var(--color-border-hover)] hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
             >
               <div>
                 <span
