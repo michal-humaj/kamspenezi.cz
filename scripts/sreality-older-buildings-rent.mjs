@@ -55,6 +55,32 @@ const RENT_PRICE_FILTER = { min: 80, max: 800 };
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// Ověří, že locality_param stále mapuje na správné město.
+// Pokud Sreality změní ID lokality, scrape by tiše vracel data jiného města.
+async function sanityCheckCity(slug, localityParam) {
+  const url = `https://www.sreality.cz/api/cs/v2/estates?category_main_cb=1&category_type_cb=2&per_page=10&${localityParam}`;
+  const data = await fetchPage(url);
+  const estates = data._embedded?.estates ?? [];
+  if (!estates.length) return { ok: false, msg: "žádné výsledky" };
+
+  const expected = {
+    "praha": "praha", "brno": "brno", "ostrava": "ostrava", "plzen": "plzen",
+    "ceske-budejovice": "ceske", "hradec-kralove": "hradec",
+    "liberec": "liberec", "olomouc": "olomouc", "pardubice": "pardubice",
+    "usti-nad-labem": "usti", "karlovy-vary": "karlovy",
+    "jihlava": "jihlava", "zlin": "zlin",
+  };
+  const prefix = expected[slug];
+  const matches = estates.filter(e => e.seo?.locality?.startsWith(prefix)).length;
+  const ratio = matches / estates.length;
+
+  if (ratio < 0.4) {
+    const sample = estates.slice(0, 3).map(e => e.seo?.locality).join(", ");
+    return { ok: false, msg: `pouze ${matches}/${estates.length} odpovídá '${prefix}', vzorky: ${sample}` };
+  }
+  return { ok: true, msg: `${matches}/${estates.length} odpovídá '${prefix}'` };
+}
+
 function parseAreaFromName(name) {
   const match = name?.match(/(\d+)\s*m[²2]/);
   return match ? parseInt(match[1], 10) : null;
@@ -125,6 +151,19 @@ async function main() {
   const runDate = new Date().toISOString().slice(0, 10);
   console.log(`\n=== Sreality NÁJEM — starší zástavba (cihlová + panelová) — ${runDate} ===`);
   console.log(`Filtr: building_type_cb[]=1 (cihlová) + building_type_cb[]=2 (panelová)\n`);
+
+  // ── SANITY CHECK ────────────────────────────────────────────────────────────
+  console.log("Sanity check lokalit:");
+  for (const city of CITIES) {
+    await sleep(DELAY_MS);
+    const check = await sanityCheckCity(city.slug, city.rentParam);
+    console.log(`  ${city.slug}: ${check.ok ? "OK" : "CHYBA — " + check.msg}`);
+    if (!check.ok) {
+      console.error(`\nCHYBA: locality_id pro ${city.slug} zřejmě již neplatí. Ukončuji.`);
+      process.exit(1);
+    }
+  }
+  console.log();
 
   const results = {};
 
