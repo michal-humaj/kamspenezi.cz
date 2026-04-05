@@ -123,7 +123,7 @@ export default function OProjektuPage() {
         className="pb-[var(--section-padding-y-mobile)] md:pb-[var(--section-padding-y-desktop)]"
         style={{ background: "var(--bg-base)" }}
       >
-        <div className="mx-auto max-w-2xl px-4 md:px-6">
+        <div className="mx-auto max-w-[680px] px-4 md:px-6">
 
           {/* Osobní příběh */}
           <div>
@@ -294,7 +294,7 @@ export default function OProjektuPage() {
         className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
         style={{ background: "var(--bg-lilac-section)" }}
       >
-        <div className="mx-auto max-w-2xl px-4 md:px-6">
+        <div className="mx-auto max-w-[680px] px-4 md:px-6">
           <h2
             className="font-uiSans text-xl font-semibold tracking-[-0.01em] mb-2"
             style={{ color: "var(--color-primary)" }}
@@ -336,7 +336,7 @@ export default function OProjektuPage() {
         className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
         style={{ background: "var(--bg-base)" }}
       >
-        <div className="mx-auto max-w-2xl px-4 md:px-6">
+        <div className="mx-auto max-w-[680px] px-4 md:px-6">
           <p
             className="font-uiSans text-base leading-relaxed mb-6"
             style={{ color: "var(--color-secondary)" }}
