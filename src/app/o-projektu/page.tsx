@@ -127,7 +127,6 @@ export default function OProjektuPage() {
 
           {/* Osobní příběh */}
           <div>
-            <SectionHeading>Osobní příběh</SectionHeading>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg"
               style={{ color: "var(--color-secondary)" }}
@@ -140,7 +139,7 @@ export default function OProjektuPage() {
             >
               Má smysl kupovat byt na vlastní bydlení, nebo je lepší platit
               nájem a investovat? Nejblíže jsem přišel ke kalkulačce New York
-              Times — skvěle zpracovaná, ale pro americký trh. Nepočítá fond
+              Times, skvěle zpracovaná, ale pro americký trh. Nepočítá fond
               oprav, pojistění ani daňovou úsporu z hypotečních úroků, které
               jsou pro českou realitu klíčové.
             </p>
