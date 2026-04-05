@@ -79,7 +79,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       <LabeledSliderInput
         id="kupni-cena"
         label="Kupní cena nemovitosti"
-        tooltip={<p>Odhadovaná kupní cena bytu v tomto městě a dispozici, vycházející z transakčních dat ČBA Monitor / Flat Zone (Q4 2025). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
+        tooltip={<p>Odhadovaná kupní cena bytu ve starší zástavbě (cihlové nebo panelové) v tomto městě a dispozici, vycházející ze Sreality.cz (duben 2026, starší zástavba). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
         value={state.kupniCena}
         onChange={(value) => updateState({ kupniCena: value })}
         unit="custom"
@@ -154,7 +154,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         id="najemne"
         label="Nájemné"
         description="Za kolik byste si pronajali podobný byt dnes?"
-        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt v tomto městě, vycházející z Deloitte Rent Index Q4 2025. Jde o cenu nájmu, který byste platili místo splátky hypotéky.</p>}
+        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt ve starší zástavbě v tomto městě, vycházející ze Sreality.cz (duben 2026, cihlové a panelové domy). Jde o cenu nájmu, který byste platili místo splátky hypotéky.</p>}
         value={state.najemne}
         onChange={(value) => updateState({ najemne: value })}
         unit="custom"

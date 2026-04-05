@@ -60,7 +60,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
       <LabeledSliderInput
         id="inv-kupni-cena"
         label="Kupní cena nemovitosti"
-        tooltip={<p>Odhadovaná kupní cena bytu v tomto městě a dispozici, vycházející z transakčních dat ČBA Monitor / Flat Zone (Q4 2025). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
+        tooltip={<p>Odhadovaná kupní cena bytu ve starší zástavbě (cihlové nebo panelové) v tomto městě a dispozici, vycházející ze Sreality.cz (duben 2026, starší zástavba). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
         value={state.kupniCena}
         onChange={(value) => updateState({ kupniCena: value })}
         unit="custom"
@@ -121,7 +121,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         id="inv-najemne"
         label="Měsíční nájemné"
         description="Kolik budete vybírat od nájemníka?"
-        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt v tomto městě, vycházející z Deloitte Rent Index Q4 2025. Jde o příjem z nájmu ve scénáři A.</p>}
+        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt ve starší zástavbě v tomto městě, vycházející ze Sreality.cz (duben 2026, cihlové a panelové domy). Jde o příjem z nájmu ve scénáři A.</p>}
         value={state.najemne}
         onChange={(value) => updateState({ najemne: value })}
         unit="custom"
