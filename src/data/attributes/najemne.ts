@@ -350,7 +350,10 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
     kdyNeniPresna: [
       "Centrum vs. periferie — v rámci Prahy se nájemné liší o 10–20 % (Praha 1: ~499 Kč/m² vs. Praha 9: ~445 Kč/m²)",
       "Novostavby a developerské projekty — vyloučeny z dat; mají nájemné o 15–25 % vyšší",
-      "Velmi malé trhy (Jihlava, Liberec 4+kk) — odhady méně přesné kvůli nízkým vzorkům",
+      "Liberec 4+kk, Pardubice 4+kk — Sreality starší zástavba nenalezla žádné nabídky (n=0); hodnoty jsou čistou extrapolací z 2+kk × národní koeficient 0.969",
+      "Ústí nad Labem 3+kk (n=1) a 4+kk (n=2) — statisticky irelevantní vzorky; odhady nespolehlivé",
+      "Asking-vs-signed bias — nabídkové nájmy Sreality jsou systematicky o 3–8 % výše než skutečně sjednané nájmy; hrubý výnos je v tomto rozsahu nadhodnocen (nelze opravit bez placených dat)",
+      "Liberec 2+kk (n=24) — tenký vzorek; hodnota 318 Kč/m² je o 17 % výše než Deloitte (271) — nejistota ±12 %",
     ],
     vzorec: `
       najemne = ROUND(srealityStarsi2kk[město] × najemneDispKoeficient[dispozice] × squareMeters[město][dispozice], -2)

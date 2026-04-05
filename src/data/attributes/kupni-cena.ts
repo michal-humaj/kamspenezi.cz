@@ -384,8 +384,9 @@ export const kupniCenaDoc: AttributeDoc<PerCityPerSize<number>> = {
       Cena za m² (Sreality starší zástavba × per-city haircut):
         Velká města (Praha n=1350 haircut 0.870, Brno n=331 haircut 0.843): ±6–9 %.
           Haircut odvozeno z ČBA Monitor — nejspolehlivější kalibrační bod.
-        Střední města (Plzeň n=81, ČB n=64, KV n=104, Olomouc n=73): ±8–12 %.
-          KV a Ostrava: fallback haircut 0.804, neurčitost haircutu vyšší (±5 p.b.).
+        Střední města (Ostrava n=64, Plzeň n=81, ČB n=64, KV n=104, Olomouc n=73): ±8–12 %.
+          Ostrava, KV: fallback haircut 0.804 — ČBA Monitor biased, haircut nelze odvodit (±5 p.b. navíc).
+          HK: fallback haircut 0.804 — Sreality asking suspektně vysoké (±5 p.b. navíc).
         Malá města (Ústí n=16, Jihlava n=17): ±12–18 % — malý vzorek.
         Časová korekce (+5 %): citlivost na ±2 p.b. chyby v odhadu růstu = ±2–3 % na ceně.
 
