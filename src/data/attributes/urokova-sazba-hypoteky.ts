@@ -6,9 +6,17 @@
  * - Březen 2026 (25. 3. 2026): https://www.hypoindex.cz/clanky/prehled-aktualnich-sazeb-hypotek-hypoteky-zdrazuji-prvni-banky-zvedly-sazby-o-pul-procenta/
  * Datum přístupu: 2026-04-04.
  *
- * ZVOLENÁ HODNOTA: 3,99 % — Moneta Money Bank, fixace 1 rok, LTV do 80 %.
+ * ZVOLENÁ HODNOTA: 3,99 % — Moneta Money Bank, fixace 3 roky, LTV do 80 %.
  * Tato sazba je nejnižší nabídkovou sazbou na českém hypotečním trhu ověřenou k 25. 3. 2026.
  * Podmínky: minimální měsíční obrat na účtu MMB 15 000 Kč, čerpání do 3 měsíců od podpisu.
+ *
+ * PROČ FIXACE 3 ROKY (ne 1 rok):
+ *   3letá fixace je optimální volba pro aktivního kupujícího, protože:
+ *   (a) Moneta nabízí stejnou sazbu 3,99 % pro 1Y i 3Y — žádná prémie za delší fixaci.
+ *   (b) 3letá fixace eliminuje refinancovací riziko na kratší horizont a je nejčastěji
+ *       doporučovanou délkou při aktuálním tržním prostředí.
+ *   (c) 1letá fixace je nestabilní — roční refixace vytváří administrativní zátěž.
+ *   Fio banka: 3Y/5Y = 4,18 % (o 0,19 p.b. výše než Moneta 3Y).
  *
  * TRHOVÝ KONTEXT (březen 2026 — nejaktuálnější dostupná data):
  *   Moneta 1Y/3Y:   3,99 % — nejnižší na trhu (potvrzeno i v březnu navzdory zdražení jiných)
@@ -44,7 +52,7 @@ import type { AttributeDoc } from "./_types";
 
 /**
  * Nejlepší aktuální nabídková úroková sazba hypotéky v %.
- * Zdroj: Moneta Money Bank, fixace 1 rok, LTV do 80 %, únor 2026.
+ * Zdroj: Moneta Money Bank, fixace 3 roky, LTV do 80 %, únor 2026.
  */
 export const urokovaSazbaHypotekyValue: number = 3.99;
 
@@ -92,8 +100,10 @@ export const urokovaSazbaHypotekyDoc: AttributeDoc<number> = {
   metodaAproximace: {
     zvolenaMetoda: `
       Výchozí hodnota = nejnižší nabídková sazba publikovaná na Hypoindex.cz
-      pro všechny banky k datu výzkumu.
-      Zvolená sazba: Moneta Money Bank, fixace 1 rok, LTV do 80 %, únor 2026 → 3,99 %.
+      pro všechny banky k datu výzkumu, pro fixaci 3 roky.
+      Zvolená sazba: Moneta Money Bank, fixace 3 roky, LTV do 80 %, únor 2026 → 3,99 %.
+      Fixace 3Y je zvolena jako nejdelší fixace bez cenové prémie u Monety
+      (1Y a 3Y mají stejnou sazbu 3,99 %).
     `,
     procTatoMetoda: `
       Kalkulačka slouží lidem, kteří aktivně zvažují koupi nemovitosti — tedy lidem, kteří
@@ -112,12 +122,12 @@ export const urokovaSazbaHypotekyDoc: AttributeDoc<number> = {
       "Nízká bonita nebo nestabilní příjem — individuální riziková přirážka",
       "Nesplnění podmínek slevy (bez aktivního účtu, bez pojištění) — sazba vyšší o 0,1–0,5 p.b.",
       "Výrazná změna 2T Repo sazby ČNB — sazby na trhu reagují s odstupem týdnů až měsíců",
-      "Délka fixace: tato hodnota platí pro 1letou fixaci — pro 5letou fixaci je Fio 4,18 %",
+      "Délka fixace: tato hodnota platí pro 3letou fixaci — druhá nejnižší 3Y sazba je Fio 4,18 %",
     ],
   },
 
   tooltipText:
-    "Nejlepší aktuálně dostupná úroková sazba hypotéky (Moneta 1Y, únor 2026). Upravte podle vaší konkrétní nabídky od banky.",
+    "Nejlepší aktuálně dostupná úroková sazba hypotéky pro 3letou fixaci (Moneta 3Y, únor 2026). Upravte podle vaší konkrétní nabídky od banky.",
 
   vyzkum: {
     datumVyzkumu: "2026-04-04",

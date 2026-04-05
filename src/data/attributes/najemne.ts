@@ -96,14 +96,27 @@ void _srealityNajemneKraj_2025_referenceOnly; // suppress unused-variable warnin
  *   Jihlava: 1.000, 1.000, 0.795, 0.693 (1+kk = 2+kk — anomálie n=11)
  *   Zlín:  1.185, 1.000, 0.842, 0.929
  *
- * ROZHODNUTÍ: Použity národní mediány koeficientů.
- *   4+kk: z výpočtu vyloučena Liberec (n=0) a Pardubice (n=0); celkem 11 měst.
- *   Praha 4+kk koeficient 1.037 (4+kk > 2+kk) je anomálie způsobená tím, že pražský trh
- *   4+kk nájemního bydlení je dominován luxusními byty — tento koeficient není vyloučen
- *   z národního mediánu, ale potlačen ostatními městy.
+ * ROZHODNUTÍ: Pro koeficienty použit práh spolehlivosti n≥10 pro danou dispozici.
  *
- * Národní mediány:
- *   1+kk: 1.198 (z 13 měst) | 3+kk: 0.891 (z 13 měst) | 4+kk: 0.893 (z 11 měst)
+ *   1+kk a 3+kk: Medián ze všech 13 měst (nejnižší n = Jihlava 1+kk n=11; Ústí 3+kk n=1
+ *     je sice problematické, ale neposouvá medián, protože je v prostřední poloze).
+ *
+ *   4+kk: KLÍČOVÁ ZMĚNA — práh n≥10 aplikován striktně.
+ *     Města s n≥10 pro 4+kk: Praha (n=186), Brno (n=17), Ostrava (n=15) — POUZE 3 MĚSTA.
+ *     Všechna ostatní měst mají n<10 (Plzeň 5, ČB 6, HK 3, Olomouc 4, Zlín 2, atd.)
+ *     a jejich koeficienty jsou nespolehlivé (medián z n=2–6 je statisticky bezvýznamný).
+ *
+ *     Koeficienty spolehlivých měst pro 4+kk (vůči jejich vlastnímu 2+kk):
+ *       Praha:   474/457 = 1.037 (luxusní segment)
+ *       Brno:    352/394 = 0.893
+ *       Ostrava: 253/260 = 0.973
+ *     Medián z těchto 3 hodnot = 0.973 (střední hodnota: Ostrava).
+ *
+ *     Starý koeficient (0.893) byl mediánem z 11 měst včetně 8 měst s n<10, kde
+ *     malé vzorky (n=2–6) systematicky táhly medián dolů.
+ *
+ * Národní mediány (po aplikaci n≥10 filtru pro 4+kk):
+ *   1+kk: 1.198 (z 13 měst) | 3+kk: 0.891 (z 13 měst) | 4+kk: 0.973 (z 3 měst s n≥10)
  *
  * POZOR — STEJNÁ METODOLOGICKÁ SLABINA JAKO U KUPNICENA:
  *   Deloitte index udává blended Kč/m² přes všechny dispozice. Vážený průměr naших
@@ -115,7 +128,7 @@ const najemneDispKoeficient: Record<"1+kk" | "2+kk" | "3+kk" | "4+kk", number> =
   "1+kk": 1.198, // +19,8 % vs. 2+kk — národní medián, Sreality nájem API 2026-04-04 (n=13 měst)
   "2+kk": 1.000, // baseline
   "3+kk": 0.891, // -10,9 % vs. 2+kk — národní medián, Sreality nájem API 2026-04-04 (n=13 měst)
-  "4+kk": 0.893, // -10,7 % vs. 2+kk — národní medián, Sreality nájem API 2026-04-04 (n=11 měst)
+  "4+kk": 0.973, //  -2,7 % vs. 2+kk — medián Prahy/Brna/Ostravy (jediná 3 města s n≥10 pro 4+kk)
 };
 
 /**
@@ -138,79 +151,79 @@ export const najemneValues: PerCityPerSize<number> = {
     "1+kk": vypoctiNajemne("praha", "1+kk"),              // 459 × 1.198 × 33 ≈ 18 200 Kč/měs
     "2+kk": vypoctiNajemne("praha", "2+kk"),              // 459 × 1.000 × 52 ≈ 23 900 Kč/měs
     "3+kk": vypoctiNajemne("praha", "3+kk"),              // 459 × 0.891 × 80 ≈ 32 700 Kč/měs
-    "4+kk": vypoctiNajemne("praha", "4+kk"),              // 459 × 0.893 × 110 ≈ 45 100 Kč/měs
+    "4+kk": vypoctiNajemne("praha", "4+kk"),              // 459 × 0.973 × 110 ≈ 49 200 Kč/měs
   },
   "brno": {
     "1+kk": vypoctiNajemne("brno", "1+kk"),               // 392 × 1.198 × 32 ≈ 15 000 Kč/měs
     "2+kk": vypoctiNajemne("brno", "2+kk"),               // 392 × 1.000 × 53 ≈ 20 800 Kč/měs
     "3+kk": vypoctiNajemne("brno", "3+kk"),               // 392 × 0.891 × 78 ≈ 27 200 Kč/měs
-    "4+kk": vypoctiNajemne("brno", "4+kk"),               // 392 × 0.893 × 113 ≈ 39 600 Kč/měs
+    "4+kk": vypoctiNajemne("brno", "4+kk"),               // 392 × 0.973 × 113 ≈ 43 100 Kč/měs
   },
   "ostrava": {
     "1+kk": vypoctiNajemne("ostrava", "1+kk"),            // 239 × 1.198 × 31 ≈  8 900 Kč/měs
     "2+kk": vypoctiNajemne("ostrava", "2+kk"),            // 239 × 1.000 × 54 ≈ 12 900 Kč/měs
     "3+kk": vypoctiNajemne("ostrava", "3+kk"),            // 239 × 0.891 × 78 ≈ 16 600 Kč/měs
-    "4+kk": vypoctiNajemne("ostrava", "4+kk"),            // 239 × 0.893 × 105 ≈ 22 400 Kč/měs
+    "4+kk": vypoctiNajemne("ostrava", "4+kk"),            // 239 × 0.973 × 105 ≈ 24 400 Kč/měs
   },
   "plzen": {
     "1+kk": vypoctiNajemne("plzen", "1+kk"),              // 294 × 1.198 × 34 ≈ 12 000 Kč/měs
     "2+kk": vypoctiNajemne("plzen", "2+kk"),              // 294 × 1.000 × 55 ≈ 16 200 Kč/měs
     "3+kk": vypoctiNajemne("plzen", "3+kk"),              // 294 × 0.891 × 82 ≈ 21 500 Kč/měs
-    "4+kk": vypoctiNajemne("plzen", "4+kk"),              // 294 × 0.893 × 104 ≈ 27 300 Kč/měs
+    "4+kk": vypoctiNajemne("plzen", "4+kk"),              // 294 × 0.973 × 104 ≈ 29 800 Kč/měs
   },
   "ceske-budejovice": {
     "1+kk": vypoctiNajemne("ceske-budejovice", "1+kk"),   // 277 × 1.198 × 40 ≈ 13 300 Kč/měs
     "2+kk": vypoctiNajemne("ceske-budejovice", "2+kk"),   // 277 × 1.000 × 54 ≈ 15 000 Kč/měs
     "3+kk": vypoctiNajemne("ceske-budejovice", "3+kk"),   // 277 × 0.891 × 84 ≈ 20 700 Kč/měs
-    "4+kk": vypoctiNajemne("ceske-budejovice", "4+kk"),   // 277 × 0.893 × 99 ≈ 24 500 Kč/měs
+    "4+kk": vypoctiNajemne("ceske-budejovice", "4+kk"),   // 277 × 0.973 × 99 ≈ 26 700 Kč/měs
   },
   "hradec-kralove": {
     "1+kk": vypoctiNajemne("hradec-kralove", "1+kk"),     // 317 × 1.198 × 35 ≈ 13 300 Kč/měs
     "2+kk": vypoctiNajemne("hradec-kralove", "2+kk"),     // 317 × 1.000 × 53 ≈ 16 800 Kč/měs
     "3+kk": vypoctiNajemne("hradec-kralove", "3+kk"),     // 317 × 0.891 × 86 ≈ 24 300 Kč/měs
-    "4+kk": vypoctiNajemne("hradec-kralove", "4+kk"),     // 317 × 0.893 × 107 ≈ 30 300 Kč/měs
+    "4+kk": vypoctiNajemne("hradec-kralove", "4+kk"),     // 317 × 0.973 × 107 ≈ 33 000 Kč/měs
   },
   "liberec": {
     "1+kk": vypoctiNajemne("liberec", "1+kk"),            // 271 × 1.198 × 41 ≈ 13 300 Kč/měs
     "2+kk": vypoctiNajemne("liberec", "2+kk"),            // 271 × 1.000 × 52 ≈ 14 100 Kč/měs
     "3+kk": vypoctiNajemne("liberec", "3+kk"),            // 271 × 0.891 × 78 ≈ 18 800 Kč/měs
-    "4+kk": vypoctiNajemne("liberec", "4+kk"),            // 271 × 0.893 × 97 ≈ 23 500 Kč/měs
+    "4+kk": vypoctiNajemne("liberec", "4+kk"),            // 271 × 0.973 × 97 ≈ 25 600 Kč/měs
   },
   "olomouc": {
     "1+kk": vypoctiNajemne("olomouc", "1+kk"),            // 293 × 1.198 × 32 ≈ 11 200 Kč/měs
     "2+kk": vypoctiNajemne("olomouc", "2+kk"),            // 293 × 1.000 × 55 ≈ 16 100 Kč/měs
     "3+kk": vypoctiNajemne("olomouc", "3+kk"),            // 293 × 0.891 × 80 ≈ 20 900 Kč/měs
-    "4+kk": vypoctiNajemne("olomouc", "4+kk"),            // 293 × 0.893 × 90 ≈ 23 600 Kč/měs
+    "4+kk": vypoctiNajemne("olomouc", "4+kk"),            // 293 × 0.973 × 90 ≈ 25 700 Kč/měs
   },
   "pardubice": {
     "1+kk": vypoctiNajemne("pardubice", "1+kk"),          // 307 × 1.198 × 33 ≈ 12 100 Kč/měs
     "2+kk": vypoctiNajemne("pardubice", "2+kk"),          // 307 × 1.000 × 58 ≈ 17 800 Kč/měs
     "3+kk": vypoctiNajemne("pardubice", "3+kk"),          // 307 × 0.891 × 74 ≈ 20 200 Kč/měs
-    "4+kk": vypoctiNajemne("pardubice", "4+kk"),          // 307 × 0.893 × 101 ≈ 27 700 Kč/měs
+    "4+kk": vypoctiNajemne("pardubice", "4+kk"),          // 307 × 0.973 × 101 ≈ 30 200 Kč/měs
   },
   "usti-nad-labem": {
     "1+kk": vypoctiNajemne("usti-nad-labem", "1+kk"),     // 221 × 1.198 × 25 ≈  6 600 Kč/měs
     "2+kk": vypoctiNajemne("usti-nad-labem", "2+kk"),     // 221 × 1.000 × 43 ≈  9 500 Kč/měs
     "3+kk": vypoctiNajemne("usti-nad-labem", "3+kk"),     // 221 × 0.891 × 75 ≈ 14 800 Kč/měs
-    "4+kk": vypoctiNajemne("usti-nad-labem", "4+kk"),     // 221 × 0.893 × 94 ≈ 18 600 Kč/měs
+    "4+kk": vypoctiNajemne("usti-nad-labem", "4+kk"),     // 221 × 0.973 × 94 ≈ 20 200 Kč/měs
   },
   "karlovy-vary": {
     "1+kk": vypoctiNajemne("karlovy-vary", "1+kk"),       // 256 × 1.198 × 39 ≈ 11 900 Kč/měs
     "2+kk": vypoctiNajemne("karlovy-vary", "2+kk"),       // 256 × 1.000 × 60 ≈ 15 400 Kč/měs
     "3+kk": vypoctiNajemne("karlovy-vary", "3+kk"),       // 256 × 0.891 × 88 ≈ 20 100 Kč/měs
-    "4+kk": vypoctiNajemne("karlovy-vary", "4+kk"),       // 256 × 0.893 × 118 ≈ 27 000 Kč/měs
+    "4+kk": vypoctiNajemne("karlovy-vary", "4+kk"),       // 256 × 0.973 × 118 ≈ 29 400 Kč/měs
   },
   "jihlava": {
     "1+kk": vypoctiNajemne("jihlava", "1+kk"),            // 256 × 1.198 × 38 ≈ 11 600 Kč/měs
     "2+kk": vypoctiNajemne("jihlava", "2+kk"),            // 256 × 1.000 × 55 ≈ 14 100 Kč/měs
     "3+kk": vypoctiNajemne("jihlava", "3+kk"),            // 256 × 0.891 × 89 ≈ 20 300 Kč/měs
-    "4+kk": vypoctiNajemne("jihlava", "4+kk"),            // 256 × 0.893 × 102 ≈ 23 300 Kč/měs
+    "4+kk": vypoctiNajemne("jihlava", "4+kk"),            // 256 × 0.973 × 102 ≈ 25 400 Kč/měs
   },
   "zlin": {
     "1+kk": vypoctiNajemne("zlin", "1+kk"),               // 290 × 1.198 × 35 ≈ 12 200 Kč/měs
     "2+kk": vypoctiNajemne("zlin", "2+kk"),               // 290 × 1.000 × 53 ≈ 15 400 Kč/měs
     "3+kk": vypoctiNajemne("zlin", "3+kk"),               // 290 × 0.891 × 84 ≈ 21 700 Kč/měs
-    "4+kk": vypoctiNajemne("zlin", "4+kk"),               // 290 × 0.893 × 95 ≈ 24 600 Kč/měs
+    "4+kk": vypoctiNajemne("zlin", "4+kk"),               // 290 × 0.973 × 95 ≈ 26 800 Kč/měs
   },
 };
 
@@ -266,7 +279,7 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
       nabídek v krajských městech v Kč/m²/měsíc.
 
       najemneDispKoeficient: vlastní dotaz na Sreality.cz API (nájem), 2026-04-04.
-      Národní mediány: 1+kk 1.198, 2+kk 1.000, 3+kk 0.891, 4+kk 0.893.
+      Mediány (s n≥10 filtrem pro 4+kk): 1+kk 1.198, 2+kk 1.000, 3+kk 0.891, 4+kk 0.973.
     `,
     procTatoMetoda: `
       Deloitte Rent Index je jedinou veřejně dostupnou datovou sadou s konzistentní 
@@ -291,7 +304,7 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
         1+kk: +19,8 %, rozptyl měst: Praha 1.217, Jihlava 1.000 — koeficient méně stabilní
           než u kupniCena; 4+kk v Liberci a Pardubicích nebyl dostupný (0 nabídek).
         3+kk: -10,9 %, konzistentní napříč 13 městy
-        4+kk: -10,7 %, z 11 měst — Liberec a Pardubice vynechány (0 nabídek 4+kk k nájmu)
+        4+kk: -2,7 %, medián z Praha/Brno/Ostrava (jediná 3 města s n≥10) — 0.973
 
       Ostrava (239 Kč/m²) a Zlín (290 Kč/m²): hodnoty z PDF reportu, ověřeny 
       uživatelem dne 2026-04-04.
@@ -303,7 +316,7 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
     ],
     vzorec: `
       najemne = ROUND(deloitteKcPerM2[město] × najemneDispKoeficient[dispozice] × squareMeters[město][dispozice], -2)
-      najemneDispKoeficient: { '1+kk': 1.198, '2+kk': 1.000, '3+kk': 0.891, '4+kk': 0.893 }
+      najemneDispKoeficient: { '1+kk': 1.198, '2+kk': 1.000, '3+kk': 0.891, '4+kk': 0.973 }
       Zdroj koeficientů: Sreality.cz API (nájem), 13 krajských měst, 2026-04-04.
     `,
   },
@@ -416,11 +429,15 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
         Deloitte Rent Index neposkytuje data per dispozice — uvádí pouze průměr přes 
         všechny typy bytů. Tím vzniká systematická chyba:
           - 1+kk je nadhodnocen (menší byty mají v reálu vyšší nájemné za m²)
-          - 4+kk je podhodnocen (větší byty mají nižší nájemné za m²)
-        Odhadovaná chyba: ±5–10 % pro krajní dispozice.
+          - 4+kk byl dříve podhodnocen koeficientem 0.893 z 11 měst (včetně 8 měst s n<10)
         
-        Přesnější data by vyžadovaly dotaz na Sreality.cz API filtrovaný per dispozice 
-        per město. Toto je kandidát na zlepšení v příštím výzkumném cyklu.
+        KOREKCE 4+kk (duben 2026):
+          Aplikován práh n≥10: pouze Praha (n=186), Brno (n=17), Ostrava (n=15) splňují kritérium.
+          Medián koeficientů těchto 3 měst: 0.973 (oproti původnímu 0.893 z 11 měst).
+          Dopad: 4+kk nájemné ve všech městech vzrostlo o ~9 %.
+          Odůvodnění: Praha, Brno a Ostrava jsou dominantní nájemní trhy 4+kk bytů v ČR
+          a jejich data jsou statisticky spolehlivá (n≥15). Menší města mají de facto nulový
+          trh 4+kk nájmů — jejich koeficienty jsou statistickým šumem.
 
       DOPORUČENÍ PRO OBNOVU DAT: Deloitte Rent Index vydáván čtvrtletně. 
         Aktualizovat vždy při vydání Q4 (leden) nebo Q2 (červenec) hodnot.

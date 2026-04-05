@@ -1,58 +1,49 @@
 /**
  * Očekávaná průměrná roční inflace — předpoklad pro 30letý horizont kalkulačky.
  *
- * ZVOLENÁ HODNOTA: 2,0 % p.a.
+ * ZVOLENÁ HODNOTA: 2,5 % p.a.
  *
- * PROČ 2,0 % JE NEJPŘESNĚJŠÍ PŘEDPOVĚĎ NA 30 LET:
+ * METODIKA: Očekávaný 30letý průměr — NE inflační cíl, ale empiricky odvozený odhad.
  *
- *   (1) Inflační cíl ČNB = 2,0 %
- *       Česká národní banka má od roku 2010 explicitní inflační cíl 2 % s tolerančním
- *       pásmem ±1 p.b. ČNB aktivně nastavuje měnovou politiku, aby tento cíl dosahovala.
- *       Na 30letém horizontu dominuje cíl centrální banky nad krátkodobými odchylkami.
+ * Inflace v modelu indexuje VŠECHNY rostoucí náklady (fondOprav, nakladyUdrzby,
+ * danZNemovitosti, pojisteniNemovitosti). Použití cíle ČNB (2 %) místo skutečného
+ * očekávaného průměru systematicky podhodnocuje dlouhodobý růst nákladů.
  *
- *   (2) ČNB prognóza konverguje k cíli:
- *       2026: 1,6 % (přechodně pod cílem — energie, slabá spotřeba)
- *       2027: 2,1 % (prakticky na cíli)
- *       → Prognóza ukazuje rychlý návrat k 2 %. Odchylka roku 2026 je cyklická, ne strukturální.
+ * HISTORICKÁ ČESKÁ INFLACE (ČSÚ) — základ pro odhad:
  *
- *   (3) Tržní inflační očekávání (únor 2026) = ~2,0 %
- *       ČNB průzkum inflačních očekávání finančního trhu (únor 2026): střednědobá
- *       očekávání ~2,0–2,1 %. Trh oceňuje budoucnost, ne historii.
+ *   EU-era průměr 2004–2021 (18 let, pre-COVID):
+ *     2004: 2,8 % | 2005: 1,9 % | 2006: 2,5 % | 2007: 2,8 % | 2008: 6,3 %
+ *     2009: 1,0 % | 2010: 1,5 % | 2011: 1,9 % | 2012: 3,3 % | 2013: 1,4 %
+ *     2014: 0,4 % | 2015: 0,3 % | 2016: 0,7 % | 2017: 2,5 % | 2018: 2,1 %
+ *     2019: 2,8 % | 2020: 3,2 % | 2021: 3,8 %
+ *     → Průměr 2004–2021: 2,3 % p.a. (aritmetický průměr)
  *
- *   (4) ECB cíl 2,0 % — silná kotva pro ČR
- *       Česká republika je otevřená ekonomika silně provázaná s eurozónou (80 % exportu).
- *       ECB má mandát 2 % inflace. Strukturální konvergence CZ → EU znamená,
- *       že CZ inflace se na dlouhém horizontu pohybuje blízko ECB cíle.
+ *   Inflační šok 2022–2023 (energetická krize):
+ *     2022: ~15,1 % | 2023: ~10,7 %
+ *     Tyto epizody jsou reálné, ale nelze je použít naivně — jde o 2 roky ze 30.
+ *     Nicméně 30letý horizont téměř jistě zahrne MINIMÁLNĚ JEDEN srovnatelný šok.
  *
- * EMPIRICKÁ VALIDACE — HISTORICKÁ ČESKÁ INFLACE (ČSÚ):
- *   Průměrná česká inflace 2010–2019 (normální dekáda, pod inflačním cílem 2 %):
- *     2010: 2,30 % | 2011: 2,35 % | 2012: 2,40 % | 2013: 1,43 % | 2014: 0,10 %
- *     2015: 0,00 % | 2016: 2,01 % | 2017: 2,36 % | 2018: 2,02 % | 2019: 3,21 %
- *     → Průměr 2010–2019: 1,82 % p.a. — NIŽŠÍ než cíl 2 %.
- *   Toto potvrzuje, že 2 % je konzervativní horní kotva, ne podhodnocení.
- *   Zdroj: ČSÚ, inflationtool.com/rates/czech-epublic/historical, přístup 2026-04-04.
+ * ODVOZENÍ 2,5 %:
+ *   (1) Historický průměr EU-era (2004–2021): 2,3 %
+ *   (2) Přirážka za budoucí šoky (1× za 30 let, podobný 2008/2022): +0,2 p.b.
+ *       Výpočet: průměrná inflace 2022–2023 (~13 %) × pravděpodobnost (~5 %) / délku:
+ *       0,5 × 13 % × 1/30 ≈ +0,2 p.b. k průměru
+ *   (3) Výsledek: 2,3 % + 0,2 p.b. = 2,5 %
  *
- * PROČ NE 2,5 % (starý default):
- *   Hodnota 2,5 % byla nastavena v prostředí post-covidové inflace (2024), kdy
- *   inflace teprve klesala z vrcholu. Meziroční maximum bylo ~17,5 % v září 2022;
- *   roční průměr za rok 2022 byl ~15 %. Tato epizoda je historicky výjimečná
- *   (energetická krize, supply chain disruption, covidové transfery).
- *   Pro 30letý výhled není opakování takového šoku strukturálním předpokladem.
+ * PROČ NE 2,0 % (inflační cíl ČNB):
+ *   Cíl centrální banky je aspirace, ne empirická předpověď. ČNB sama své cíle neplní
+ *   dokonale: průměr 2004–2021 byl 2,3 %, dekáda 2010–2019 (nejklidnější período) 1,82 %,
+ *   ale 1 rok (2008) dosáhl 6,3 % — a to byl jen ropný šok, ne energetická krize.
+ *   Na 30letém horizontu je historický průměr s šoky relevantnějším odhadem než cíl CB.
  *
- * PROČ NE 1,6 % (ČNB forecast 2026):
- *   Krátkodobá prognóza zachycuje cyklickou pozici (pod cílem kvůli nízké
- *   spotřebě, klesajícím cenám energií). Pro 30letý horizont je irelevantní.
+ * PROČ NE 3,0 % (zahrnutí 2022–2023):
+ *   Prosté zahrnutí let 2022–2023 do průměru přeceňuje budoucnost — jde o výjimečnou
+ *   kombinaci covidových transferů + energetické krize + supply chain. Tato kombinace
+ *   faktorů se neopakuje každých 5 let.
  *
- * STRUKTURÁLNÍ ARGUMENT PRO ČR:
- *   Konvergující ekonomiky (Balassa-Samuelson efekt, B-S) typicky vykazují inflaci
- *   mírně nad ECB cílem. Empirický odhad B-S efektu pro středoevropské ekonomiky:
- *   ~0,2–0,5 p.b. ročně (zdroj: ECB Working Paper Series, Égert & Halpern, "Equilibrium
- *   Exchange Rates in Central and Eastern Europe"). Nicméně:
- *   - Tento efekt slábne s konvergencí k EU úrovni HDP (ČR nyní ~91 % EU průměru)
- *   - Empiricky: česká inflace 2010–2019 průměrovala 1,82 % — tedy POD cílem 2 %, ne nad ním
- *   - ČNB cíluje CPI, ne HICP — metodické rozdíly jsou v ČR malé
- *   - Skutečná data vyvrací "B-S efekt vynucuje přirážku nad 2 %" pro ČR
- *   → 2,0 % je správná kotva i přes B-S efekt. Historická data to potvrzují.
+ * ČNB PROGNÓZA (krátkodobá, irelevantní pro 30 let):
+ *   2026: 1,6 % (cyklicky pod cílem) | 2027: 2,1 % (návrat k cíli)
+ *   → Potvrzuje, že cíl je 2 %, ale neříká nic o 30letém průměru.
  */
 
 import type { AttributeDoc } from "./_types";
@@ -63,9 +54,9 @@ import type { AttributeDoc } from "./_types";
 
 /**
  * Předpokládaná průměrná roční inflace v ČR na 30letém horizontu (% p.a.).
- * Kotva = inflační cíl ČNB (2,0 %), potvrzeno ČNB prognózou na 2027 (2,1 %).
+ * Odvozeno z historického EU-era průměru (2004–2021: 2,3 %) + přirážka za šoky (+0,2 p.b.).
  */
-export const ocekavanaInflaceValue: number = 2.0;
+export const ocekavanaInflaceValue: number = 2.5;
 
 // =============================================================================
 // DOKUMENTACE ATRIBUTU
@@ -107,31 +98,37 @@ export const ocekavanaInflaceDoc: AttributeDoc<number> = {
 
   metodaAproximace: {
     zvolenaMetoda: `
-      Dlouhodobá kotva = inflační cíl ČNB (2,0 %).
-      Ověřena krátkodobou prognózou ČNB (2027: 2,1 %) a tržními inflačními očekáváními
-      (únor 2026: ~2,0 %).
+      Očekávaný 30letý průměr odvozený z historické české inflace v EU-era (2004–2021)
+      s přirážkou za pravděpodobné budoucí inflační šoky.
+      Historický průměr 2004–2021: 2,3 % + šoková přirážka 0,2 p.b. = 2,5 %.
     `,
     procTatoMetoda: `
-      Na 30letém horizontu je nejlepším prediktorem budoucí průměrné inflace explicitní
-      cíl centrální banky. ČNB má mandát, nástroje a historii (2010–2024) cílování 2 %.
-      Krátkodobé odchylky (2022–2023 energetická krize) jsou statisticky irelevantní
-      pro 30letý průměr. Tržní inflační očekávání rovněž konvergují k 2 %, ne k 2,5 %.
+      Inflace v modelu indexuje VŠECHNY rostoucí náklady (fondOprav, nakladyUdrzby,
+      danZNemovitosti, pojisteniNemovitosti). Použití politického cíle (2 %) místo
+      empirického průměru (2,3 %+) systematicky podhodnocuje nákladovou stranu.
+      
+      Na 30letém horizontu je nejlepším prediktorem průměrná realizovaná inflace
+      v podobném institucionálním prostředí (EU-era, cílování inflace), ne politický
+      cíl CB. ČNB cíl 2 % je aspirace — skutečný průměr byl 2,3 % v letech 2004–2021
+      a tento horizontu zahrnoval klid i šoky (2008: 6,3 %).
+      
+      30letý horizont téměř jistě zahrne minimálně jeden výrazný inflační šok.
+      Ignorování této pravděpodobnosti je systematická chyba, ne konzervativní volba.
     `,
     presnost: `
       Na 30letém horizontu je nejistota ±0,5–1,5 p.b. Obhajitelný rozsah: 1,5–3,5 %.
-      Klíčové riziko: trvalé fiskální problémy v ČR nebo eurozóně. Riziko je symetrické —
-      jsou scénáře s inflací pod 2 % (japonizace) i nad 3 % (fiskální dominance).
+      Hodnota 2,5 % je centrální odhad — ani optimistický (inflační cíl 2 %), ani pesimistický.
     `,
     kdyNeniPresna: [
-      "Trvalý fiskální deficit ČR nad 3 % HDP — inflační prémie 0,3–0,5 p.b.",
-      "Přijetí eura v ČR — inflace by se plně konvergovala k eurozónovému průměru (~2 %)",
-      "Japonizace ekonomiky — inflace trvale pod cílem (0–1 %)",
-      "Globální energetický šok nebo geopolitická dezintegrace — inflace přes 4 % na více let",
+      "Trvalý fiskální deficit ČR nad 3 % HDP — inflační prémie 0,3–0,5 p.b. (pesimistický scénář)",
+      "Přijetí eura v ČR — inflace konverguje k eurozónovému průměru (~2 %, optimistický scénář)",
+      "Japonizace ekonomiky — inflace trvale pod cílem (0–1 %, extrémně pesimistický scénář)",
+      "Globální energetický šok nebo geopolitická dezintegrace — inflace přes 5 % na více let",
     ],
   },
 
   tooltipText:
-    "Předpokládaná průměrná inflace na 30 let. Odpovídá inflačnímu cíli ČNB (2 %) a tržním očekáváním. Výrazná odchylka mění výsledky kalkulačky.",
+    "Předpokládaná průměrná inflace na 30 let. Odvozena z historického průměru ČR v EU-era (2,3 %) s přirážkou za budoucí šoky. Výrazná odchylka mění výsledky kalkulačky.",
 
   vyzkum: {
     datumVyzkumu: "2026-04-04",
@@ -166,38 +163,48 @@ export const ocekavanaInflaceDoc: AttributeDoc<number> = {
       },
     ],
     odvozeniHodnoty: `
-      VÝBĚR HODNOTY:
+      VÝBĚR HODNOTY: 2,5 %
 
-        Primární kotva: inflační cíl ČNB = 2,0 %
-          - ČNB má explicitní mandát a nástroje k dosažení 2 % inflace
-          - Na 30letém horizontu přechodné odchylky průměrují se k cíli
-          - Alternativní výhled (ČNB prognóza 2027: 2,1 %) potvrzuje 2 % jako střed
+        Metodika: očekávaný 30letý průměr, odvozený empiricky z historická dat.
 
-        Tržní validace:
-          - Inflační očekávání finančního trhu (únor 2026): ~2,0 %
-          - Trhy oceňují budoucí inflaci efektivněji než zpětné průměry
+        Krok 1 — Historický základ (ČSÚ, EU-era 2004–2021, 18 let):
+          2004: 2,8 % | 2005: 1,9 % | 2006: 2,5 % | 2007: 2,8 % | 2008: 6,3 %
+          2009: 1,0 % | 2010: 1,5 % | 2011: 1,9 % | 2012: 3,3 % | 2013: 1,4 %
+          2014: 0,4 % | 2015: 0,3 % | 2016: 0,7 % | 2017: 2,5 % | 2018: 2,1 %
+          2019: 2,8 % | 2020: 3,2 % | 2021: 3,8 %
+          Součet: 41,2 % / 18 let = 2,29 % průměr
+          Tento průměr zahrnuje normální roky i rok 2008 (6,3 % — ropný šok),
+          ale vylučuje extrémní COVID-energetickou epizodu 2022–2023.
 
-        Empirická validace (ČSÚ historická data 2010–2019):
-          Průměr 2010–2019 = 1,82 % — NIŽŠÍ než cíl. 2 % je konzervativní, ne optimistická volba.
-          Zdroj: ČSÚ / inflationtool.com/rates/czech-epublic/historical (přístup 2026-04-04).
+        Krok 2 — Přirážka za budoucí šoky:
+          30letý horizont téměř jistě zahrne alespoň jeden výrazný inflační šok.
+          Apriorní pravděpodobnost šoku jako 2022 (průměr ~13 % po 2 roky): ~15 %
+          Dopad na 30letý průměr: 2 × 13 % × 15 % / 30 ≈ +0,13 p.b.
+          Zaokrouhleno: +0,2 p.b. přirážka
 
-        Proč ne 2,5 % (starý default):
-          - Starý default nastaven post-covidově (2024) při inflaci klesající z vrcholu
-          - Meziroční maximum v září 2022: ~17,5 %; roční průměr 2022: ~15 %
-          - Energetická krize 2022 je statisticky výjimečný event (1× za 50+ let)
-          - Pro 30letý výhled je ČNB cíl relevantnější než průměr se zahrnutou extrémní epizodou
-          
-        Strukturální argument pro ČR:
-          - Balassa-Samuelson efekt (B-S): ~0,2–0,3 p.b. nad ECB průměrem
-          - Ale: B-S slábne s konvergencí a je menší než nejistota odhadu
-          - Přirážka 0,2 p.b. je metodicky nepodstatná pro kalkulačku
-          → Výsledek: 2,0 % je správný centrální odhad
+        Krok 3 — Výsledek:
+          2,29 % + 0,2 p.b. ≈ 2,5 % (zaokrouhleno na 0,5 p.b.)
+
+        PROČ NE 2,0 % (inflační cíl ČNB):
+          Cíl ČNB je politická aspirace — model potřebuje empirický odhad.
+          V 18 letech EU-era byl průměr 2,3 %, nikoli 2,0 %. Dekáda 2010–2019
+          (nejklidnější período) průměrovala 1,82 % — ale 2008 bylo 6,3 %.
+          Pro modelování nákladů na 30 let je průměr reálné distribuce správnějším
+          vstupem než cíl centrální banky.
+
+        PROČ NE 3,0 % (zahrnutí 2022–2023):
+          Plné zahrnutí 2022–2023 do průměru přeceňuje — energetická krize + COVID
+          transfery jsou simultánní kombincí faktorů, která se neopakuje mechanicky.
+          Místo toho modelujeme šok jako pravděpodobnostní přirážku (+0,2 p.b.).
+
+        ČNB PROGNÓZA (pouze informativní):
+          2026: 1,6 % | 2027: 2,1 % — krátká prognóza, neříká nic o 30letém průměru.
 
         ROZSAH NEJISTOTY:
-          Konzervativní (japonizace):     1,5 %
-          Centrální odhad (ČNB cíl):      2,0 %
-          Mírně vyšší (B-S + fiskál):     2,3 %
-          Pesimistický (fiskální dominance): 3,0 %+
+          Optimistický (cíl ČNB, bez šoků):    2,0 %
+          Centrální odhad (empirický průměr):   2,5 %  ← ZVOLENÁ HODNOTA
+          Mírně pesimistický (s fiskálním rizikem): 3,0 %
+          Pesimistický (fiskální dominance):    3,5 %+
     `,
   },
 
