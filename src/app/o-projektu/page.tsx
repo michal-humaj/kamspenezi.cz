@@ -21,6 +21,12 @@ export const metadata: Metadata = {
   },
 };
 
+// Shared max-width keeps hero left-edge flush with prose left-edge
+const CONTENT_WIDTH = "max-w-[760px]";
+
+// Body prose text — slightly darker than --color-secondary for comfortable reading
+const PROSE_COLOR = "#4B5563";
+
 function Divider() {
   return (
     <hr
@@ -46,12 +52,14 @@ export default function OProjektuPage() {
     <div style={{ background: "var(--bg-base)" }}>
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      {/* Fix 1: same max-width as content so left edges align
+          Fix 2: reduced bottom padding (was full section-padding, now 48px/64px) */}
       <section
-        className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
+        className="pt-[var(--section-padding-y-mobile)] pb-12 md:pt-[var(--section-padding-y-desktop)] md:pb-16"
         style={{ background: "var(--bg-base)" }}
       >
-        <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-16">
+        <div className={`mx-auto ${CONTENT_WIDTH} px-4 md:px-6`}>
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:items-start md:gap-12">
 
             {/* Left: identity */}
             <div>
@@ -76,28 +84,34 @@ export default function OProjektuPage() {
                 Produktový manažer v IT · Praha
               </p>
 
-              <div
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 font-uiSans text-sm font-medium"
-                style={{
-                  background: "var(--scenario-b-bg)",
-                  color: "var(--scenario-b-dot)",
-                }}
-              >
-                <span
-                  className="h-1.5 w-1.5 rounded-full flex-shrink-0"
-                  style={{ background: "var(--scenario-b-dot)" }}
-                />
-                Bez reklam · Bez bankovních provizí · Nezávislý projekt
+              {/* Fix 4: three separate pills instead of one long badge */}
+              <div className="flex flex-wrap gap-2">
+                {["Bez reklam", "Bez bankovních provizí", "Nezávislý projekt"].map((label) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-uiSans text-sm font-medium"
+                    style={{
+                      background: "var(--scenario-b-bg)",
+                      color: "var(--scenario-b-dot)",
+                    }}
+                  >
+                    <span
+                      className="h-1.5 w-1.5 rounded-full flex-shrink-0"
+                      style={{ background: "var(--scenario-b-dot)" }}
+                    />
+                    {label}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* Right: photo */}
+            {/* Right: photo — Fix 3: 200 → 240px */}
             <div className="flex md:justify-end">
               <div
                 className="relative overflow-hidden flex-shrink-0"
                 style={{
-                  width: 200,
-                  height: 200,
+                  width: 240,
+                  height: 240,
                   borderRadius: "var(--radius-card)",
                   border: "1px solid var(--color-border)",
                   boxShadow: "var(--shadow-card)",
@@ -108,7 +122,7 @@ export default function OProjektuPage() {
                   alt="Michal Humaj"
                   fill
                   className="object-cover object-top"
-                  sizes="200px"
+                  sizes="240px"
                   priority
                 />
               </div>
@@ -123,19 +137,19 @@ export default function OProjektuPage() {
         className="pb-[var(--section-padding-y-mobile)] md:pb-[var(--section-padding-y-desktop)]"
         style={{ background: "var(--bg-base)" }}
       >
-        <div className="mx-auto max-w-[680px] px-4 md:px-6">
+        <div className={`mx-auto ${CONTENT_WIDTH} px-4 md:px-6`}>
 
-          {/* Osobní příběh */}
+          {/* Osobní příběh — Fix 5: prose uses PROSE_COLOR (#4B5563) */}
           <div>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Řešil jsem dvě finanční otázky. Možná je řešíš taky.
             </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Má smysl kupovat byt na vlastní bydlení, nebo je lepší platit
               nájem a investovat? Nejblíže jsem přišel ke kalkulačce New York
@@ -145,7 +159,7 @@ export default function OProjektuPage() {
             </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               A pak: je výhodné kupovat investiční byt, nebo je lepší dát ty
               samé peníze do globálního akciového fondu? Investiční byty mají
@@ -161,7 +175,7 @@ export default function OProjektuPage() {
             </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Pro český trh jsem nenašel nic srovnatelného. Tak jsem ho
               postavil.
@@ -175,14 +189,14 @@ export default function OProjektuPage() {
             <SectionHeading>Kdo za tím stojí</SectionHeading>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Jsem produktový manažer v Grouponu a drobný investor do
               nemovitostí.
             </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Nejsem finanční poradce ani hypoteční makléř. Právě proto mi
               nikdo neplatí za to, abys koupil konkrétní produkt nebo volil
@@ -197,7 +211,7 @@ export default function OProjektuPage() {
             <SectionHeading>Co kamspenezi.cz není</SectionHeading>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Není to projekt banky, pojišťovny ani hypotečního makléře. Na
               webu nejsou reklamy. Žádný affiliate odkaz, žádné komerční
@@ -205,7 +219,7 @@ export default function OProjektuPage() {
             </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Výsledek kalkulačky není doporučení. Ukáže ti čísla a rozhodnutí
               je na tobě.
@@ -219,7 +233,7 @@ export default function OProjektuPage() {
             <SectionHeading>Jak to funguje</SectionHeading>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Obě kalkulačky porovnávají dva scénáře na horizontu 30 let.
               Ceny bytů, výše nájmů a úrokové sazby vychází z veřejně
@@ -228,13 +242,12 @@ export default function OProjektuPage() {
             </p>
             <p
               className="font-uiSans text-base leading-relaxed md:text-lg mt-4"
-              style={{ color: "var(--color-secondary)" }}
+              style={{ color: PROSE_COLOR }}
             >
               Výpočet si ověříš v Google Sheets. Tabulka počítá úplně stejně
               jako kalkulačka, řádek po řádku.
             </p>
 
-            {/* Google Sheets callout — pure CSS hover, no JS handlers */}
             <a
               href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
               target="_blank"
@@ -261,7 +274,6 @@ export default function OProjektuPage() {
               />
             </a>
 
-            {/* Metodika links */}
             <div className="mt-5 flex flex-col gap-2">
               <p
                 className="font-uiSans text-sm font-medium mb-1"
@@ -294,7 +306,7 @@ export default function OProjektuPage() {
         className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
         style={{ background: "var(--bg-lilac-section)" }}
       >
-        <div className="mx-auto max-w-[680px] px-4 md:px-6">
+        <div className={`mx-auto ${CONTENT_WIDTH} px-4 md:px-6`}>
           <h2
             className="font-uiSans text-xl font-semibold tracking-[-0.01em] mb-2"
             style={{ color: "var(--color-primary)" }}
@@ -303,7 +315,7 @@ export default function OProjektuPage() {
           </h2>
           <p
             className="font-uiSans text-base leading-relaxed mb-6"
-            style={{ color: "var(--color-secondary)" }}
+            style={{ color: PROSE_COLOR }}
           >
             Máš otázku k metodice nebo jiný pohled na některý předpoklad?
             Napiš mi.
@@ -336,16 +348,15 @@ export default function OProjektuPage() {
         className="py-[var(--section-padding-y-mobile)] md:py-[var(--section-padding-y-desktop)]"
         style={{ background: "var(--bg-base)" }}
       >
-        <div className="mx-auto max-w-[680px] px-4 md:px-6">
+        <div className={`mx-auto ${CONTENT_WIDTH} px-4 md:px-6`}>
           <p
             className="font-uiSans text-base leading-relaxed mb-6"
-            style={{ color: "var(--color-secondary)" }}
+            style={{ color: PROSE_COLOR }}
           >
             Chceš vidět výsledek? Spočítej si to.
           </p>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {/* Bydlení */}
             <Link
               href="/"
               className="group flex flex-col justify-between rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-card)] transition-all hover:border-[var(--color-border-hover)] hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
@@ -385,7 +396,6 @@ export default function OProjektuPage() {
               </div>
             </Link>
 
-            {/* Investice */}
             <Link
               href="/investice"
               className="group flex flex-col justify-between rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-card)] transition-all hover:border-[var(--color-border-hover)] hover:shadow-[0_12px_32px_rgba(15,23,42,0.10)]"
