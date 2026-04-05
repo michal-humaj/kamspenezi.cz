@@ -62,7 +62,7 @@ const initialState: CalculatorState = {
   selectedCity: "praha",
   selectedApartmentSize: "1+kk",
   kupniCena: praha1kkDefaults.kupniCena,
-  vlastniZdroje: 10,
+  vlastniZdroje: 20,
   urokovaSazbaHypoteky: config.global.urokovaSazbaHypoteky,
   najemne: praha1kkDefaults.najemne,
   vynosInvestice: config.global.vynosInvestice,
