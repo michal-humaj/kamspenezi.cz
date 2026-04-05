@@ -60,6 +60,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
       <LabeledSliderInput
         id="inv-kupni-cena"
         label="Kupní cena nemovitosti"
+        tooltip={<p>Odhadovaná kupní cena bytu v tomto městě a dispozici, vycházející z transakčních dat ČBA Monitor / Flat Zone (Q4 2025). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
         value={state.kupniCena}
         onChange={(value) => updateState({ kupniCena: value })}
         unit="custom"
@@ -98,6 +99,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         id="inv-urokova-sazba"
         label="Úroková sazba hypotéky"
         description="Během prvních 5 let fixace"
+        tooltip={<p>Nejlepší aktuálně dostupná úroková sazba hypotéky pro 3letou fixaci (Moneta 3Y, únor 2026). Upravte podle vaší konkrétní nabídky od banky.</p>}
         extraLabel={
           <span className="mt-1 font-uiSans text-[13px] font-medium tabular-nums text-gray-600">
             Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
@@ -119,6 +121,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         id="inv-najemne"
         label="Měsíční nájemné"
         description="Kolik budete vybírat od nájemníka?"
+        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt v tomto městě, vycházející z Deloitte Rent Index Q4 2025. Jde o příjem z nájmu ve scénáři A.</p>}
         value={state.najemne}
         onChange={(value) => updateState({ najemne: value })}
         unit="custom"
@@ -137,6 +140,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         id="inv-obsazenost"
         label="Obsazenost bytu"
         description="Jak velkou část roku bude byt pronajatý?"
+        tooltip={<p>Procento roku, kdy byt skutečně generuje nájemní příjem. Zahrnuje čas na přechod mezi nájemníky a opravy. Praha a Brno mají vyšší hodnotu díky silné poptávce.</p>}
         value={state.obsazenost}
         onChange={(value) => updateState({ obsazenost: value })}
         unit="percent"
@@ -166,6 +170,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         id="inv-investice-expected"
         label="Výnos investic / ETF (ročně)"
         description="Očekávaný roční výnos akciového ETF"
+        tooltip={<p>Předpokládaný roční výnos globálního ETF (MSCI World) na 30 let, po odečtení TER. Průměr pěti institucí: Vanguard, Northern Trust, AQR, DMS, BNY. Upravte pro scénářovou analýzu.</p>}
         value={state.vynosInvesticeExpected}
         onChange={(v) => updateState({ vynosInvesticeExpected: v })}
         unit="percent"

@@ -79,6 +79,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       <LabeledSliderInput
         id="kupni-cena"
         label="Kupní cena nemovitosti"
+        tooltip={<p>Odhadovaná kupní cena bytu v tomto městě a dispozici, vycházející z transakčních dat ČBA Monitor / Flat Zone (Q4 2025). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
         value={state.kupniCena}
         onChange={(value) => updateState({ kupniCena: value })}
         unit="custom"
@@ -117,6 +118,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         id="urokova-sazba"
         label="Úroková sazba hypotéky"
         description="Během prvních 5 let fixace"
+        tooltip={<p>Nejlepší aktuálně dostupná úroková sazba hypotéky pro 3letou fixaci (Moneta 3Y, únor 2026). Upravte podle vaší konkrétní nabídky od banky.</p>}
         extraLabel={
           <span className="mt-1 font-uiSans text-[13px] font-medium tabular-nums text-gray-600">
             Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
@@ -152,6 +154,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         id="najemne"
         label="Nájemné"
         description="Za kolik byste si pronajali podobný byt dnes?"
+        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt v tomto městě, vycházející z Deloitte Rent Index Q4 2025. Jde o cenu nájmu, který byste platili místo splátky hypotéky.</p>}
         value={state.najemne}
         onChange={(value) => updateState({ najemne: value })}
         unit="custom"
@@ -168,8 +171,9 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       {/* 5. Výnos investic */}
       <LabeledSliderInput
         id="investice-expected"
-        label="Výnos investic (ročně)"
-        description="Očekávaný roční výnos investičního portfolia"
+        label="Výnos investic / ETF (ročně)"
+        description="Očekávaný roční výnos akciového ETF"
+        tooltip={<p>Předpokládaný roční výnos globálního ETF (MSCI World) na 30 let, po odečtení TER. Průměr pěti institucí: Vanguard, Northern Trust, AQR, DMS, BNY. Upravte pro scénářovou analýzu.</p>}
         value={state.vynosInvesticeExpected}
         onChange={(v) => updateState({ vynosInvesticeExpected: v })}
         unit="percent"

@@ -39,6 +39,7 @@ export function InvesticeUncertaintyInputs({ state, updateState }: InvesticeUnce
             id="inv-rust-hodnoty-expected"
             label="Zhodnocení nemovitosti (ročně)"
             description="Očekávaný roční růst ceny nemovitosti"
+            tooltip={<p>Průměrný roční nárůst hodnoty bytu na 30 let. Praha a Brno mají vyšší hodnotu díky chronickému nedostatku bytů — stavební povolení jsou na 25letém minimu.</p>}
             value={state.rustHodnotyExpected}
             onChange={(v) => updateState({ rustHodnotyExpected: v })}
             unit="percent"
@@ -54,6 +55,7 @@ export function InvesticeUncertaintyInputs({ state, updateState }: InvesticeUnce
             id="inv-sazba-expected"
             label="Budoucí sazba hypotéky (od roku 6)"
             description="Očekávaná úroková sazba po skončení fixace"
+            tooltip={<p>Předpokládaná sazba při refixacích hypotéky v průběhu 30 let. Vychází z rovnovážné sazby ČNB. Upravte pro pesimistický/optimistický scénář.</p>}
             value={state.urokovaSazbaHypotekyExpected}
             onChange={(v) => updateState({ urokovaSazbaHypotekyExpected: v })}
             unit="percent"
@@ -69,6 +71,7 @@ export function InvesticeUncertaintyInputs({ state, updateState }: InvesticeUnce
             id="inv-rust-najemneho-expected"
             label="Růst nájemného (ročně)"
             description="Očekávaný roční růst nájemného od nájemníka"
+            tooltip={<p>Průměrný roční nárůst tržního nájemného na 30 let. Praha a Brno mají vyšší hodnotu díky chronickému nedostatku nájemních bytů.</p>}
             value={state.rustNajemnehoExpected}
             onChange={(v) => updateState({ rustNajemnehoExpected: v })}
             unit="percent"

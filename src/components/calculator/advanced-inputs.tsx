@@ -106,6 +106,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="zarizeni"
             label="Vybavení bytu"
             description="Jednorázové náklady na zařízení"
+            tooltip={<p>Jednorázové náklady v roce 0: nábytek, spotřebiče, doprava/montáž a doplňky. Kalkulováno na základě IKEA ceníku 2026 + cen spotřebičů střední třídy.</p>}
             value={state.zarizeniNemovitosti}
             onChange={(value) => updateState({ zarizeniNemovitosti: value })}
             unit="kc"
@@ -152,6 +153,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="pojisteni"
             label="Pojištění bytu"
             description="Ročně"
+            tooltip={<p>Roční pojistné za pojištění vašeho bytu (interiéru). Kryje poškození podlah, obkladů, vnitřních rozvodů a zabudovaných prvků — nikoli vybavení nájemníka. Pojistné budovy platí SVJ z fondů domu.</p>}
             value={state.pojisteniNemovitosti}
             onChange={(value) => updateState({ pojisteniNemovitosti: value })}
             unit="custom"
@@ -169,6 +171,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="dan"
             label="Daň z nemovitosti"
             description="Ročně"
+            tooltip={<p>Roční daň z nemovitých věcí dle zákonného vzorce (zákon č. 338/1992 Sb.). Výše závisí na m² bytu a koeficientech vaší obce — Praha platí 2,6× více než Brno na stejný m².</p>}
             value={state.danZNemovitosti}
             onChange={(value) => updateState({ danZNemovitosti: value })}
             unit="custom"
@@ -210,6 +213,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="inflace"
             label="Inflace nákladů (ročně)"
             description="Údržba, pojištění, fond oprav"
+            tooltip={<p>Předpokládaná průměrná inflace na 30 let. Odvozena z historického průměru ČR v EU-era (2,3 %) s přirážkou za budoucí šoky. Výrazná odchylka mění výsledky kalkulačky.</p>}
             value={state.ocekavanaInflace}
             onChange={(value) => updateState({ ocekavanaInflace: value })}
             unit="percent"
@@ -250,8 +254,11 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
                 23 %
               </button>
             </div>
+            <p className="font-uiSans text-xs text-slate-500 mt-1">
+              Používá se pro výpočet daňové úspory z hypotečních úroků (§ 15 ZDP).
+            </p>
             <p className="font-uiSans text-xs text-slate-400 mt-1">
-              15 % pro příjmy do 36× průměrné mzdy, 23 % nad touto hranicí
+              15 % pro příjmy do 36× průměrné mzdy, 23 % nad touto hranicí.
             </p>
           </div>
         </AccordionContent>

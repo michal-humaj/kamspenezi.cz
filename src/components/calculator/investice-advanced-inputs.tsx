@@ -70,6 +70,7 @@ export function InvesticeAdvancedInputs({ state, updateState }: InvesticeAdvance
             id="inv-zarizeni"
             label="Vybavení bytu"
             description="Jednorázové náklady na zařízení"
+            tooltip={<p>Jednorázové náklady v roce 0: nábytek, spotřebiče, doprava/montáž a doplňky. Kalkulováno na základě IKEA ceníku 2026 + cen spotřebičů střední třídy.</p>}
             value={state.zarizeniNemovitosti}
             onChange={(value) => updateState({ zarizeniNemovitosti: value })}
             unit="kc"
@@ -94,6 +95,9 @@ export function InvesticeAdvancedInputs({ state, updateState }: InvesticeAdvance
                   <li><span className="font-medium">Středně starý (5–20 let):</span> 20–30 Kč/m²</li>
                   <li><span className="font-medium">Starší dům (20+ let):</span> 30–45 Kč/m²</li>
                 </ul>
+                <p className="text-xs text-gray-500 pt-1 border-t border-gray-100">
+                  Výchozí hodnota počítá s 22 Kč/m² (typický starší byt). Nezahrnuje služby jako voda, teplo, odpad.
+                </p>
               </div>
             }
             value={state.fondOprav}
@@ -113,6 +117,7 @@ export function InvesticeAdvancedInputs({ state, updateState }: InvesticeAdvance
             id="inv-pojisteni"
             label="Pojištění bytu"
             description="Ročně"
+            tooltip={<p>Roční pojistné za pojištění vašeho bytu (interiéru). Kryje poškození podlah, obkladů, vnitřních rozvodů a zabudovaných prvků — nikoli vybavení nájemníka. Pojistné budovy platí SVJ z fondů domu.</p>}
             value={state.pojisteniNemovitosti}
             onChange={(value) => updateState({ pojisteniNemovitosti: value })}
             unit="custom"
@@ -130,6 +135,7 @@ export function InvesticeAdvancedInputs({ state, updateState }: InvesticeAdvance
             id="inv-dan"
             label="Daň z nemovitosti"
             description="Ročně"
+            tooltip={<p>Roční daň z nemovitých věcí dle zákonného vzorce (zákon č. 338/1992 Sb.). Výše závisí na m² bytu a koeficientech vaší obce — Praha platí 2,6× více než Brno na stejný m².</p>}
             value={state.danZNemovitosti}
             onChange={(value) => updateState({ danZNemovitosti: value })}
             unit="custom"
@@ -147,6 +153,13 @@ export function InvesticeAdvancedInputs({ state, updateState }: InvesticeAdvance
             id="inv-naklady-udrzba"
             label="Náklady na údržbu"
             description="Malování, podlahy, koupelna, kuchyň, drobné opravy. Ročně."
+            tooltip={
+              <div className="space-y-2">
+                <p><strong>Co zahrnuje:</strong> Interiérové náklady vlastníka – malování, obnova podlah, koupelny, kuchyně a drobné opravy.</p>
+                <p><strong>Co nezahrnuje:</strong> Společné části domu (střecha, fasáda, výtah) – ty jsou ve fondu oprav. Spotřebiče a nábytek (ty musí kupovat i nájemník).</p>
+                <p className="text-emerald-700 font-medium">💡 Nový byt nebo po rekonstrukci? Snižte na 30–35 % výchozí hodnoty: menší byty ~4–5 tis. Kč/rok, větší ~6–9 tis. Kč/rok.</p>
+              </div>
+            }
             value={state.nakladyUdrzba}
             onChange={(value) => updateState({ nakladyUdrzba: value })}
             unit="custom"
@@ -164,6 +177,7 @@ export function InvesticeAdvancedInputs({ state, updateState }: InvesticeAdvance
             id="inv-inflace"
             label="Inflace nákladů (ročně)"
             description="Údržba, pojištění, fond oprav"
+            tooltip={<p>Předpokládaná průměrná inflace na 30 let. Odvozena z historického průměru ČR v EU-era (2,3 %) s přirážkou za budoucí šoky. Výrazná odchylka mění výsledky kalkulačky.</p>}
             value={state.ocekavanaInflace}
             onChange={(value) => updateState({ ocekavanaInflace: value })}
             unit="percent"
