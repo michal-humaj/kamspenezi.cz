@@ -21,8 +21,9 @@ import { squareMetersValues } from "./square-meters";
  *
  * METODICKÁ KONZISTENCE S KUPNICENA:
  *   kupniCena vychází ze Sreality.cz (duben 2026) filtrovaného na cihlovou a panelovou
- *   zástavbu × haircut faktor 0.802. Tato data zachovávají stejnou populaci bytů: obě
- *   strany (cena i nájemné) popisují starší zástavbu → výnosové procento je vnitřně konzistentní.
+ *   zástavbu × per-city haircut faktory (0.777–0.882 pro spolehlivá města, 0.804 fallback).
+ *   Tato data zachovávají stejnou populaci bytů: obě strany (cena i nájemné) popisují
+ *   starší zástavbu → výnosové procento je vnitřně konzistentní.
  *
  *   Předchozí přístup (Deloitte Rent Index Q4 2025) zahrnoval všechny typy bytů
  *   včetně developerských projektů → systematicky nadhodnocoval nájemné vůči cenám
@@ -300,7 +301,7 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
     procTatoMetoda: `
       KLÍČOVÝ DŮVOD — METODICKÁ KONZISTENCE S KUPNICENA:
       kupniCena vychází ze Sreality.cz (duben 2026) filtrovaného na cihlovou a panelovou
-      zástavbu × haircut 0.802 (scripts/sreality-older-buildings-price.mjs). Pokud by
+      zástavbu × per-city haircut faktory (scripts/sreality-older-buildings-price.mjs). Pokud by
       nájemné vycházelo z blendované hodnoty zahrnující developerské projekty (jako
       předchozí Deloitte přístup), vznikal by systematický nesoulad: cena popisuje starší segment,
       nájemné popisuje trh včetně dražších novostaveb → hrubé výnosové procento
@@ -314,10 +315,16 @@ export const najemneDoc: AttributeDoc<PerCityPerSize<number>> = {
       nájemné o 15–25 % vyšší než cihla/panel (Deloitte Q4 2025: developer 405 Kč/m²
       vs. cihla 332 Kč/m² vs. panel 286 Kč/m² — národní průměry).
 
-      Nabídkové ceny (asking prices) z Sreality jsou přijatelné: odchylka asking
-      vs. skutečně dosažené nájemné je typicky 2–4 %, konzistentní napříč městy.
-      Tato mírná konzervativní bias (asking > achieved) je přijatelná a je menší
-      než systematická chyba z míchání populací (starší ceny + všetypové nájemné).
+      Nabídkové ceny (asking prices) z Sreality jsou přijatelné jako vstupní data.
+      KNOWN BIAS — asking vs. skutečně dosažené nájemné:
+        Obecná realitní literatura (ČR): asking nájemné bývá o 3–8 % vyšší než sjednané.
+        Rozsah závisí na likviditě trhu (Praha s vysokou poptávkou: spíše 3–5 %;
+        méně likvidní trhy Jihlava, Ústí: spíše 5–8 %).
+        Tato systematická horní bias nelze opravit bez přístupu k placeným datům
+        o skutečně sjednaných nájmech (ČÚZK, realitní databáze). Její dopad:
+        výnosové procento je mírně nadhodnoceno o ~3–8 % relativně
+        (např. Praha 3.60 % hrubý výnos → skutečný hrubý výnos ~3.3–3.5 %).
+        I přes tuto bias je metodika lepší než míchání populací.
     `,
     presnost: `
       ±8–12 % pro typický případ (byt v dobrém stavu ve standardní lokalitě v rámci města).
