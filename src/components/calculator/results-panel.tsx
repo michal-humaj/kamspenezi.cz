@@ -139,6 +139,12 @@ export function ResultsPanel({
     >
       {/* Heading */}
       <div className="mb-2">
+        <p
+          className="font-uiSans text-xs font-semibold uppercase tracking-widest mb-1"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          Výsledek
+        </p>
         <h2 className="section-title mb-0">Čisté jmění za 30 let</h2>
       </div>
 
