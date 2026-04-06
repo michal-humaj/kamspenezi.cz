@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 export interface LabeledSliderInputProps {
   /** Unique ID for the input */
@@ -63,6 +64,14 @@ export function LabeledSliderInput({
 }: LabeledSliderInputProps) {
   // Tooltip state
   const [showTooltip, setShowTooltip] = React.useState(false);
+  // Whether we're running in a mobile viewport
+  const [isMobile, setIsMobile] = React.useState(false);
+  // Guard against SSR — portal only renders after mount
+  const [mounted, setMounted] = React.useState(false);
+
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const desktopPopoverRef = React.useRef<HTMLDivElement>(null);
+
   // Local state for when user is actively editing the text input
   const [localValue, setLocalValue] = React.useState<string | null>(null);
   const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
@@ -77,6 +86,54 @@ export function LabeledSliderInput({
   // Ref to the range input DOM element so we can read its current value when drag is confirmed
   const sliderRef = React.useRef<HTMLInputElement>(null);
 
+  // ── Mobile detection ────────────────────────────────────────────────────────
+  React.useEffect(() => {
+    setMounted(true);
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // ── Desktop: close popover on outside click ──────────────────────────────────
+  React.useEffect(() => {
+    if (!showTooltip || isMobile) return;
+    const handler = (e: MouseEvent) => {
+      if (
+        buttonRef.current?.contains(e.target as Node) ||
+        desktopPopoverRef.current?.contains(e.target as Node)
+      )
+        return;
+      setShowTooltip(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showTooltip, isMobile]);
+
+  // ── Mobile: lock body scroll while sheet is open ────────────────────────────
+  React.useEffect(() => {
+    if (!isMobile) return;
+    if (showTooltip) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showTooltip, isMobile]);
+
+  // ── Escape key closes both sheet and popover ────────────────────────────────
+  React.useEffect(() => {
+    if (!showTooltip) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowTooltip(false);
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [showTooltip]);
+
   // Sync local slider with prop when not dragging
   React.useEffect(() => {
     if (!isDragging) {
@@ -85,17 +142,20 @@ export function LabeledSliderInput({
   }, [value, isDragging]);
 
   // Default formatters/parsers
-  const defaultFormatter = React.useCallback((v: number) => {
-    if (unit === "percent") {
+  const defaultFormatter = React.useCallback(
+    (v: number) => {
+      if (unit === "percent") {
+        return new Intl.NumberFormat("cs-CZ", {
+          minimumFractionDigits: v % 1 === 0 ? 0 : 1,
+          maximumFractionDigits: 1,
+        }).format(v);
+      }
       return new Intl.NumberFormat("cs-CZ", {
-        minimumFractionDigits: v % 1 === 0 ? 0 : 1,
-        maximumFractionDigits: 1,
+        maximumFractionDigits: 0,
       }).format(v);
-    }
-    return new Intl.NumberFormat("cs-CZ", {
-      maximumFractionDigits: 0,
-    }).format(v);
-  }, [unit]);
+    },
+    [unit]
+  );
 
   const defaultParser = React.useCallback((input: string): number | null => {
     if (!input || input.trim() === "") return null;
@@ -117,18 +177,14 @@ export function LabeledSliderInput({
   // Sanitize input based on type
   const sanitizeInput = (input: string): string => {
     if (unit === "percent" || inputMode === "decimal") {
-      // Allow digits, comma, dot
       let sanitized = input.replace(/[^\d,\.]/g, "");
-      // Replace dot with comma
       sanitized = sanitized.replace(/\./g, ",");
-      // Allow only one comma
       const parts = sanitized.split(",");
       if (parts.length > 2) {
         sanitized = parts[0] + "," + parts.slice(1).join("");
       }
       return sanitized;
     } else {
-      // Allow only digits and spaces
       return input.replace(/[^\d\s]/g, "");
     }
   };
@@ -139,18 +195,15 @@ export function LabeledSliderInput({
     const sanitized = sanitizeInput(raw);
     setLocalValue(sanitized);
 
-    // Clear existing timer
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
-    // Debounced update (500ms)
     debounceTimer.current = setTimeout(() => {
       const parsed = parse(sanitized);
       if (parsed !== null) {
         const clamped = Math.max(min, Math.min(max, parsed));
         onChange(clamped);
-        // Also update slider local value
         setLocalSliderValue(clamped);
       }
     }, 500);
@@ -186,13 +239,9 @@ export function LabeledSliderInput({
     }, 0);
   };
 
-  // Handle slider change - suppress all touch-driven changes until drag intent is confirmed.
-  // This prevents the slider from visually jumping when the user's finger touches it while scrolling.
+  // Handle slider change
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // If a touch is active but intent isn't confirmed as horizontal drag, ignore the event entirely.
-    // The value will be read from the DOM directly once intent is confirmed in handleTouchMove.
     if (touchStartRef.current && touchIntentRef.current !== "drag") return;
-
     const newValue = Number(e.target.value);
     setLocalSliderValue(newValue);
     setLocalValue(null);
@@ -201,15 +250,13 @@ export function LabeledSliderInput({
   // Handle slider drag end - emit final value
   const handleSliderDragEnd = () => {
     setIsDragging(false);
-    // Emit the final value to trigger calculation
     onChange(localSliderValue);
   };
 
-  // Touch handlers with intent detection to prevent Android scroll from hijacking sliders
+  // Touch handlers with intent detection
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     touchIntentRef.current = "unknown";
-    // Do NOT mark as dragging yet — wait for intent to be determined on touchmove
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -218,11 +265,8 @@ export function LabeledSliderInput({
     const dy = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
     if (touchIntentRef.current === "unknown") {
       if (dy > dx && dy > 8) {
-        // Vertical movement dominates → user is scrolling, do not engage slider
         touchIntentRef.current = "scroll";
       } else if (dx > dy && dx > 8) {
-        // Horizontal movement dominates → user intends to drag slider.
-        // Read the current DOM value and apply it now (onChange was suppressed up to this point).
         touchIntentRef.current = "drag";
         setIsDragging(true);
         if (sliderRef.current) {
@@ -237,8 +281,6 @@ export function LabeledSliderInput({
     if (touchIntentRef.current === "drag") {
       handleSliderDragEnd();
     }
-    // For scroll or undetermined: onChange was already suppressed, so localSliderValue
-    // was never changed — nothing to restore and no visual snap-back.
     touchStartRef.current = null;
     touchIntentRef.current = "unknown";
   };
@@ -251,6 +293,18 @@ export function LabeledSliderInput({
       }
     };
   }, []);
+
+  // ── Info button handlers ────────────────────────────────────────────────────
+  const handleInfoClick = () => {
+    // On mobile: always open. On desktop: toggle (backup for keyboard users).
+    setShowTooltip((prev) => !prev);
+  };
+  const handleInfoMouseEnter = () => {
+    if (!isMobile) setShowTooltip(true);
+  };
+  const handleInfoMouseLeave = () => {
+    if (!isMobile) setShowTooltip(false);
+  };
 
   return (
     <div className="space-y-2">
@@ -267,19 +321,25 @@ export function LabeledSliderInput({
             </label>
             {tooltip && (
               <div className="relative">
+                {/* Info button */}
                 <button
+                  ref={buttonRef}
                   type="button"
-                  onClick={() => setShowTooltip(!showTooltip)}
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
+                  onClick={handleInfoClick}
+                  onMouseEnter={handleInfoMouseEnter}
+                  onMouseLeave={handleInfoMouseLeave}
                   className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[10px] font-semibold text-gray-600 hover:bg-gray-300 transition-colors"
                   aria-label="Více informací"
+                  aria-expanded={showTooltip}
                 >
                   i
                 </button>
-                {showTooltip && (
-                  <div 
-                    className="absolute left-0 top-full z-50 mt-2 w-72 rounded-lg border border-gray-200 bg-white p-3 shadow-lg text-sm text-gray-700 leading-relaxed"
+
+                {/* ── Desktop hover popover ─────────────────────────────────── */}
+                {!isMobile && showTooltip && (
+                  <div
+                    ref={desktopPopoverRef}
+                    className="absolute left-0 top-full z-50 mt-2 w-72 rounded-xl border border-gray-100 bg-white p-4 shadow-[0_8px_32px_rgba(15,23,42,0.12)] text-sm text-gray-600 leading-relaxed"
                     onMouseEnter={() => setShowTooltip(true)}
                     onMouseLeave={() => setShowTooltip(false)}
                   >
@@ -297,7 +357,7 @@ export function LabeledSliderInput({
           {extraLabel}
         </div>
 
-        {/* Right: Input with Unit - Self-contained flex container */}
+        {/* Right: Input with Unit */}
         <div className="flex items-center justify-end">
           <div
             className={`inline-flex items-center justify-end rounded-full border bg-white px-4 py-2.5 shadow-sm transition-all w-full md:w-[160px] ${
@@ -343,7 +403,7 @@ export function LabeledSliderInput({
               }}
               className="border-none bg-transparent font-uiSans text-right text-base text-[var(--color-primary)] outline-none tabular-nums w-auto max-w-[110px]"
               style={{
-                fontSize: "16px", // Must be 16px minimum to prevent iOS auto-zoom
+                fontSize: "16px",
               }}
             />
             <span
@@ -356,10 +416,10 @@ export function LabeledSliderInput({
         </div>
       </div>
 
-      {/* Optional Middle Content (e.g. Mortgage Payment Pill) */}
+      {/* Optional Middle Content */}
       {middleContent}
 
-      {/* Slider Row (Full Width) */}
+      {/* Slider Row */}
       <div className="relative mt-1">
         <input
           ref={sliderRef}
@@ -385,6 +445,71 @@ export function LabeledSliderInput({
 
       {/* Optional Bottom Content */}
       {bottomContent}
+
+      {/* ── Mobile bottom sheet (portal) ───────────────────────────────────── */}
+      {mounted &&
+        isMobile &&
+        showTooltip &&
+        tooltip &&
+        ReactDOM.createPortal(
+          <>
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 z-50 bg-black/50"
+              style={{ animation: "backdropFadeIn 200ms ease-out" }}
+              onClick={() => setShowTooltip(false)}
+              aria-hidden="true"
+            />
+
+            {/* Sheet */}
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label={label}
+              className="fixed bottom-0 left-0 right-0 z-[51] bg-white rounded-t-[20px] shadow-[0_-8px_40px_rgba(15,23,42,0.15)]"
+              style={{ animation: "slideUpSheet 300ms cubic-bezier(0.32,0.72,0,1)" }}
+            >
+              {/* Drag handle */}
+              <div className="flex justify-center pt-3 pb-0">
+                <div className="h-[3px] w-9 rounded-full bg-gray-200" />
+              </div>
+
+              {/* Header row */}
+              <div className="flex items-center justify-between px-5 pt-4 pb-3">
+                <span className="font-uiSans text-[15px] font-semibold text-[var(--color-primary)]">
+                  {label}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowTooltip(false)}
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-gray-500 active:bg-gray-200 transition-colors"
+                  aria-label="Zavřít"
+                >
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                    <path
+                      d="M1 1L10 10M10 1L1 10"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px mx-5" style={{ background: "var(--color-border)" }} />
+
+              {/* Tooltip content */}
+              <div className="px-5 pt-4 pb-2 font-uiSans text-[14px] leading-[1.6] text-[var(--color-secondary)]">
+                {tooltip}
+              </div>
+
+              {/* iOS safe area */}
+              <div style={{ paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))" }} />
+            </div>
+          </>,
+          document.body
+        )}
     </div>
   );
 }
