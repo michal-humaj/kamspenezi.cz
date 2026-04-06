@@ -182,24 +182,6 @@ export function ResultsPanel({
         />
       </div>
 
-      {/* Secondary buttons — above the chart */}
-      <div className="mt-5 flex justify-center gap-3">
-        <Link
-          href="/metodika/bydleni"
-          className="inline-flex items-center justify-center rounded-[var(--radius-pill)] border border-[var(--btn-secondary-border)] bg-white px-5 py-[9px] font-uiSans text-[14px] font-medium text-[var(--btn-secondary-text)] transition-all duration-200 hover:border-[var(--btn-secondary-border-hover)] hover:bg-[var(--btn-secondary-hover-bg)]"
-        >
-          Jak to funguje?
-        </Link>
-        <a
-          href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center rounded-[var(--radius-pill)] border border-[var(--btn-secondary-border)] bg-white px-5 py-[9px] font-uiSans text-[14px] font-medium text-[var(--btn-secondary-text)] transition-all duration-200 hover:border-[var(--btn-secondary-border-hover)] hover:bg-[var(--btn-secondary-hover-bg)]"
-        >
-          Ověřit výpočet
-        </a>
-      </div>
-
       {/* Sparkline — shared, no background or borders */}
       {hasSparkline && (
         <div className="mt-6">
@@ -233,12 +215,26 @@ export function ResultsPanel({
         </div>
       )}
 
-      {/* Share — black pill */}
-      {copyShareUrl && (
-        <div className="mt-6 flex justify-center">
-          <ShareButton onCopy={copyShareUrl} variant="pill" />
-        </div>
-      )}
+      {/* Share + secondary links */}
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        {copyShareUrl && <ShareButton onCopy={copyShareUrl} variant="pill" />}
+        <Link
+          href="/metodika/bydleni"
+          className="font-uiSans text-[14px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          Jak to funguje?
+        </Link>
+        <a
+          href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-uiSans text-[14px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          Ověřit výpočet
+        </a>
+      </div>
     </div>
   );
 }
