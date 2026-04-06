@@ -334,13 +334,13 @@ export function InvesticeResultsPanel({
       )}
 
       {/* Secondary links */}
-      <div className="mt-3 flex justify-center items-center gap-3">
+      <div className="mt-3 flex justify-center items-center gap-2">
         <Link
           href="/metodika/investice"
           className="font-uiSans text-[13px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
           style={{ color: "var(--color-secondary)" }}
         >
-          Metodika výpočtu
+          Jak to funguje?
         </Link>
         <span className="text-[13px] select-none" style={{ color: "var(--color-border-hover)" }}>·</span>
         <a
@@ -350,7 +350,7 @@ export function InvesticeResultsPanel({
           className="font-uiSans text-[13px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
           style={{ color: "var(--color-secondary)" }}
         >
-          Google Sheets
+          Ověřit výpočet
         </a>
       </div>
     </div>
