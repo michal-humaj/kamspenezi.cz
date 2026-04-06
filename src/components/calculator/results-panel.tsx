@@ -163,7 +163,7 @@ export function ResultsPanel({
       {/* Scenario rows */}
       <div className="flex flex-col">
         <ScenarioBlock
-          label="Vlastní bydlení na hypotéku"
+          label="Scénář A: Vlastní bydlení na hypotéku"
           value={scenarioAResult}
           color="var(--scenario-a-dot)"
           tooltipContent="Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů."
@@ -173,7 +173,7 @@ export function ResultsPanel({
         {/* 28px gap between scenario rows */}
         <div style={{ height: 28 }} />
         <ScenarioBlock
-          label="Bydlení v nájmu a investování"
+          label="Scénář B: Bydlení v nájmu a investování"
           value={scenarioBResult}
           color="var(--scenario-b-dot)"
           tooltipContent="Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio."

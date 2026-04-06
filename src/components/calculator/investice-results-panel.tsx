@@ -267,7 +267,7 @@ export function InvesticeResultsPanel({
       {/* Scenario rows */}
       <div className="flex flex-col">
         <ScenarioBlock
-          label="Investiční byt"
+          label="Scénář A: Investiční byt"
           value={scenarioAResult}
           color="var(--scenario-a-dot)"
           tooltipContent="Koupíte investiční byt na hypotéku a pronajímáte ho. Po 30 letech vlastníte nemovitost bez dluhů + vedlejší fond z čistého cashflow."
@@ -284,7 +284,7 @@ export function InvesticeResultsPanel({
         {/* 28px gap between scenario rows */}
         <div style={{ height: 28 }} />
         <ScenarioBlock
-          label="Akciový fond"
+          label="Scénář B: Akciový fond"
           value={scenarioBResult}
           color="var(--scenario-b-dot)"
           tooltipContent="Místo nemovitosti investujete stejnou počáteční hotovost do globálního akciového ETF. Po 30 letech máte investiční portfolio."
