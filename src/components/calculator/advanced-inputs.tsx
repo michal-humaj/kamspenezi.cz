@@ -105,8 +105,15 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
           <LabeledSliderInput
             id="zarizeni"
             label="Vybavení bytu"
-            description="Jednorázové náklady na zařízení"
-            tooltip={<p>Jednorázové náklady v roce 0: nábytek, spotřebiče, doprava/montáž a doplňky. Kalkulováno na základě IKEA ceníku 2026 + cen spotřebičů střední třídy.</p>}
+            description="Náklady navíc oproti pronájmu"
+            tooltip={
+              <div className="space-y-2">
+                <p>Kolik zaplatíte <strong>navíc oproti nájemci</strong> za vybavení bytu v roce 0.</p>
+                <p>Scénář A (kupující): IKEA střední třída + spotřebiče střední třídy.</p>
+                <p>Scénář B (nájemce): economy IKEA nábytek + s 50% pravděpodobností pračka. Lednička, sporák a digestoř jsou v nezařízeném pronájmu v ČR zpravidla součástí bytu — nájemce je nekupuje.</p>
+                <p className="text-xs text-[var(--color-text-muted)]">Kalkulováno z IKEA ceníku 2026 + cen spotřebičů.</p>
+              </div>
+            }
             value={state.zarizeniNemovitosti}
             onChange={(value) => updateState({ zarizeniNemovitosti: value })}
             unit="kc"

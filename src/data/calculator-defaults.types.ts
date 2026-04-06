@@ -24,7 +24,9 @@
  * squareMeters: Typical apartment size (m²)
  * fondOprav: Monthly SVJ repair fund contribution (Kč/month, total for unit)
  *   - Note: SVJ typically charges 20-50 Kč/m²/month, we store total
- * zarizeniNemovitosti: One-time furnishing cost (Kč, furniture + appliances)
+ * zarizeniNemovitosti: Bydlení differential — extra furnishing cost of buying vs. renting (Kč).
+ *   Buyer (Scén. A) furnishes mid-range; renter (Scén. B) buys economy IKEA + 50% washing machine
+ *   (kitchen appliances typically included in Czech unfurnished rentals).
  * danZNemovitosti: Annual property tax (Kč/year)
  *   - Depends on municipality coefficient (1.0-5.0) and property category
  *   - Values assume typical residential category in city center

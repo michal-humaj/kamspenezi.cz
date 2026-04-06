@@ -6,7 +6,9 @@
  *
  * Chceš-li změnit hodnotu: uprav příslušný atributový soubor, ne tento soubor.
  *
- * zarizeniNemovitosti: full bydlení differential (furnishing from scratch vs. furnished rental).
+ * zarizeniNemovitosti: bydlení differential — buyer (mid-range IKEA + appliances) minus renter
+ *   (economy IKEA + 50% expected washing machine; kitchen appliances typically included in CZ unfurnished
+ *   rentals). See zarizeni-nemovitosti.ts for full bottom-up breakdown.
  * zarizeniNemovitostiInvestice: economy landlord standard (lower — see zarizeni-nemovitosti.ts).
  */
 

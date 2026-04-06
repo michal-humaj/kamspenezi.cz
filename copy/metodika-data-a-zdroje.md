@@ -16,7 +16,7 @@ Odkud bereme data
 ### Perex
 Tato stránka vysvětluje každé číslo, se kterým kalkulačka pracuje. Pro každý parametr najdeš: co přesně měří, jakou hodnotu používáme a odkud pochází. Důležité rozlišení: některé hodnoty jsou ověřitelná tržní data platná dnes. Jiné jsou kalibrované odhady pro 30letý horizont. Víš-li, které je které, lépe pochopíš, kde výsledku věřit a kde si nastavit vlastní hodnoty.
 
-**Poslední aktualizace dat: 4. dubna 2026**
+**Poslední aktualizace dat: 5. dubna 2026**
 
 ---
 
@@ -28,58 +28,62 @@ Tyto hodnoty jsou ověřitelná tržní data platná k datu poslední aktualizac
 
 **Co to je:** vstupní kupní cena bytu pro danou dispozici a město, ze které kalkulačka vychází. Vypočítá se jako Kč/m² × průměrná plocha dané dispozice.
 
-Zdroj cen za m²: [ČBA Monitor](https://www.cbamonitor.cz/statistika/ceny-starsich-bytu-krajska-mesta), transakční ceny starších bytů (sekundární trh), Q4 2025.
+Zdroj cen za m²: vlastní dotaz na [Sreality.cz](https://www.sreality.cz) API, duben 2026 (filtr: starší zástavba, cihlové a panelové domy). Nabídkové ceny bytů jsou vyšší než ceny, za které byty ve skutečnosti mění majitele. Pro každé město jsme vypočítali vlastní převodní koeficient: vzali jsme ověřené transakční ceny (ČBA Monitor Q4 2025), upravili je o mezičasový posun (+5 %, odpovídá tržnímu růstu od Q4 2025 do dubna 2026) a vydělili nabídkovou cenou Sreality. Koeficienty dle města: 0,870 (Praha), 0,843 (Brno), 0,882 (Pardubice), 0,854 (ČB), 0,804 (Plzeň, Ostrava, HK: záložní medián), 0,780 (Liberec), 0,783 (Olomouc), 0,777 (Ústí), 0,798 (Jihlava), 0,804 (KV: záložní). Záložní koeficient 0,804 platí pro města, kde transakční data ČBA Monitoru nejsou reprezentativní nebo je Sreality vzorek příliš malý.
 
-Proč ČBA Monitor, a ne ceny novostaveb? Novostavby jsou strukturálně dražší a tvoří menší část trhu. Většina kupujících pořizuje starší byt na sekundárním trhu. ČBA Monitor zachycuje právě tyto transakce.
+Výjimka: Zlín používá [ČBA Monitor](https://www.cbamonitor.cz/statistika/ceny-starsich-bytu-krajska-mesta) Q4 2025, protože Sreality vzorek pro Zlín vykazoval anomální koeficienty (3+kk a 4+kk > 2+kk).
 
-| Město | Kč/m² (Q4 2025) |
+Proč Sreality API, a ne přímo transakční databáze? V ČR jsou transakční ceny nemovitostí dostupné ze dvou zdrojů: katastr nemovitostí (Finanční správa) a ČBA Monitor, který vychází z bankovních odhadů při poskytnutí hypotéky. Katastr nemá veřejné strojově čitelné API s kompletním pokrytím všech 13 krajských měst. ČBA Monitor poskytuje spolehlivá data pro velká města, ale pro menší trhy zachycuje jen hypotečně financované transakce staré zástavby, a v některých z nich (Ostrava, Karlovy Vary) pokrývá zjevně pouze nejlevnější segment trhu: rozdíl oproti Sreality nabídkám přesahuje i po standardní srážce 30 %. Sreality nabízí konzistentní pokrytí všech 13 měst stejnou metodikou. A klíčové: nájemné v kalkulačce vychází také ze Sreality. Kupní cena i nájemné tak popisují tentýž typ bytů (starší zástavbu, cihla a panel) ze stejného zdroje.
+
+| Město | Kč/m² po přepočtu na transakční cenu (duben 2026) |
 |---|---|
-| Praha | 145 000 |
-| Brno | 114 300 |
-| Hradec Králové | 86 100 |
-| Pardubice | 84 000 |
-| České Budějovice | 81 100 |
-| Olomouc | 79 200 |
-| Plzeň | 78 400 |
+| Praha | 152 300 |
+| Brno | 120 100 |
+| Hradec Králové | 96 500 |
+| Pardubice | 88 200 |
+| České Budějovice | 85 200 |
+| Olomouc | 83 200 |
+| Plzeň | 82 300 |
 | Zlín | 75 700 |
-| Liberec | 74 200 |
-| Jihlava | 68 100 |
-| Ostrava | 61 600 |
-| Karlovy Vary | 51 700 |
-| Ústí nad Labem | 46 400 |
+| Liberec | 77 900 |
+| Jihlava | 71 500 |
+| Ostrava | 74 300 |
+| Karlovy Vary | 73 600 |
+| Ústí nad Labem | 48 700 |
 
-Průměrné plochy dispozic (přibližné mediány z analýzy inzertní databáze Sreality.cz a ČBA Monitor, 2025):
+Průměrné plochy dispozic vychází z analýzy inzertní databáze [Sreality.cz](https://www.sreality.cz) (duben 2026). Plochy se liší podle města. Níže jsou orientační národní mediány; kalkulačka používá per-city hodnoty. Konkrétní plochy pro každé město najdeš v Google Sheets.
 
 | Dispozice | Průměrná plocha |
 |---|---|
-| 1+kk | 32 m² |
-| 2+kk | 52 m² |
-| 3+kk | 72 m² |
-| 4+kk | 92 m² |
+| 1+kk | 34 m² |
+| 2+kk | 54 m² |
+| 3+kk | 80 m² |
+| 4+kk | 102 m² |
 
 #### Výše nájemného
 
 **Co to je:** průměrná výše měsíčního nájmu ve zvoleném městě, přepočtená na dispozici pomocí průměrné plochy.
 
-Zdroj: [Deloitte Rent Index](https://www2.deloitte.com/cz/cs/pages/real-estate/articles/deloitte-rent-index.html) Q4 2025, vydáno leden 2026. Průměrná cena v Kč/m²/měsíc agregovaná přes více realitních portálů.
+Zdroj: vlastní dotaz na [Sreality.cz](https://www.sreality.cz) API, duben 2026. Medián nabídkového nájemného pro starší zástavbu (cihlové a panelové domy). Novostavby a developerské projekty jsou záměrně vynechány.
 
-Proč Deloitte Rent Index, a ne data přímo ze Sreality nebo Bezrealitky? Data z jednoho portálu jsou zkreslena směrem k nabídkám, které ten portál přitahuje. Deloitte agreguje přes více zdrojů. Omezení: jde o inzerované ceny, ne o ceny skutečně sjednaných nájmů, které mohou být nižší.
+Proč Sreality.cz filtrované na starší zástavbu? Metodická konzistence s cenami nemovitostí: obě strany výpočtu (cena bytu i nájemné) vycházejí ze stejné populace bytů (starší zástavba). Deloitte Rent Index zahrnuje všechny typy bytů včetně developerských projektů, což systematicky nadhodnocuje nájemné ve srovnání se starší zástavbou (+2–17 % dle města). Výnosové procento je smysluplné pouze tehdy, jsou-li obě hodnoty odvozeny ze stejného segmentu trhu.
 
-| Město | Kč/m²/měsíc (Q4 2025) |
+Deloitte Rent Index Q4 2025 je použit jako křížová validace. Shoda je těsná pro Prahu (–0,4 %), Brno (+1,5 %), Olomouc (0 %). Výraznější odchylka u Liberce (Deloitte o 17 % níže) a Jihlavy (o 10 % níže): menší vzorky, větší nejistota.
+
+| Město | Kč/m²/měsíc (Sreality, duben 2026) |
 |---|---|
-| Praha | 459 |
-| Brno | 392 |
-| Hradec Králové | 317 |
-| Pardubice | 307 |
-| Plzeň | 294 |
+| Praha | 457 |
+| Brno | 398 |
+| Hradec Králové | 324 |
+| Pardubice | 303 |
+| Plzeň | 300 |
 | Olomouc | 293 |
-| Zlín | 290 |
-| České Budějovice | 277 |
-| Liberec | 271 |
-| Jihlava | 256 |
-| Karlovy Vary | 256 |
-| Ostrava | 239 |
-| Ústí nad Labem | 221 |
+| Zlín | 303 |
+| České Budějovice | 297 |
+| Liberec | 318 |
+| Jihlava | 281 |
+| Karlovy Vary | 257 |
+| Ostrava | 261 |
+| Ústí nad Labem | 214 |
 
 #### Vlastní zdroje (akontace)
 
@@ -101,7 +105,7 @@ Tyto hodnoty nejsou tržní fakta platná dnes. Jsou to kalibrované odhady pro 
 
 **Hodnota:** 6,5 % p.a.
 
-**Zdroj:** průměr pěti institucionálních výhledů pro rok 2026: Vanguard VCMM, BNY Investments, AQR, DMS/UBS, J.P. Morgan. Náklady fondu: přibližně 0,20 % p.a. pro nízkonákladový indexový fond.
+**Zdroj:** průměr pěti institucionálních výhledů pro rok 2026: [Vanguard VCMM](https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vemo-return-forecasts.html), [BNY Investments](https://www.bny.com/wealth/global/en/insights/2026-capital-market-assumptions.html), [AQR](https://www.aqr.com/Insights/Research/Alternative-Thinking/2026-Capital-Market-Assumptions-for-Major-Asset-Classes), [DMS (Global Investment Returns Yearbook/UBS)](https://www.ubs.com/global/en/wealthmanagement/insights/2025/global-investment-returns-yearbook.html), [Northern Trust](https://ntam.northerntrust.com/content/dam/northerntrust/investment-management/global/en/documents/thought-leadership/2026/cma/2026-capital-market-assumptions-report.pdf). Náklady fondu: přibližně 0,20 % p.a. pro nízkonákladový indexový fond.
 
 **Proč ne historický průměr (~7 %):** Historický nominální výnos globálních akcií (DMS Yearbook) se pohybuje kolem 7 % ročně. My používáme 6,5 % jako konzervativní kotvu. Zkušení investoři s diverzifikovaným portfoliem mohou na dlouhém horizontu dosáhnout výnosů blízkých historickému průměru.
 
@@ -113,7 +117,7 @@ Tyto hodnoty nejsou tržní fakta platná dnes. Jsou to kalibrované odhady pro 
 
 **Hodnota:** 4,5 % p.a.
 
-**Zdroj:** odvozeno: reálná neutrální sazba ČNB + střednědobý inflační cíl + standardní bankovní marže. Data hypoték: [Hypoindex.cz](https://hypoindex.cz).
+**Zdroj:** odvozeno: reálná neutrální sazba ČNB + střednědobý inflační cíl + standardní bankovní marže. Data hypoték: [Hypoindex.cz](https://www.hypoindex.cz/hypoindex-vyvoj/).
 
 **Proč záleží víc než počáteční sazba (3,99 %):** Platí po dobu 25 z 30 let. Změna o 0,5 % v tomto parametru má větší vliv na celkové náklady Scénáře A než jakákoli změna počáteční sazby.
 
@@ -121,11 +125,11 @@ Tyto hodnoty nejsou tržní fakta platná dnes. Jsou to kalibrované odhady pro 
 
 **Co to je:** předpokládané průměrné roční zdražování nemovitosti ve zvoleném městě za 30letý horizont.
 
-**Hodnoty:** 2,5–4,5 % p.a. dle města (viz tabulka níže).
+**Hodnoty:** 3,0–4,5 % p.a. dle města (viz tabulka níže).
 
 **Jak jsme k číslům došli:**
 
-Výchozím bodem je historická řada [Eurostat HPI (ei_hppi_q)](https://ec.europa.eu/eurostat/databrowser/view/ei_hppi_q) a [Hypostat 2023 (European Mortgage Federation)](https://hypo.org/emf-studies/hypostat/). Klíčové CAGR z historické řady pro Českou republiku:
+Výchozím bodem je historická řada [Eurostat HPI (ei_hppi_q)](https://ec.europa.eu/eurostat/databrowser/product/page/ei_hppi_q) (zdrojem primárních dat je Hypostat, European Mortgage Federation). Klíčové CAGR z historické řady pro Českou republiku:
 
 | Období | CAGR | Poznámka |
 |---|---|---|
@@ -138,7 +142,7 @@ Jako referenční strukturální tempo používáme CAGR 2010–2019 (4,5 %). Za
 
 Proč nepoužíváme vyšší číslo (6,3 % z delší řady): Boom 2015–2019 byl tažen zápornou reálnou sazbou ČNB. Tento tailwind je pryč. Navíc ČNB makroprudenčními limity (max LTV 80 %, DTI max 8,5×, DSTI max 45 %) systematicky omezuje leverage-driven cenový růst. A dostupnost bydlení: v Praze vzrostly ceny bytů 2,8× rychleji než příjmy (2015–2023), což vytváří přirozenou bariéru dalšího přehřívání.
 
-Výsledek potvrzuje rovnovážný model: inflace (2,0 %) + reálný mzdový příspěvek (~1,5 %) + supply prémie (0–1,0 % dle města) = 3,5–4,5 % p.a.
+Výsledek potvrzuje rovnovážný model: inflace (2,0 %) + reálný mzdový příspěvek (~1,5 %) + supply prémie (–0,5 až +1,0 % dle města) = 3,0–4,5 % p.a.
 
 Per-city hodnoty jsou zkalibrované dolů od pražské kotvy na základě relativní síly místní poptávky, demografického vývoje a historické konvergence cen.
 
@@ -147,26 +151,26 @@ Per-city hodnoty jsou zkalibrované dolů od pražské kotvy na základě relati
 | Město | Předpokládaný roční růst |
 |---|---|
 | Praha | 4,5 % p.a. |
-| Brno | 4,0 % p.a. |
-| Hradec Králové | 3,5 % p.a. |
-| Pardubice | 3,5 % p.a. |
+| Brno | 4,5 % p.a. |
+| Hradec Králové | 4,0 % p.a. |
+| Pardubice | 4,0 % p.a. |
 | České Budějovice | 3,5 % p.a. |
-| Olomouc | 3,5 % p.a. |
-| Plzeň | 3,5 % p.a. |
+| Olomouc | 4,0 % p.a. |
+| Plzeň | 4,0 % p.a. |
 | Zlín | 3,5 % p.a. |
 | Liberec | 3,5 % p.a. |
 | Jihlava | 3,5 % p.a. |
-| Ostrava | 3,0 % p.a. |
+| Ostrava | 3,5 % p.a. |
 | Karlovy Vary | 3,0 % p.a. |
-| Ústí nad Labem | 2,5 % p.a. |
+| Ústí nad Labem | 3,0 % p.a. |
 
 #### Růst nájemného
 
 **Co to je:** předpokládané průměrné roční zdražování nájmů. Ovlivňuje, jak rychle se zmenšuje měsíční investiční výhoda Scénáře B.
 
-**Hodnota:** 2,5 % p.a.
+**Hodnoty:** 2,5–3,5 % p.a. dle města (Praha a Brno 3,5 %; Plzeň, Olomouc, HK, Pardubice, ČB, Liberec, Zlín, Jihlava 3,0 %; Ostrava, Ústí, KV 2,5 %).
 
-**Zdroj:** [Deloitte Rent Index](https://www2.deloitte.com/cz/cs/pages/real-estate/articles/deloitte-rent-index.html), průměr 2015–2024.
+**Metodika:** Na 30letém horizontu existují dva různé ukazatele. New-to-market nájemné (nové smlouvy, zachycuje Deloitte Rent Index, CAGR 2014–2025 = 7,2 % p.a.) a in-situ nájemné (průběžně platí všichni nájemníci, zachycuje [Eurostat HICP CP041](https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_aind?geo=CZ&coicop=CP041&unit=INX_A_AVG), CAGR 2015–2025 = 4,0 % p.a.). Efektivní 30Y průměr je vážená kombinace: 25 % new-to-market + 75 % in-situ (odhad průměrné doby nájemní smlouvy v ČR). Historický out-turn: 0,25 × 7,2 % + 0,75 × 4,0 % ≈ 4,8 %. Forward 30Y odhad je konzervativnější: boom 2022–2025 (tažen nízkými zásobami a post-COVID catch-up) není strukturálně udržitelný. Výsledné hodnoty 2,5–3,5 % dle dynamiky lokálního trhu jsou kotevní strukturální tempo. Silnější trhy (Praha, Brno) mají supply deficit, který udržuje tlak na nájmy výše.
 
 #### Očekávaná inflace
 
@@ -174,7 +178,7 @@ Per-city hodnoty jsou zkalibrované dolů od pražské kotvy na základě relati
 
 **Hodnota:** 2,5 % p.a.
 
-**Zdroj:** [ČNB, střednědobý inflační cíl](https://www.cnb.cz/cs/menova-politika/inflacni-cil/).
+**Zdroj:** empiricky odvozený odhad z historické české inflace ([ČSÚ via InflationTool](https://www.inflationtool.com/rates/czech-epublic/historical)). Průměr EU-éry 2004–2021 = 2,3 % p.a. Zahrnuje výkyvy mimo ČNB cíl (2008: 6,3 %; 2020: 3,2 %; 2021: 3,8 %). ČNB cíl (2 %) záměrně nepoužíváme: historická průměrná inflace v ČR leží konzistentně nad ním. 2,5 % je konzervativní 30Y průměr zohledňující inflační cykly. Inflační cíl ČNB: [cnb.cz](https://www.cnb.cz/cs/menova-politika/inflacni-cil/).
 
 ---
 
@@ -184,48 +188,50 @@ Tyto náklady snižují ekonomiku Scénáře A. Fond oprav, pojištění, daň z
 
 #### Fond oprav
 
-**Co to je:** povinný měsíční příspěvek do fondu oprav budovy, který platí každý vlastník bytu. Nelze se mu vyhnout, ukládá ho zákon (NOZ § 1180) prostřednictvím SVJ (společenství vlastníků jednotek). Fond oprav hradí opravy a renovace společných částí budovy: střecha, výtah, fasáda, rozvody. Tento náklad nesouvisí s udržováním interiéru bytu, to je samostatná položka (viz Náklady na údržbu níže).
+**Co to je:** povinný měsíční příspěvek do fondu oprav budovy, který platí každý vlastník bytu. Nelze se mu vyhnout, ukládá ho zákon ([NOZ § 1180](https://www.zakonyprolidi.cz/cs/2012-89#p1180)) prostřednictvím SVJ (společenství vlastníků jednotek). Fond oprav hradí opravy a renovace společných částí budovy: střecha, výtah, fasáda, rozvody. Tento náklad nesouvisí s udržováním interiéru bytu, to je samostatná položka (viz Náklady na údržbu níže).
 
-**Výchozí hodnota:** 20–50 Kč/m²/měsíc dle stáří domu. Konkrétní hodnoty dle dispozice a lokality jsou v Google Sheets.
+**Výchozí hodnota:** 23–30 Kč/m²/měsíc dle města. Konkrétní hodnoty dle lokality jsou v Google Sheets.
 
-**Zdroj:** NOZ § 1180, tržní průzkum výše příspěvků SVJ.
+**Zdroj:** NOZ § 1180, tržní průzkum výše příspěvků SVJ: [portalsvj.cz](https://www.portalsvj.cz/anketa/vysledky.php).
 
 #### Pojištění nemovitosti
 
 **Co to je:** pojištění konstrukce bytu: stěny, podlahy, rozvody v rámci bytu. Nevztahuje se na vybavení ani na obsah. Většina hypotečních bank ho vyžaduje jako podmínku úvěru.
 
-**Výchozí hodnota:** přibližně 20 Kč/m²/rok.
+**Výchozí hodnota:** Praha 28 Kč/m²/rok, ostatní města 20 Kč/m²/rok.
 
-**Zdroj:** [Srovnávač.cz](https://www.srovnavac.cz/pojisteni/nemovitosti/pojisteni-bytu/), průměr pojistného pro byt v ČR (2025).
+**Zdroj:** [Skrblik.cz](https://www.skrblik.cz/finance/pojisteni/majetku/nemovitost/), [kalkulackapojisteni.com](https://kalkulackapojisteni.com/pojisteni-majetku/jak-pojistit-byt/) a [Kooperativa](https://www.koop.cz/pojisteni/pojisteni-majetku/pruvodce-majitele-nemovitosti/ceny-nemovitosti-v-roce-2025) (tržní přehledy pojistného pro bytové jednotky, 2025–2026). Hodnoty validovány proti reprodukční hodnotě interiéru × tržní pojistná sazba ~0,10 % ročně.
 
 #### Daň z nemovitosti
 
 **Co to je:** roční daň z vlastnictví bytu, vypočítaná zákonným vzorcem. Platí každý vlastník nemovitosti v ČR bez výjimky.
 
-**Výpočet:** plocha × sazba × koef. 1,22 × základní koeficient × místní koeficient. Zákon č. 338/1992 Sb. ve znění novely 2024.
+**Výpočet:** plocha × sazba × koef. 1,22 × základní koeficient × místní koeficient. [Zákon č. 338/1992 Sb.](https://www.zakonyprolidi.cz/cs/1992-338) ve znění novely 2024.
 
 #### Náklady na údržbu
 
 **Co to je:** odhadované roční náklady na údržbu interiéru bytu: výměny, opravy, pravidelné renovace. Nezaměňovat s fondem oprav, který hradí společné části budovy. Do údržby patří: rekonstrukce koupelny (jednou za 20–25 let), výměna kuchyňské linky (jednou za 15–20 let), výměna podlah, spotřebiče, malování.
 
-**Výchozí hodnota:** fixní základ + 73 Kč/m²/rok. Typický byt 2+kk v Praze vychází přibližně na 15 000–22 000 Kč ročně.
+**Výchozí hodnota:** fixní základ 14 000 Kč + 160 Kč/m²/rok, celé vynásobeno místním koeficientem. Typický byt 2+kk v Praze (koeficient 1,18) vychází přibližně na 26 000 Kč ročně, v ostatních městech 19 000–23 000 Kč.
 
 **Metodika:** výpočet zdola nahoru, amortizující konkrétní výdaje přes jejich reálné životnosti. Detailní kalkulace v Google Sheets.
 
 #### Vybavení bytu
 
-**Co to je:** jednorázový výdaj na vybavení bytu při pořízení. Kalkulačka rozlišuje dva standardy: obývací (vlastní bydlení) a investiční (pronájem).
+**Co to je:** jednorázový výdaj na vybavení bytu při pořízení. Kalkulačka bydlení a kalkulačka investice pracují s touto hodnotou odlišně.
 
-Proč jiné hodnoty pro investiční byt? Investiční standard počítá s ekonomičtějším nábytkem a základními spotřebiči. Nájemník neklade na vybavení stejné nároky jako majitel, který byt obývá sám.
+**Kalkulačka bydlení (diferenciál):** Kupující (Scénář A) vybavuje byt na střední IKEA standard včetně všech spotřebičů. Nájemník (Scénář B) nakoupí jen economy IKEA nábytek a s 50% pravděpodobností pračku (lednička, sporák a digestoř jsou v nezařízeném českém pronájmu zpravidla součástí kuchyňské linky). Hodnota v tabulce je rozdíl: o kolik více zaplatí kupující oproti nájemníkovi v roce 0.
 
-| Dispozice | Bydlení | Investice |
+**Kalkulačka investice (plné náklady):** Celkové náklady pronajímatele na economy standard nutný pro pronájem (economy IKEA + základní spotřebiče).
+
+| Dispozice | Bydlení (diferenciál) | Investice (plné náklady) |
 |---|---|---|
-| 1+kk | 77 000 Kč | 48 000 Kč |
-| 2+kk | 120 000 Kč | 75 000 Kč |
-| 3+kk | 152 000 Kč | 88 000 Kč |
-| 4+kk | 184 000 Kč | 105 000 Kč |
+| 1+kk | 50 000 Kč | 48 000 Kč |
+| 2+kk | 75 000 Kč | 75 000 Kč |
+| 3+kk | 95 000 Kč | 88 000 Kč |
+| 4+kk | 110 000 Kč | 105 000 Kč |
 
-**Zdroj:** [IKEA.cz](https://www.ikea.com/cz/) ceník 2026, spotřebiče z [Alza.cz](https://www.alza.cz) a [Datart.cz](https://www.datart.cz). Výpočet zdola nahoru pro každou dispozici: nábytek + spotřebiče + doprava a montáž + osvětlení, závěsy, doplňky. Detailní kalkulace v Google Sheets.
+**Zdroj:** [IKEA.cz](https://www.ikea.com/cz/) ceník 2026, spotřebiče z [Heureka.cz](https://www.heureka.cz). Výpočet zdola nahoru pro každou dispozici: nábytek + spotřebiče + doprava a montáž + osvětlení, závěsy, doplňky. Detailní kalkulace v Google Sheets.
 
 ---
 
@@ -235,23 +241,23 @@ Platí pouze pro kalkulačku Investice.
 
 **Co to je:** podíl roku, po který je byt skutečně pronajat a generuje příjem. Hodnota nižší než 100 % odráží přirozenou mezeru mezi nájemníky (výběr nájemníka, předání bytu, drobné opravy) a občasné delší prázdné období.
 
-**Zdroj:** hodnoty pro Prahu a Brno vychází z dat o vakanci institucionálního nájemního trhu (Knight Frank, BTR Consulting), upravených dolů pro soukromého pronajímatele, který má pomalejší proces výběru nájemníků. Pro ostatní města jsou hodnoty odvozeny na základě relativní síly místní poptávky po nájemním bydlení.
+**Zdroj:** hodnoty pro Prahu a Brno vychází z dat o vakanci institucionálního nájemního trhu ([Knight Frank](https://knightfrankprostory.cz/blog/institucionalni-najemni-bydleni-q4-2024-q1-2025), [BTR Consulting via flatservice.cz](https://flatservice.cz/clanky/kolik-investicnich-bytu-v-praze-zustava-prazdnych/)), upravených dolů pro soukromého pronajímatele, který má pomalejší proces výběru nájemníků. Pro ostatní města jsou hodnoty odvozeny na základě relativní síly místní poptávky po nájemním bydlení.
 
 | Město | Obsazenost |
 |---|---|
-| Praha | 95 % |
-| Brno | 94 % |
-| Hradec Králové | 93 % |
-| Pardubice | 93 % |
-| České Budějovice | 92 % |
-| Olomouc | 92 % |
-| Plzeň | 92 % |
-| Zlín | 91 % |
-| Liberec | 91 % |
-| Jihlava | 90 % |
-| Ostrava | 90 % |
-| Karlovy Vary | 88 % |
-| Ústí nad Labem | 87 % |
+| Praha | 93 % |
+| Brno | 92 % |
+| Hradec Králové | 90 % |
+| Pardubice | 90 % |
+| České Budějovice | 88 % |
+| Olomouc | 90 % |
+| Plzeň | 90 % |
+| Zlín | 88 % |
+| Liberec | 88 % |
+| Jihlava | 87 % |
+| Ostrava | 87 % |
+| Karlovy Vary | 83 % |
+| Ústí nad Labem | 83 % |
 
 ---
 
@@ -263,7 +269,7 @@ Tato pravidla vstupují do výpočtu automaticky. Jsou pevně daná zákonem a n
 |---|---|---|---|
 | Odpočet hypotečních úroků od základu daně | Max. 150 000 Kč/rok | § 15 ZDP | Bydlení |
 | Základní sazba daně z příjmů | 15 % | § 16 ZDP | obě |
-| Vyšší sazba daně z příjmů | 23 % (nad 36násobek průměrné mzdy) | § 16 ZDP | obě |
+| Vyšší sazba daně z příjmů | 23 % (nad cca 132 000 Kč hrubého měsíčně) | § 16 ZDP | obě |
 | Osvobození zisku z cenných papírů od daně | Po 3 letech držení | § 4 odst. 1 písm. w) ZDP | obě |
 | Odpisy nemovitosti, rok 1 | 1,4 % z odpisového základu | § 31 ZDP, odpisová skupina 5 | Investice |
 | Odpisy nemovitosti, roky 2–30 | 3,4 % z odpisového základu | § 31 ZDP, odpisová skupina 5 | Investice |
@@ -274,7 +280,7 @@ Tato pravidla vstupují do výpočtu automaticky. Jsou pevně daná zákonem a n
 
 ### Jak a kdy data aktualizujeme
 
-Ceny bytů a nájemné aktualizujeme čtvrtletně, v souladu s vydáváním ČBA Monitor a Deloitte Rent Index. Úrokové sazby hypoték sledujeme měsíčně přes [Hypoindex.cz](https://hypoindex.cz). Daňová pravidla kontrolujeme při každé legislativní změně.
+Ceny bytů, nájemné i úrokové sazby hypoték aktualizujeme čtvrtletně. Zdrojem sazeb je [Hypoindex.cz](https://www.hypoindex.cz/hypoindex-vyvoj/). Daňová pravidla kontrolujeme při každé legislativní změně.
 
 Datum poslední aktualizace je uvedeno v úvodu této stránky.
 

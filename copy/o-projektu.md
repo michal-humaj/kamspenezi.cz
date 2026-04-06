@@ -24,7 +24,7 @@ Produktový manažer v IT · Praha
 
 Řešil jsem dvě finanční otázky. Možná je řešíš taky.
 
-Má smysl kupovat byt na vlastní bydlení, nebo je lepší platit nájem a investovat? Nejblíže jsem přišel ke kalkulačce New York Times — skvěle zpracovaná, ale pro americký trh. Nepočítá fond oprav, pojistění ani daňovou úsporu z hypotečních úroků, které jsou pro českou realitu klíčové.
+Má smysl kupovat byt na vlastní bydlení, nebo je lepší platit nájem a investovat? Nejblíže jsem přišel ke kalkulačce New York Times, skvěle zpracovaná, ale pro americký trh. Nepočítá fond oprav, pojištění ani daňovou úsporu z hypotečních úroků, které jsou pro českou realitu klíčové.
 
 A pak: je výhodné kupovat investiční byt, nebo je lepší dát ty samé peníze do globálního akciového fondu? Investiční byty mají v Česku auru dobrého rozhodnutí. Výsledek, který mi kalkulačka ukázala, mě překvapil. Jdi si ho spočítat sám.
 

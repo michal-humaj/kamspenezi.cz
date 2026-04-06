@@ -14,8 +14,11 @@ import type { AttributeDoc, ApartmentSize } from "./_types";
  * ale NE podle města — ceny IKEA a spotřebičů jsou celonárodní.
  */
 export interface ZarizeniValues {
-  /** Diferenciál: plné vybavení bytu od nuly při koupi (nábytek + spotřebiče + doprava).
-   *  Renter v zařízeném pronájmu neplatí nic → diferenciál ≈ plné vybavení. */
+  /** Diferenciál: kolik NAVÍC zaplatí kupující (Scén. A) oproti nájemci (Scén. B).
+   *  Scén. A: plné vybavení střední třídy (nábytek + spotřebiče + doprava + doplňky).
+   *  Scén. B: economy nábytek + doprava + doplňky + 50 % pravděp. pračka;
+   *    lednička/sporák/digestoř typicky součástí kuchyňské linky v CZ nezařízeném pronájmu.
+   *  Hodnota = Scén. A − Scén. B. */
   bydleni: Record<ApartmentSize, number>;
   /** Pronajímatelský standard: základní vybavení + spotřebiče pro dlouhodobý pronájem
    *  (ekonomická IKEA úroveň + economy spotřebiče). */
@@ -216,12 +219,33 @@ export interface ZarizeniValues {
 //   Doplňky: osvět. 5 000 + rolety 4 000 + kuch. doplňky 2 500 + různé 1 500 = 13 000 Kč
 //   CELKEM: 51 909 + 33 500 + 6 000 + 13 000 = ~104 409 → 104 000 Kč → 105 000 Kč
 
+// DIFERENCIÁL: Scénář A (kupující, střední třída) − Scénář B (nájemce, economy)
+//
+// Scénář B (nájemce v nezařízeném CZ pronájmu):
+//   Předpoklady:
+//   - Nakupuje economy IKEA nábytek (stejný standard jako zarizeniNemovitostiInvestice)
+//   - Lednička, sporák, varná deska, digestoř: typicky součástí kuchyňské linky nezařízeného
+//     pronájmu v ČR → nájemce NEplatí (0 Kč)
+//   - Myčka: ~80 % CZ nezařízeních inzerátů ji nezmiňuje nebo je built-in → 0 Kč (zanedbáno)
+//   - Pračka: ~50 % pronajímatelů ji poskytuje, ~50 % neposkytuje
+//     → očekávaná cena = 50 % × 7 000 Kč = 3 500 Kč pro všechny dispozice
+//
+//   1+kk: nábytek 16 728 + doprava 2 000 + doplňky 5 800 + pračka 3 500 = 28 028 → 28 000 Kč
+//   2+kk: nábytek 30 005 + doprava 3 500 + doplňky 7 500 + pračka 3 500 = 44 505 → 45 000 Kč
+//   3+kk: nábytek 40 219 + doprava 4 500 + doplňky 10 000 + pračka 3 500 = 58 219 → 58 000 Kč
+//   4+kk: nábytek 51 909 + doprava 6 000 + doplňky 13 000 + pračka 3 500 = 74 409 → 74 000 Kč
+//
+// DIFERENCIÁL (Scénář A − Scénář B):
+//   1+kk:  77 000 −  28 000 =  49 000 →  50 000 Kč
+//   2+kk: 120 000 −  45 000 =  75 000 Kč
+//   3+kk: 152 000 −  58 000 =  94 000 →  95 000 Kč
+//   4+kk: 184 000 −  74 000 = 110 000 Kč
 const zarizeniNemovitostiBydleniValues: Record<ApartmentSize, number> = {
-  // nábytek + spotřebiče + doprava/montáž + koberec + pracovní kout + zrcadlo + osvětlení + rolety + doplňky
-  "1+kk":  77_000,  // ~33 m², bez myčky (studio), BRIMNES sada + economy appliances
-  "2+kk": 120_000,  // ~52 m², s myčkou, HEMNES + KIVIK + EKEDALEN + střed. spotřebiče
-  "3+kk": 152_000,  // ~80 m², 2 ložnice, KIVIK 3s, jídelna 6 míst, střed. spotřebiče
-  "4+kk": 184_000,  // ~110 m², 3 ložnice, KIVIK s lenoškou, jídelna 8 míst, střed. spotřebiče
+  // Diferenciál: kupující (střední IKEA + spotřebiče) − nájemce (economy nábytek + 50% pračka)
+  "1+kk":  50_000,  //  77 000 − 28 000 = 49 000 → 50 000 Kč
+  "2+kk":  75_000,  // 120 000 − 45 000 = 75 000 Kč
+  "3+kk":  95_000,  // 152 000 − 58 000 = 94 000 → 95 000 Kč
+  "4+kk": 110_000,  // 184 000 − 74 000 = 110 000 Kč
 };
 
 const zarizeniNemovitostiInvesticeValues: Record<ApartmentSize, number> = {
@@ -243,35 +267,39 @@ export const zarizeniNemovitosti: AttributeDoc<ZarizeniValues> = {
   kalkulator: ["bydleni", "investice"],
 
   definice:
-    "Jednorázové náklady na pořízení nábytku, spotřebičů a základního vybavení bytu " +
-    "v roce 0 (při koupi). " +
-    "V kalkulačce BYDLENÍ jde o diferenciál oproti zařízenému pronájmu — kupující musí " +
-    "vybavit byt od nuly (nábytek + spotřebiče), zatímco nájemce v zařízeném pronájmu " +
-    "tyto náklady nenese. " +
-    "V kalkulačce INVESTICE jde o náklady pronajímatele na základní standard vybavení " +
+    "Jednorázové náklady na vybavení bytu v roce 0. " +
+    "V kalkulačce BYDLENÍ jde o DIFERENCIÁL: o kolik více zaplatí kupující (Scénář A) " +
+    "za vybavení oproti nájemci (Scénář B). " +
+    "Scénář A: plné vybavení střední třídy — IKEA nábytek + střední spotřebiče + doprava + doplňky. " +
+    "Scénář B: economy IKEA nábytek + doprava + doplňky + 50 % pravděpodobnost pořízení pračky. " +
+    "Lednička, sporák, digestoř (a zpravidla myčka) jsou v ČR součástí kuchyňské linky " +
+    "nezařízeného pronájmu — nájemce je NEKUPUJE. " +
+    "V kalkulačce INVESTICE jde o náklady pronajímatele na základní economy standard " +
     "nutný pro pronájem na volném trhu.",
 
   coZahrnuje: [
-    "Nábytek: postel/matrace, skříně, noční stolky, pohovka, konferenční stolek, TV stolek, jídelní souprava",
-    "Spotřebiče (počáteční pořízení Year-0): pračka, lednička, sporák+trouba, digestoř; myčka pro 2+kk a větší",
+    "BYDLENÍ — Scénář A (kupující, střední třída): nábytek + spotřebiče + doprava + doplňky (viz bottom-up výše)",
+    "BYDLENÍ — Scénář B (nájemce): economy nábytek + doprava + doplňky + 50 % pravděp. pračky",
+    "BYDLENÍ — hodnota atributu = Scénář A − Scénář B (diferenciál)",
+    "Nábytek Scén. A: HEMNES postel, KIVIK pohovka, PAX skříně, EKEDALEN jídelna (střední třída)",
+    "Nábytek Scén. B: BRIMNES, KLIPPAN, NORDEN (economy standard = totéž jako zarizeniNemovitostiInvestice)",
+    "Spotřebiče Scén. A Year-0: pračka, lednička, sporák+trouba, digestoř; myčka pro 2+kk a větší",
+    "POUZE pro bydlení (navíc oproti investice): koberec, pracovní kout (MICKE + FLINTAN), zrcadlo",
+    "Kuchyňské a koupelnové doplňky, osvětlení, závěsy/rolety",
     "Doprava a montáž nábytku (dle IKEA ceníku, Zone 1–3)",
-    "Osvětlení: stropní/závěsné lampy do všech místností",
-    "Závěsy nebo rolety (základní soukromí a zatemnění)",
-    "POUZE pro bydlení: koberec, pracovní kout (psací stůl + kancelářská židle), zrcadlo",
-    "Kuchyňské doplňky: základní nádobí, příbory, sklenice, hrnce",
-    "Koupelnové doplňky: zrcadlo (u bydlení), věšák, koš",
-    "Drobný nábytek: věšák u dveří, rohožka, police",
+    "INVESTICE: economy nábytek + economy spotřebiče + doprava (plný cost, bez odečítání Scén. B)",
   ],
 
   coNezahrnuje: [
     "Kuchyňská linka a pracovní deska — součást nemovitosti nebo nakladyUdrzby",
-    "VÝMĚNY spotřebičů v průběhu 30 let — zahrnuty v nakladyUdrzby (600+733+800+1000+133=3 266 Kč/rok)",
+    "VÝMĚNY spotřebičů v průběhu 30 let — zahrnuty v nakladyUdrzby",
     "Televize, elektronika — osobní volba",
     "Ložní prádlo, ručníky, záclony — osobní věci",
     "Rekonstrukce bytu (podlahy, malování, koupelna) — nakladyUdrzby",
     "Fond oprav SVJ — fondOprav",
     "Daň z nemovitosti — danZNemovitosti",
     "Pojištění — pojisteniNemovitosti",
+    "Pro bydlení Scén. B: lednička, sporák, digestoř, myčka — typicky v kuchyňské lince CZ pronájmu",
     "Pro investice: koberec, pracovní kout, zrcadlo — investiční standard je nižší",
   ],
 
@@ -297,17 +325,20 @@ export const zarizeniNemovitosti: AttributeDoc<ZarizeniValues> = {
       ">70 % hodnoty. Odhadnuté položky: matrace, ložnice 2+3 u větších dispozic, " +
       "osvětlení, rolety (±20 %). Spotřebiče: ±10 %.",
     kdyNeniPresna: [
-      "Kupující si pořídí prémiový nebo bazarový nábytek (realita: Bazos vs. designové studio → ±50 %)",
+      "Kupující si pořídí prémiový nebo bazarový nábytek (realita: Bazar vs. designové studio → ±50 %)",
       "Nový developerský byt s vestavěnými skříněmi a kuchyní — přecení o ~15–25 %",
-      "Nájemce si najde nezařízený byt — pak pro bydlení je diferenciál nulový nebo záporný",
+      "Nájemce si najde ZAŘÍZENÝ pronájem — pak Scén. B = 0 Kč, diferenciál = plné Scén. A (~77–184 k)",
+      "Kuchyňské spotřebiče nejsou zahrnuty v pronájmu — pak Scén. B stoupne o ~17–33 k Kč (economy spotřebiče)",
       "Výrazná inflace cen nábytku (IKEA mění ceny 1× ročně)",
       "Pro investice: pronajímatel v Praze musí poskytovat vyšší standard než v jiných městech",
     ],
   },
 
   tooltipText:
-    "Jednorázové náklady v roce 0: nábytek, spotřebiče, doprava/montáž a doplňky. " +
-    "Kalkulováno na základě IKEA ceníku 2026 + cen spotřebičů střední třídy.",
+    "Počáteční výdaj NAVÍC oproti pronájmu: kupující pořizuje střední IKEA standard + spotřebiče, " +
+    "nájemce koupí pouze economy nábytek + s 50% pravděpodobností pračku. " +
+    "Lednička, sporák a digestoř jsou v CZ nezařízeném pronájmu typicky součástí bytu. " +
+    "Kalkulováno z IKEA ceníku 2026 + cen spotřebičů.",
 
   vyzkum: {
     datumVyzkumu: "2026-04-04",
@@ -407,7 +438,9 @@ Spotřebiče: Heureka.cz, SuperSpotrebiče.cz, mora.cz (2026-04-04).
 ────────────────────────────────────────────────────
 PROČ JE VÝSLEDEK SPRÁVNĚ ROZDĚLEN MEZI zarizeni A nakladyUdrzby
 ────────────────────────────────────────────────────
-  Year 0: zarizeniNemovitosti = počáteční koup VŠEHO (nábytek + 1. kus každého spotřebiče)
+  Year 0: zarizeniNemovitosti
+    BYDLENÍ: DIFERENCIÁL (kupující − nájemce), viz výpočet výše
+    INVESTICE: plné počáteční vybavení (nábytek + 1. kus každého spotřebiče)
   Year 1–30: nakladyUdrzby = VÝMĚNY spotřebičů (ne první kus) + rekonstrukce + malování + ...
   
   Příklad pro pračku (9 000 Kč, životnost 11 let):
@@ -417,30 +450,46 @@ PROČ JE VÝSLEDEK SPRÁVNĚ ROZDĚLEN MEZI zarizeni A nakladyUdrzby
     Total 30 let: 27 000 Kč — bez dvojího počítání ✓
 
 ────────────────────────────────────────────────────
-BYDLENÍ — střední IKEA standard + střední spotřebiče
+BYDLENÍ — DIFERENCIÁL (Scénář A − Scénář B)
 ────────────────────────────────────────────────────
-Diferenciál: renter v zařízeném pronájmu (~60 % inzerátů na Sreality 2025) neplatí
-za nábytek ani spotřebiče → diferenciál ≈ plné vybavení od nuly.
+Scénář A (kupující): plné vybavení střední třídy od nuly.
+Scénář B (nájemce v nezařízeném CZ pronájmu): economy nábytek + 50 % pračka.
 
-Referenční hodnoty (ověřeno IKEA.cz):
+KLÍČOVÝ PŘEDPOKLAD pro Scénář B:
+  V ČR "nezařízený pronájem" zpravidla zahrnuje kuchyňskou linku s lednicí, sporákem
+  a digestoří (buď vestavné, nebo zanechané předchozím nájemcem/pronajímatelem).
+  Nájemce tyto spotřebiče NEKUPUJE.
+  Pračka: cca 50 % inzerátů ji uvádí jako "v pronájmu" — využíváme expected value 3 500 Kč.
+  Myčka: zanedbáno (>80 % případů buď zahrnuta nebo nájemce si ji nepořizuje).
+
+Scénář A (kupující, střední IKEA + střední spotřebiče):
   HEMNES 160×200: 5 990 | VESTERÖY 160×200: 4 990 | 2× BRIMNES noční: 1 598
   2× PAX/FORSAND 100: 9 500 | KIVIK 2místná: 10 990 | KIVIK 3místná: 13 990
   KIVIK 3místná s lenoškou: 20 990 | LACK: 699 | BRIMNES TV: 3 690
   EKEDALEN/INGOLF 4ž: 9 150 | NORDEN/TEODORES 4ž: 7 786
   MICKE stůl: 1 990 | FLINTAN kancelářská žlídle: ~2 495 | NISSEDAL zrcadlo: 1 490
+  Spotřebiče (střední třída, Year-0):
+    1+kk (bez myčky): pračka 9k + lednička 11k + sporák 12k + digestoř 4k = 36 000 Kč
+    2+kk a výše: + myčka 10k = 46 000 Kč
+  Doprava: 1+kk 3 500 | 2+kk 5 500 | 3+kk 8 000 | 4+kk 10 000 Kč
 
-Spotřebiče (střední třída, Year-0):
-  1+kk (bez myčky): 9 000 + 11 000 + 12 000 + 4 000 = 36 000 Kč
-  2+kk a výše: + myčka 10 000 = 46 000 Kč
+  VÝSLEDNÉ HODNOTY SCÉNÁŘE A:
+    1+kk: nábytek 21 418 + spotřebiče 36 000 + doprava  3 500 + doplňky 16 780 = ~77 700 → 77 000 Kč
+    2+kk: nábytek 46 607 + spotřebiče 46 000 + doprava  5 500 + doplňky 20 980 = ~119 087 → 120 000 Kč
+    3+kk: nábytek 66 996 + spotřebiče 46 000 + doprava  8 000 + doplňky 29 970 = ~150 966 → 152 000 Kč
+    4+kk: nábytek 89 736 + spotřebiče 46 000 + doprava 10 000 + doplňky 37 470 = ~183 206 → 184 000 Kč
 
-Doprava + montáž (dle IKEA ceníku):
-  1+kk: ~3 500 Kč | 2+kk: ~5 500 Kč | 3+kk: ~8 000 Kč | 4+kk: ~10 000 Kč
+Scénář B (nájemce — economy nábytek, BEZ kuchyňských spotřebičů):
+    1+kk: nábytek 16 728 + doprava 2 000 + doplňky 5 800 + pračka 3 500 = 28 028 → 28 000 Kč
+    2+kk: nábytek 30 005 + doprava 3 500 + doplňky 7 500 + pračka 3 500 = 44 505 → 45 000 Kč
+    3+kk: nábytek 40 219 + doprava 4 500 + doplňky 10 000 + pračka 3 500 = 58 219 → 58 000 Kč
+    4+kk: nábytek 51 909 + doprava 6 000 + doplňky 13 000 + pračka 3 500 = 74 409 → 74 000 Kč
 
-VÝSLEDNÉ HODNOTY BYDLENÍ:
-  1+kk: nábytek 21 418 + spotřebiče 36 000 + doprava 3 500 + doplňky 16 780 = ~77 700 → 77 000 Kč
-  2+kk: nábytek 46 607 + spotřebiče 46 000 + doprava  5 500 + doplňky 20 980 = ~119 087 → 120 000 Kč
-  3+kk: nábytek 66 996 + spotřebiče 46 000 + doprava  8 000 + doplňky 29 970 = ~150 966 → 152 000 Kč
-  4+kk: nábytek 89 736 + spotřebiče 46 000 + doprava 10 000 + doplňky 37 470 = ~183 206 → 184 000 Kč
+DIFERENCIÁL (Scénář A − Scénář B):
+    1+kk:  77 000 −  28 000 =  49 000 →  50 000 Kč
+    2+kk: 120 000 −  45 000 =  75 000 Kč
+    3+kk: 152 000 −  58 000 =  94 000 →  95 000 Kč
+    4+kk: 184 000 −  74 000 = 110 000 Kč
 
 ────────────────────────────────────────────────────
 INVESTICE — economy IKEA + economy spotřebiče
