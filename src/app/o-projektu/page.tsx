@@ -167,7 +167,7 @@ export default function OProjektuPage() {
               ukázala, mě překvapil.{" "}
               <Link
                 href="/investice"
-                className="font-medium underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-primary)] transition-all"
+                className="font-medium underline decoration-[rgba(15,23,42,0.25)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
                 style={{ color: "var(--color-primary)" }}
               >
                 Jdi si ho spočítat sám.

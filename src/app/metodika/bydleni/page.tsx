@@ -268,7 +268,7 @@ export default function MetodikaBydleniPage() {
             </Prose>
             <BulletList
               items={[
-                <><strong className="font-semibold" style={{ color: "var(--color-primary)" }}>Roky 1–5:</strong> sazba z pole <em>Úroková sazba hypotéky po dobu 5 let fixace</em>. Výchozí hodnota: <strong className="font-semibold" style={{ color: "var(--color-primary)" }}>3,99 % p.a.</strong> (Moneta Money Bank, nejnižší ověřená sazba na trhu k 25. 3. 2026, zdroj: <a href="https://www.hypoindex.cz/clanky/prehled-aktualnich-sazeb-hypotek-po-ctvrt-roce-je-na-trhu-opet-hypoteka-pod-4/" target="_blank" rel="noopener noreferrer" className="underline decoration-[#9CA3AF] underline-offset-2 hover:decoration-[var(--color-primary)] transition-colors duration-150" style={{ color: "var(--color-primary)" }}>Hypoindex.cz</a>).</>,
+                <><strong className="font-semibold" style={{ color: "var(--color-primary)" }}>Roky 1–5:</strong> sazba z pole <em>Úroková sazba hypotéky po dobu 5 let fixace</em>. Výchozí hodnota: <strong className="font-semibold" style={{ color: "var(--color-primary)" }}>3,99 % p.a.</strong> (Moneta Money Bank, nejnižší ověřená sazba na trhu k 25. 3. 2026, zdroj: <a href="https://www.hypoindex.cz/clanky/prehled-aktualnich-sazeb-hypotek-po-ctvrt-roce-je-na-trhu-opet-hypoteka-pod-4/" target="_blank" rel="noopener noreferrer" className="underline decoration-[rgba(15,23,42,0.25)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150" style={{ color: "var(--color-primary)" }}>Hypoindex.cz</a>).</>,
                 <><strong className="font-semibold" style={{ color: "var(--color-primary)" }}>Roky 6–30:</strong> sazba z pole <em>Úrok hypotéky po 5leté fixaci</em>. Výchozí hodnota: <strong className="font-semibold" style={{ color: "var(--color-primary)" }}>4,5 % p.a.</strong> Jde o konzervativní odhad dlouhodobé průměrné sazby na zbývajících přibližně 25 let. Tato hodnota má na výsledek větší vliv než počáteční sazba, protože platí po dobu 25 z 30 let.</>,
               ]}
             />
@@ -412,7 +412,7 @@ export default function MetodikaBydleniPage() {
               Úplný přehled všech parametrů a jejich zdrojů najdeš na{" "}
               <Link
                 href="/metodika/data-a-zdroje"
-                className="font-medium underline decoration-[#9CA3AF] underline-offset-2 hover:decoration-[var(--color-primary)] transition-colors duration-150"
+                className="font-medium underline decoration-[rgba(15,23,42,0.25)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
                 style={{ color: "var(--color-primary)" }}
               >
                 stránce Data a zdroje

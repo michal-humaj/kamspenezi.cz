@@ -181,7 +181,7 @@ function ExtLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="font-medium underline decoration-[#9CA3AF] underline-offset-2 hover:decoration-[var(--color-primary)] transition-colors duration-150"
+      className="font-medium underline decoration-[rgba(15,23,42,0.25)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
       style={{ color: "var(--color-primary)" }}
     >
       {children}
@@ -630,7 +630,7 @@ export default function DataAZdrojePage() {
               Máš otázku k některému zdroji nebo chceš upozornit na novější data? Napiš na{" "}
               <a
                 href="mailto:michal.humaj@gmail.com"
-                className="font-medium underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-primary)] transition-all"
+                className="font-medium underline decoration-[rgba(15,23,42,0.25)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
                 style={{ color: "var(--color-primary)" }}
               >
                 michal.humaj@gmail.com
