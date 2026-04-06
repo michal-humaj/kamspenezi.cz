@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 const CONTENT_WIDTH = "max-w-[760px]";
 const PROSE_COLOR = "#4B5563";
 const SHEETS_URL =
-  "https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing";
+  "https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?gid=1260855363#gid=1260855363";
 
 function Divider() {
   return (

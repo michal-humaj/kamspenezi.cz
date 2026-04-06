@@ -226,7 +226,7 @@ export function ResultsPanel({
           Jak to funguje?
         </Link>
         <a
-          href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
+          href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?gid=1260855363#gid=1260855363"
           target="_blank"
           rel="noopener noreferrer"
           className="font-uiSans text-[14px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
