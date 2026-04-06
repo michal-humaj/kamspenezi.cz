@@ -2,7 +2,8 @@
 
 import { formatLargeCurrency, formatCzk } from "@/lib/format";
 import { useState, useMemo } from "react";
-import { Info, ChevronRight } from "lucide-react";
+import { Info } from "lucide-react";
+import Link from "next/link";
 import type { CalculatorState } from "@/app/_home-calculator";
 import { ShareButton } from "./ShareButton";
 import { computeTippingPoints } from "@/lib/calculations/tipping-points";
@@ -107,8 +108,6 @@ export function ResultsPanel({
   netWorthA,
   netWorthB,
 }: ResultsPanelProps) {
-  const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
-
   let scenarioAResult = 0;
   let scenarioBResult = 0;
 
@@ -216,30 +215,33 @@ export function ResultsPanel({
         </div>
       )}
 
-      {/* Metodika — plain text link */}
-      <div className="mt-6 flex justify-center">
-        <button
-          onClick={() => setIsMethodologyOpen(!isMethodologyOpen)}
-          className="group inline-flex items-center gap-1 focus:outline-none"
-          style={{ fontSize: 13, color: "#6B7280", fontWeight: 400, background: "none", border: "none", cursor: "pointer", padding: 0 }}
-        >
-          <span className="group-hover:underline">Metodika a vysvětlení pojmů</span>
-          <ChevronRight className="h-3.5 w-3.5 text-gray-400" />
-        </button>
-      </div>
-      {isMethodologyOpen && (
-        <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50 p-4 text-xs text-slate-500 space-y-2 leading-relaxed animate-in fade-in slide-in-from-top-1 duration-200">
-          <p><strong>Scénář A:</strong> Koupíte byt na hypotéku. Po 30 letech vlastníte nemovitost bez dluhů.</p>
-          <p><strong>Scénář B:</strong> Bydlíte v nájmu a investujete vlastní zdroje i měsíční úspory do ETF portfolia.</p>
-        </div>
-      )}
-
       {/* Share — black pill */}
       {copyShareUrl && (
-        <div className="mt-4 flex justify-center">
+        <div className="mt-6 flex justify-center">
           <ShareButton onCopy={copyShareUrl} variant="pill" />
         </div>
       )}
+
+      {/* Secondary links */}
+      <div className="mt-3 flex justify-center items-center gap-3">
+        <Link
+          href="/metodika/bydleni"
+          className="font-uiSans text-[13px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          Metodika výpočtu
+        </Link>
+        <span className="text-[13px] select-none" style={{ color: "var(--color-border-hover)" }}>·</span>
+        <a
+          href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-uiSans text-[13px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          Google Sheets
+        </a>
+      </div>
     </div>
   );
 }

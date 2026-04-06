@@ -312,7 +312,7 @@ export function LabeledSliderInput({
       <div className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:gap-4">
         {/* Left: Label */}
         <div className="flex flex-col justify-center">
-          <div className="flex items-start gap-1.5">
+          <div className="flex items-center gap-1.5">
             <label
               htmlFor={id}
               className="font-uiSans text-base font-medium leading-tight text-[var(--color-primary)] md:text-base"
@@ -320,27 +320,19 @@ export function LabeledSliderInput({
               {label}
             </label>
             {tooltip && (
-              <div className="relative flex-shrink-0 mt-[2px]">
-                {/* Info button — visual 18px, tappable 44px via padding + negative margin */}
+              <div className="relative">
+                {/* Info button */}
                 <button
                   ref={buttonRef}
                   type="button"
                   onClick={handleInfoClick}
                   onMouseEnter={handleInfoMouseEnter}
                   onMouseLeave={handleInfoMouseLeave}
-                  className="group relative flex items-center justify-center p-[13px] -m-[13px] rounded-full"
+                  className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[10px] font-semibold text-gray-600 hover:bg-gray-300 transition-colors"
                   aria-label="Více informací"
                   aria-expanded={showTooltip}
                 >
-                  <span
-                    className="flex h-[18px] w-[18px] items-center justify-center rounded-full border text-[10px] font-medium transition-colors group-hover:border-[var(--color-primary)] group-hover:text-[var(--color-primary)]"
-                    style={{
-                      borderColor: "var(--color-border-hover)",
-                      color: "var(--color-secondary)",
-                    }}
-                  >
-                    i
-                  </span>
+                  i
                 </button>
 
                 {/* ── Desktop hover popover ─────────────────────────────────── */}
