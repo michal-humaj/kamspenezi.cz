@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ExternalLink, ArrowRight } from "lucide-react";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+import { ArticleSchema } from "@/components/seo/article-schema";
 
 export const metadata: Metadata = {
   title: "Investiční byt vs. akciový fond: jak kalkulačka počítá | kamspenezi.cz",
@@ -544,6 +546,20 @@ export default function MetodikaInvesticePage() {
         </div>
       </section>
 
+      <BreadcrumbSchema
+        items={[
+          { name: "Domů", url: "https://kamspenezi.cz" },
+          { name: "Metodika", url: "https://kamspenezi.cz/metodika/investice" },
+          { name: "Metodika investice", url: "https://kamspenezi.cz/metodika/investice" },
+        ]}
+      />
+      <ArticleSchema
+        headline="Investiční byt vs. akciový fond: jak kalkulačka počítá"
+        description="Transparentní metodika kalkulačky investičního bytu. Počáteční kapitál, odpisy, daňová ztráta, obsazenost, vedlejší fond. Každý předpoklad má uvedený zdroj a je ověřitelný v Google Sheets."
+        url="https://kamspenezi.cz/metodika/investice"
+        datePublished="2026-01-15"
+        dateModified="2026-04-04"
+      />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import HomeCalculator from "./_home-calculator";
+import { FAQSchema } from "@/components/seo/faq-schema";
+import { CalculatorSchema } from "@/components/seo/calculator-schema";
 
 export const metadata: Metadata = {
   title: "Vlastní bydlení, nebo nájem? Kalkulačka | kamspenezi.cz",
@@ -35,5 +37,11 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <HomeCalculator />;
+  return (
+    <>
+      <FAQSchema />
+      <CalculatorSchema />
+      <HomeCalculator />
+    </>
+  );
 }

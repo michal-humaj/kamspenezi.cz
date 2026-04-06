@@ -1,43 +1,49 @@
 import { MetadataRoute } from 'next';
 
+// Update these dates manually when the corresponding page content changes.
+const DATES = {
+  calculators: new Date('2026-04-04'),
+  metodika:    new Date('2026-04-04'),
+  oProjektu:   new Date('2026-02-01'),
+};
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://kamspenezi.cz';
-  const currentDate = new Date();
 
   return [
     {
       url: baseUrl,
-      lastModified: currentDate,
+      lastModified: DATES.calculators,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/investice`,
-      lastModified: currentDate,
+      lastModified: DATES.calculators,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/o-projektu`,
-      lastModified: currentDate,
+      lastModified: DATES.oProjektu,
       changeFrequency: 'yearly',
       priority: 0.5,
     },
     {
       url: `${baseUrl}/metodika/bydleni`,
-      lastModified: currentDate,
+      lastModified: DATES.metodika,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/metodika/investice`,
-      lastModified: currentDate,
+      lastModified: DATES.metodika,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/metodika/data-a-zdroje`,
-      lastModified: currentDate,
+      lastModified: DATES.metodika,
       changeFrequency: 'monthly',
       priority: 0.7,
     },

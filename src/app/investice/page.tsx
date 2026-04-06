@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import InvesticePage from "./_investice-calculator";
+import { InvesticeCalculatorSchema } from "@/components/seo/investice-calculator-schema";
 
 export const metadata: Metadata = {
   title: "Investiční byt, nebo akciový fond? Kalkulačka | kamspenezi.cz",
@@ -35,5 +36,10 @@ export const metadata: Metadata = {
 };
 
 export default function Investice() {
-  return <InvesticePage />;
+  return (
+    <>
+      <InvesticeCalculatorSchema />
+      <InvesticePage />
+    </>
+  );
 }

@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+import { ArticleSchema } from "@/components/seo/article-schema";
 
 export const metadata: Metadata = {
-  title: "Data a zdroje kalkulačky | kamspenezi.cz",
+  title: "Data a zdroje: parametry kalkulačky bydlení a investic | kamspenezi.cz",
   description:
-    "Přehled všech parametrů kalkulačky: co každý z nich znamená, jakou hodnotu používáme, odkud pochází a co kalkulačka záměrně nezahrnuje.",
+    "Odkud pocházejí výchozí hodnoty kalkulačky? Ceny bytů, nájemné, hypotéky, inflace, fond oprav — každý parametr s uvedeným zdrojem a metodikou odvození.",
   alternates: {
     canonical: "https://kamspenezi.cz/metodika/data-a-zdroje",
   },
   openGraph: {
-    title: "Data a zdroje kalkulačky | kamspenezi.cz",
+    title: "Data a zdroje: parametry kalkulačky bydlení a investic | kamspenezi.cz",
     description:
-      "Přehled všech parametrů kalkulačky: co každý z nich znamená, jakou hodnotu používáme, odkud pochází a co kalkulačka záměrně nezahrnuje.",
+      "Odkud pocházejí výchozí hodnoty kalkulačky? Každý parametr s uvedeným zdrojem a metodikou odvození.",
     type: "website",
     url: "https://kamspenezi.cz/metodika/data-a-zdroje",
     siteName: "kamspenezi.cz",
@@ -755,6 +757,20 @@ export default function DataAZdrojePage() {
         </div>
       </section>
 
+      <BreadcrumbSchema
+        items={[
+          { name: "Domů", url: "https://kamspenezi.cz" },
+          { name: "Metodika", url: "https://kamspenezi.cz/metodika/data-a-zdroje" },
+          { name: "Data a zdroje", url: "https://kamspenezi.cz/metodika/data-a-zdroje" },
+        ]}
+      />
+      <ArticleSchema
+        headline="Data a zdroje kalkulačky bydlení a investic"
+        description="Přehled všech parametrů kalkulačky: co každý z nich znamená, jakou hodnotu používáme, odkud pochází a co kalkulačka záměrně nezahrnuje."
+        url="https://kamspenezi.cz/metodika/data-a-zdroje"
+        datePublished="2026-01-15"
+        dateModified="2026-04-04"
+      />
     </div>
   );
 }

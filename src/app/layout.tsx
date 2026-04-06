@@ -8,8 +8,6 @@ import { CrispChat } from "@/components/chat/CrispChat";
 import { EngagementTracker } from "@/components/analytics/EngagementTracker";
 import { OrganizationSchema } from "@/components/seo/organization-schema";
 import { PersonSchema } from "@/components/seo/person-schema";
-import { FAQSchema } from "@/components/seo/faq-schema";
-import { CalculatorSchema } from "@/components/seo/calculator-schema";
 
 import "./globals.css";
 
@@ -100,11 +98,9 @@ export default function RootLayout({
         <GoogleAnalytics />
         <EngagementTracker />
         <CrispChat />
-        {/* Structured Data Schemas for SEO */}
+        {/* Site-wide Structured Data */}
         <OrganizationSchema />
         <PersonSchema />
-        <FAQSchema />
-        <CalculatorSchema />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>

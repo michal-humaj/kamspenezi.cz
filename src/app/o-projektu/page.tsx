@@ -4,16 +4,16 @@ import Link from "next/link";
 import { ExternalLink, Linkedin, Mail, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "O projektu | kamspenezi.cz",
+  title: "O projektu — nezávislá kalkulačka bydlení a investic | kamspenezi.cz",
   description:
-    "Nezávislá kalkulačka bydlení a investičního bytu bez reklam a bankovních provizí. Kdo stojí za projektem a proč vznikl.",
+    "Kdo stojí za kamspenezi.cz a proč vznikl. Nezávislá kalkulačka bydlení a investičního bytu bez reklam a bankovních provizí — postavená pro lidi, kteří chtějí dělat rozhodnutí na datech.",
   alternates: {
     canonical: "https://kamspenezi.cz/o-projektu",
   },
   openGraph: {
-    title: "O projektu | kamspenezi.cz",
+    title: "O projektu — nezávislá kalkulačka bydlení a investic | kamspenezi.cz",
     description:
-      "Nezávislá kalkulačka bydlení a investičního bytu bez reklam a bankovních provizí. Kdo stojí za projektem a proč vznikl.",
+      "Kdo stojí za kamspenezi.cz a proč vznikl. Nezávislá kalkulačka bez reklam a bankovních provizí.",
     type: "website",
     url: "https://kamspenezi.cz/o-projektu",
     siteName: "kamspenezi.cz",

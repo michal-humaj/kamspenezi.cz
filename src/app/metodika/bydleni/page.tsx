@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ExternalLink, ArrowRight } from "lucide-react";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+import { ArticleSchema } from "@/components/seo/article-schema";
 
 export const metadata: Metadata = {
   title: "Jak kalkulačka bydlení počítá | kamspenezi.cz",
@@ -545,6 +547,20 @@ export default function MetodikaBydleniPage() {
         </div>
       </section>
 
+      <BreadcrumbSchema
+        items={[
+          { name: "Domů", url: "https://kamspenezi.cz" },
+          { name: "Metodika", url: "https://kamspenezi.cz/metodika/bydleni" },
+          { name: "Metodika bydlení", url: "https://kamspenezi.cz/metodika/bydleni" },
+        ]}
+      />
+      <ArticleSchema
+        headline="Jak kalkulačka bydlení počítá"
+        description="Transparentní metodika kalkulačky bydlení. Dva scénáře, vedlejší fond, daňová úspora z úroků, akciový fond bez daně. Každý předpoklad má uvedený zdroj a je ověřitelný v Google Sheets."
+        url="https://kamspenezi.cz/metodika/bydleni"
+        datePublished="2026-01-15"
+        dateModified="2026-04-04"
+      />
     </div>
   );
 }

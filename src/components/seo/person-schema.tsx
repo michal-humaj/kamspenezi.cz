@@ -16,10 +16,10 @@ export function PersonSchema() {
       "name": "kamspenezi.cz"
     },
     "knowsAbout": [
-      "Personal Finance",
-      "Real Estate Investment",
-      "Investment Strategy",
-      "Product Management"
+      "Osobní finance",
+      "Investování do nemovitostí",
+      "Investiční strategie",
+      "Produktový management"
     ]
   };
 
