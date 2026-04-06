@@ -166,7 +166,7 @@ export function ResultsPanel({
           label="Scénář A: Vlastní bydlení na hypotéku"
           value={scenarioAResult}
           color="var(--scenario-a-dot)"
-          tooltipContent="Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů."
+          tooltipContent="Koupíš byt. Vložíš vlastní zdroje a zbytek splácíš bance. Po 30 letech vlastníš nemovitost bez dluhů."
           assetLabel="Nemovitost + vedlejší fond"
           isWinner={winnerScenario !== "B"}
         />
@@ -176,7 +176,7 @@ export function ResultsPanel({
           label="Scénář B: Bydlení v nájmu a investování"
           value={scenarioBResult}
           color="var(--scenario-b-dot)"
-          tooltipContent="Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio."
+          tooltipContent="Bydlíš v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investuješ. Po 30 letech máš vybudované investiční portfolio."
           assetLabel="Hodnota investičního portfolia"
           isWinner={winnerScenario !== "A"}
         />

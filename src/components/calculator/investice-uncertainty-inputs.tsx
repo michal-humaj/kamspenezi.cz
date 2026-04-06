@@ -55,7 +55,12 @@ export function InvesticeUncertaintyInputs({ state, updateState }: InvesticeUnce
             id="inv-sazba-expected"
             label="Budoucí sazba hypotéky (od roku 6)"
             description="Očekávaná úroková sazba po skončení fixace"
-            tooltip={<p>Předpokládaná sazba při refixacích hypotéky v průběhu 30 let. Vychází z rovnovážné sazby ČNB. Upravte pro pesimistický/optimistický scénář.</p>}
+            tooltip={
+              <div className="space-y-2">
+                <p>Prvních 5 let platí sazba z pole <strong>Úroková sazba hypotéky</strong>. Od roku 6 předpokládáme refixaci na tuto budoucí sazbu — a tato sazba pak platí pro všechny další refixace až do roku 30.</p>
+                <p className="text-xs text-gray-500">Vychází z rovnovážné sazby ČNB. Uprav pro pesimistický/optimistický scénář.</p>
+              </div>
+            }
             value={state.urokovaSazbaHypotekyExpected}
             onChange={(v) => updateState({ urokovaSazbaHypotekyExpected: v })}
             unit="percent"

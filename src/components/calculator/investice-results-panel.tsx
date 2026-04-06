@@ -270,7 +270,7 @@ export function InvesticeResultsPanel({
           label="Scénář A: Investiční byt"
           value={scenarioAResult}
           color="var(--scenario-a-dot)"
-          tooltipContent="Koupíte investiční byt na hypotéku a pronajímáte ho. Po 30 letech vlastníte nemovitost bez dluhů + vedlejší fond z čistého cashflow."
+          tooltipContent="Koupíš investiční byt na hypotéku a pronajímáš ho. Po 30 letech vlastníš nemovitost bez dluhů + vedlejší fond z čistého cashflow."
           assetLabel={
             <SplitTooltipLabel
               propertyVal={propertyVal30}
@@ -287,7 +287,7 @@ export function InvesticeResultsPanel({
           label="Scénář B: Akciový fond"
           value={scenarioBResult}
           color="var(--scenario-b-dot)"
-          tooltipContent="Místo nemovitosti investujete stejnou počáteční hotovost do globálního akciového ETF. Po 30 letech máte investiční portfolio."
+          tooltipContent="Místo nemovitosti investuješ stejnou počáteční hotovost do globálního akciového ETF. Po 30 letech máš investiční portfolio."
           assetLabel="Hodnota akciového portfolia"
           isWinner={winnerScenario !== "A"}
         />

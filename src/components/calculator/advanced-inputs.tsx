@@ -79,7 +79,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
               Poplatky a náklady
             </span>
             <span className="text-sm text-gray-500 font-normal mt-0.5">
-              Předvyplněno realistickými hodnotami. Upravte jen pokud víte lépe.
+              Předvyplněno realistickými hodnotami. Uprav jen pokud víš lépe.
             </span>
           </div>
         </AccordionTrigger>
@@ -90,6 +90,15 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="prispevek-rodicu"
             label="Příspěvek od rodičů"
             description="Jednorázový dar (pouze při koupi)"
+            tooltip={
+              <div className="space-y-2">
+                <p>Jednorázový finanční dar od rodičů, který snižuje hotovost potřebnou na startu při koupi bytu.</p>
+                <p className="flex items-start gap-1.5">
+                  <span>👁</span>
+                  <span><strong>Platí pouze ve Scénáři A (koupě).</strong> Ve Scénáři B rodiče dar neposkytují — výchozí investovaný kapitál tvoří jen tvoje vlastní hotovost.</span>
+                </p>
+              </div>
+            }
             value={state.prispevekRodicu}
             onChange={(value) => updateState({ prispevekRodicu: value })}
             unit="kc"
@@ -108,7 +117,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             description="Náklady navíc oproti pronájmu"
             tooltip={
               <div className="space-y-2">
-                <p>Kolik zaplatíte <strong>navíc oproti nájemci</strong> za vybavení bytu v roce 0.</p>
+                <p>Kolik zaplatíš <strong>navíc oproti nájemci</strong> za vybavení bytu v roce 0.</p>
                 <p>Scénář A (kupující): IKEA střední třída + spotřebiče střední třídy.</p>
                 <p>Scénář B (nájemce): economy IKEA nábytek + s 50% pravděpodobností pračka. Lednička, sporák a digestoř jsou v nezařízeném pronájmu v ČR zpravidla součástí bytu — nájemce je nekupuje.</p>
                 <p className="text-xs text-[var(--color-text-muted)]">Kalkulováno z IKEA ceníku 2026 + cen spotřebičů.</p>
@@ -132,7 +141,8 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             description="Měsíčně (bez služeb)"
             tooltip={
               <div className="space-y-2">
-                <p className="font-medium">Příspěvek do SVJ dle stavu domu:</p>
+                <p>Povinný měsíční příspěvek do Společenství vlastníků jednotek (SVJ). Slouží k financování oprav a údržby <strong>společných částí domu</strong> — střecha, fasáda, výtah, schody, rozvody vody a elektřiny v domě, vstupní prostory.</p>
+                <p className="font-medium pt-1">Výše závisí na stáří domu:</p>
                 <ul className="space-y-1 text-xs">
                   <li><span className="font-medium">Novostavba (0–5 let):</span> 10–20 Kč/m²</li>
                   <li><span className="font-medium">Středně starý (5–20 let):</span> 20–30 Kč/m²</li>
@@ -160,7 +170,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="pojisteni"
             label="Pojištění bytu"
             description="Ročně"
-            tooltip={<p>Roční pojistné za pojištění vašeho bytu (interiéru). Kryje poškození podlah, obkladů, vnitřních rozvodů a zabudovaných prvků — nikoli vybavení nájemníka. Pojistné budovy platí SVJ z fondů domu.</p>}
+            tooltip={<p>Roční pojistné za pojištění tvého bytu (interiéru). Kryje poškození podlah, obkladů, vnitřních rozvodů a zabudovaných prvků — nikoli vybavení nájemníka. Pojistné budovy platí SVJ z fondů domu.</p>}
             value={state.pojisteniNemovitosti}
             onChange={(value) => updateState({ pojisteniNemovitosti: value })}
             unit="custom"
@@ -178,7 +188,7 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="dan"
             label="Daň z nemovitosti"
             description="Ročně"
-            tooltip={<p>Roční daň z nemovitých věcí dle zákonného vzorce (zákon č. 338/1992 Sb.). Výše závisí na m² bytu a koeficientech vaší obce — Praha platí 2,6× více než Brno na stejný m².</p>}
+            tooltip={<p>Roční daň z nemovitých věcí dle zákonného vzorce (zákon č. 338/1992 Sb.). Výše závisí na m² bytu a koeficientech tvé obce — Praha platí 2,6× více než Brno na stejný m².</p>}
             value={state.danZNemovitosti}
             onChange={(value) => updateState({ danZNemovitosti: value })}
             unit="custom"
@@ -220,7 +230,18 @@ export function AdvancedInputs({ state, updateState }: AdvancedInputsProps) {
             id="inflace"
             label="Inflace nákladů (ročně)"
             description="Údržba, pojištění, fond oprav"
-            tooltip={<p>Předpokládaná průměrná inflace na 30 let. Odvozena z historického průměru ČR v EU-era (2,3 %) s přirážkou za budoucí šoky. Výrazná odchylka mění výsledky kalkulačky.</p>}
+            tooltip={
+              <div className="space-y-2">
+                <p>Tímto tempem kalkulačka každý rok navyšuje čtyři položky nákladů vlastnictví:</p>
+                <ul className="space-y-1 text-xs">
+                  <li>• Fond oprav</li>
+                  <li>• Pojištění bytu</li>
+                  <li>• Daň z nemovitosti</li>
+                  <li>• Náklady na údržbu</li>
+                </ul>
+                <p className="text-xs text-gray-500 pt-1 border-t border-gray-100">Odvozeno z historického průměru ČR v EU-éře (2,3 %) s přirážkou za budoucí šoky. Výrazná odchylka mění výsledky kalkulačky.</p>
+              </div>
+            }
             value={state.ocekavanaInflace}
             onChange={(value) => updateState({ ocekavanaInflace: value })}
             unit="percent"

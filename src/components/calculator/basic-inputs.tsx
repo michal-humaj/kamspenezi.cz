@@ -71,7 +71,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
           <span className="text-base font-semibold text-slate-900">Scénář A: Vlastní bydlení na hypotéku</span>
         </div>
         <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
-          Koupíte byt. Vložíte vlastní zdroje a zbytek splácíte bance. Po 30 letech vlastníte nemovitost bez dluhů.
+          Koupíš byt. Vložíš vlastní zdroje a zbytek splácíš bance. Po 30 letech vlastníš nemovitost bez dluhů.
         </p>
       </div>
 
@@ -79,7 +79,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       <LabeledSliderInput
         id="kupni-cena"
         label="Kupní cena nemovitosti"
-        tooltip={<p>Odhadovaná kupní cena bytu ve starší zástavbě (cihlové nebo panelové) v tomto městě a dispozici, vycházející ze Sreality.cz (duben 2026, starší zástavba). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
+        tooltip={<p>Odhadovaná kupní cena bytu ve starší zástavbě (cihlové nebo panelové) v tomto městě a dispozici, vycházející ze Sreality.cz (duben 2026, starší zástavba). Zadej cenu bytu, který konkrétně zvažuješ.</p>}
         value={state.kupniCena}
         onChange={(value) => updateState({ kupniCena: value })}
         unit="custom"
@@ -118,7 +118,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         id="urokova-sazba"
         label="Úroková sazba hypotéky"
         description="Během prvních 5 let fixace"
-        tooltip={<p>Nejlepší aktuálně dostupná úroková sazba hypotéky pro 3letou fixaci (Moneta 3Y, únor 2026). Upravte podle vaší konkrétní nabídky od banky.</p>}
+        tooltip={<p>Nejlepší aktuálně dostupná úroková sazba hypotéky pro 3letou fixaci (Moneta 3Y, únor 2026). Uprav podle tvé konkrétní nabídky od banky.</p>}
         extraLabel={
           <span className="mt-1 font-uiSans text-[13px] font-medium tabular-nums text-gray-600">
             Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
@@ -144,7 +144,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
             <span className="text-base font-semibold text-slate-900">Scénář B: Bydlení v nájmu a investování</span>
           </div>
           <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
-            Bydlíte v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investujete. Po 30 letech máte vybudované investiční portfolio.
+            Bydlíš v nájmu. Ušetřené vlastní zdroje i rozdíl v měsíčních platbách investuješ. Po 30 letech máš vybudované investiční portfolio.
           </p>
         </div>
       </div>
@@ -153,8 +153,8 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
       <LabeledSliderInput
         id="najemne"
         label="Nájemné"
-        description="Za kolik byste si pronajali podobný byt dnes?"
-        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt ve starší zástavbě v tomto městě, vycházející ze Sreality.cz (duben 2026, cihlové a panelové domy). Jde o cenu nájmu, který byste platili místo splátky hypotéky.</p>}
+        description="Za kolik bys pronajal podobný byt dnes?"
+        tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt ve starší zástavbě v tomto městě, vycházející ze Sreality.cz (duben 2026, cihlové a panelové domy). Jde o cenu nájmu, který bys platil místo splátky hypotéky.</p>}
         value={state.najemne}
         onChange={(value) => updateState({ najemne: value })}
         unit="custom"
@@ -173,7 +173,7 @@ export function BasicInputs({ state, updateState, animatingFields = new Set() }:
         id="investice-expected"
         label="Výnos investic / ETF (ročně)"
         description="Očekávaný roční výnos akciového ETF"
-        tooltip={<p>Předpokládaný roční výnos globálního ETF (MSCI World) na 30 let, po odečtení TER. Průměr pěti institucí: Vanguard, Northern Trust, AQR, DMS, BNY. Upravte pro scénářovou analýzu.</p>}
+        tooltip={<p>Předpokládaný roční výnos globálního ETF (MSCI World) na 30 let, po odečtení TER. Průměr pěti institucí: Vanguard, Northern Trust, AQR, DMS, BNY. Uprav pro scénářovou analýzu.</p>}
         value={state.vynosInvesticeExpected}
         onChange={(v) => updateState({ vynosInvesticeExpected: v })}
         unit="percent"

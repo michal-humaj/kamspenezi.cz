@@ -260,7 +260,7 @@ export default function HomeCalculator() {
 
               {/* 3. Subtitle */}
               <p className="mt-4 font-uiSans text-base leading-relaxed text-slate-700 md:text-lg">
-                 Spočítejte si, co je finančně výhodnější v horizontu 30 let. Porovnáme hypotéku oproti nájmu, kde ušetřené peníze investujete do akcií.
+                 Spočítej si, co je finančně výhodnější v horizontu 30 let. Porovnáme hypotéku oproti nájmu, kde ušetřené peníze investuješ do akcií.
               </p>
 
               {/* 4. Scenario Pills - Below Subtitle (Stacked on mobile for readability) */}
@@ -272,7 +272,7 @@ export default function HomeCalculator() {
                 
                 {/* Pill B: Rent - Forest Green */}
                 <span className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium" style={{ background: 'var(--scenario-b-bg)', color: 'var(--scenario-b-dot)' }}>
-                  Scénář B: Nájem a investice
+                  Scénář B: Bydlení v nájmu a investice
                 </span>
               </div>
 
@@ -374,7 +374,7 @@ export default function HomeCalculator() {
                 {/* Basic Inputs Header + Content */}
                 <div className="px-0 py-4 md:p-8 space-y-6">
                   <h2 className="section-title mb-0">
-                    Byt, který zvažujete
+                    Byt, který zvažuješ
                   </h2>
                   <BasicInputs 
                     state={state} 

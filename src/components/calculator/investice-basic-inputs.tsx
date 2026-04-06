@@ -52,7 +52,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
           <span className="text-base font-semibold text-slate-900">Scénář A: Investiční byt na hypotéku</span>
         </div>
         <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
-          Koupíte investiční byt na hypotéku, pronajímáte ho a příjmy z nájmu investujete. Po 30 letech vlastníte nemovitost a máte vybudovaný vedlejší fond.
+          Koupíš investiční byt na hypotéku, pronajímáš ho a příjmy z nájmu investuješ. Po 30 letech vlastníš nemovitost a máš vybudovaný vedlejší fond.
         </p>
       </div>
 
@@ -60,7 +60,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
       <LabeledSliderInput
         id="inv-kupni-cena"
         label="Kupní cena nemovitosti"
-        tooltip={<p>Odhadovaná kupní cena bytu ve starší zástavbě (cihlové nebo panelové) v tomto městě a dispozici, vycházející ze Sreality.cz (duben 2026, starší zástavba). Zadejte cenu bytu, který konkrétně zvažujete.</p>}
+        tooltip={<p>Odhadovaná kupní cena bytu ve starší zástavbě (cihlové nebo panelové) v tomto městě a dispozici, vycházející ze Sreality.cz (duben 2026, starší zástavba). Zadej cenu bytu, který konkrétně zvažuješ.</p>}
         value={state.kupniCena}
         onChange={(value) => updateState({ kupniCena: value })}
         unit="custom"
@@ -99,7 +99,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         id="inv-urokova-sazba"
         label="Úroková sazba hypotéky"
         description="Během prvních 5 let fixace"
-        tooltip={<p>Nejlepší aktuálně dostupná úroková sazba hypotéky pro 3letou fixaci (Moneta 3Y, únor 2026). Upravte podle vaší konkrétní nabídky od banky.</p>}
+        tooltip={<p>Nejlepší aktuálně dostupná úroková sazba hypotéky pro 3letou fixaci (Moneta 3Y, únor 2026). Uprav podle tvé konkrétní nabídky od banky.</p>}
         extraLabel={
           <span className="mt-1 font-uiSans text-[13px] font-medium tabular-nums text-gray-600">
             Splátka: {formatCzk(Math.round(monthlyPayment))} Kč / měsíc
@@ -120,7 +120,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
       <LabeledSliderInput
         id="inv-najemne"
         label="Měsíční nájemné"
-        description="Kolik budete vybírat od nájemníka?"
+        description="Kolik budeš vybírat od nájemníka?"
         tooltip={<p>Odhadované tržní nájemné pro srovnatelný byt ve starší zástavbě v tomto městě, vycházející ze Sreality.cz (duben 2026, cihlové a panelové domy). Jde o příjem z nájmu ve scénáři A.</p>}
         value={state.najemne}
         onChange={(value) => updateState({ najemne: value })}
@@ -160,7 +160,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
             <span className="text-base font-semibold text-slate-900">Scénář B: Investice do ETF</span>
           </div>
           <p className="text-sm text-slate-500 mt-1 ml-4 mb-6">
-            Místo nemovitosti investujete stejnou hotovost (vlastní zdroje + vybavení − příspěvek rodičů) do akciového ETF portfolia.
+            Místo nemovitosti investuješ stejnou hotovost (vlastní zdroje + vybavení − příspěvek rodičů) do akciového ETF portfolia.
           </p>
         </div>
       </div>
@@ -170,7 +170,7 @@ export function InvesticeBasicInputs({ state, updateState, animatingFields = new
         id="inv-investice-expected"
         label="Výnos investic / ETF (ročně)"
         description="Očekávaný roční výnos akciového ETF"
-        tooltip={<p>Předpokládaný roční výnos globálního ETF (MSCI World) na 30 let, po odečtení TER. Průměr pěti institucí: Vanguard, Northern Trust, AQR, DMS, BNY. Upravte pro scénářovou analýzu.</p>}
+        tooltip={<p>Předpokládaný roční výnos globálního ETF (MSCI World) na 30 let, po odečtení TER. Průměr pěti institucí: Vanguard, Northern Trust, AQR, DMS, BNY. Uprav pro scénářovou analýzu.</p>}
         value={state.vynosInvesticeExpected}
         onChange={(v) => updateState({ vynosInvesticeExpected: v })}
         unit="percent"

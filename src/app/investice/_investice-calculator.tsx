@@ -309,7 +309,7 @@ export default function InvesticePage() {
               </h1>
 
               <p className="mt-4 font-uiSans text-base leading-relaxed text-slate-700 md:text-lg">
-                Spočítejte si, jestli se víc vyplatí koupit investiční byt na pronájem, nebo stejnou hotovost investovat do globálního akciového fondu ETF.
+                Spočítej si, jestli se víc vyplatí koupit investiční byt na pronájem, nebo stejnou hotovost investovat do globálního akciového fondu ETF.
               </p>
 
               <div className="flex flex-col items-start gap-2 mt-4 md:flex-row md:items-center md:gap-5">
@@ -414,7 +414,7 @@ export default function InvesticePage() {
               >
                 <div className="px-0 py-4 md:p-8 space-y-6">
                   <h2 className="section-title mb-0">
-                    Investiční byt, který zvažujete
+                    Investiční byt, který zvažuješ
                   </h2>
                   <InvesticeBasicInputs
                     state={state}
