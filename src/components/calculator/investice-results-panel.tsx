@@ -293,22 +293,19 @@ export function InvesticeResultsPanel({
         />
       </div>
 
-      {/* Secondary links — above the chart */}
-      <div className="mt-5 flex justify-center items-center gap-2">
+      {/* Secondary buttons — above the chart */}
+      <div className="mt-5 flex justify-center gap-3">
         <Link
           href="/metodika/investice"
-          className="font-uiSans text-[14px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
-          style={{ color: "var(--color-secondary)" }}
+          className="inline-flex items-center justify-center rounded-[var(--radius-pill)] border border-[var(--btn-secondary-border)] bg-white px-5 py-[9px] font-uiSans text-[14px] font-medium text-[var(--btn-secondary-text)] transition-all duration-200 hover:border-[var(--btn-secondary-border-hover)] hover:bg-[var(--btn-secondary-hover-bg)]"
         >
           Jak to funguje?
         </Link>
-        <span className="text-[14px] select-none" style={{ color: "var(--color-border-hover)" }}>·</span>
         <a
           href="https://docs.google.com/spreadsheets/d/1blGZCUIqjqSQ-mQ_rB6GP3eSEsf_JTKHQb1ETODUOXA/edit?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-uiSans text-[14px] underline decoration-[rgba(15,23,42,0.20)] underline-offset-2 hover:decoration-[rgba(15,23,42,1)] transition-colors duration-150"
-          style={{ color: "var(--color-secondary)" }}
+          className="inline-flex items-center justify-center rounded-[var(--radius-pill)] border border-[var(--btn-secondary-border)] bg-white px-5 py-[9px] font-uiSans text-[14px] font-medium text-[var(--btn-secondary-text)] transition-all duration-200 hover:border-[var(--btn-secondary-border-hover)] hover:bg-[var(--btn-secondary-hover-bg)]"
         >
           Ověřit výpočet
         </a>
