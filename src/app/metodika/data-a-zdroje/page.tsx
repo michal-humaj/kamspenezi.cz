@@ -181,7 +181,7 @@ function ExtLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="font-medium underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-primary)] transition-all"
+      className="font-medium underline decoration-[#9CA3AF] underline-offset-2 hover:decoration-[var(--color-primary)] transition-colors duration-150"
       style={{ color: "var(--color-primary)" }}
     >
       {children}
@@ -295,10 +295,10 @@ export default function DataAZdrojePage() {
               Zdroj: vlastní dotaz na <ExtLink href="https://www.sreality.cz">Sreality.cz</ExtLink> API, duben 2026. Medián nabídkového nájemného pro starší zástavbu (cihlové a panelové domy). Novostavby a developerské projekty jsou záměrně vynechány.
             </Prose>
             <Prose className="mt-3">
-              Proč Sreality.cz filtrované na starší zástavbu? Metodická konzistence s cenami nemovitostí: obě strany výpočtu (cena bytu i nájemné) vycházejí ze stejné populace bytů (starší zástavba). Deloitte Rent Index zahrnuje všechny typy bytů včetně developerských projektů, což systematicky nadhodnocuje nájemné ve srovnání se starší zástavbou (+2–17 % dle města). Výnosové procento je smysluplné pouze tehdy, jsou-li obě hodnoty odvozeny ze stejného segmentu trhu.
+              Proč Sreality.cz filtrované na starší zástavbu? Metodická konzistence s cenami nemovitostí: obě strany výpočtu (cena bytu i nájemné) vycházejí ze stejné populace bytů (starší zástavba). <ExtLink href="https://www2.deloitte.com/cz/cs/pages/real-estate/articles/rent-index.html">Deloitte Rent Index</ExtLink> zahrnuje všechny typy bytů včetně developerských projektů, což systematicky nadhodnocuje nájemné ve srovnání se starší zástavbou (+2–17 % dle města). Výnosové procento je smysluplné pouze tehdy, jsou-li obě hodnoty odvozeny ze stejného segmentu trhu.
             </Prose>
             <Prose className="mt-3">
-              Deloitte Rent Index Q4 2025 je použit jako křížová validace. Shoda je těsná pro Prahu (–0,4 %), Brno (+1,5 %), Olomouc (0 %). Výraznější odchylka u Liberce (Deloitte o 17 % níže) a Jihlavy (o 10 % níže): menší vzorky, větší nejistota.
+              <ExtLink href="https://www2.deloitte.com/cz/cs/pages/real-estate/articles/rent-index.html">Deloitte Rent Index</ExtLink> Q4 2025 je použit jako křížová validace. Shoda je těsná pro Prahu (–0,4 %), Brno (+1,5 %), Olomouc (0 %). Výraznější odchylka u Liberce (Deloitte o 17 % níže) a Jihlavy (o 10 % níže): menší vzorky, větší nejistota.
             </Prose>
             <DataTable
               headers={["Město", "Kč/m²/měsíc (Sreality, duben 2026)"]}
@@ -327,7 +327,7 @@ export default function DataAZdrojePage() {
               </MetaRow>
               <MetaRow label="Výchozí hodnota:">20 % kupní ceny.</MetaRow>
               <MetaRow label="Zdroj:">
-                ČNB regulace stanovuje maximální LTV 80 % pro investiční nemovitosti. Pro vlastní bydlení do 36 let lze za určitých podmínek jít níže, ale 20 % je konzervativní výchozí hodnota platná pro většinu kupujících. V kalkulačce si hodnotu změníš.
+                <ExtLink href="https://www.cnb.cz/cs/financni-stabilita/makroobezretnostni-politika/limity-uverovych-ukazatelu/">ČNB regulace</ExtLink> stanovuje maximální LTV 80 % pro investiční nemovitosti. Pro vlastní bydlení do 36 let lze za určitých podmínek jít níže, ale 20 % je konzervativní výchozí hodnota platná pro většinu kupujících. V kalkulačce si hodnotu změníš.
               </MetaRow>
             </div>
           </div>
@@ -451,7 +451,7 @@ export default function DataAZdrojePage() {
               </MetaRow>
             </div>
             <Prose>
-              Metodika: Na 30letém horizontu existují dva různé ukazatele. New-to-market nájemné (nové smlouvy, zachycuje Deloitte Rent Index, CAGR 2014–2025 = 7,2 % p.a.) a in-situ nájemné (průběžně platí všichni nájemníci, zachycuje{" "}
+              Metodika: Na 30letém horizontu existují dva různé ukazatele. New-to-market nájemné (nové smlouvy, zachycuje <ExtLink href="https://www2.deloitte.com/cz/cs/pages/real-estate/articles/rent-index.html">Deloitte Rent Index</ExtLink>, CAGR 2014–2025 = 7,2 % p.a.) a in-situ nájemné (průběžně platí všichni nájemníci, zachycuje{" "}
               <ExtLink href="https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_aind?geo=CZ&coicop=CP041&unit=INX_A_AVG">
                 Eurostat HICP CP041
               </ExtLink>
@@ -466,7 +466,7 @@ export default function DataAZdrojePage() {
               </MetaRow>
               <MetaRow label="Hodnota:">2,5 % p.a.</MetaRow>
               <MetaRow label="Zdroj:">
-                Empiricky odvozený odhad z historické české inflace (<ExtLink href="https://www.inflationtool.com/rates/czech-epublic/historical">ČSÚ via InflationTool</ExtLink>). Průměr EU-éry 2004–2021 = 2,3 % p.a. Zahrnuje výkyvy mimo ČNB cíl (2008: 6,3 %; 2020: 3,2 %; 2021: 3,8 %). ČNB cíl (2 %) záměrně nepoužíváme: historická průměrná inflace v ČR leží konzistentně nad ním. 2,5 % je konzervativní 30Y průměr zohledňující inflační cykly. Inflační cíl ČNB: <ExtLink href="https://www.cnb.cz/cs/menova-politika/inflacni-cil/">cnb.cz</ExtLink>.
+                Empiricky odvozený odhad z historické české inflace (<ExtLink href="https://www.inflationtool.com/rates/czech-republic/historical">ČSÚ via InflationTool</ExtLink>). Průměr EU-éry 2004–2021 = 2,3 % p.a. Zahrnuje výkyvy mimo ČNB cíl (2008: 6,3 %; 2020: 3,2 %; 2021: 3,8 %). ČNB cíl (2 %) záměrně nepoužíváme: historická průměrná inflace v ČR leží konzistentně nad ním. 2,5 % je konzervativní 30Y průměr zohledňující inflační cykly. Inflační cíl ČNB: <ExtLink href="https://www.cnb.cz/cs/menova-politika/inflacni-cil/">cnb.cz</ExtLink>.
               </MetaRow>
             </div>
           </div>

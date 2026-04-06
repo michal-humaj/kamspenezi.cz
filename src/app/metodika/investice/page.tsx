@@ -271,7 +271,7 @@ export default function MetodikaInvesticePage() {
               Hodnoty pro Prahu a Brno vychází z dat o vakanci institucionálního nájemního trhu, upravených dolů pro soukromého pronajímatele. Pro ostatní města jsou odvozeny podle síly místní poptávky. Obsazenost je jeden z nejcitlivějších parametrů kalkulačky. Změň si ji a sleduj, jak se výsledek mění. Hodnoty pro všechna města najdeš na{" "}
               <Link
                 href="/metodika/data-a-zdroje"
-                className="font-medium underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-primary)] transition-all"
+                className="font-medium underline decoration-[#9CA3AF] underline-offset-2 hover:decoration-[var(--color-primary)] transition-colors duration-150"
                 style={{ color: "var(--color-primary)" }}
               >
                 stránce Data a zdroje
@@ -411,7 +411,7 @@ export default function MetodikaInvesticePage() {
               Úplný přehled všech parametrů a jejich zdrojů najdeš na{" "}
               <Link
                 href="/metodika/data-a-zdroje"
-                className="font-medium underline decoration-[var(--color-border)] underline-offset-2 hover:decoration-[var(--color-primary)] transition-all"
+                className="font-medium underline decoration-[#9CA3AF] underline-offset-2 hover:decoration-[var(--color-primary)] transition-colors duration-150"
                 style={{ color: "var(--color-primary)" }}
               >
                 stránce Data a zdroje
